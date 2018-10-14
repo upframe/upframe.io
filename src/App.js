@@ -10,17 +10,43 @@ import Onboarding from './screens/Onboarding'
 import Settings from './screens/Settings'
 
 export default class App extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      loggedIn: false
+    }
+  }
+
+  LoginScreen = () => {
+    return (
+      <Login loggedIn={this.state.loggedIn} setLoggedInState={this.setLoggedInState} />
+    )
+  }
+
+  SettingsScreen = () => {
+    return (
+      <Settings loggedIn={this.state.loggedIn} />
+    )
+  }
+
+  setLoggedInState = (newState) => {
+    this.setState({
+      loggedIn: newState
+    })
+  }
+
   render() {
     return (
       <Router>
         <div className="App">
-          <Navbar />
+          <Navbar loggedIn={this.state.loggedIn} setLoggedInState={this.setLoggedInState}/>
           <Switch>
             <Route exact path='/' component={Main} />
-            <Route exact path='/login' component={Login} />
+            <Route exact path='/login' component={this.LoginScreen} />
             <Route exact path='/mentor' component={Mentor} />
             <Route exact path='/onboarding' component={Onboarding} />
-            <Route exact path='/settings' component={Settings} />
+            <Route exact path='/settings' component={this.SettingsScreen} />
           </Switch>
         </div>
       </Router>
