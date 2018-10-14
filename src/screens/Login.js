@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
+import * as Api from '../utils/Api';
+import * as Cookies from '../utils/Cookies';
 
 export default class Login extends Component {
 
@@ -13,7 +15,16 @@ export default class Login extends Component {
   }
 
   login = () => {
-    this.props.setLoggedInState(true)
+    
+    Api.login(this.state.email, this.state.password)
+      .then(res => {
+        if (res.ok === 0) {
+          alert('Login errado')
+        } else {
+          Cookies.setItem('access_token', res.token, Infinity)
+          this.props.setLoggedInState(true)
+        }
+      })
   }
 
   handleKeyUp = (e) => { if (e.keyCode === 13) { this.login() } }
@@ -31,6 +42,7 @@ export default class Login extends Component {
           <h1>Sou um Login</h1>
           <p>Email</p>
           <input type='email' onChange={this.handleEmailChange} onKeyUp={this.handleKeyUp} />
+          <p>Password</p>
           <input type='password' onChange={this.handlePasswordChange} onKeyUp={this.handleKeyUp} />
           <button onClick={this.login}>Login</button>
         </div>
