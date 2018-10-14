@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 
 import { Link } from 'react-router-dom'
 
+import * as Cookies from '../utils/Cookies';
+
 export default class Navbar extends Component {
 
   logout = () => {
+    Cookies.removeItem('access_token')
     this.props.setLoggedInState(false)
   }
 
   render() {
+    console.log(window.location.pathname )
     if (this.props.loggedIn) {
       return (
         <div>
@@ -21,7 +25,7 @@ export default class Navbar extends Component {
       return (
         <div>
           <h1>Sou uma navbar</h1>
-          <Link to='/login'>Login</Link>
+          {window.location.pathname === '/login' ? null : <Link to='/login'>Login</Link>}
         </div>
       )
     }

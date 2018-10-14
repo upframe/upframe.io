@@ -9,6 +9,9 @@ import Mentor from './screens/Mentor'
 import Onboarding from './screens/Onboarding'
 import Settings from './screens/Settings'
 
+import * as Cookies from './utils/Cookies'
+import * as Api from './utils/Api'
+
 export default class App extends Component {
 
   constructor(props) {
@@ -16,6 +19,18 @@ export default class App extends Component {
     this.state = {
       loggedIn: false
     }
+  }
+
+  componentDidMount() {
+    Api.verify(Cookies.getItem('token')).then(res => {
+      if (res.ok === 1) {
+        this.setState({
+          loggedIn : true
+        })
+      } else {
+        Cookies.removeItem('access_token')
+      }
+    })
   }
 
   LoginScreen = () => {
