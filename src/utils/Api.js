@@ -54,3 +54,65 @@ export function uploadPhoto () {
     body: data
   }).then(res => res.json())
 }
+
+export function resetPassword(email) {
+  let resetInfo = {
+    email: email
+  }
+  let fetchData = {
+    method: 'POST',
+    mode: 'cors',
+    body: JSON.stringify(resetInfo),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  return fetch('http://localhost/auth/forgotmypassword', fetchData).then(res => res.json())
+}
+
+export function changeEmail(email, token) {
+  let resetInfo = {
+    email: email
+  }
+  let fetchData = {
+    method: 'POST',
+    mode: 'cors',
+    body: JSON.stringify(resetInfo),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  return fetch('http://localhost/auth/changemyemail', fetchData).then(res => res.json())
+}
+
+export function resetPasswordWithToken (token, password) {
+  let resetInfo = {
+    token: token,
+    password: password
+  }
+  let fetchData = {
+    method: 'POST',
+    mode: 'cors',
+    body: JSON.stringify(resetInfo),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  return fetch('http://localhost/auth/forgotmypassword', fetchData).then(res => res.json())
+}
+
+export function changeEmailWithToken (token, email) {
+  let resetInfo = {
+    email: email,
+    token: token
+  }
+  let fetchData = {
+    method: 'POST',
+    mode: 'cors',
+    body: JSON.stringify(resetInfo),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  return fetch('http://localhost/auth/changemyemail', fetchData).then(res => res.json())
+}
