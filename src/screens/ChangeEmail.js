@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import * as Api from '../utils/Api'
 
+import { Redirect } from 'react-router-dom'
+
 export default class ChangeEmail extends Component {
 
   constructor (props) {
@@ -21,7 +23,7 @@ export default class ChangeEmail extends Component {
   changeEmail = () => {
     Api.changeEmailWithToken(this.state.token, this.state.email).then(res => {
       if (res.ok === 1) {
-        alert('Email changed')
+        return <Redirect to='/login' />
       } else {
         alert('Something went wrong')
       }

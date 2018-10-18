@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import * as Api from '../utils/Api'
 
+import { Redirect } from 'react-router-dom'
+
 export default class ResetPassword extends Component {
 
   constructor (props) {
@@ -22,6 +24,7 @@ export default class ResetPassword extends Component {
     Api.resetPasswordWithToken(this.state.token, this.state.password).then(res => {
       if (res.ok === 1) {
         alert('Password changed')
+        return <Redirect to='/login' />
       } else {
         alert('Something went wrong')
       }
