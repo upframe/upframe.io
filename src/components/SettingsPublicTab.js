@@ -52,22 +52,27 @@ export default class SettingsPublicTab extends Component {
   componentDidMount() {
     //Vamos buscar a info e dar load da mesma
     Api.verify(Cookies.getItem('token')).then(res => {
+      console.log(res)
       if (res.ok === 1) {
         let newState = {
-          tags: JSON.parse(res.me.tags),
-          profilePic: res.me.profilePic,
-          name: res.me.name,
-          location: res.me.location,
-          role: res.me.role,
-          company: res.me.company,
-          website: res.me.website,
-          twitter: res.me.twitter,
-          linkedin: res.me.linkedin,
-          github: res.me.github,
-          facebook: res.me.facebook,
-          dribbble: res.me.dribbble,
-          bio: res.me.bio,
-          keycode: res.me.keycode
+          /**
+           * we can't load the tags since the backend app
+           * isn't yet returning them
+           */
+          //tags: JSON.parse(res.user.tags),
+          profilePic: res.user.profilePic,
+          name: res.user.name,
+          location: res.user.location,
+          role: res.user.role,
+          company: res.user.company,
+          website: res.user.website,
+          twitter: res.user.twitter,
+          linkedin: res.user.linkedin,
+          github: res.user.github,
+          facebook: res.user.facebook,
+          dribbble: res.user.dribbble,
+          bio: res.user.bio,
+          keycode: res.user.keycode
         }
         this.setState(newState)
       } else {
