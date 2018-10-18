@@ -42,12 +42,11 @@ export default class SettingsAccountTab extends Component {
   }
 
   render() {
-    let email = localStorage.getItem('email')
     return (
       <div className='tab-content'>
         <h1>Email</h1>
         <p>
-          Your email address is <a href={'mailto:' + email}>{email}</a>. This information will not be publicly displayed
+          Your email address is <a href={'mailto:' + this.state.email}>{this.state.email}</a>. This information will not be publicly displayed
         </p>
         <button onClick={this.changeEmail}>Change Email</button>
         <h1>Password</h1>
