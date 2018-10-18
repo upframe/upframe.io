@@ -8,6 +8,8 @@ import Login from './screens/Login'
 import Mentor from './screens/Mentor'
 import Onboarding from './screens/Onboarding'
 import Settings from './screens/Settings'
+import ChangeEmail from './screens/ChangeEmail'
+import ResetPassword from './screens/ResetPassword'
 
 import * as Cookies from './utils/Cookies'
 import * as Api from './utils/Api'
@@ -62,6 +64,9 @@ export default class App extends Component {
             <Route exact path='/mentor' component={Mentor} />
             <Route exact path='/onboarding' component={Onboarding} />
             <Route exact path='/settings' component={this.SettingsScreen} />
+
+            <Route exact path='/changemyemail*' component={ChangeEmail} />
+            <Route exact path='/resetmypassword*' component={ResetPassword} />
           </Switch>
         </div>
       </Router>
