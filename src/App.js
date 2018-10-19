@@ -26,7 +26,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    Api.verify(Cookies.getItem('token')).then(res => {
+    Api.getUserInfo().then(res => {
       if (res.ok === 1) {
         this.setState({
           loggedIn : true

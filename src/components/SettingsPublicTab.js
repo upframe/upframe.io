@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { WithContext as ReactTags } from 'react-tag-input';
-import * as Cookies from '../utils/Cookies'
 import * as Api from '../utils/Api';
 
 const KeyCodes = {
@@ -51,7 +50,7 @@ export default class SettingsPublicTab extends Component {
 
   componentDidMount() {
     //Vamos buscar a info e dar load da mesma
-    Api.verify(Cookies.getItem('token')).then(res => {
+    Api.getUserInfo().then(res => {
       console.log(res)
       if (res.ok === 1) {
         let newState = {
@@ -114,7 +113,7 @@ export default class SettingsPublicTab extends Component {
 
   removePhoto = () => {
     //https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png
-    Api.update({
+    Api.updateUserInfo({
       profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png'
     }).then(res => {
       if (res.ok === 1) {
@@ -130,7 +129,7 @@ export default class SettingsPublicTab extends Component {
   }
 
   saveChanges = () => {
-    Api.update(this.state).then(res => {
+    Api.updateUserInfo(this.state).then(res => {
       if (res.ok === 1) {
         alert('Information saved!')
       } else {
