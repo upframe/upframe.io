@@ -60,6 +60,7 @@ export default class SettingsPublicTab extends Component {
            * isn't yet returning them
            */
           //tags: JSON.parse(res.user.tags),
+          tags: [],
           profilePic: res.user.profilePic,
           name: res.user.name,
           location: res.user.location,
