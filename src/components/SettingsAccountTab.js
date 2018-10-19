@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import * as Api from '../utils/Api'
-import * as Cookies from '../utils/Cookies'
 
 export default class SettingsAccountTab extends Component {
 
@@ -13,7 +12,7 @@ export default class SettingsAccountTab extends Component {
   }
 
   componentDidMount() {
-    Api.verify(Cookies.getItem('token')).then(res => {
+    Api.getUserInfo().then(res => {
       if (res.ok === 1) {
         let newState = {
           email: res.me.email
