@@ -11,6 +11,8 @@ import Settings from './screens/Settings'
 import ChangeEmail from './screens/ChangeEmail'
 import ResetPassword from './screens/ResetPassword'
 
+import DevPlayground from './screens/DevPlayground'
+
 import * as Cookies from './utils/Cookies'
 import * as Api from './utils/Api'
 
@@ -67,6 +69,8 @@ export default class App extends Component {
 
             <Route exact path='/changemyemail*' component={ChangeEmail} />
             <Route exact path='/resetmypassword*' component={ResetPassword} />
+
+            <Route exact path='/dev' component={DevPlayground} />
           </Switch>
         </div>
       </Router>
