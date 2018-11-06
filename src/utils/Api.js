@@ -46,7 +46,7 @@ export function resetPassword(email) {
   return fetch('http://localhost/auth/forgotmypassword', fetchData).then(res => res.json())
 }
 
-export function changeEmail(email, token) {
+export function changeEmail(email) {
   let resetInfo = {
     email: email
   }
@@ -141,7 +141,7 @@ export function createMeetup (location, start, mentorKeycode) {
   let fetchBody = {
     location: location,
     start: start,
-    mentorKeycode
+    mentorKeycode: mentorKeycode
   }
   let fetchData = {
     method: 'POST',
