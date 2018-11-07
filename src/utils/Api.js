@@ -11,7 +11,7 @@ export function login (email, password) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('http://localhost/auth/login', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/auth/login', fetchData).then(res => res.json())
 }
 
 export function register (email, password, name) {
