@@ -51,6 +51,7 @@ export default class DevPLayground extends Component {
 
   mentorVerify = () => {
     Api.verifyKeycode(this.state.input).then(res => {
+      console.log(this.state.input)
       console.log(res)
     })
   }
@@ -154,25 +155,24 @@ export default class DevPLayground extends Component {
         <input type='text' onChange={this.handleInputChange} value={this.state.input} />
         <input type='text' onChange={this.handleInput2Change} value={this.state.input2} />
         <input type='text' onChange={this.handleInput3Change} value={this.state.input3} />
-        <button onClick={this.login}>Login</button>
-        <button onClick={this.register}>Register</button>
-        <button onClick={this.forgotPass}>ForgotPass</button>
-        <button onClick={this.changeEmail}>ChangeMyEmail</button>
-        <button onClick={this.forgotPassTokenFinal}>ForgotPassTokenFinal</button>
-        <button onClick={this.changeEmailTokenFinal}>ChangeMyEmailTokenFInal</button>
-        <button onClick={this.mentorVerify}>MentorVerify</button>
-        <button onClick={this.mentorVerify2}>MentorVerify2</button>
-        <button onClick={this.getRandomMentor}>GetMentorRandom</button>
-        <button onClick={this.getMentorKeycode}>GetMentorInfo by Keycode</button>
-        <button onClick={this.postMeetup}>POST meetup</button>
-        <button onClick={this.getMeetup}>GET meetup</button>
-        <button onClick={this.getMeetupConfirm}>GET meetup confirm</button>
-        <button onClick={this.getMeProfile}>GET profile me</button>
-        <button onClick={this.patchMeProfile}>Patch profile me</button>
-        <button onClick={this.postMeProfile}>Post profile image</button>
-        <button onClick={this.getQuickSeach}>GET seach quick</button>
-        <button onClick={this.getFullSearch}>GET seach full</button>
-        <button onClick={this.getSearchTags}>GET seach tags</button>
+        <button onClick={this.login}>Login (Email, Password)</button>
+        <button onClick={this.register}>Register (Email, Password, Name)</button>
+        <button onClick={this.forgotPass}>ForgotPass (Email)</button>
+        <button onClick={this.changeEmail}>ChangeMyEmail (Email)</button>
+        <button onClick={this.forgotPassTokenFinal}>ForgotPassTokenFinal (Token, NEw Password)</button>
+        <button onClick={this.changeEmailTokenFinal}>ChangeMyEmailTokenFInal (Token, New Email)</button>
+        <button onClick={this.mentorVerify}>MentorVerify (Keycode)</button>
+        <button onClick={this.mentorVerify2}>MentorVerify2 (UniqueID)</button>
+        <button onClick={this.getRandomMentor}>GetMentorRandom ()</button>
+        <button onClick={this.getMentorKeycode}>GetMentorInfo (Keycode)</button>
+        <button onClick={this.postMeetup}>Create meetup (Location, Start Time, Keycode) </button>
+        <button onClick={this.getMeetup}>Get meetups ()</button>
+        <button onClick={this.getMeetupConfirm}>GET meetup confirm (Meetup ID)</button>
+        <button onClick={this.getMeProfile}>GET profile me (Precisam de tar loggedin)</button>
+        <button onClick={this.patchMeProfile}>Patch profile me (Tem que ser feito em codigo)</button>
+        <button onClick={this.getQuickSeach}>GET seach quick (Query)</button>
+        <button onClick={this.getFullSearch}>GET seach full (Query)</button>
+        <button onClick={this.getSearchTags}>GET seach tags ()</button>
       </div>
     );
   }
