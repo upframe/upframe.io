@@ -24,10 +24,12 @@ export default class SettingsSyncTab extends Component {
   }
 
   googleResponse = (e) => {
+    console.log(e)
     if (e.error) {
-      alert('Did not work')
+      alert('Looks like the platform you are using is blocking trackers. Can you add an exception so that we can log you in using Google?')
     } else {
-      alert(e.accessToken)
+      //Temos em e.accessToken o token de acesso à api da google
+      //Agora vamos buscar eventos e display calendar
     }
   }
 
