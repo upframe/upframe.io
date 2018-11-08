@@ -33,7 +33,7 @@ export default class App extends Component {
           loggedIn : true
         })
       } else {
-        Cookies.removeItem('access_token', '/', '.upframe.io')
+        Cookies.clear()
         this.setState({
           loggedIn : false
         })
