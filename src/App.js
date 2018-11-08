@@ -33,6 +33,9 @@ export default class App extends Component {
         })
       } else {
         Cookies.removeItem('access_token')
+        this.setState({
+          loggedIn : false
+        })
       }
     })
   }
