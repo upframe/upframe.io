@@ -26,6 +26,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    console.log(Cookies.getItem('access_token'))
     Api.getUserInfo().then(res => {
       if (res.ok === 1) {
         this.setState({
