@@ -7,7 +7,7 @@ import * as Cookies from '../utils/Cookies';
 export default class Navbar extends Component {
 
   logout = () => {
-    Cookies.clear()
+    Cookies.removeItem('access_token', '/', '.upframe.io')
     this.props.setLoggedInState(false)
   }
 
