@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/ulissesferreira/connect.svg?token=xmikXYDzu8Ho8PZicgqF&branch=master)](https://travis-ci.com/ulissesferreira/connect)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/086688c42a6e4c268b0a4c559790e5a8)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ulissesferreira/connect&amp;utm_campaign=Badge_Grade)
 
 # 🦄 Connect
 
