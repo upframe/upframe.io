@@ -30,18 +30,17 @@ export default class MainMentorList extends Component {
   mentorToElement = (mentor) => {
     return (
       <Link to={'/people/' + mentor.keycode}>
-        <div className='mentor-cards'>
-          <img alt={mentor.name} src={mentor.profilePic} />
-          <p>{mentor.name}</p>
-          <p>{mentor.role} @  
-            <Link to={'/companies/' + mentor.company}>{mentor.company}</Link>
-          </p>
-          <p>{mentor.bio}</p>
-          <p>{mentor.tags}</p>
-          {/* <ul>
+        <div className='mentor-card'>
+          <img className='mentor-card-image' src={mentor.profilePic} alt={mentor.name}/>
+          <div className='mentor-card-info'>
+            <p><strong>{mentor.name}</strong></p>
+            <p>{mentor.role} @ <Link to={'/companies/' + mentor.company}>{mentor.company}</Link></p>
+            <p>{mentor.bio}</p>
+          </div>
+          {/*DEBUG for now <ul className='mentor-card-tags'>
             {this.mentorTagsToElement(mentor.tags)}
           </ul> */}
-          Fim
+          <p>{mentor.tags}</p>
         </div>
       </Link>
     )
