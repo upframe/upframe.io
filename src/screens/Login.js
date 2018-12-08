@@ -38,14 +38,21 @@ export default class Login extends Component {
       return <Redirect to='/' />
     } else {
       return (
-        <div>
-          <h1>Sou um Login</h1>
-          <p>Email</p>
-          <input type='email' onChange={this.handleEmailChange} onKeyUp={this.handleKeyUp} />
-          <p>Password</p>
-          <input type='password' onChange={this.handlePasswordChange} onKeyUp={this.handleKeyUp} />
-          <button onClick={this.login}>Login</button>
-        </div>
+        <main>
+          <div className='container flex justify-center'>
+            <form className='flex flex-column'>
+              <div className='field-group'>
+                <label for='email' className='light-gray'>Email</label>
+                <input type='email' name='email' onChange={this.handleEmailChange} onKeyUp={this.handleKeyUp} className='light-gray'/>
+              </div>
+              <div className='field-group'>
+                <label for='password' className='light-gray'>Password</label>
+                <input type='password' onChange={this.handlePasswordChange} onKeyUp={this.handleKeyUp} className='light-gray'/>
+              </div>
+              <button type='submit' className='btn btn-primary center' onClick={this.login}>Login</button>
+            </form>
+          </div>
+        </main>
       );
     }
   }
