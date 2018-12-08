@@ -32,11 +32,11 @@ export class CalendarService extends Component {
         'Content-Type': 'application/json'
       }
     })
-      .then(res => res.json())
-      .catch(err => {
-        console.log('Error fetching token', err)
+      .then((res) => res.json())
+      .catch((err) => {
+        alert('Error fetching token ' + err)
       })
-      .then(data => {
+      .then((data) => {
         if (data.code === 4) {
           return false
         }
@@ -59,9 +59,9 @@ export class CalendarService extends Component {
       },
       body: 'grant_type=refresh_token&refresh_token=' + this.refToken
     })
-      .then(res => res.json())
-      .catch(err => console.log('Error exchaging new access token', err))
-      .then(data => {
+      .then((res) => res.json())
+      .catch((err) => console.log('Error exchaging new access token', err))
+      .then((data) => {
         let tokens = {
           accessToken: data.access_token,
           refToken: data.refresh_token,
@@ -99,8 +99,8 @@ export class CalendarService extends Component {
       },
       body: JSON.stringify(reqBody)
     })
-      .then(res => res.json())
-      .catch(err => console.log('Error saving token', err))
+      .then((res) => res.json())
+      .catch((err) => console.log('Error saving token', err))
   }
 
   /**
@@ -111,11 +111,11 @@ export class CalendarService extends Component {
       method: 'GET',
       mode: 'cors'
     })
-      .then(res => res.json())
-      .catch(err => {
+      .then((res) => res.json())
+      .catch((err) => {
         console.log('Error:', err)
       })
-      .then(data => {
+      .then((data) => {
         this.accessToken = data.access_token
         this.refToken = data.refresh_token
         this.expiration = data.expiration
@@ -138,8 +138,8 @@ export class CalendarService extends Component {
         headers: customHeaders
       }
     )
-      .then(res => res.json())
-      .then(list => {
+      .then((res) => res.json())
+      .then((list) => {
         let output = []
         list.items.map(element => {
           if (element.summary === 'Upframe Connect') this.calendarID = element.id
@@ -246,7 +246,7 @@ export class CalendarService extends Component {
         },
         body: JSON.stringify(eventBody)
       })
-        .then(res => res.json())
+        .then((res) => res.json())
         .then(data => {
           if (data.status === 'confirmed') {
             console.log('Added a slot')
