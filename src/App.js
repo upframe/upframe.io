@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Navbar from './components/Navbar'
+import Navbar from './components/Navbar';
 //Our app is made of a Navbar + Screen
-import Main from './screens/Main'
-import Login from './screens/Login'
-import Mentor from './screens/Mentor'
-import Onboarding from './screens/Onboarding'
-import Settings from './screens/Settings'
-import ChangeEmail from './screens/ChangeEmail'
-import ResetPassword from './screens/ResetPassword'
+import Main from './screens/Main';
+import Login from './screens/Login';
+import Mentor from './screens/Mentor';
+import Onboarding from './screens/Onboarding';
+import Settings from './screens/Settings';
+import ChangeEmail from './screens/ChangeEmail';
+import ResetPassword from './screens/ResetPassword';
 
-import DevPlayground from './screens/DevPlayground'
+import DevPlayground from './screens/DevPlayground';
 
-import * as Cookies from './utils/Cookies'
-import * as Api from './utils/Api'
+import * as Cookies from './utils/Cookies';
+import * as Api from './utils/Api';
 
 export default class App extends Component {
 
