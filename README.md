@@ -25,7 +25,7 @@ yarn start
 
 Inside the source folder there are three folders. The first folder, components, consists of all the individual components we use throughout the app. We try to keep our code as DRY as possible so these should be easily recyclable. The second folder, screens, is a collection of all the possible views the user has throughout the app. Since this is a single page application they are the closest thing to "different pages". Finally, the utils folder, consists of code that can be abstracted as independent libraries.
 
-We try to stay in line with most of these rules: [https://github.com/airbnb/javascript/tree/master/react#naming]
+We try to stay in line with most of these rules: \[https://github.com/airbnb/javascript/tree/master/react#naming]
 
 # License
 
