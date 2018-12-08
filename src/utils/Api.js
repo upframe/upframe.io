@@ -11,7 +11,7 @@ export function login (email, password) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/login', fetchData).then(res => res.json())
+  return fetch('http://localhost/auth/login', fetchData).then(res => res.json())
 }
 
 export function register (email, password, name) {
@@ -28,7 +28,7 @@ export function register (email, password, name) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/register', fetchData).then(res => res.json())
+  return fetch('http://localhost/auth/register', fetchData).then(res => res.json())
 }
 
 export function resetPassword(email) {
@@ -43,7 +43,7 @@ export function resetPassword(email) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/forgotmypassword', fetchData).then(res => res.json())
+  return fetch('http://localhost/auth/forgotmypassword', fetchData).then(res => res.json())
 }
 
 export function changeEmail(email) {
@@ -58,7 +58,7 @@ export function changeEmail(email) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/changemyemail', fetchData).then(res => res.json())
+  return fetch('http://localhost/auth/changemyemail', fetchData).then(res => res.json())
 }
 
 export function resetPasswordWithToken(token, password) {
@@ -74,7 +74,7 @@ export function resetPasswordWithToken(token, password) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/forgotmypassword', fetchData).then(res => res.json())
+  return fetch('http://localhost/auth/forgotmypassword', fetchData).then(res => res.json())
 }
 
 export function changeEmailWithToken(token, email) {
@@ -90,7 +90,7 @@ export function changeEmailWithToken(token, email) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/changemyemail', fetchData).then(res => res.json())
+  return fetch('http://localhost/auth/changemyemail', fetchData).then(res => res.json())
 }
 
 export function verifyKeycode (keycode) {
@@ -101,7 +101,7 @@ export function verifyKeycode (keycode) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`https://api.upframe.io/mentor/verify?keycode=${keycode}`, fetchData).then(res => res.json())
+  return fetch(`http://localhost/mentor/verify?keycode=${keycode}`, fetchData).then(res => res.json())
 }
 
 export function verifyUniqueId(uniqueid) {
@@ -112,7 +112,7 @@ export function verifyUniqueId(uniqueid) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`https://api.upframe.io/mentor/verify?uniqueid=${uniqueid}`, fetchData).then(res => res.json())
+  return fetch(`http://localhost/mentor/verify?uniqueid=${uniqueid}`, fetchData).then(res => res.json())
 }
 
 export function getRandomMentors() {
@@ -123,7 +123,7 @@ export function getRandomMentors() {
       'Content-Type': 'application/json',
     }
   }
-  return fetch('https://api.upframe.io/mentor/random', fetchData).then(res => res.json())
+  return fetch('http://localhost/mentor/random', fetchData).then(res => res.json())
 }
 
 export function getMentorInfo(keycode) {
@@ -134,7 +134,7 @@ export function getMentorInfo(keycode) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`https://api.upframe.io/mentor/${keycode}`, fetchData).then(res => res.json())
+  return fetch(`http://localhost/mentor/${keycode}`, fetchData).then(res => res.json())
 }
 
 export function createMeetup (location, start, mentorKeycode) {
@@ -152,7 +152,7 @@ export function createMeetup (location, start, mentorKeycode) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/meetup/', fetchData).then(res => res.json())
+  return fetch('http://localhost/meetup/', fetchData).then(res => res.json())
 }
 
 export function getMeetups() {
@@ -164,7 +164,7 @@ export function getMeetups() {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/meetup', fetchData).then(res => res.json())
+  return fetch('http://localhost/meetup', fetchData).then(res => res.json())
 }
 
 export function confirmMeetup(meetupId) {
@@ -176,7 +176,7 @@ export function confirmMeetup(meetupId) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch(`https://api.upframe.io/meetup/confirm?meetup=${meetupId}`, fetchData).then(res => res.json())
+  return fetch(`http://localhost/meetup/confirm?meetup=${meetupId}`, fetchData).then(res => res.json())
 }
 
 export function getUserInfo () {
@@ -188,7 +188,7 @@ export function getUserInfo () {
       'Content-Type': 'application/json',
     }
   }
-  return fetch('https://api.upframe.io/profile/me', fetchData).then(res => res.json())
+  return fetch('http://localhost/profile/me', fetchData).then(res => res.json())
 }
 
 export function updateUserInfo (updateInfo) {
@@ -201,7 +201,7 @@ export function updateUserInfo (updateInfo) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/profile/me', fetchData).then(res => res.json())
+  return fetch('http://localhost/profile/me', fetchData).then(res => res.json())
 }
 
 export function uploadPhoto () {
@@ -210,7 +210,7 @@ export function uploadPhoto () {
   var data = new FormData()
   data.append('file', input.files[0])
 
-  return fetch('https://api.upframe.io/profile/image', {
+  return fetch('http://localhost/profile/image', {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',
@@ -226,7 +226,7 @@ export function searchQuick(query) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`https://api.upframe.io/search/quick?term=${query}`, fetchData).then(res => res.json())
+  return fetch(`http://localhost/search/quick?term=${query}`, fetchData).then(res => res.json())
 }
 
 export function searchFull(query) {
@@ -237,7 +237,7 @@ export function searchFull(query) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`https://api.upframe.io/search/full?term=${query}`, fetchData).then(res => res.json())
+  return fetch(`http://localhost/search/full?term=${query}`, fetchData).then(res => res.json())
 }
 
 export function getSearchTags() {
@@ -248,5 +248,5 @@ export function getSearchTags() {
       'Content-Type': 'application/json',
     }
   }
-  return fetch('https://api.upframe.io/search/tags', fetchData).then(res => res.json())
+  return fetch('http://localhost/search/tags', fetchData).then(res => res.json())
 }

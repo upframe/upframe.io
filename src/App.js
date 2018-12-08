@@ -11,6 +11,9 @@ import Settings from './screens/Settings'
 import ChangeEmail from './screens/ChangeEmail'
 import ResetPassword from './screens/ResetPassword'
 
+import People from './screens/People'
+import Meetup from './screens/Meetup'
+import Company from './screens/Company'
 import DevPlayground from './screens/DevPlayground'
 
 import * as Cookies from './utils/Cookies'
@@ -41,6 +44,12 @@ export default class App extends Component {
     })
   }
 
+  setLoggedInState = (newState) => {
+    this.setState({
+      loggedIn: newState
+    })
+  }
+
   LoginScreen = () => {
     return (
       <Login loggedIn={this.state.loggedIn} setLoggedInState={this.setLoggedInState} />
@@ -51,12 +60,6 @@ export default class App extends Component {
     return (
       <Settings loggedIn={this.state.loggedIn} />
     )
-  }
-
-  setLoggedInState = (newState) => {
-    this.setState({
-      loggedIn: newState
-    })
   }
 
   render() {
@@ -73,11 +76,22 @@ export default class App extends Component {
 
             <Route exact path='/changemyemail*' component={ChangeEmail} />
             <Route exact path='/resetmypassword*' component={ResetPassword} />
+            <Route exact path='/meetup*' component={Meetup} />
+            <Route exact path='/people*' component={People} />
+            <Route exact path='/company*' component={Company} />
 
             <Route exact path='/dev' component={DevPlayground} />
           </Switch>
         </div>
       </Router>
+        // / changemyemail ? token = "TOKEN" feito
+        //   / meetup / confirm ? meetup = "MID"
+        //     / resetmypassword ? token = "TOKEN" feito
+        //     / people / "expertise name"
+        //     / people / "company"
+        //     / people / "keycode"
+        //     / people / "keycode"
+        //     / company / "company"
     );
   }
 }
