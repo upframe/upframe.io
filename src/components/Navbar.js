@@ -14,18 +14,26 @@ export default class Navbar extends Component {
   render() {
     if (this.props.loggedIn) {
       return (
-        <div>
-          <h1>Sou uma navbar</h1>
-          <Link to='/settings'>Settings</Link>
-          <button onClick={this.logout}>Logout</button>
-        </div>
+        <nav>
+          <div className="wrapper flex justify-center items-center">
+            <img className="logo" src="/logo.svg" alt=""></img>
+            <ul>
+              <li><Link to='/settings'>Settings</Link></li>
+              <li><button onClick={this.logout}></button></li>
+            </ul>
+          </div>
+        </nav>
       )
     } else {
       return (
-        <div>
-          <h1>Sou uma navbar</h1>
-          {window.location.pathname === '/login' ? null : <Link to='/login'>Login</Link>}
-        </div>
+        <nav>
+          <div className="wrapper flex justify-center items-center">
+            <img className="logo" src="/logo.svg" alt=""></img>
+            <ul>
+              {window.location.pathname === '/login' ? null : <li><Link to='/login'>Login</Link></li> }
+            </ul>
+          </div>
+        </nav>
       )
     }
   }
