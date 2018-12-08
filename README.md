@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/upframe/connect.svg?branch=master)](https://travis-ci.org/upframe/connect)
+[![Build Status](https://travis-ci.com/upframe/connect.svg?branch=master)](https://travis-ci.com/upframe/connect)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5b6e96c455814101aa74c017ee1b173f)](https://www.codacy.com/app/Upframe/connect?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=upframe/connect&amp;utm_campaign=Badge_Grade)
 
 # 🦄 Connect
