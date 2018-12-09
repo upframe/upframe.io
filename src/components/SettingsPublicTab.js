@@ -147,7 +147,7 @@ export default class SettingsPublicTab extends Component {
   }
 
   handleAddTag = (tag) => {
-    this.setState(state => ({ tags: [...state.tags, tag] }))
+    this.setState((state) => ({ tags: [...state.tags, tag] }))
   }
 
   handleDragTag = (tag, currPos, newPos) => {
