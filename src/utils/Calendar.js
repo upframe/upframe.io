@@ -156,9 +156,9 @@ export class CalendarService extends Component {
   }
 
   async getCalendarEvents (calendarList) {
-    let checkedCalendars = calendarList.filter(calendar => calendar.checked ? calendar : null)
-    let calendarIds = checkedCalendars.map(calendar => calendar.id)
-    let calendarPromises = calendarIds.map(calendarId => this.calendarEvents(calendarId))
+    let checkedCalendars = calendarList.filter((calendar) => calendar.checked ? calendar : null)
+    let calendarIds = checkedCalendars.map((calendar) => calendar.id)
+    let calendarPromises = calendarIds.map((calendarId) => this.calendarEvents(calendarId))
     let eventsPromise = Promise.all(calendarPromises).then((done) => {
       let allEvents = []
       done.map(eachRequest => {
@@ -167,7 +167,7 @@ export class CalendarService extends Component {
       })
       return allEvents
     })
-      .then(final => {
+      .then((final) => {
         return final.map(element => this.convertEvents(element))
       })
     return eventsPromise
@@ -182,8 +182,8 @@ export class CalendarService extends Component {
         method: 'GET',
         mode: 'cors',
         headers: customHeaders
-      }).then(response => response.json())
-      .then(data => {
+      }).then((response) => response.json())
+      .then((data) => {
         return data
       })
   }

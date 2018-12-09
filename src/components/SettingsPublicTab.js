@@ -116,7 +116,7 @@ export default class SettingsPublicTab extends Component {
     //https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png
     Api.updateUserInfo({
       profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png'
-    }).then(res => {
+    }).then((res) => {
       if (res.ok === 1) {
         alert('Set picture to default')
         this.setState({
@@ -130,7 +130,7 @@ export default class SettingsPublicTab extends Component {
   }
 
   saveChanges = () => {
-    Api.updateUserInfo(this.state).then(res => {
+    Api.updateUserInfo(this.state).then((res) => {
       if (res.ok === 1) {
         alert('Information saved!')
       } else {

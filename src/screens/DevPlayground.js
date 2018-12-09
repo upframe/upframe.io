@@ -101,7 +101,7 @@ export default class DevPLayground extends Component {
   patchMeProfile = () => {
     Api.updateUserInfo({
       name: 'Info to update'
-    }).then(res => {
+    }).then((res) => {
       console.log(res)
     })
   }

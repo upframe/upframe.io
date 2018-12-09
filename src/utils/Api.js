@@ -1,8 +1,5 @@
 export function login (email, password) {
-  let fetchBody = {
-    email: email,
-    password: password
-  }
+  let fetchBody = {email, password}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -15,11 +12,7 @@ export function login (email, password) {
 }
 
 export function register (email, password, name) {
-  let fetchBody = {
-    email: email,
-    password: password,
-    name: name
-  }
+  let fetchBody = {email, password, name}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -32,9 +25,7 @@ export function register (email, password, name) {
 }
 
 export function resetPassword(email) {
-  let resetInfo = {
-    email: email
-  }
+  let resetInfo = {email}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -47,9 +38,7 @@ export function resetPassword(email) {
 }
 
 export function changeEmail(email) {
-  let resetInfo = {
-    email: email
-  }
+  let resetInfo = {email}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -62,10 +51,7 @@ export function changeEmail(email) {
 }
 
 export function resetPasswordWithToken(token, password) {
-  let resetInfo = {
-    token: token,
-    password: password
-  }
+  let resetInfo = {token, password}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -78,10 +64,7 @@ export function resetPasswordWithToken(token, password) {
 }
 
 export function changeEmailWithToken(token, email) {
-  let resetInfo = {
-    email: email,
-    token: token
-  }
+  let resetInfo = {email, token}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -138,11 +121,7 @@ export function getMentorInfo(keycode) {
 }
 
 export function createMeetup (location, start, mentorKeycode) {
-  let fetchBody = {
-    location: location,
-    start: start,
-    mentorKeycode: mentorKeycode
-  }
+  let fetchBody = {location, start, mentorKeycode}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
