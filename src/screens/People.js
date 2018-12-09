@@ -29,7 +29,7 @@ export default class People extends Component {
     let keycode = window.location.pathname.split('/')[2]
     Api.getMentorInfo(keycode).then((res) => {
       console.log(res)
-      if (res.ok === 1) { //Mudas para 0
+      if (res.ok === 0) {
         this.setState({
           mentorExists: 0
         })
