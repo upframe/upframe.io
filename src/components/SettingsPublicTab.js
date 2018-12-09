@@ -50,7 +50,7 @@ export default class SettingsPublicTab extends Component {
 
   componentDidMount() {
     //Vamos buscar a info e dar load da mesma
-    Api.getUserInfo().then(res => {
+    Api.getUserInfo().then((res) => {
       console.log(res)
       if (res.ok === 1) {
         let newState = {
@@ -81,7 +81,7 @@ export default class SettingsPublicTab extends Component {
     })
   }
 
-  handleNameChange = (event) => {this.setState({ name : event.target.value})}
+  handleNameChange = (event) => { this.setState({ name : event.target.value })}
   handleLocationChange = (event) => { this.setState({ location: event.target.value })}
   handleRoleChange = (event) => { this.setState({ role: event.target.value }) }
   handleCompanyChange = (event) => { this.setState({ company: event.target.value })}
@@ -99,7 +99,7 @@ export default class SettingsPublicTab extends Component {
   }
   
   uploadPhoto = () => {
-    Api.uploadPhoto().then(res => {
+    Api.uploadPhoto().then((res) => {
       if (res.ok === 1) {
         //upload successful
         alert('File upload successful')

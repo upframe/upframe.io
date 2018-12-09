@@ -21,7 +21,7 @@ export default class ResetPassword extends Component {
   }
 
   changePassword = () => {
-    Api.resetPasswordWithToken(this.state.token, this.state.password).then(res => {
+    Api.resetPasswordWithToken(this.state.token, this.state.password).then((res) => {
       if (res.ok === 1) {
         alert('Password changed')
         return <Redirect to='/login' />

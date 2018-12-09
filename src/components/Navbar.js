@@ -12,7 +12,6 @@ export default class Navbar extends Component {
   }
 
   render() {
-    console.log(window.location.pathname )
     if (this.props.loggedIn) {
       return (
         <div>

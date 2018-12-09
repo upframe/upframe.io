@@ -60,7 +60,7 @@ export class CalendarService extends Component {
       body: 'grant_type=refresh_token&refresh_token=' + this.refToken
     })
       .then((res) => res.json())
-      .catch((err) => console.log('Error exchaging new access token', err))
+      .catch((err) => alert('Error exchaging new access token ' + err))
       .then((data) => {
         let tokens = {
           accessToken: data.access_token,
