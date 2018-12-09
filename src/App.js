@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
-//Our app is made of a Navbar + Screen
 import Main from './screens/Main';
 import Login from './screens/Login';
 import Mentor from './screens/Mentor';
@@ -10,6 +9,10 @@ import Onboarding from './screens/Onboarding';
 import Settings from './screens/Settings';
 import ChangeEmail from './screens/ChangeEmail';
 import ResetPassword from './screens/ResetPassword';
+import People from './screens/People';
+import Expertise from './screens/Expertise';
+import Meetup from './screens/Meetup';
+import Company from './screens/Company';
 
 import DevPlayground from './screens/DevPlayground';
 
@@ -72,6 +75,10 @@ export default class App extends Component {
 
             <Route exact path='/changemyemail*' component={ChangeEmail} />
             <Route exact path='/resetmypassword*' component={ResetPassword} />
+            <Route exact path='/meetup*' component={Meetup} />
+            <Route exact path='/people*' component={People} />
+            <Route exact path='/expertise*' component={Expertise} />
+            <Route exact path='/company*' component={Company} />
 
             <Route exact path='/dev' component={DevPlayground} />
           </Switch>
