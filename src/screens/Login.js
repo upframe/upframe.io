@@ -42,11 +42,11 @@ export default class Login extends Component {
           <div className='container flex justify-center'>
             <form className='flex flex-column'>
               <div className='field-group'>
-                <label for='email' className='light-gray'>Email</label>
+                <label htmlFor='email' className='light-gray'>Email</label>
                 <input type='email' name='email' onChange={this.handleEmailChange} onKeyUp={this.handleKeyUp} className='light-gray'/>
               </div>
               <div className='field-group'>
-                <label for='password' className='light-gray'>Password</label>
+                <label htmlFor='password' className='light-gray'>Password</label>
                 <input type='password' onChange={this.handlePasswordChange} onKeyUp={this.handleKeyUp} className='light-gray'/>
               </div>
               <button type='submit' className='btn btn-primary center' onClick={this.login}>Login</button>

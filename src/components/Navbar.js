@@ -12,29 +12,24 @@ export default class Navbar extends Component {
   }
 
   render() {
-    if (this.props.loggedIn) {
-      return (
-        <nav>
-          <div className="wrapper flex justify-center items-center">
-            <img className="logo" src="/logo.svg" alt=""></img>
+    return (
+      <nav>
+        <div className="wrapper flex justify-center items-center">
+          <Link to="/" className="logo">
+            <img src="/logo.svg" alt=""></img>
+          </Link>
+          {this.props.loggedIn ?
             <ul>
               <li><Link to='/settings'>Settings</Link></li>
               <li><button onClick={this.logout}></button></li>
             </ul>
-          </div>
-        </nav>
-      )
-    } else {
-      return (
-        <nav>
-          <div className="wrapper flex justify-center items-center">
-            <img className="logo" src="/logo.svg" alt=""></img>
+          :
             <ul>
               {window.location.pathname === '/login' ? null : <li><Link to='/login'>Login</Link></li> }
             </ul>
-          </div>
-        </nav>
-      )
-    }
+          }
+        </div>
+      </nav>
+    )
   }
 }
