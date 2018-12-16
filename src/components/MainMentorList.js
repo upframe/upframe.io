@@ -12,7 +12,7 @@ export default class MainMentorList extends Component {
   }
 
   componentDidMount () {
-    Api.getRandomMentors().then(res => {
+    Api.getRandomMentors().then((res) => {
       this.setState({
         mentors: res.mentor
       })
@@ -20,7 +20,7 @@ export default class MainMentorList extends Component {
   }
 
   mentorTagsToElement = (tags) => {
-    return tags.map(tag => {
+    return tags.map((tag) => {
       return (
         <li className='mentor-tags-list-element'>{tag}</li>
       )
@@ -50,7 +50,7 @@ export default class MainMentorList extends Component {
     if (this.state.mentors !== []) {
       return (
         <div>
-          {this.state.mentors.map(mentor => {
+          {this.state.mentors.map((mentor) => {
             return this.mentorToElement(mentor)
           })}
         </div>

@@ -14,86 +14,86 @@ export default class DevPLayground extends Component {
   }
 
   login = () => {
-    Api.login(this.state.input, this.state.input2).then(res => {
+    Api.login(this.state.input, this.state.input2).then((res) => {
       console.log(res)
     })
   }
 
   register = () => {
-    Api.register(this.state.input, this.state.input2, this.state.input2).then(res => {
+    Api.register(this.state.input, this.state.input2, this.state.input2).then((res) => {
       console.log(res)
     })
   }
 
   forgotPass = () => {
-    Api.resetPassword(this.state.input).then(res => {
+    Api.resetPassword(this.state.input).then((res) => {
       console.log(res)
     })
   }
 
   changeEmail = () => {
-    Api.changeEmail(this.state.input).then(res => {
+    Api.changeEmail(this.state.input).then((res) => {
       console.log(res)
     })
   }
 
   forgotPassTokenFinal = () => {
-    Api.resetPasswordWithToken(this.state.input, this.state.input2).then(res => {
+    Api.resetPasswordWithToken(this.state.input, this.state.input2).then((res) => {
       console.log(res)
     })
   }
 
   changeEmailTokenFinal = () => {
-    Api.changeEmailWithToken(this.state.input, this.state.input2).then(res => {
+    Api.changeEmailWithToken(this.state.input, this.state.input2).then((res) => {
       console.log(res)
     })
   }
 
   mentorVerify = () => {
-    Api.verifyKeycode(this.state.input).then(res => {
+    Api.verifyKeycode(this.state.input).then((res) => {
       console.log(this.state.input)
       console.log(res)
     })
   }
 
   mentorVerify2 = () => {
-    Api.verifyUniqueId(this.state.input).then(res => {
+    Api.verifyUniqueId(this.state.input).then((res) => {
       console.log(res)
     })
   }
 
   getRandomMentor = () => {
-    Api.getRandomMentors().then(res => {
+    Api.getRandomMentors().then((res) => {
       console.log(res)
     })
   }
 
   getMentorKeycode = () => {
-    Api.getMentorInfo(this.state.input).then(res => {
+    Api.getMentorInfo(this.state.input).then((res) => {
       console.log(res)
     })
   }
 
   postMeetup = () => {
-    Api.createMeetup(this.state.input, this.state.input2, this.state.input3).then(res => {
+    Api.createMeetup(this.state.input, this.state.input2, this.state.input3).then((res) => {
       console.log(res)
     })
   }
 
   getMeetup = () => {
-    Api.getMeetups().then(res => {
+    Api.getMeetups().then((res) => {
       console.log(res)
     })
   }
 
   getMeetupConfirm = () => {
-    Api.confirmMeetup(this.state.input).then(res => {
+    Api.confirmMeetup(this.state.input).then((res) => {
       console.log(res)
     })
   }
 
   getMeProfile = () => {
-    Api.getUserInfo().then(res => {
+    Api.getUserInfo().then((res) => {
       console.log(res)
     })
   }
@@ -101,7 +101,7 @@ export default class DevPLayground extends Component {
   patchMeProfile = () => {
     Api.updateUserInfo({
       name: 'Info to update'
-    }).then(res => {
+    }).then((res) => {
       console.log(res)
     })
   }
@@ -113,19 +113,19 @@ export default class DevPLayground extends Component {
   // }
 
   getQuickSeach = () => {
-    Api.searchQuick(this.state.input).then(res => {
+    Api.searchQuick(this.state.input).then((res) => {
       console.log(res)
     })
   }
 
   getFullSearch = () => {
-    Api.searchFull(this.state.input).then(res => {
+    Api.searchFull(this.state.input).then((res) => {
       console.log(res)
     })
   }
 
   getSearchTags = () => {
-    Api.getSearchTags().then(res => {
+    Api.getSearchTags().then((res) => {
       console.log(res)
     })
   }

@@ -1,8 +1,5 @@
 export function login (email, password) {
-  let fetchBody = {
-    email: email,
-    password: password
-  }
+  let fetchBody = {email, password}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -11,15 +8,11 @@ export function login (email, password) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/login', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/auth/login', fetchData).then((res) => res.json())
 }
 
 export function register (email, password, name) {
-  let fetchBody = {
-    email: email,
-    password: password,
-    name: name
-  }
+  let fetchBody = {email, password, name}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -28,13 +21,11 @@ export function register (email, password, name) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/register', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/auth/register', fetchData).then((res) => res.json())
 }
 
 export function resetPassword(email) {
-  let resetInfo = {
-    email: email
-  }
+  let resetInfo = {email}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -43,13 +34,11 @@ export function resetPassword(email) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/forgotmypassword', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/auth/forgotmypassword', fetchData).then((res) => res.json())
 }
 
 export function changeEmail(email) {
-  let resetInfo = {
-    email: email
-  }
+  let resetInfo = {email}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -58,14 +47,11 @@ export function changeEmail(email) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/changemyemail', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/auth/changemyemail', fetchData).then((res) => res.json())
 }
 
 export function resetPasswordWithToken(token, password) {
-  let resetInfo = {
-    token: token,
-    password: password
-  }
+  let resetInfo = {token, password}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -74,14 +60,11 @@ export function resetPasswordWithToken(token, password) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/forgotmypassword', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/auth/forgotmypassword', fetchData).then((res) => res.json())
 }
 
 export function changeEmailWithToken(token, email) {
-  let resetInfo = {
-    email: email,
-    token: token
-  }
+  let resetInfo = {email, token}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -90,7 +73,7 @@ export function changeEmailWithToken(token, email) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/auth/changemyemail', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/auth/changemyemail', fetchData).then((res) => res.json())
 }
 
 export function verifyKeycode (keycode) {
@@ -101,7 +84,7 @@ export function verifyKeycode (keycode) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`https://api.upframe.io/mentor/verify?keycode=${keycode}`, fetchData).then(res => res.json())
+  return fetch(`https://api.upframe.io/mentor/verify?keycode=${keycode}`, fetchData).then((res) => res.json())
 }
 
 export function verifyUniqueId(uniqueid) {
@@ -112,7 +95,7 @@ export function verifyUniqueId(uniqueid) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`https://api.upframe.io/mentor/verify?uniqueid=${uniqueid}`, fetchData).then(res => res.json())
+  return fetch(`https://api.upframe.io/mentor/verify?uniqueid=${uniqueid}`, fetchData).then((res) => res.json())
 }
 
 export function getRandomMentors() {
@@ -123,7 +106,7 @@ export function getRandomMentors() {
       'Content-Type': 'application/json',
     }
   }
-  return fetch('https://api.upframe.io/mentor/random', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/mentor/random', fetchData).then((res) => res.json())
 }
 
 export function getMentorInfo(keycode) {
@@ -134,15 +117,11 @@ export function getMentorInfo(keycode) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`https://api.upframe.io/mentor/${keycode}`, fetchData).then(res => res.json())
+  return fetch(`https://api.upframe.io/mentor/${keycode}`, fetchData).then((res) => res.json())
 }
 
 export function createMeetup (location, start, mentorKeycode) {
-  let fetchBody = {
-    location: location,
-    start: start,
-    mentorKeycode: mentorKeycode
-  }
+  let fetchBody = {location, start, mentorKeycode}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
@@ -152,7 +131,7 @@ export function createMeetup (location, start, mentorKeycode) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/meetup/', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/meetup/', fetchData).then((res) => res.json())
 }
 
 export function getMeetups() {
@@ -164,7 +143,7 @@ export function getMeetups() {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/meetup', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/meetup', fetchData).then((res) => res.json())
 }
 
 export function confirmMeetup(meetupId) {
@@ -176,7 +155,7 @@ export function confirmMeetup(meetupId) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch(`https://api.upframe.io/meetup/confirm?meetup=${meetupId}`, fetchData).then(res => res.json())
+  return fetch(`https://api.upframe.io/meetup/confirm?meetup=${meetupId}`, fetchData).then((res) => res.json())
 }
 
 export function getUserInfo () {
@@ -188,7 +167,7 @@ export function getUserInfo () {
       'Content-Type': 'application/json',
     }
   }
-  return fetch('https://api.upframe.io/profile/me', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/profile/me', fetchData).then((res) => res.json())
 }
 
 export function updateUserInfo (updateInfo) {
@@ -201,7 +180,7 @@ export function updateUserInfo (updateInfo) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch('https://api.upframe.io/profile/me', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/profile/me', fetchData).then((res) => res.json())
 }
 
 export function uploadPhoto () {
@@ -215,7 +194,7 @@ export function uploadPhoto () {
     credentials: 'include',
     mode: 'cors',
     body: data
-  }).then(res => res.json())
+  }).then((res) => res.json())
 }
 
 export function searchQuick(query) {
@@ -226,7 +205,7 @@ export function searchQuick(query) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`https://api.upframe.io/search/quick?term=${query}`, fetchData).then(res => res.json())
+  return fetch(`https://api.upframe.io/search/quick?term=${query}`, fetchData).then((res) => res.json())
 }
 
 export function searchFull(query) {
@@ -237,7 +216,7 @@ export function searchFull(query) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`https://api.upframe.io/search/full?term=${query}`, fetchData).then(res => res.json())
+  return fetch(`https://api.upframe.io/search/full?term=${query}`, fetchData).then((res) => res.json())
 }
 
 export function getSearchTags() {
@@ -248,5 +227,5 @@ export function getSearchTags() {
       'Content-Type': 'application/json',
     }
   }
-  return fetch('https://api.upframe.io/search/tags', fetchData).then(res => res.json())
+  return fetch('https://api.upframe.io/search/tags', fetchData).then((res) => res.json())
 }

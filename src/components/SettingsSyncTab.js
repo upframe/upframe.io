@@ -14,7 +14,7 @@ export default class SettingsSyncTab extends Component {
   }
   
   componentDidMount() {
-    Api.getUserInfo().then(res => {
+    Api.getUserInfo().then((res) => {
       let newState = {
         googleAccessToken : res.user.googleAccessToken,
         googleRefreshToken : res.user.googleRefreshToken
@@ -24,7 +24,6 @@ export default class SettingsSyncTab extends Component {
   }
 
   googleResponse = (e) => {
-    console.log(e)
     if (e.error) {
       alert('Looks like the platform you are using is blocking trackers. Can you add an exception so that we can log you in using Google?')
     } else {

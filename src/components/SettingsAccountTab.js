@@ -12,7 +12,7 @@ export default class SettingsAccountTab extends Component {
   }
 
   componentDidMount() {
-    Api.getUserInfo().then(res => {
+    Api.getUserInfo().then((res) => {
       if (res.ok === 1) {
         let newState = {
           email: res.me.email
@@ -25,7 +25,7 @@ export default class SettingsAccountTab extends Component {
   }
 
   changeEmail = () => {
-    Api.changeEmail(this.state.email).then(res =>{
+    Api.changeEmail(this.state.email).then((res) => {
       if (res.ok === 1) {
         alert('An email has been sent to you')
       }
@@ -33,7 +33,7 @@ export default class SettingsAccountTab extends Component {
   }
 
   changePassword = () => {
-    Api.resetPassword(this.state.email).then(res => {
+    Api.resetPassword(this.state.email).then((res) => {
       if (res.ok === 1) {
         alert('An email has been sent to you')
       }

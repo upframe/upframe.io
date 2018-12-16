@@ -32,11 +32,11 @@ export class CalendarService extends Component {
         'Content-Type': 'application/json'
       }
     })
-      .then(res => res.json())
-      .catch(err => {
-        console.log('Error fetching token', err)
+      .then((res) => res.json())
+      .catch((err) => {
+        alert('Error fetching token ' + err)
       })
-      .then(data => {
+      .then((data) => {
         if (data.code === 4) {
           return false
         }
@@ -59,9 +59,9 @@ export class CalendarService extends Component {
       },
       body: 'grant_type=refresh_token&refresh_token=' + this.refToken
     })
-      .then(res => res.json())
-      .catch(err => console.log('Error exchaging new access token', err))
-      .then(data => {
+      .then((res) => res.json())
+      .catch((err) => alert('Error exchaging new access token ' + err))
+      .then((data) => {
         let tokens = {
           accessToken: data.access_token,
           refToken: data.refresh_token,
@@ -99,8 +99,8 @@ export class CalendarService extends Component {
       },
       body: JSON.stringify(reqBody)
     })
-      .then(res => res.json())
-      .catch(err => console.log('Error saving token', err))
+      .then((res) => res.json())
+      .catch((err) => console.log('Error saving token', err))
   }
 
   /**
@@ -111,11 +111,11 @@ export class CalendarService extends Component {
       method: 'GET',
       mode: 'cors'
     })
-      .then(res => res.json())
-      .catch(err => {
+      .then((res) => res.json())
+      .catch((err) => {
         console.log('Error:', err)
       })
-      .then(data => {
+      .then((data) => {
         this.accessToken = data.access_token
         this.refToken = data.refresh_token
         this.expiration = data.expiration
@@ -128,7 +128,7 @@ export class CalendarService extends Component {
    *
    */
   getCalendarList (token = '') {
-    if (token === '') token = this.accessToken
+    if (token === '') { token = this.accessToken }
     let customHeaders = new Headers()
     customHeaders.append('Authorization', 'Bearer ' + token)
     return (fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList',
@@ -138,11 +138,11 @@ export class CalendarService extends Component {
         headers: customHeaders
       }
     )
-      .then(res => res.json())
-      .then(list => {
+      .then((res) => res.json())
+      .then((list) => {
         let output = []
-        list.items.map(element => {
-          if (element.summary === 'Upframe Connect') this.calendarID = element.id
+        list.items.map((element) => {
+          if (element.summary === 'Upframe Connect') { this.calendarID = element.id }
           output.push({
             id: element.id,
             name: element.summary,
@@ -156,19 +156,19 @@ export class CalendarService extends Component {
   }
 
   async getCalendarEvents (calendarList) {
-    let checkedCalendars = calendarList.filter(calendar => calendar.checked ? calendar : null)
-    let calendarIds = checkedCalendars.map(calendar => calendar.id)
-    let calendarPromises = calendarIds.map(calendarId => this.calendarEvents(calendarId))
+    let checkedCalendars = calendarList.filter((calendar) => calendar.checked ? calendar : null)
+    let calendarIds = checkedCalendars.map((calendar) => calendar.id)
+    let calendarPromises = calendarIds.map((calendarId) => this.calendarEvents(calendarId))
     let eventsPromise = Promise.all(calendarPromises).then((done) => {
       let allEvents = []
-      done.map(eachRequest => {
+      done.map((eachRequest) => {
         allEvents = allEvents.concat(eachRequest.items)
         return 0
       })
       return allEvents
     })
-      .then(final => {
-        return final.map(element => this.convertEvents(element))
+      .then((final) => {
+        return final.map((element) => this.convertEvents(element))
       })
     return eventsPromise
   }
@@ -182,8 +182,8 @@ export class CalendarService extends Component {
         method: 'GET',
         mode: 'cors',
         headers: customHeaders
-      }).then(response => response.json())
-      .then(data => {
+      }).then((response) => response.json())
+      .then((data) => {
         return data
       })
   }
@@ -246,8 +246,8 @@ export class CalendarService extends Component {
         },
         body: JSON.stringify(eventBody)
       })
-        .then(res => res.json())
-        .then(data => {
+        .then((res) => res.json())
+        .then((data) => {
           if (data.status === 'confirmed') {
             console.log('Added a slot')
           }

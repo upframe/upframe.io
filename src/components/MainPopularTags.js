@@ -12,7 +12,7 @@ export default class MainSearchBar extends Component {
   }
 
   componentDidMount() {
-    Api.getSearchTags().then(res => {
+    Api.getSearchTags().then((res) => {
       this.setState({
         tags : res
       })
@@ -23,7 +23,7 @@ export default class MainSearchBar extends Component {
     if (this.state.tags !== []) {
       return (
         <div>
-          {this.state.tags.map(tag => {
+          {this.state.tags.map((tag) => {
             return (<div><Link to={'/search/' + tag}>
               {tag}
             </Link></div>)

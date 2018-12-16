@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/ulissesferreira/connect.svg?token=xmikXYDzu8Ho8PZicgqF&branch=master)](https://travis-ci.com/ulissesferreira/connect)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/086688c42a6e4c268b0a4c559790e5a8)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ulissesferreira/connect&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/upframe/connect.svg?branch=master)](https://travis-ci.org/upframe/connect)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5b6e96c455814101aa74c017ee1b173f)](https://www.codacy.com/app/Upframe/connect?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=upframe/connect&amp;utm_campaign=Badge_Grade)
 
 # 🦄 Connect
 
@@ -25,7 +25,7 @@ yarn start
 
 Inside the source folder there are three folders. The first folder, components, consists of all the individual components we use throughout the app. We try to keep our code as DRY as possible so these should be easily recyclable. The second folder, screens, is a collection of all the possible views the user has throughout the app. Since this is a single page application they are the closest thing to "different pages". Finally, the utils folder, consists of code that can be abstracted as independent libraries.
 
-We try to stay in line with most of these rules: https://github.com/airbnb/javascript/tree/master/react#naming
+We try to stay in line with most of these rules: \[https://github.com/airbnb/javascript/tree/master/react#naming]
 
 # License
 

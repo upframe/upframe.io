@@ -21,7 +21,7 @@ export default class ChangeEmail extends Component {
   }
 
   changeEmail = () => {
-    Api.changeEmailWithToken(this.state.token, this.state.email).then(res => {
+    Api.changeEmailWithToken(this.state.token, this.state.email).then((res) => {
       if (res.ok === 1) {
         return <Redirect to='/login' />
       } else {
