@@ -129,6 +129,10 @@ input[type="password"] {
 /* * * * * * * * *
  * CONTAINERS
  * * * * * * * * */
+.App main {
+    padding-top: 2rem;
+}
+
 .container {
     width: 75rem;
     max-width: 90%;
@@ -142,8 +146,10 @@ input[type="password"] {
 /* * * * * * * * *
  * LOGO
  * * * * * * * * */
-.logo img {
+img.logo {
     max-height: 2.5rem;
+    width: 10rem;
+    max-width: 10rem;
     object-fit: contain;
 }
 
@@ -162,8 +168,14 @@ nav .wrapper {
     margin: 0 auto;
 }
 
-nav .wrapper .logo {
-    flex-basis: 100%;
+nav .wrapper a#logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+nav .wrapper ul {
+    margin-left: auto;
 }
 
 code {
