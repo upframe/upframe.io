@@ -8,8 +8,8 @@ import MainSideAd from '../components/MainSideAd'
 export default class Main extends Component {
   render() {
     return (
-      <main>
-        <div className="container">
+      <main id="home">
+        <div className="container grid">
           <MainSearchBar />
           <MainPopularTags />
           <MainMentorList />

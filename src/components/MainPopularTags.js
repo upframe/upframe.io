@@ -22,12 +22,17 @@ export default class MainSearchBar extends Component {
   render() {
     if (this.state.tags !== []) {
       return (
-        <div>
-          {this.state.tags.map((tag) => {
-            return (<div><Link to={'/search/' + tag}>
-              {tag}
-            </Link></div>)
-          })}
+        <div class="popular-tags">
+          <h2 className="normal">Popular Tags</h2>
+          <div>
+            {this.state.tags.map((tag) => {
+              return (
+                <Link to={'/search/' + tag} className="tag-item">
+                  {tag}
+                </Link>
+              )
+            })}
+          </div>
         </div>
       )
     } else {

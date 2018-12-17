@@ -8,8 +8,15 @@ body {
 
 :root {
   --primary: #ff004b;
+  
   --primarytext: #fff;
+
   --light-gray: #c2c5ca;
+
+  --border-lightghray: #d0d2d6;
+
+  --slate: #708090;
+  --darkgray: #303030;
 }
 
 /* * * * * * * * *
@@ -21,6 +28,11 @@ a:hover,
 a:visited {
   color: black;
   text-decoration: none;
+  display: block;
+}
+
+a.link {
+  display: unset;
 }
 
 p.light-gray,
@@ -30,15 +42,24 @@ h3.light-gray,
 h4.light-gray,
 h5.light-gray,
 h6.light-gray,
-label.light-gray,
-input.light-gray {
+label.light-gray {
   color: var(--light-gray);
 }
 
-/* * * * * * * * *
- * FLEXBOX
- * * * * * * * * */
 
+.light {
+  font-weight: 300;
+}
+
+.normal {
+  font-weight: 400;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+/* FLEXBOX */
 .flex {
   display: flex;
 }
@@ -63,27 +84,23 @@ input.light-gray {
   align-self: center;
 }
 
-/* * * * * * * * *
- * LIST
- * * * * * * * * */
+/* GRID */
+.grid {
+  display: grid;
+}
 
+/* LIST */
 ul {
   list-style: none;
   padding: 0;
 }
 
-/* * * * * * * * *
- * ALIGNING
- * * * * * * * * */
-
+/* ALIGNING */
 .center {
   margin: 0 auto;
 }
 
-/* * * * * * * * *
- * INPUTS
- * * * * * * * * */
-
+/* INPUTS */
 label {
   display: block;
   margin: 0.25rem 0;
@@ -93,6 +110,7 @@ input {
   font-size: 2rem;
   border-radius: 0.125rem;
   outline: none;
+  color: black;
 }
 
 input[type="text"],
@@ -105,10 +123,12 @@ input[type="password"] {
   outline: none;
 }
 
-/* * * * * * * * *
- * BUTTONS
- * * * * * * * * */
+/* FILE INPUT */
+input[type="file"] {
+  display: none;
+}
 
+/* BUTTONS */
 .btn {
   font-size: 1rem;
   font-weight: 700;
@@ -129,10 +149,7 @@ input[type="password"] {
   border: none;
 }
 
-/* * * * * * * * *
- * CONTAINERS
- * * * * * * * * */
-
+/* CONTAINERS */
 .App main {
   padding-top: 2rem;
 }
@@ -147,21 +164,25 @@ input[type="password"] {
   margin: 1rem 0;
 }
 
-/* * * * * * * * *
- * LOGO
- * * * * * * * * */
+/* CARDS */
+.card {
+  padding: 1rem;
+  border: 1px solid var(--border-lightghray);
+  border-radius: 0.25rem;
+}
 
+/* LOGO AND IMAGES */
 img.logo {
   max-height: 2.5rem;
   width: 10rem;
   max-width: 10rem;
+}
+
+img {
   object-fit: contain;
 }
 
-/* * * * * * * * *
- * NAVBAR
- * * * * * * * * */
-
+/* NAVBAR */
 nav {
   height: 4rem;
   border-bottom: 1px solid var(--light-gray);
@@ -184,29 +205,89 @@ nav .wrapper ul {
   margin-left: auto;
 }
 
+/* CODE SECTION */
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-input[type="file"] {
-  display: none;
+/* POPULAR TAGS */
+.popular-tags h2 {
+  color: var(--darkgray);
+  margin: 0 0 1rem 0;
 }
 
-/* Tags */
+.popular-tags div {
+  display: flex;
+  flex-wrap: wrap;
+}
 
+.popular-tags .tag-item {
+  display: block;
+  color: var(--darkgray);
+  padding: 1rem;
+  border: 1px solid var(--border-lightghray);
+  border-radius: .25rem;
+}
+
+.popular-tags .tag-item:not(:last-of-type) {
+  margin-right: 1.5rem;
+}
+
+/* HOME PAGE */
+#home .container.grid {
+  grid-row-gap: 3rem;
+}
+
+#home .mentor-list > a {
+  display: block;
+  border: 1px solid var(--border-lightghray);
+  border-radius: 0.25rem;
+  margin-bottom: 2rem;
+}
+
+#home .mentor-list img {
+  object-fit: contain;
+  max-width: 12.5rem;
+  max-height: 12.5rem;
+}
+
+.mentor-card-info {
+  margin-left: 2rem;
+  padding: 1.5rem 1.5rem 1.5rem 0;
+  flex-basis: 100%;
+}
+
+.mentor-card-info h1,
+.mentor-card-info p {
+  margin: 0;
+}
+
+.mentor-card-info p {
+  color: #606060;
+}
+
+.mentor-card-info a {
+  display: unset;
+}
+
+.mentor-card-info p:nth-of-type(2) {
+  margin-top: 1rem;
+}
+
+
+/* Tags */
+/*
 div.ReactTags__tags {
   position: relative;
   margin-top: 1em;
 }
 
-/* Styles for the input */
-
-/*
 div.ReactTags__tagInput {
     width: 200px;
     border-radius: 2px;
     display: inline-block;
 }
+
 div.ReactTags__tagInput input.ReactTags__tagInputField,
 div.ReactTags__tagInput input.ReactTags__tagInputField:focus {
     height: 31px;
@@ -216,9 +297,6 @@ div.ReactTags__tagInput input.ReactTags__tagInputField:focus {
     border: 1px solid #eee;
     padding: 0 4px;
 }
-*/
-
-/* Styles for selected tags */
 
 div.ReactTags__selected span.ReactTags__tag {
   border: 1px solid #ddd;
@@ -236,8 +314,6 @@ div.ReactTags__selected a.ReactTags__remove {
   margin-left: 5px;
   cursor: pointer;
 }
-
-/* Styles for suggestions */
 
 div.ReactTags__suggestions {
   position: absolute;
@@ -266,7 +342,4 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   background: #b7cfe0;
   cursor: pointer;
 }
-
-.mentor-cards {
-  border-style: solid;
-}
+*/

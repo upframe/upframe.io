@@ -30,17 +30,16 @@ export default class MainMentorList extends Component {
   mentorToElement = (mentor) => {
     return (
       <Link to={'/people/' + mentor.keycode}>
-        <div className='mentor-card'>
+        <div className='flex'>
           <img className='mentor-card-image' src={mentor.profilePic} alt={mentor.name}/>
           <div className='mentor-card-info'>
-            <p><strong>{mentor.name}</strong></p>
+            <h1>{mentor.name}</h1>
             <p>{mentor.role} @ <Link to={'/companies/' + mentor.company}>{mentor.company}</Link></p>
             <p>{mentor.bio}</p>
           </div>
           {/*DEBUG for now <ul className='mentor-card-tags'>
             {this.mentorTagsToElement(mentor.tags)}
           </ul> */}
-          <p>{mentor.tags}</p>
         </div>
       </Link>
     )
@@ -49,7 +48,7 @@ export default class MainMentorList extends Component {
   render () { // For each mentor...
     if (this.state.mentors !== []) {
       return (
-        <div>
+        <div className="mentor-list">
           {this.state.mentors.map((mentor) => {
             return this.mentorToElement(mentor)
           })}
