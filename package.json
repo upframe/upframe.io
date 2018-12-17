@@ -26,5 +26,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "stylelint": "^9.9.0"
+  }
 }

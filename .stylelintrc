@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "selector-list-comma-newline-after": "always",
+    "declaration-block-trailing-semicolon": "always",
+    "indentation": 2,
+    "no-missing-end-of-source-newline": false
+  }
+}
