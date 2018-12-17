@@ -1,6 +1,6 @@
 let host = process.env.REACT_APP_APIHOST,
   port = process.env.REACT_APP_APIPORT,
-  schema = process.env.REACT_APP_SECURE ? 'https' : 'http'
+  schema = process.env.REACT_APP_APISCHEMA
 
 if(process.env.REACT_APP_ENV === 'dev') {
   console.log(`Using API at ${host} on port ${port} via a${schema === 'https' ? ' secure': 'n insecure'} connection.`)
