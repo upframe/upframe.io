@@ -16,12 +16,23 @@ body {
  * TEXT
  * * * * * * * * */
 
-a, a:active, a:hover, a:visited {
+a,
+a:active,
+a:hover,
+a:visited {
   color: black;
   text-decoration: none;
 }
 
-p.light-gray, h1.light-gray, h2.light-gray, h3.light-gray, h4.light-gray, h5.light-gray, h6.light-gray, label.light-gray, input.light-gray {
+p.light-gray,
+h1.light-gray,
+h2.light-gray,
+h3.light-gray,
+h4.light-gray,
+h5.light-gray,
+h6.light-gray,
+label.light-gray,
+input.light-gray {
   color: var(--light-gray);
 }
 
@@ -85,7 +96,9 @@ input {
   outline: none;
 }
 
-input[type="text"], input[type="email"], input[type="password"] {
+input[type="text"],
+ input[type="email"],
+ input[type="password"] {
   font-size: 1.5rem;
   padding: 0.5rem;
   border: 1px solid var(--light-gray);
