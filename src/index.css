@@ -45,7 +45,7 @@ input.light-gray {
 }
 
 .flex.flex-column {
-  flex-direction: column
+  flex-direction: column;
 }
 
 .flex.justify-center {
@@ -97,8 +97,8 @@ input {
 }
 
 input[type="text"],
- input[type="email"],
- input[type="password"] {
+input[type="email"],
+input[type="password"] {
   font-size: 1.5rem;
   padding: 0.5rem;
   border: 1px solid var(--light-gray);
