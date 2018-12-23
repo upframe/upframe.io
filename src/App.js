@@ -13,6 +13,7 @@ import People from './screens/People';
 import Expertise from './screens/Expertise';
 import Meetup from './screens/Meetup';
 import Company from './screens/Company';
+import ErrorPage from './screens/404';
 
 import DevPlayground from './screens/DevPlayground';
 
@@ -70,8 +71,9 @@ export default class App extends Component {
             <Route exact path='/' component={Main} />
             <Route exact path='/login' component={this.LoginScreen} />
             <Route exact path='/mentor' component={Mentor} />
-            <Route exact path='/onboarding' component={Onboarding} />
+            
             <Route exact path='/settings' component={this.SettingsScreen} />
+            <Route exact path='/404' component={ErrorPage} />
 
             <Route exact path='/changemyemail*' component={ChangeEmail} />
             <Route exact path='/resetmypassword*' component={ResetPassword} />
@@ -81,6 +83,8 @@ export default class App extends Component {
             <Route exact path='/company*' component={Company} />
 
             <Route exact path='/dev' component={DevPlayground} />
+
+            <Route exact path='/:keycode' component={Onboarding} />
           </Switch>
         </div>
       </Router>
