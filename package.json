@@ -5,7 +5,7 @@
   "dependencies": {
     "moment": "^2.22.2",
     "react": "^16.5.2",
-    "react-big-calendar": "^0.20.1",
+    "react-big-calendar": "^0.20.2",
     "react-confetti": "^2.3.0",
     "react-dom": "^16.5.2",
     "react-google-login": "^3.2.1",

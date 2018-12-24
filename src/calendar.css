@@ -1,0 +1,16 @@
+.rbc-event {
+  background-color: #ff004b;
+}
+
+.rbc-day-slot .rbc-event {
+  border: 1px solid #ff004b;
+}
+
+.rbc-event.rbc-selected {
+  border: 1px solid #1B1C3F;
+  background-color: #1B1C3F;
+}
+
+.rbc-month-view {
+  height: 100vh;
+}
