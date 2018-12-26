@@ -16,6 +16,7 @@ import Company from './screens/Company';
 import ErrorPage from './screens/404';
 
 import DevPlayground from './screens/DevPlayground';
+import Sync from './components/SettingsSyncTab';
 
 import * as Cookies from './utils/Cookies';
 import * as Api from './utils/Api';
@@ -83,6 +84,7 @@ export default class App extends Component {
             <Route exact path='/company*' component={Company} />
 
             <Route exact path='/dev' component={DevPlayground} />
+            <Route exact path='/dev2' component={Sync} />
 
             <Route exact path='/:keycode' component={Onboarding} />
           </Switch>

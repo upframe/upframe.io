@@ -4,6 +4,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import moment from 'moment';
 import BigCalendar from 'react-big-calendar';
 import '../calendar.css';
+import * as Api from '../utils/Api';
 
 // import * as Api from '../utils/Api'
 // import * as Calendar from '../utils/Calendar'
@@ -16,10 +17,20 @@ export default class SettingsSyncTab extends Component {
     super(props)
     this.state = {
       googleAccessToken: '',
-      calendars: [],
-      events: []
+      calendars: [{
+        summary: '',
+        id: '',
+        checked: false
+      }],
+      events: [],
+      currId: 0
     }
-    console.log(this.state.events)
+  }
+
+  componentDidMount() {
+    Api.getUserInfo().then((res) => {
+      console.log(res)
+    })
   }
 
   googleSyncSuccess = (e) => {
@@ -27,7 +38,10 @@ export default class SettingsSyncTab extends Component {
     this.getCalendarList(e.accessToken).then((res) => {
       //temos em res.item
       //Queremos em cada res.item ir buscar os eventos de cada calendario
-      let newCalendarsList = res.items.map((element) => {
+      console.log(res)
+      let newCalendarsList = res.items.filter((element) => {
+        return !element.id.includes('#holiday@group.v.calendar.google.com')
+      }).map((element) => {
         return {
           id: element.id,
           summary: element.summary,
@@ -45,20 +59,8 @@ export default class SettingsSyncTab extends Component {
     alert('Looks like the platform you are using is blocking trackers. Can you add an exception so that we can log you in using Google?')
   }
 
-  renderCalendarCheckboxes = (calendars) => {
-    calendars.map((element) => {
-      return (
-        <div>
-          <p>{element.id}</p>
-          <p>{element.summary}</p>
-        </div>
-      )
-    })
-  }
-
   calendarVisibilityChange = (event) => {
     let newCalendars = this.state.calendars
-
     newCalendars = this.state.calendars.map((element) => {
       return {
         id: element.id,
@@ -66,9 +68,7 @@ export default class SettingsSyncTab extends Component {
         checked: event.target.id === element.id ? event.target.checked : element.checked
       }
     })
-
     this.getCalendarEvents(newCalendars).then(data => {
-      console.log(data)
       this.setState({
         calendars: newCalendars,
         events: data
@@ -77,14 +77,31 @@ export default class SettingsSyncTab extends Component {
   }
 
   deleteFreeSlot = (event) => {
-
+    if (event.title === 'Upframe Free Slot' && event.tag === 'upframe-free-slot') {
+      let listOfEvents = this.state.events
+      this.setState({
+        events: listOfEvents.filter(singleEvent => singleEvent.id !== event.id)
+      })
+    }
   }
 
-  addFreeSlot = (event) => {
-
+  addFreeSlot = (slot) => {
+    let currentEvents = this.state.events
+    let currentId = this.state.currId
+    currentEvents.push({
+      id: currentId,
+      start: slot.start,
+      end: slot.end,
+      title: 'Upframe Free Slot',
+      tag: 'upframe-free-slot'
+    })
+    this.setState({
+      events: currentEvents,
+      currId: currentId + 1
+    })
   }
 
-  getCalendarList (token) {
+  getCalendarList = (token) => {
     let fetchData = {
       method: 'GET',
       mode: 'cors',
@@ -96,7 +113,7 @@ export default class SettingsSyncTab extends Component {
     return fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', fetchData).then((res) => res.json())
   }
 
-  async getCalendarEvents (calendarList) {
+  getCalendarEvents = (calendarList) => {
     let checkedCalendars = calendarList.filter((calendar) => calendar.checked ? calendar : null)
     let calendarIds = checkedCalendars.map((calendar) => calendar.id)
     let calendarPromises = calendarIds.map((calendarId) => this.calendarEvents(calendarId))
@@ -118,14 +135,16 @@ export default class SettingsSyncTab extends Component {
   calendarEvents = (calendarId) => {
     let customHeaders = new Headers()
     let data = new Date()
+    let dataLimite = moment().add('days', 30)
     customHeaders.append('Authorization', 'Bearer ' + this.state.googleAccessToken)
-    return fetch('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events?maxResults=2500&timeMin=' + data.toISOString() + '&singleEvents=true',
+    return fetch('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events?maxResults=2500&timeMin=' + data.toISOString() + '&timeMax=' + dataLimite.toISOString() + '&singleEvents=true',
       {
         method: 'GET',
         mode: 'cors',
         headers: customHeaders
       }).then((response) => response.json())
       .then((data) => {
+        console.log(data)
         return data
       })
   }
@@ -184,8 +203,8 @@ export default class SettingsSyncTab extends Component {
             defaultDate={new Date()}
             defaultView='week'
             events={this.state.events}
-            // onSelectEvent={event => this.deleteFreeSlot(event)}
-            // onSelectSlot={slot => this.addFreeSlot(slot)}
+            onSelectEvent={event => this.deleteFreeSlot(event)}
+            onSelectSlot={slot => this.addFreeSlot(slot)}
           />
         </div>
       )

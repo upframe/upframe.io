@@ -276,7 +276,7 @@ code {
 
 
 /* Tags */
-/*
+
 div.ReactTags__tags {
   position: relative;
   margin-top: 1em;
@@ -342,4 +342,4 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   background: #b7cfe0;
   cursor: pointer;
 }
-*/
+
