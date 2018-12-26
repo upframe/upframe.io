@@ -23,6 +23,7 @@ export default class SettingsSyncTab extends Component {
         checked: false
       }],
       events: [],
+      freeSlots: [],
       currId: 0
     }
   }
@@ -38,16 +39,29 @@ export default class SettingsSyncTab extends Component {
     this.getCalendarList(e.accessToken).then((res) => {
       //temos em res.item
       //Queremos em cada res.item ir buscar os eventos de cada calendario
-      console.log(res)
+      let alreadyHasUpframeCalendar = false
+
       let newCalendarsList = res.items.filter((element) => {
-        return !element.id.includes('#holiday@group.v.calendar.google.com')
+        if (element.summary === 'Upframe Calendar') {
+          alreadyHasUpframeCalendar = true
+        }
+        return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.summary.includes('Upframe Calendar')
       }).map((element) => {
         return {
           id: element.id,
           summary: element.summary,
           checked: false
-        } 
+        }
       })
+      if (!alreadyHasUpframeCalendar) {
+        this.addUpframeCalendar(e.accessToken).then((res) => {
+          if (res.summary === 'Upframe Calendar') {
+            alert('Adicionamos um novo calendário ao qual vao estar associados os free slots')
+          } else {
+            alert('Não conseguimos adicionar um calendário novo. Mas os seus free slots são guardados na mesma :D')
+          }
+        })
+      }
       this.setState({
         googleAccessToken: e.accessToken,
         calendars: newCalendarsList
@@ -79,26 +93,45 @@ export default class SettingsSyncTab extends Component {
   deleteFreeSlot = (event) => {
     if (event.title === 'Upframe Free Slot' && event.tag === 'upframe-free-slot') {
       let listOfEvents = this.state.events
+      let listOfFreeSlots = this.state.freeSlots
       this.setState({
-        events: listOfEvents.filter(singleEvent => singleEvent.id !== event.id)
+        events: listOfEvents.filter(singleEvent => singleEvent.id !== event.id),
+        freeSlots: listOfFreeSlots.filter(freeSlot => freeSlot.id !== event.id)
       })
     }
   }
 
   addFreeSlot = (slot) => {
-    let currentEvents = this.state.events
-    let currentId = this.state.currId
-    currentEvents.push({
-      id: currentId,
-      start: slot.start,
-      end: slot.end,
-      title: 'Upframe Free Slot',
-      tag: 'upframe-free-slot'
-    })
-    this.setState({
-      events: currentEvents,
-      currId: currentId + 1
-    })
+    let today = new Date()
+    if (slot.start < today) {
+      alert('You can\'t add free slots in the past')
+    } else {
+      let currentEvents = this.state.events
+      let currentId = this.state.currId
+      currentEvents.push({
+        id: currentId,
+        start: slot.start,
+        end: slot.end,
+        title: 'Upframe Free Slot',
+        tag: 'upframe-free-slot'
+      })
+      //mantemos os free slots de parte
+      let newFreeSlots = this.state.freeSlots
+      newFreeSlots.push({
+        id: currentId,
+        start: slot.start,
+        end: slot.end,
+        title: 'Upframe Free Slot',
+        tag: 'upframe-free-slot'
+      })
+      this.setState({
+        events: currentEvents,
+        currId: currentId + 1,
+        freeSlots: newFreeSlots
+      }, () => {
+        Api.updateUserInfo({})
+      }) 
+    }
   }
 
   getCalendarList = (token) => {
@@ -167,6 +200,28 @@ export default class SettingsSyncTab extends Component {
     }
   }
 
+  addUpframeCalendar = (token) => {
+    let body = {
+      'summary': 'Upframe Calendar'
+    }
+    let fetchData = {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    }
+    return fetch('https://www.googleapis.com/calendar/v3/calendars', fetchData).then((res) => res.json())
+  }
+
+  saveFreeSlots = () => {
+    Api.addFreeSlots(this.state.freeSlots).then((res) => {
+      console.log(res)
+    })
+  }
+
   render() {
     //Ou temos token para ir buscar calendários ou nao temos
     if (this.state.googleAccessToken === '') {
@@ -196,6 +251,7 @@ export default class SettingsSyncTab extends Component {
               </div>
             )
           })}
+          <button onClick={this.saveFreeSlots}>Save slots</button>
           <BigCalendar
             localizer={localizer}
             showMultiDayTimes={true}

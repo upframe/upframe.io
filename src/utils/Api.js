@@ -237,3 +237,31 @@ export function getSearchTags() {
   }
   return fetch(`${schema}://${host}:${port}/search/tags`, fetchData).then((res) => res.json())
 }
+
+export function addFreeSlots(freeSlots) {
+  //Free slots vêem na forma
+  // id: currentId,
+  // start: slot.start,
+  // end: slot.end,
+  // title: 'Upframe Free Slot',
+  // tag: 'upframe-free-slot'
+  let updatedSlots = freeSlots.map((slot) => {
+    return {
+      start: slot.start,
+      end: slot.end
+    }
+  })
+  let body = {
+    'updated': updatedSlots
+  }
+  let fetchData = {
+    method: 'POST',
+    mode: 'cors',
+    credentials: 'include',
+    body: JSON.stringify(body),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  return fetch(`${schema}://${host}:${port}/mentor/slots`, fetchData).then((res) => res.json())
+}
