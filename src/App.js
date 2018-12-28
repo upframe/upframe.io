@@ -31,6 +31,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
+    Cookies.setItem('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbGlrQHVwZnJhbWUuaW8iLCJ1aWQiOiJjMGMwMjAyODMyMTVkYjk3Mzc3OTZhOGI5MjY4ZmNmNGMzYjc3ZmViIiwiaWF0IjoxNTQ2MDIxNzk2LCJleHAiOjE1NDczMTc3OTYsImF1ZCI6InVzZXIifQ.OKNJE4WNiWvXh9FAQb-j2avk0Rlbf3T0_gtl5i1gVy8', Infinity, '/', '.upframe.io', true)
     Api.getUserInfo().then((res) => {
       if (res.ok === 1) {
         this.setState({
