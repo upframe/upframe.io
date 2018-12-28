@@ -261,7 +261,7 @@ export function addFreeSlots(freeSlots) {
     return {
       start: slot.start,
       end: slot.end,
-      recurrency: 'weekly'
+      recurrency: 'UNIQUE'
     }
   })
   let body = {
@@ -288,5 +288,5 @@ export function getFreeSlots (start, end) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`${schema}://${host}:${port}/mentor/slots?start=${start}&?end=${end}`, fetchData).then((res) => res.json())
+  return fetch(`${schema}://${host}:${port}/mentor/slots`, fetchData).then((res) => res.json()) //?start=${start}&?end=${end}
 }

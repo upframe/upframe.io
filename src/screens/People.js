@@ -23,13 +23,18 @@ export default class People extends Component {
         twitter: 'Loading',
         uid: 'Loading',
         website: 'Loading',
-        tags: []
+        tags: [],
+        freeSlots: []
       }
     }
   }
 
   componentDidMount() {
     let keycode = window.location.pathname.split('/')[1]
+    Api.getFreeSlots().then((res) => {
+      console.log(res)
+      //res.slots()
+    })
     Api.getMentorInfo(keycode).then((res) => {
       console.log(res)
       if (res.message) {
