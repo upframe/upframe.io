@@ -24,7 +24,8 @@ export default class SettingsSyncTab extends Component {
       }],
       events: [],
       freeSlots: [],
-      currId: 0
+      currId: 0,
+      upframeCalendarId: ''
     }
   }
 
@@ -55,6 +56,7 @@ export default class SettingsSyncTab extends Component {
       })
       if (!alreadyHasUpframeCalendar) {
         this.addUpframeCalendar(e.accessToken).then((res) => {
+          console.log(res)
           if (res.summary === 'Upframe Calendar') {
             alert('Adicionamos um novo calendário ao qual vao estar associados os free slots')
           } else {
@@ -214,6 +216,7 @@ export default class SettingsSyncTab extends Component {
   }
 
   saveFreeSlots = () => {
+    console.log(this.state.freeSlots)
     Api.addFreeSlots(this.state.freeSlots).then((res) => {
       console.log(res)
     })
