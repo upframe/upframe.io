@@ -63,7 +63,7 @@ export default class People extends Component {
   mentorTagsToElement = (tags) => {
     return tags.map((tag) => {
       return (
-        <li className='mentor-tags-list-element'>{tag}</li>
+        <li className='mentor-tags-list-element'>{tag.text}</li>
       )
     })
   }
@@ -73,6 +73,7 @@ export default class People extends Component {
   }
 
   render() {
+    console.log(this.state.mentor.tags)
     if (this.state.mentorExists === 1) {
       return (
         <div>
