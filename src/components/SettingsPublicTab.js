@@ -211,7 +211,7 @@ export default class SettingsPublicTab extends Component {
           <p>Bio</p>
           <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio}/>
           <div>
-            https://connect.upframe.io/people/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode}/>
+            https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode}/>
           </div>
         </div>
         <div>
