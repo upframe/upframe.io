@@ -17,6 +17,7 @@ export default class Login extends Component {
   login = () => {
     Api.login(this.state.email, this.state.password)
       .then((res) => {
+        console.log(res)
         if (res.ok === 0) {
           alert('Login errado')
         } else {
