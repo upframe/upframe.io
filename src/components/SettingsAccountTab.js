@@ -15,7 +15,7 @@ export default class SettingsAccountTab extends Component {
     Api.getUserInfo().then((res) => {
       if (res.ok === 1) {
         let newState = {
-          email: res.me.email
+          email: res.user.email
         }
         this.setState(newState)
       } else {
