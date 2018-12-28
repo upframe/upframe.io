@@ -14,16 +14,16 @@ export default class Login extends Component {
     }
   }
 
-  login = () => {
+  login = (event) => {
+    event.preventDefault()
     Api.login(this.state.email, this.state.password)
       .then((res) => {
         console.log(res)
         if (res.ok === 0) {
           alert('Login errado')
         } else {
-          Cookies.setItem('access_token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbGlrQHVwZnJhbWUuaW8iLCJ1aWQiOiJjMGMwMjAyODMyMTVkYjk3Mzc3OTZhOGI5MjY4ZmNmNGMzYjc3ZmViIiwiaWF0IjoxNTQ2MDIxNzk2LCJleHAiOjE1NDczMTc3OTYsImF1ZCI6InVzZXIifQ.OKNJE4WNiWvXh9FAQb-j2avk0Rlbf3T0_gtl5i1gVy8', Infinity, '/', '.upframe.io', true).then((res) => {
-            this.props.setLoggedInState(true)
-          })
+          Cookies.setItem('access_token', res.token, Infinity, '/', '.upframe.io', true)
+          this.props.setLoggedInState(true)
           console.log(Cookies.getItem('access_token'))
         }
       })
