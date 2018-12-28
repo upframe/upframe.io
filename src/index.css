@@ -343,3 +343,27 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   cursor: pointer;
 }
 
+/* Tags */
+.mentor-tags-list-element {
+  cursor: pointer;
+  background: #eee;
+  border-radius: 3px 0 0 3px;
+  color: #999;
+  display: inline-block;
+  height: 26px;
+  line-height: 26px;
+  padding: 0px 20px 0 23px;
+  position: relative;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s
+}
+
+.mentor-tags-list {
+  list-style: none;
+  margin: 10px 0 0 0;
+  overflow: hidden;
+  padding: 0;
+}
+

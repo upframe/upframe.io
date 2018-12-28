@@ -60,6 +60,14 @@ export default class People extends Component {
     })
   }
 
+  mentorTagsToElement = (tags) => {
+    return tags.map((tag) => {
+      return (
+        <li className='mentor-tags-list-element'>{tag}</li>
+      )
+    })
+  }
+
   selectSlot = () => {
 
   }
@@ -72,7 +80,9 @@ export default class People extends Component {
           <p>{this.state.mentor.name}</p>
           <p>{this.state.mentor.role} at {this.state.mentor.company}</p>
           <p>{this.state.mentor.location}</p>
-          <p>Aqui ficam as tags</p>
+          <ul className='mentor-card-tags'>
+            {this.mentorTagsToElement(this.state.mentor.tags)}
+          </ul>
           <p>{this.state.mentor.bio}</p>
           <a href={'http://www.twitter.com/' + this.state.mentor.twitter}>Twitter</a><br />
           <a href={'http://www.linkedin.com/' + this.state.mentor.linkedin}>LinkedIn</a><br />
