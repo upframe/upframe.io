@@ -260,7 +260,8 @@ export function addFreeSlots(freeSlots) {
   let updatedSlots = freeSlots.map((slot) => {
     return {
       start: slot.start,
-      end: slot.end
+      end: slot.end,
+      recurrency: 'weekly'
     }
   })
   let body = {
