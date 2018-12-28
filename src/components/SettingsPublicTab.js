@@ -130,7 +130,22 @@ export default class SettingsPublicTab extends Component {
   }
 
   saveChanges = () => {
-    Api.updateUserInfo(this.state).then((res) => {
+    console.log(this.state)
+    Api.updateUserInfo({
+      tags: JSON.stringify(this.state.tags),
+      name: this.state.name,
+      location: this.state.location,
+      role: this.state.role,
+      company: this.state.company,
+      website: this.state.website,
+      twitter: this.state.twitter,
+      linkedin: this.state.linkedin,
+      github: this.state.github,
+      facebook: this.state.facebook,
+      dribbble: this.state.dribbble,
+      bio: this.state.bio,
+      keycode: this.state.keycode
+    }).then((res) => {
       if (res.ok === 1) {
         alert('Information saved!')
       } else {
