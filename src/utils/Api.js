@@ -288,5 +288,5 @@ export function getFreeSlots (start, end) {
       'Content-Type': 'application/json',
     }
   }
-  return fetch(`${schema}://${host}:${port}/mentor/slots`, fetchData).then((res) => res.json()) //?start=${start}&?end=${end}
+  return fetch(`${schema}://${host}:${port}/mentor/slots?start=${start}&?end=${end}`, fetchData).then((res) => res.json()) //?start=${start}&?end=${end}
 }

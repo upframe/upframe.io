@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as Api from '../utils/Api';
 import MentorMeetupPopup from '../components/MentorMeetupPopup';
+import moment from 'moment';
 
 export default class People extends Component {
 
@@ -31,7 +32,9 @@ export default class People extends Component {
 
   componentDidMount() {
     let keycode = window.location.pathname.split('/')[1]
-    Api.getFreeSlots().then((res) => {
+    let nowDate = new Date()
+    let limitDate = moment().add('days', 30)
+    Api.getFreeSlots(nowDate, limitDate).then((res) => {
       console.log(res)
       //res.slots()
     })
