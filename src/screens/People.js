@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import * as Api from '../utils/Api';
+import MentorMeetupPopup from '../components/MentorMeetupPopup';
+
 export default class People extends Component {
 
   constructor(props) {
@@ -26,10 +28,10 @@ export default class People extends Component {
   }
 
   componentDidMount() {
-    let keycode = window.location.pathname.split('/')[2]
+    let keycode = window.location.pathname.split('/')[1]
     Api.getMentorInfo(keycode).then((res) => {
       console.log(res)
-      if (res.ok === 0) {
+      if (res.message) {
         this.setState({
           mentorExists: 0
         })
@@ -39,6 +41,10 @@ export default class People extends Component {
         })
       }
     })
+  }
+
+  selectSlot = () => {
+
   }
 
   render() {
@@ -57,6 +63,7 @@ export default class People extends Component {
           <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
           <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a><br />
           <p>Aqui ficam os slots</p>
+          <MentorMeetupPopup mentorExists={0}/>
         </div>
       )
     } else {

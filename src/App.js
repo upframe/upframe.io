@@ -57,6 +57,18 @@ export default class App extends Component {
     )
   }
 
+  MeetupConfirm = () => {
+    return (
+      <Meetup confirm={1} />
+    )
+  }
+
+  MeetupRefuse = () => {
+    return (
+      <Meetup confirm={0} />
+    )
+  }
+
   setLoggedInState = (newState) => {
     this.setState({
       loggedIn: newState
@@ -78,15 +90,18 @@ export default class App extends Component {
 
             <Route exact path='/changemyemail*' component={ChangeEmail} />
             <Route exact path='/resetmypassword*' component={ResetPassword} />
-            <Route exact path='/meetup*' component={Meetup} />
-            <Route exact path='/people*' component={People} />
+
+            <Route exact path='/meetup/confirm*' component={this.MeetupConfirm} />
+            <Route exact path='/meetup/refuse*' component={this.MeetupRefuse} />
+
             <Route exact path='/expertise*' component={Expertise} />
             <Route exact path='/company*' component={Company} />
 
             <Route exact path='/dev' component={DevPlayground} />
             <Route exact path='/dev2' component={Sync} />
 
-            <Route exact path='/:keycode' component={Onboarding} />
+            <Route exact path='/onboarding/:keycode' component={Onboarding} />
+            <Route exact path='/:keycode' component={People} />
           </Switch>
         </div>
       </Router>

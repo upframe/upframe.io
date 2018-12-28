@@ -1,5 +1,5 @@
 let host = process.env.REACT_APP_APIHOST,
-  port = process.env.REACT_APP_APIPORT,
+    port = process.env.REACT_APP_APIPORT,
   schema = process.env.REACT_APP_APISCHEMA
 
 if(process.env.REACT_APP_ENV === 'dev') {
@@ -166,6 +166,18 @@ export function confirmMeetup(meetupId) {
   return fetch(`${schema}://${host}:${port}/meetup/confirm?meetup=${meetupId}`, fetchData).then((res) => res.json())
 }
 
+export function refuseMeetup(meetupId) {
+  let fetchData = {
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  return fetch(`${schema}://${host}:${port}/meetup/refuse?meetup=${meetupId}`, fetchData).then((res) => res.json())
+}
+
 export function getUserInfo () {
   let fetchData = {
     method: 'GET',
@@ -264,4 +276,16 @@ export function addFreeSlots(freeSlots) {
     }
   }
   return fetch(`${schema}://${host}:${port}/mentor/slots`, fetchData).then((res) => res.json())
+}
+
+export function getFreeSlots (start, end) {
+  let fetchData = {
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  }
+  return fetch(`${schema}://${host}:${port}/mentor/slots?start=${start}&?end=${end}`, fetchData).then((res) => res.json())
 }

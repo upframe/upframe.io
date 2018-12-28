@@ -15,7 +15,6 @@ export default class Login extends Component {
   }
 
   login = () => {
-    
     Api.login(this.state.email, this.state.password)
       .then((res) => {
         if (res.ok === 0) {

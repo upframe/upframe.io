@@ -158,8 +158,6 @@ export default class SettingsSyncTab extends Component {
       })
       return allEvents
     }).then((final) => {
-      console.log('antes de converter')
-      console.log(final)
       return final.map((element) => this.convertEvents(element))
     })
     return eventsPromise
@@ -177,7 +175,6 @@ export default class SettingsSyncTab extends Component {
         headers: customHeaders
       }).then((response) => response.json())
       .then((data) => {
-        console.log(data)
         return data
       })
   }
@@ -239,8 +236,6 @@ export default class SettingsSyncTab extends Component {
         </div>
       )       
     } else {
-      //Temos access token! Vamos pegar nos calendários e dar display dos mesmos
-      // console.log(this.state.calendars)
       return (
         <div>
           {this.state.calendars.map(element => {
