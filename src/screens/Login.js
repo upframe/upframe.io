@@ -21,9 +21,10 @@ export default class Login extends Component {
         if (res.ok === 0) {
           alert('Login errado')
         } else {
-          Cookies.setItem('access_token', res.token, Infinity, '/', '.upframe.io', true)
+          Cookies.setItem('access_token', res.token, Infinity, '/', '.upframe.io', true).then((res) => {
+            this.props.setLoggedInState(true)
+          })
           console.log(Cookies.getItem('access_token'))
-          this.props.setLoggedInState(true)
         }
       })
   }
