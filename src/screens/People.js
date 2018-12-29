@@ -133,6 +133,7 @@ export default class People extends Component {
     if (this.state.mentorExists === 1) {
       return (
         <div>
+          <MentorMeetupPopup />
           <img src={this.state.mentor.profilePic} alt='Profile' />
           <p>{this.state.mentor.name}</p>
           <p>{this.state.mentor.role} at {this.state.mentor.company}</p>
@@ -147,7 +148,6 @@ export default class People extends Component {
           <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
           <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>
           {this.displayFreeSlots()}
-          <MentorMeetupPopup />
         </div>
       )
     } else {

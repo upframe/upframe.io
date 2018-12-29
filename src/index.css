@@ -368,6 +368,9 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 }
 
 .mentor-meetup-popup {
-  display: none
+  display: none;
+  background: white;
+  position: fixed;
+  
 }
 
