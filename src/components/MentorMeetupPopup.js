@@ -54,7 +54,6 @@ export default class MentorMeetupPopup extends Component {
         <div>
           <h1>Make a call with Malik</h1>
           <p>Message</p>
-
         </div>
       )
     } else {

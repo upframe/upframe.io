@@ -9,6 +9,7 @@ export default class People extends Component {
     super(props)
     this.state = {
       mentorExists: 1,
+      showDialog: 0,
       mentor: {
         bio: 'Loading',
         company: 'Loading',
@@ -115,7 +116,7 @@ export default class People extends Component {
       return this.state.mentor.freeSlots.map((slot) => {
         let startDate = new Date(slot.start)
         return (
-          <div>
+          <div onClick={this.selectSlot}>
             <p>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getUTCFullYear()} @ {startDate.getHours()}:{startDate.getMinutes()}</p>
           </div>
         )
@@ -124,7 +125,9 @@ export default class People extends Component {
   }
 
   selectSlot = () => {
-
+    this.setState({
+      showDialog: 1
+    })
   }
 
   render() {
@@ -144,10 +147,9 @@ export default class People extends Component {
           <a href={'http://www.linkedin.com/' + this.state.mentor.linkedin}>LinkedIn</a><br />
           <a href={'http://www.github.com/' + this.state.mentor.github}>Github</a><br />
           <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
-          <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a><br />
+          <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>
           {this.displayFreeSlots()}
-          {}
-          <MentorMeetupPopup mentorExists={0}/>
+          <MentorMeetupPopup mentorExists={this.state.showDialog}/>
         </div>
       )
     } else {
