@@ -116,8 +116,7 @@ export default class People extends Component {
         let startDate = new Date(slot.start)
         return (
           <div>
-            <p>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getUTCFullYear()}</p>
-
+            <p>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getUTCFullYear()} @ {startDate.getHours()}:{startDate.getMinutes()}</p>
           </div>
         )
       })
