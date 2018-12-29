@@ -34,9 +34,42 @@ export default class People extends Component {
     let keycode = window.location.pathname.split('/')[1]
     let nowDate = new Date()
     let limitDate = moment().add('days', 30)
+    // let weekday = new Array(7);
+    // weekday[0] = "Sun";
+    // weekday[1] = "Mon";
+    // weekday[2] = "Tue";
+    // weekday[3] = "Wed";
+    // weekday[4] = "Thu";
+    // weekday[5] = "Fri";
+    // weekday[6] = "Sat";
+    // let month = new Array();
+    // month[0] = "January";
+    // month[1] = "February";
+    // month[2] = "March";
+    // month[3] = "April";
+    // month[4] = "May";
+    // month[5] = "June";
+    // month[6] = "July";
+    // month[7] = "August";
+    // month[8] = "September";
+    // month[9] = "October";
+    // month[10] = "November";
+    // month[11] = "December";
+
     Api.getFreeSlots(nowDate, limitDate).then((res) => {
-      console.log(res)
-      //res.slots()
+      this.setState({
+        freeSlots: res.slots
+      })
+      // let freeSlots = res.slots.map((slot) => {
+      //   let startDate = new Date(slot.start)
+      //   let endDate = new Date(slot.end)
+      //   let dayOfWeek = weekday[startDate.getDay()]
+      //   let monthText = month[startDate.getMonth()]
+      //   //getDate() dia
+      //   return (
+      //     start
+      //   )
+      // })
     })
     Api.getMentorInfo(keycode).then((res) => {
       console.log(res)
@@ -81,7 +114,7 @@ export default class People extends Component {
   }
 
   render() {
-    console.log(this.state.mentor.tags)
+    console.log(this.state.mentor)
     if (this.state.mentorExists === 1) {
       return (
         <div>
