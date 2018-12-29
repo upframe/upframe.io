@@ -125,9 +125,7 @@ export default class People extends Component {
   }
 
   selectSlot = () => {
-    this.setState({
-      showDialog: 1
-    })
+    document.getElementById('mentor-meetup-popup').style.display = 'block'
   }
 
   render() {
@@ -149,7 +147,7 @@ export default class People extends Component {
           <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
           <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>
           {this.displayFreeSlots()}
-          <MentorMeetupPopup mentorExists={this.state.showDialog}/>
+          <MentorMeetupPopup />
         </div>
       )
     } else {

@@ -9,7 +9,7 @@ export default class MentorMeetupPopup extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentTab: props.mentorExists
+      currentTab: 1
     }
   }
 
@@ -28,7 +28,7 @@ export default class MentorMeetupPopup extends Component {
   render() {
     if (this.state.currentTab === 1) {
       return (
-        <div>
+        <div id='mentor-meetup-popup' className='mentor-meetup-popup'>
           <h1>Reach out to Malik</h1>
           <div onClick={this.grabCoffee}>
             <h1>Grab a coffe</h1>
