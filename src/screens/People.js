@@ -113,7 +113,7 @@ export default class People extends Component {
   displayFreeSlots = () => {
     if (this.state.mentor.freeSlots) {
       return this.state.mentor.freeSlots.map((slot) => {
-        let startDate = new Date(slot)
+        let startDate = new Date(slot.start)
         return (
           <div>
             <p>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getUTCFullYear()}</p>
