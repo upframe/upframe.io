@@ -58,7 +58,9 @@ export default class People extends Component {
 
     Api.getFreeSlots(nowDate, limitDate).then((res) => {
       this.setState({
-        freeSlots: res.slots
+        mentor: {
+          freeSlots: res.slots
+        }
       })
       // let freeSlots = res.slots.map((slot) => {
       //   let startDate = new Date(slot.start)
