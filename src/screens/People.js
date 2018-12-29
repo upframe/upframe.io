@@ -110,6 +110,20 @@ export default class People extends Component {
     })
   }
 
+  displayFreeSlots = () => {
+    if (this.state.mentor.freeSlots) {
+      return this.state.mentor.freeSlots.map((slot) => {
+        let startDate = new Date(slot)
+        return (
+          <div>
+            <p>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getUTCFullYear()}</p>
+
+          </div>
+        )
+      })
+    }
+  }
+
   selectSlot = () => {
 
   }
@@ -132,7 +146,8 @@ export default class People extends Component {
           <a href={'http://www.github.com/' + this.state.mentor.github}>Github</a><br />
           <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
           <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a><br />
-          <p>Aqui ficam os slots</p>
+          {this.displayFreeSlots()}
+          {}
           <MentorMeetupPopup mentorExists={0}/>
         </div>
       )
