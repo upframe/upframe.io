@@ -57,11 +57,7 @@ export default class People extends Component {
     // month[11] = "December";
 
     Api.getFreeSlots(nowDate, limitDate).then((res) => {
-      this.setState({
-        mentor: {
-          freeSlots: res.slots
-        }
-      })
+      return res.slots
       // let freeSlots = res.slots.map((slot) => {
       //   let startDate = new Date(slot.start)
       //   let endDate = new Date(slot.end)
@@ -72,34 +68,37 @@ export default class People extends Component {
       //     start
       //   )
       // })
-    })
-    Api.getMentorInfo(keycode).then((res) => {
-      console.log(res)
-      if (res.message) {
-        this.setState({
-          mentorExists: 0
-        })
-      } else {
-        this.setState({
-          mentor: {
-            bio: res.mentor.bio,
-            company: res.mentor.company,
-            dribbble: res.mentor.dribbble,
-            email: res.mentor.email,
-            facebook: res.mentor.facebook,
-            github: res.mentor.github,
-            linkedin: res.mentor.linkedin,
-            location: res.mentor.location,
-            name: res.mentor.name,
-            profilePic: res.mentor.profilePic,
-            role: res.mentor.role,
-            twitter: res.mentor.twitter,
-            uid: res.mentor.uid,
-            website: res.mentor.website,
-            tags: res.mentor.tags ? JSON.parse(res.mentor.tags) : []
-          }
-        })
-      }
+    }).then((res) => {
+      let slots = res
+      Api.getMentorInfo(keycode).then((res) => {
+        console.log(res)
+        if (res.message) {
+          this.setState({
+            mentorExists: 0
+          })
+        } else {
+          this.setState({
+            mentor: {
+              bio: res.mentor.bio,
+              company: res.mentor.company,
+              dribbble: res.mentor.dribbble,
+              email: res.mentor.email,
+              facebook: res.mentor.facebook,
+              github: res.mentor.github,
+              linkedin: res.mentor.linkedin,
+              location: res.mentor.location,
+              name: res.mentor.name,
+              profilePic: res.mentor.profilePic,
+              role: res.mentor.role,
+              twitter: res.mentor.twitter,
+              uid: res.mentor.uid,
+              website: res.mentor.website,
+              tags: res.mentor.tags ? JSON.parse(res.mentor.tags) : [],
+              freeSlots: slots
+            }
+          })
+        }
+      })
     })
   }
 
