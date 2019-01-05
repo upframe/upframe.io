@@ -84,7 +84,6 @@ export default class App extends Component {
           <Switch>
             <Route exact path='/' component={Main} />
             <Route exact path='/login' component={this.LoginScreen} />
-            <Route exact path='/mentor' component={Mentor} />
             
             <Route exact path='/settings' component={this.SettingsScreen} />
             <Route exact path='/404' component={ErrorPage} />
