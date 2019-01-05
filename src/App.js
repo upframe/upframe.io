@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Main from './screens/Main';
 import Login from './screens/Login';
-import Mentor from './screens/Mentor';
 import Onboarding from './screens/Onboarding';
 import Settings from './screens/Settings';
 import ChangeEmail from './screens/ChangeEmail';

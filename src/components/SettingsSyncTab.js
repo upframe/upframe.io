@@ -33,7 +33,9 @@ export default class SettingsSyncTab extends Component {
 
   componentDidMount() { //Here we need to fetch the previous known free slots from our DB
     //After we get them we need to convert them and display them.
-    Api.getFreeSlots().then((res) => {
+    let nowDate = new Date()
+    let limitDate = moment().add('days', 30)
+    Api.getFreeSlots(nowDate, limitDate).then((res) => {
       if (res.ok === 1) {
         this.setState({
           freeSlotsSaved: res.slots
