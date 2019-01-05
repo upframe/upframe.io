@@ -250,23 +250,26 @@ export function getSearchTags() {
   return fetch(`${schema}://${host}:${port}/search/tags`, fetchData).then((res) => res.json())
 }
 
-export function addFreeSlots(freeSlots) {
+export function addFreeSlots(freeSlotsToSave, freeSlotsToDelete) {
   //Free slots vêem na forma
   // id: currentId,
   // start: slot.start,
   // end: slot.end,
   // title: 'Upframe Free Slot',
   // tag: 'upframe-free-slot'
-  let updatedSlots = freeSlots.map((slot) => {
+  let updatedSlots = freeSlotsToSave.map((slot) => {
     return {
       start: slot.start,
       end: slot.end,
       recurrency: 'UNIQUE'
     }
   })
+  let deletedSlots = freeSlotsToDelete.map((slot) => slot.id)
   let body = {
-    'updated': updatedSlots
+    'updated': updatedSlots,
+    'deleted': deletedSlots
   }
+  console.log(body)
   let fetchData = {
     method: 'POST',
     mode: 'cors',
