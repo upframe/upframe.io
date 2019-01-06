@@ -112,30 +112,43 @@ export default class People extends Component {
   render() {
     if (this.state.mentorExists === 1) {
       return (
-        <div>
-          {this.state.showPopup === 1 
-            ? <MentorMeetupPopup 
-                show={this.state.showPopup} 
-                hidePopup={this.hidePopup} 
+        <div class="container">
+          <div className="card mentor-card">
+            {this.state.showPopup === 1
+              ? <MentorMeetupPopup
+                show={this.state.showPopup}
+                hidePopup={this.hidePopup}
                 sid={this.state.selectedId}
                 locations={this.state.mentor.favoriteLocations}
-                startTime={this.state.selectedStartTime}/> 
-            : null
-          }
-          <img src={this.state.mentor.profilePic} alt='Profile' />
-          <p>{this.state.mentor.name}</p>
-          <p>{this.state.mentor.role} at {this.state.mentor.company}</p>
-          <p>{this.state.mentor.location}</p>
-          <ul className='mentor-card-tags'>
-          {this.mentorTagsToElement(this.state.mentor.tags)}
-          </ul>
-          <p>{this.state.mentor.bio}</p>
-          <a href={'http://www.twitter.com/' + this.state.mentor.twitter}>Twitter</a><br />
-          <a href={'http://www.linkedin.com/' + this.state.mentor.linkedin}>LinkedIn</a><br />
-          <a href={'http://www.github.com/' + this.state.mentor.github}>Github</a><br />
-          <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
-          <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>
-          {this.displayFreeSlots()}
+                startTime={this.state.selectedStartTime} />
+              : null
+            }
+            <div>
+              <img src={this.state.mentor.profilePic} alt='Profile' />
+              <div className="mentor-info">
+                <h1 className="font-weight-normal">{this.state.mentor.name}</h1>
+                <p>{this.state.mentor.role} at {this.state.mentor.company}</p>
+                <p>{this.state.mentor.location}</p>
+                <ul className="mentor-card-tags">
+                  {this.mentorTagsToElement(this.state.mentor.tags)}
+                </ul>
+                <p>{this.state.mentor.bio}</p>
+              </div>
+            </div>
+            
+            <span className="hr"></span>
+
+            <div>
+              {/*<a href={'http://www.twitter.com/' + this.state.mentor.twitter}>Twitter</a><br />
+              <a href={'http://www.linkedin.com/' + this.state.mentor.linkedin}>LinkedIn</a><br />
+              <a href={'http://www.github.com/' + this.state.mentor.github}>Github</a><br />
+              <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
+              <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>*/}
+              <ul className="mentor-card-slots">
+                {this.displayFreeSlots()}
+              </ul>
+              </div>
+          </div>
         </div>
       )
     } else {
@@ -148,19 +161,28 @@ export default class People extends Component {
   mentorTagsToElement = (tags) => {
     return tags.map((tag) => {
       return (
-        <li className='mentor-tags-list-element'>{tag.text}</li>
+        <li className='mentor-tag'>{tag.text}</li>
       )
     })
   }
 
   displayFreeSlots = () => {
+    let days = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat']
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
     if (this.state.mentor.freeSlots) {
       return this.state.mentor.freeSlots.map((slot) => {
         let startDate = new Date(slot.start)
         return (
-          <div onClick={this.selectSlot} id={slot.sid}>
-            <p id={slot.sid}>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getUTCFullYear()} @ {startDate.getHours()}:{startDate.getMinutes()}</p>
-          </div>
+          <li className="mentor-card-slot flex" onClick={this.selectSlot} data-id={slot.sid}>
+            <div>
+              <span className="month font-weight-bold text-uppercase">{months[startDate.getMonth()]}</span>
+              <span className="day">{startDate.getDate()}</span>
+            </div>
+            <div className="flex items-center">
+              <span>{days[startDate.getDay()]} {startDate.getHours()}.{startDate.getMinutes()} {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
+            </div>
+          </li>
         )
       })
     }
