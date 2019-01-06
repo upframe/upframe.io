@@ -283,6 +283,14 @@ export default class SettingsSyncTab extends Component {
             })
           } else {
             //Free slots saved but we couldnt fetch them all again
+            if (res.ok === 0 && res.code === 404) {
+              //All slots deleted
+              this.setState({
+                freeSlotsSaved: [],
+                freeSlotsToDelete: [],
+                freeSlotsUnsaved: []
+              })
+            }
           }
         }, () => {
           alert('Free slots saved')
