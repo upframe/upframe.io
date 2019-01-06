@@ -15,16 +15,13 @@ export default class Login extends Component {
   }
 
   login = (event) => {
-    event.preventDefault()
     Api.login(this.state.email, this.state.password)
       .then((res) => {
-        console.log(res)
         if (res.ok === 0) {
           alert('Login errado')
         } else {
           Cookies.setItem('access_token', res.token, Infinity, '/', '.upframe.io', true)
           this.props.setLoggedInState(true)
-          console.log(Cookies.getItem('access_token'))
         }
       })
   }
@@ -42,7 +39,7 @@ export default class Login extends Component {
       return (
         <main>
           <div className='container flex justify-center'>
-            <form className='flex flex-column'>
+            <div className='flex flex-column'>
               <div className='field-group'>
                 <label htmlFor='email' className='light-gray'>Email</label>
                 <input type='email' name='email' onChange={this.handleEmailChange} onKeyUp={this.handleKeyUp} className='light-gray'/>
@@ -52,7 +49,7 @@ export default class Login extends Component {
                 <input type='password' onChange={this.handlePasswordChange} onKeyUp={this.handleKeyUp} className='light-gray'/>
               </div>
               <button type='submit' className='btn btn-primary center' onClick={this.login}>Login</button>
-            </form>
+            </div>
           </div>
         </main>
       );
