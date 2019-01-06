@@ -36,6 +36,8 @@ export default class SettingsSyncTab extends Component {
     let nowDate = new Date()
     let limitDate = moment().add('days', 30)
     Api.getFreeSlots(nowDate, limitDate).then((res) => {
+      console.log('Recebemos free slots')
+      console.log(res)
       if (res.ok === 1) {
         this.setState({
           freeSlotsSaved: res.slots
@@ -155,6 +157,8 @@ export default class SettingsSyncTab extends Component {
       this.setState({
         currId: currentId + 1,
         freeSlotsUnsaved: newFreeSlots
+      }, () => {
+        alert('Free slots saved')
       }) 
     }
   }
