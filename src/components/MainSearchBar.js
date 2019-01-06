@@ -46,7 +46,6 @@ export default class MainSearchBar extends Component {
     if (!props) {
       return 
     }
-    console.log(props.results)
     const expertise = props.map((element) => (
       <Link to={'/expertise/' + element.name}>
         <li key={element.name}>
@@ -62,7 +61,6 @@ export default class MainSearchBar extends Component {
     if (!props) {
       return
     }
-    console.log(props.results)
     const people = props.map((element) => (
       <Link to={'/people/' + element.keycode}>
         <li key={element.name}>
@@ -80,7 +78,6 @@ export default class MainSearchBar extends Component {
     if (!props) {
       return
     }
-    console.log(props.results)
     const company = props.map((element) => (
       <Link to={'/company/' + element.name}>
         <li key={element.name}>

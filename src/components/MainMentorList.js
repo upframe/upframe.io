@@ -14,7 +14,7 @@ export default class MainMentorList extends Component {
   componentDidMount () {
     Api.getRandomMentors().then((res) => {
       this.setState({
-        mentors: res.mentor
+        mentors: res.mentor ? res.mentor : []
       })
     })
   }
