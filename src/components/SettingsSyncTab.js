@@ -40,7 +40,15 @@ export default class SettingsSyncTab extends Component {
       console.log(res)
       if (res.ok === 1) {
         this.setState({
-          freeSlotsSaved: res.slots
+          freeSlotsSaved: res.slots.map((unconvertedSlot) => {
+            return {
+              mentorUID: unconvertedSlot.mentorUID,
+              recurrency: unconvertedSlot.recurrency,
+              sid: unconvertedSlot.sid,
+              start: new Date(unconvertedSlot.start),
+              end: new Date(unconvertedSlot.end)
+            }
+          })
         })
       }
     })
@@ -307,7 +315,7 @@ export default class SettingsSyncTab extends Component {
             selectable
             defaultDate={new Date()}
             defaultView='week'
-            events={[...this.state.events, ...this.state.freeSlotsUnsaved]} //...this.state.freeSlotsSaved,
+            events={[...this.state.events, ...this.state.freeSlotsSaved, ...this.state.freeSlotsUnsaved]}
             onSelectEvent={event => this.deleteFreeSlot(event)}
             onSelectSlot={slot => this.addFreeSlot(slot)}
           />
