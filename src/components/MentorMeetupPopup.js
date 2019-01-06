@@ -102,9 +102,9 @@ export default class MentorMeetupPopup extends Component {
                 )
               })}
             </select><br/>
-            <textarea name="message" cols="40" rows="5" onChange={this.handleMessageChange}>Write a message</textarea><br/>
-            <input type='email' onChange={this.handleEmailChange} /><br />
-            <input type='text' onChange={this.handleNameChange} /><br />
+            <textarea name="message" cols="40" rows="5" onChange={this.handleMessageChange} value={this.state.message}></textarea><br />
+            <input type='email' onChange={this.handleEmailChange} value={this.state.email} /><br />
+            <input type='text' onChange={this.handleNameChange} value={this.state.name} /><br />
             <button onClick={this.createMeetup}>Send</button>
           </div>
         </div>
@@ -115,9 +115,9 @@ export default class MentorMeetupPopup extends Component {
           <div id='mentor-meetup-popup' className='mentor-meetup-popup'>
             <button onClick={this.props.hidePopup}>Close</button>
             <h1>Make a call with Malik</h1>
-            <textarea name="message" cols="40" rows="5" onChange={this.handleMessageChange}></textarea><br />
-            <input type='email' onChange={this.handleEmailChange} /><br />
-            <input type='text' onChange={this.handleNameChange} /><br />
+            <textarea name="message" cols="40" rows="5" onChange={this.handleMessageChange} value={this.state.message}></textarea><br />
+            <input type='email' onChange={this.handleEmailChange} value={this.state.email}/><br />
+            <input type='text' onChange={this.handleNameChange} value={this.state.name}/><br />
             <button onClick={this.createMeetup}>Send</button>
           </div>
         </div>
