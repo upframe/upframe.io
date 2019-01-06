@@ -88,7 +88,7 @@ export default class People extends Component {
             website: res.mentor.website,
             tags: res.mentor.tags ? JSON.parse(res.mentor.tags) : [],
             freeSlots: res.mentor.slots,
-            favoriteLocations: res.mentor.locations ? JSON.parse(res.mentor.locations) : []
+            favoriteLocations: res.mentor.favoriteLocations ? JSON.parse(res.mentor.favoriteLocations) : []
           }
         })
       }
