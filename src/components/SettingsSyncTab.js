@@ -261,12 +261,14 @@ export default class SettingsSyncTab extends Component {
     //2. clear to Delete
     //3. merge unsaved into saved
     Api.addFreeSlots(this.state.freeSlotsUnsaved, this.state.freeSlotsToDelete).then((res) => {
+      console.log(res)
       if (res.ok === 1) { //We have added new slots and deleted the ones that were saved (not created in this session)
         //Wrong! Because the new saved slots are in incorrect form
         //We need to fetch slots again
         let nowDate = new Date()
         let limitDate = moment().add('days', 30)
         Api.getFreeSlots(nowDate, limitDate).then((res) => {
+          console.log(res)
           if (res.ok === 1) {
             this.setState({
               freeSlotsSaved: res.slots.map((unconvertedSlot) => {
