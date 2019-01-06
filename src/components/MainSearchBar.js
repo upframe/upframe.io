@@ -20,9 +20,7 @@ export default class MainSearchBar extends Component {
       search: event.target.value
     }, () => {
       if (this.state.search && this.state.search.length > 1) {
-        // if (this.state.search.length % 2 === 0) {
         this.getInfo()
-        // }
       } else if (!this.state.query && this.state.search.length === 1) {
         this.setState({
           expertise: [],
@@ -37,9 +35,9 @@ export default class MainSearchBar extends Component {
     Api.searchQuick(this.state.search).then((res) => {
       console.log(res)
       this.setState({
-        expertise: res.expertise,
-        company: res.company,
-        people: res.people
+        expertise: res.expertise ? res.expertise : [],
+        company: res.company ? res.company : [],
+        people: res.people ? res.people : []
       })
     })
   }

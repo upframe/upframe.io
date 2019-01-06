@@ -14,7 +14,7 @@ export default class MainSearchBar extends Component {
   componentDidMount() {
     Api.getSearchTags().then((res) => {
       this.setState({
-        tags : res
+        tags : res ? res : []
       })
     })
   }
