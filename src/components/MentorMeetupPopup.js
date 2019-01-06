@@ -49,6 +49,7 @@ export default class MentorMeetupPopup extends Component {
     if (this.state.currentTab === 3) {
       //Fazemos call, location is not important
       Api.createMeetup(slotId, '', message, email, name).then((res) => {
+        console.log(res)
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
           window.location = '/'
@@ -60,6 +61,7 @@ export default class MentorMeetupPopup extends Component {
     } else {
       //É um meetup
       Api.createMeetup(slotId, location, message, email, name).then((res) => {
+        console.log(res)
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
         } else {
