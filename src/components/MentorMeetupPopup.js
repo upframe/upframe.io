@@ -28,7 +28,7 @@ export default class MentorMeetupPopup extends Component {
   handleNameChange = (event) => {this.setState({name: event.target.value})}
 
   createMeetup = () => {
-    window.location = '/'
+    // window.location = '/'
     //we need 
     //slot_id
     //keycode
@@ -64,8 +64,10 @@ export default class MentorMeetupPopup extends Component {
         console.log(res)
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
+          window.location = '/'
         } else {
           alert('Error creating meetup')
+          window.location = '/'
         }
       })
     }
