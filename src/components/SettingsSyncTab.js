@@ -262,11 +262,28 @@ export default class SettingsSyncTab extends Component {
     //3. merge unsaved into saved
     Api.addFreeSlots(this.state.freeSlotsUnsaved, this.state.freeSlotsToDelete).then((res) => {
       if (res.ok === 1) { //We have added new slots and deleted the ones that were saved (not created in this session)
-        let oldState = this.state
-        this.setState({
-          freeSlotsToDelete: [], //Clear delete
-          freeSlotsUnsaved: [], //They are all saved now
-          freeSlotsSaved: [...oldState.freeSlotsSaved, ...oldState.freeSlotsUnsaved] //Merge saved with unsaved since they are all saved now
+        //Wrong! Because the new saved slots are in incorrect form
+        //We need to fetch slots again
+        let nowDate = new Date()
+        let limitDate = moment().add('days', 30)
+        Api.getFreeSlots(nowDate, limitDate).then((res) => {
+          if (res.ok === 1) {
+            this.setState({
+              freeSlotsSaved: res.slots.map((unconvertedSlot) => {
+                return {
+                  mentorUID: unconvertedSlot.mentorUID,
+                  recurrency: unconvertedSlot.recurrency,
+                  id: unconvertedSlot.sid,
+                  start: new Date(unconvertedSlot.start),
+                  end: new Date(unconvertedSlot.end)
+                }
+              }),
+              freeSlotsToDelete: [],
+              freeSlotsUnsaved: []
+            })
+          } else {
+            //Free slots saved but we couldnt fetch them all again
+          }
         }, () => {
           alert('Free slots saved')
         })
