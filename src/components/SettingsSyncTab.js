@@ -44,7 +44,7 @@ export default class SettingsSyncTab extends Component {
             return {
               mentorUID: unconvertedSlot.mentorUID,
               recurrency: unconvertedSlot.recurrency,
-              sid: unconvertedSlot.sid,
+              id: unconvertedSlot.sid,
               start: new Date(unconvertedSlot.start),
               end: new Date(unconvertedSlot.end)
             }
