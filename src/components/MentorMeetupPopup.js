@@ -52,10 +52,10 @@ export default class MentorMeetupPopup extends Component {
         console.log(res)
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
-          window.location = '/'
+          // window.location = '/'
         } else {
           alert('Error creating meetup')
-          window.location = '/'
+          // window.location = '/'
         }
       })
     } else {
@@ -64,10 +64,10 @@ export default class MentorMeetupPopup extends Component {
         console.log(res)
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
-          window.location = '/'
+          // window.location = '/'
         } else {
           alert('Error creating meetup')
-          window.location = '/'
+          // window.location = '/'
         }
       })
     }

@@ -138,6 +138,7 @@ export function createMeetup (slotId, location, message, email, name) {
       'Content-Type': 'application/json'
     }
   }
+  console.log(fetchBody)
   return fetch(`${schema}://${host}:${port}/meetup/`, fetchData).then((res) => res.json())
 }
 
