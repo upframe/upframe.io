@@ -172,6 +172,7 @@ input[type="file"] {
   padding: 1rem;
   border: 1px solid var(--border-lightgray);
   border-radius: 0.25rem;
+  box-shadow: 0 0.5px 3px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* LOGO AND IMAGES */
@@ -243,6 +244,26 @@ code {
   margin-right: 1.5rem;
 }
 
+/* BREADCRUMBS */
+.breadcrumbs {
+  display: flex;
+  text-transform: uppercase;
+}
+
+.breadcrumbs a {
+  display: flex;
+}
+
+.breadcrumbs a:not(:last-of-type)::after {
+  content: '>';
+  position: relative;
+  margin-right: 1rem;
+}
+
+.breadcrumbs a:not(:last-of-type) li {
+  margin-right: 1rem;
+}
+
 /* HOME PAGE */
 #home .container.grid {
   grid-row-gap: 3rem;
@@ -288,6 +309,8 @@ code {
 .card.mentor-card {
   display: flex;
   flex-wrap: wrap;
+  padding: 3rem;
+  margin-top: 3rem;
 }
 
 .card.mentor-card > div,
@@ -297,6 +320,11 @@ code {
 
 .card.mentor-card > div:first-of-type {
   display: flex;
+}
+
+.card.mentor-card .mentor-profilepic {
+  min-width: 13rem;
+  max-height: 13rem;
 }
 
 .card.mentor-card > div:first-of-type .mentor-info {
@@ -336,9 +364,9 @@ code {
 }
 
 .card.mentor-card > div:last-of-type .mentor-card-slot {
-  padding: .75rem;
+  padding: .75rem 1.5rem;
   border: 1px solid var(--border-lightgray);
-  border-radius: 0.125rem;
+  border-radius: 0.2rem;
 }
 
 .card.mentor-card > div:last-of-type .mentor-card-slot:not(:last-child) {
