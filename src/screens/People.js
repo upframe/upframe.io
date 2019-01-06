@@ -34,65 +34,65 @@ export default class People extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      mentorExists: 1,
-      mentor: {
-        bio: 'res.mentor.bio',
-        company: 'res.mentor.company',
-        dribbble: 'res.mentor.dribbble',
-        email: 'res.mentor.email',
-        facebook: 'res.mentor.facebook',
-        github: 'res.mentor.github',
-        linkedin: 'res.mentor.linkedin',
-        location: 'res.mentor.location',
-        name: 'res.mentor.name',
-        profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png',
-        role: 'res.mentor.role',
-        twitter: 'res.mentor.twitter',
-        uid: 'asd',
-        website: 'asd',
-        tags: [],
-        freeSlots: [
-          {
-            start: new Date(),
-            end: new Date(),
-            sid: '123'
-          }
-        ],
-        favoriteLocations: ['Startup Lisboa', 'Arabesco']
-      }
-    })
-    // let keycode = window.location.pathname.split('/')[1]
-    // Api.getMentorInfo(keycode).then((res) => {
-    //   if (res.message) {
-    //     this.setState({
-    //       mentorExists: 0
-    //     })
-    //   } else {
-    //     this.setState({
-    //       mentorExists: 1,
-    //       mentor: {
-    //         bio: res.mentor.bio,
-    //         company: res.mentor.company,
-    //         dribbble: res.mentor.dribbble,
-    //         email: res.mentor.email,
-    //         facebook: res.mentor.facebook,
-    //         github: res.mentor.github,
-    //         linkedin: res.mentor.linkedin,
-    //         location: res.mentor.location,
-    //         name: res.mentor.name,
-    //         profilePic: res.mentor.profilePic,
-    //         role: res.mentor.role,
-    //         twitter: res.mentor.twitter,
-    //         uid: res.mentor.uid,
-    //         website: res.mentor.website,
-    //         tags: res.mentor.tags ? JSON.parse(res.mentor.tags) : [],
-    //         freeSlots: res.mentor.slots,
-    //         favoriteLocations: res.mentor.locations ? JSON.parse(res.mentor.locations) : []
+    // this.setState({ //DEBUG
+    //   mentorExists: 1,
+    //   mentor: {
+    //     bio: 'res.mentor.bio',
+    //     company: 'res.mentor.company',
+    //     dribbble: 'res.mentor.dribbble',
+    //     email: 'res.mentor.email',
+    //     facebook: 'res.mentor.facebook',
+    //     github: 'res.mentor.github',
+    //     linkedin: 'res.mentor.linkedin',
+    //     location: 'res.mentor.location',
+    //     name: 'res.mentor.name',
+    //     profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png',
+    //     role: 'res.mentor.role',
+    //     twitter: 'res.mentor.twitter',
+    //     uid: 'asd',
+    //     website: 'asd',
+    //     tags: [],
+    //     freeSlots: [
+    //       {
+    //         start: new Date(),
+    //         end: new Date(),
+    //         sid: '123'
     //       }
-    //     })
+    //     ],
+    //     favoriteLocations: ['Startup Lisboa', 'Arabesco']
     //   }
     // })
+    let keycode = window.location.pathname.split('/')[1]
+    Api.getMentorInfo(keycode).then((res) => {
+      if (res.message) {
+        this.setState({
+          mentorExists: 0
+        })
+      } else {
+        this.setState({
+          mentorExists: 1,
+          mentor: {
+            bio: res.mentor.bio,
+            company: res.mentor.company,
+            dribbble: res.mentor.dribbble,
+            email: res.mentor.email,
+            facebook: res.mentor.facebook,
+            github: res.mentor.github,
+            linkedin: res.mentor.linkedin,
+            location: res.mentor.location,
+            name: res.mentor.name,
+            profilePic: res.mentor.profilePic,
+            role: res.mentor.role,
+            twitter: res.mentor.twitter,
+            uid: res.mentor.uid,
+            website: res.mentor.website,
+            tags: res.mentor.tags ? JSON.parse(res.mentor.tags) : [],
+            freeSlots: res.mentor.slots,
+            favoriteLocations: res.mentor.locations ? JSON.parse(res.mentor.locations) : []
+          }
+        })
+      }
+    })
   }
 
   selectSlot = (event) => {
