@@ -255,6 +255,7 @@ export default class SettingsSyncTab extends Component {
         let oldState = this.state
         this.setState({
           freeSlotsToDelete: [], //Clear delete
+          freeSlotsUnsaved: [], //They are all saved now
           freeSlotsSaved: [...oldState.freeSlotsSaved, ...oldState.freeSlotsUnsaved] //Merge saved with unsaved since they are all saved now
         })
       } else {
