@@ -31,6 +31,7 @@ export default class SettingsPublicTab extends Component {
     super(props)
     this.state = {
       tags: [],
+      favoriteLocations: [],
       suggestions: [],
       profilePic : '',
       name : '',
@@ -54,12 +55,8 @@ export default class SettingsPublicTab extends Component {
       console.log(res)
       if (res.ok === 1) {
         let newState = {
-          /**
-           * we can't load the tags since the backend app
-           * isn't yet returning them
-           */
-          //tags: JSON.parse(res.user.tags),
           tags: res.user.tags ? JSON.parse(res.user.tags) : [],
+          favoriteLocations: res.user.favoriteLocations ? JSON.parse(res.user.favoriteLocations) : [],
           profilePic: res.user.profilePic,
           name: res.user.name,
           location: res.user.location,
@@ -94,6 +91,24 @@ export default class SettingsPublicTab extends Component {
   handleBioChange = (event) => { this.setState({bio : event.target.value})}
   handleKeycodeChange = (event) => { this.setState({ keycode: event.target.value }) }
 
+  handleFirstFavoriteLocationChange = (event) => { 
+    let newFavoriteLocations = this.state.favoriteLocations
+    newFavoriteLocations[0] = event.target.value
+    this.setState({ favoriteLocations: newFavoriteLocations})
+  }
+
+  handleSecondFavoriteLocationChange = (event) => {
+    let newFavoriteLocations = this.state.favoriteLocations
+    newFavoriteLocations[1] = event.target.value
+    this.setState({ favoriteLocations: newFavoriteLocations })
+  }
+
+  handleThirdFavoriteLocationChange = (event) => {
+    let newFavoriteLocations = this.state.favoriteLocations
+    newFavoriteLocations[2] = event.target.value
+    this.setState({ favoriteLocations: newFavoriteLocations })
+  }
+
   openUploadDialog = () => {
     document.querySelector("input[type='file']").click()
   }
@@ -101,7 +116,6 @@ export default class SettingsPublicTab extends Component {
   uploadPhoto = () => {
     Api.uploadPhoto().then((res) => {
       if (res.ok === 1) {
-        //upload successful
         alert('File upload successful')
         this.setState({
           profilePic: res.url
@@ -113,7 +127,6 @@ export default class SettingsPublicTab extends Component {
   }
 
   removePhoto = () => {
-    //https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png
     Api.updateUserInfo({
       profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png'
     }).then((res) => {
@@ -133,6 +146,7 @@ export default class SettingsPublicTab extends Component {
     console.log(this.state)
     Api.updateUserInfo({
       tags: JSON.stringify(this.state.tags),
+      favoriteLocations: JSON.stringify(this.state.favoriteLocations),
       name: this.state.name,
       location: this.state.location,
       role: this.state.role,
@@ -223,6 +237,15 @@ export default class SettingsPublicTab extends Component {
             handleAddition={this.handleAddTag}
             handleDrag={this.handleDragTag}
             delimiter={delimiters} />
+        </div>
+        <div>
+          <h2>Favorite Locations</h2>
+          <p>First location</p>
+          <input type='text' onChange={this.handleFirstFavoriteLocationChange} value={this.state.favoriteLocations[0]} />
+          <p>Second location</p>
+          <input type='text' onChange={this.handleSecondFavoriteLocationChange} value={this.state.favoriteLocations[1]} />
+          <p>Third location</p>
+          <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} />
         </div>
         <div>
           <button onClick={this.saveChanges}>Save changes</button>
