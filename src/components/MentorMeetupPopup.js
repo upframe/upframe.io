@@ -25,7 +25,7 @@ export default class MentorMeetupPopup extends Component {
   handleLocationChange = (event) => {this.setState({location: event.target.value})}
   handleMessageChange = (event) => {this.setState({message: event.target.value})}
   handleEmailChange = (event) => {this.setState({email: event.target.value})}
-  handleNameChange = (event) => {this.setState({name: event.targe.value})}
+  handleNameChange = (event) => {this.setState({name: event.target.value})}
 
   createMeetup = () => {
     window.location = '/'
