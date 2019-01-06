@@ -157,8 +157,6 @@ export default class SettingsSyncTab extends Component {
       this.setState({
         currId: currentId + 1,
         freeSlotsUnsaved: newFreeSlots
-      }, () => {
-        alert('Free slots saved')
       }) 
     }
   }
@@ -261,6 +259,8 @@ export default class SettingsSyncTab extends Component {
           freeSlotsToDelete: [], //Clear delete
           freeSlotsUnsaved: [], //They are all saved now
           freeSlotsSaved: [...oldState.freeSlotsSaved, ...oldState.freeSlotsUnsaved] //Merge saved with unsaved since they are all saved now
+        }, () => {
+          alert('Free slots saved')
         })
       } else {
         //An eror ocurred
@@ -270,6 +270,7 @@ export default class SettingsSyncTab extends Component {
   }
 
   render() {
+    console.log(this.state)
     //Ou temos token para ir buscar calendários ou nao temos
     if (this.state.googleAccessToken === '') {
       //Nao temos token, queremos ir busca lo
@@ -306,7 +307,7 @@ export default class SettingsSyncTab extends Component {
             selectable
             defaultDate={new Date()}
             defaultView='week'
-            events={[...this.state.events, ...this.state.freeSlotsSaved, ...this.state.freeSlotsUnsaved]}
+            events={[...this.state.events, ...this.state.freeSlotsUnsaved]} //...this.state.freeSlotsSaved,
             onSelectEvent={event => this.deleteFreeSlot(event)}
             onSelectSlot={slot => this.addFreeSlot(slot)}
           />
