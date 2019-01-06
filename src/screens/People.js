@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import * as Api from '../utils/Api';
 import MentorMeetupPopup from '../components/MentorMeetupPopup';
-import moment from 'moment';
 
 export default class People extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      mentorExists: 1,
-      showDialog: 0,
+      selectedStartTime: 0,
+      selectedId: 0,
+      showPopup: 0,
+      mentorExists: 0,
       mentor: {
         bio: 'Loading',
         company: 'Loading',
@@ -26,120 +27,107 @@ export default class People extends Component {
         uid: 'Loading',
         website: 'Loading',
         tags: [],
-        freeSlots: []
+        freeSlots: [],
+        favoriteLocations: ['Startup Lisboa', 'Arabesco']
       }
     }
   }
 
   componentDidMount() {
-    let keycode = window.location.pathname.split('/')[1]
-    let nowDate = new Date()
-    let limitDate = moment().add('days', 30)
-    // let weekday = new Array(7);
-    // weekday[0] = "Sun";
-    // weekday[1] = "Mon";
-    // weekday[2] = "Tue";
-    // weekday[3] = "Wed";
-    // weekday[4] = "Thu";
-    // weekday[5] = "Fri";
-    // weekday[6] = "Sat";
-    // let month = new Array();
-    // month[0] = "January";
-    // month[1] = "February";
-    // month[2] = "March";
-    // month[3] = "April";
-    // month[4] = "May";
-    // month[5] = "June";
-    // month[6] = "July";
-    // month[7] = "August";
-    // month[8] = "September";
-    // month[9] = "October";
-    // month[10] = "November";
-    // month[11] = "December";
+    this.setState({
+      mentorExists: 1,
+      mentor: {
+        bio: 'res.mentor.bio',
+        company: 'res.mentor.company',
+        dribbble: 'res.mentor.dribbble',
+        email: 'res.mentor.email',
+        facebook: 'res.mentor.facebook',
+        github: 'res.mentor.github',
+        linkedin: 'res.mentor.linkedin',
+        location: 'res.mentor.location',
+        name: 'res.mentor.name',
+        profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png',
+        role: 'res.mentor.role',
+        twitter: 'res.mentor.twitter',
+        uid: 'asd',
+        website: 'asd',
+        tags: [],
+        freeSlots: [
+          {
+            start: new Date(),
+            end: new Date(),
+            sid: '123'
+          }
+        ],
+        favoriteLocations: ['Startup Lisboa', 'Arabesco']
+      }
+    })
+    // let keycode = window.location.pathname.split('/')[1]
+    // Api.getMentorInfo(keycode).then((res) => {
+    //   if (res.message) {
+    //     this.setState({
+    //       mentorExists: 0
+    //     })
+    //   } else {
+    //     this.setState({
+    //       mentorExists: 1,
+    //       mentor: {
+    //         bio: res.mentor.bio,
+    //         company: res.mentor.company,
+    //         dribbble: res.mentor.dribbble,
+    //         email: res.mentor.email,
+    //         facebook: res.mentor.facebook,
+    //         github: res.mentor.github,
+    //         linkedin: res.mentor.linkedin,
+    //         location: res.mentor.location,
+    //         name: res.mentor.name,
+    //         profilePic: res.mentor.profilePic,
+    //         role: res.mentor.role,
+    //         twitter: res.mentor.twitter,
+    //         uid: res.mentor.uid,
+    //         website: res.mentor.website,
+    //         tags: res.mentor.tags ? JSON.parse(res.mentor.tags) : [],
+    //         freeSlots: res.mentor.slots,
+    //         favoriteLocations: res.mentor.locations ? JSON.parse(res.mentor.locations) : []
+    //       }
+    //     })
+    //   }
+    // })
+  }
 
-    Api.getFreeSlots(nowDate, limitDate).then((res) => {
-      return res.slots
-      // let freeSlots = res.slots.map((slot) => {
-      //   let startDate = new Date(slot.start)
-      //   let endDate = new Date(slot.end)
-      //   let dayOfWeek = weekday[startDate.getDay()]
-      //   let monthText = month[startDate.getMonth()]
-      //   //getDate() dia
-      //   return (
-      //     start
-      //   )
-      // })
-    }).then((res) => {
-      let slots = res
-      Api.getMentorInfo(keycode).then((res) => {
-        console.log(res)
-        if (res.message) {
-          this.setState({
-            mentorExists: 0
-          })
-        } else {
-          this.setState({
-            mentor: {
-              bio: res.mentor.bio,
-              company: res.mentor.company,
-              dribbble: res.mentor.dribbble,
-              email: res.mentor.email,
-              facebook: res.mentor.facebook,
-              github: res.mentor.github,
-              linkedin: res.mentor.linkedin,
-              location: res.mentor.location,
-              name: res.mentor.name,
-              profilePic: res.mentor.profilePic,
-              role: res.mentor.role,
-              twitter: res.mentor.twitter,
-              uid: res.mentor.uid,
-              website: res.mentor.website,
-              tags: res.mentor.tags ? JSON.parse(res.mentor.tags) : [],
-              freeSlots: slots
-            }
-          })
-        }
-      })
+  selectSlot = (event) => {
+    this.setState({
+      selectedStartTime: this.state.mentor.freeSlots.find(slot => slot.sid === event.target.id).start,
+      selectedId: event.target.id,
+      showPopup: 1
     })
   }
 
-  mentorTagsToElement = (tags) => {
-    return tags.map((tag) => {
-      return (
-        <li className='mentor-tags-list-element'>{tag.text}</li>
-      )
+  hidePopup = () => {
+    this.setState({
+      showPopup: 0
     })
-  }
-
-  displayFreeSlots = () => {
-    if (this.state.mentor.freeSlots) {
-      return this.state.mentor.freeSlots.map((slot) => {
-        let startDate = new Date(slot.start)
-        return (
-          <div onClick={this.selectSlot}>
-            <p>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getUTCFullYear()} @ {startDate.getHours()}:{startDate.getMinutes()}</p>
-          </div>
-        )
-      })
-    }
-  }
-
-  selectSlot = () => {
-    document.getElementById('mentor-meetup-popup').style.display = 'block'
   }
 
   render() {
-    console.log(this.state.mentor)
     if (this.state.mentorExists === 1) {
       return (
         <div>
-          <MentorMeetupPopup />
+          {this.state.showPopup === 1 
+            ? <MentorMeetupPopup 
+                show={this.state.showPopup} 
+                hidePopup={this.hidePopup} 
+                sid={this.state.selectedId}
+                locations={this.state.mentor.favoriteLocations}
+                startTime={this.state.selectedStartTime}/> 
+            : null
+          }
           <img src={this.state.mentor.profilePic} alt='Profile' />
           <p>{this.state.mentor.name}</p>
           <p>{this.state.mentor.role} at {this.state.mentor.company}</p>
           <p>{this.state.mentor.location}</p>
           <ul className='mentor-card-tags'>
-            {this.mentorTagsToElement(this.state.mentor.tags)}
+          {this.mentorTagsToElement(this.state.mentor.tags)}
           </ul>
           <p>{this.state.mentor.bio}</p>
           <a href={'http://www.twitter.com/' + this.state.mentor.twitter}>Twitter</a><br />
@@ -156,4 +144,26 @@ export default class People extends Component {
       );
     }
   }
+
+  mentorTagsToElement = (tags) => {
+    return tags.map((tag) => {
+      return (
+        <li className='mentor-tags-list-element'>{tag.text}</li>
+      )
+    })
+  }
+
+  displayFreeSlots = () => {
+    if (this.state.mentor.freeSlots) {
+      return this.state.mentor.freeSlots.map((slot) => {
+        let startDate = new Date(slot.start)
+        return (
+          <div onClick={this.selectSlot} id={slot.sid}>
+            <p id={slot.sid}>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getUTCFullYear()} @ {startDate.getHours()}:{startDate.getMinutes()}</p>
+          </div>
+        )
+      })
+    }
+  }
+
 } 
