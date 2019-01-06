@@ -128,12 +128,11 @@ export function getMentorInfo(keycode) {
   return fetch(`${schema}://${host}:${port}/mentor/${keycode}`, fetchData).then((res) => res.json())
 }
 
-export function createMeetup (location, start, mentorKeycode) {
-  let fetchBody = {location, start, mentorKeycode}
+export function createMeetup (slotId, location, message, email, name) {
+  let fetchBody = {slotId, location, message, email, name}
   let fetchData = {
     method: 'POST',
     mode: 'cors',
-    credentials: 'include',
     body: JSON.stringify(fetchBody),
     headers: {
       'Content-Type': 'application/json'
