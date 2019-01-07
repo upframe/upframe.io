@@ -19,7 +19,9 @@ export default class Meetup extends Component {
   confirmMeetup = () => {
     Api.confirmMeetup(this.state.meetupId).then((res) => {
       if (res.ok === 0) {
-        alert('Could not confirm your meetup')
+        alert('Could not confirm your meetup, make sure you are logged in')
+      } else {
+        alert('Meetup confirmed!')
       }
       console.log(res)
     })
@@ -28,7 +30,9 @@ export default class Meetup extends Component {
   refuseMeetup = () => {
     Api.refuseMeetup(this.state.meetupId).then((res) => {
       if (res.ok === 0) {
-        alert('Could not refuse your meetup')
+        alert('Could not refuse your meetup, make sure you are logged in')
+      } else {
+        alert('Meetup canceled successfuly!')
       }
       console.log(res)
     })
