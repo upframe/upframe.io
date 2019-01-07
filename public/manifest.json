@@ -1,6 +1,13 @@
 {
   "short_name": "Connect",
   "name": "Connect",
+  "scope": "/",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#ff004b",
+  "background_color": "#ffffff",
+  "description": "Connecting young entrepreneurs with mentors.",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -12,10 +19,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
-  "description": "Connecting young entrepreneurs with mentors."
+  ]
 }
