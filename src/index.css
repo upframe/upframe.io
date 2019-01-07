@@ -1,22 +1,26 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: "Noto Sans", -apple-system, BlinkMacSystemFont, "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 :root {
-  --primary: #ff004b;
-  
+  --primary: #ff004b;  
   --primarytext: #fff;
 
   --light-gray: #c2c5ca;
-
   --border-lightgray: #d0d2d6;
 
   --slate: #708090;
   --darkgray: #303030;
+
+  --brownish-grey: #646464;
+  --orange: #fe2813;
+  --pink: #ff004b;
+  --slate-gray: #5f6163;
+
 }
 
 /* * * * * * * * *
@@ -190,6 +194,7 @@ img {
 .hr {
   height: 1px;
   background-color: var(--border-lightgray);
+  margin: 2rem;
 }
 
 /* NAVBAR */
@@ -309,6 +314,8 @@ code {
 .card.mentor-card {
   display: flex;
   flex-wrap: wrap;
+  color: var(--slate-gray);
+  box-shadow: 0 0.5px 3px 0 rgba(0, 0, 0, 0.5);
   padding: 3rem;
   margin-top: 3rem;
 }
@@ -327,63 +334,64 @@ code {
   max-height: 13rem;
 }
 
-.card.mentor-card > div:first-of-type .mentor-info {
-  margin-left: 2rem;
-}
-
-.card.mentor-card > div:first-of-type .mentor-info h1 {
-  margin: 0.5rem 0 0 0;
-}
-
-.card.mentor-card > div:first-of-type .mentor-info p {
-  color: #999;
-  font-size: 1.3rem;
+.card.mentor-card h1 {
+  font-size: 2rem;
+  letter-spacing: 0.03125rem;
+  color: #000;
   margin: 0;
 }
 
-.card.mentor-card > div:first-of-type .mentor-info .mentor-card-tags {
+.card.mentor-card p {
+  font-size: 1rem;
+  letter-spacing: 0.0125rem;
+  margin: 0;
+}
+
+.card.mentor-card .mentor-info {
+  margin-left: 2rem;
+}
+
+.card.mentor-card .mentor-info .mentor-card-tags {
   display: flex;
 }
 
-.card.mentor-card > div:first-of-type .mentor-info .mentor-card-tags .mentor-tag {
+.card.mentor-card .mentor-info .mentor-card-tags .mentor-tag {
   cursor: pointer;
-  background: #eee;
-  color: #999;
-  padding: 0.1rem 1rem;
-  border-radius: 0.125rem;
+  color: var(--brownish-grey);
+  padding: 1rem 1rem;
+  border: 1px solid var(--border-lightgray);
+  border-radius: 10rem;
   margin: 0 .75rem 0 0;
 }
 
-.card.mentor-card span.hr {
-  margin: 2rem;
-}
-
-.card.mentor-card > div:last-of-type .mentor-card-slots {
+.card.mentor-card .mentor-card-slots {
   display: flex;
   flex-wrap: wrap;
 }
 
-.card.mentor-card > div:last-of-type .mentor-card-slot {
+.card.mentor-card .mentor-card-slot {
+  color: #000;
+  letter-spacing: 0.0125rem;
   padding: .75rem 1.5rem;
   border: 1px solid var(--border-lightgray);
   border-radius: 0.2rem;
 }
 
-.card.mentor-card > div:last-of-type .mentor-card-slot:not(:last-child) {
+.card.mentor-card .mentor-card-slot:not(:last-child) {
   margin-right: 1rem;
 }
 
-.card.mentor-card > div:last-of-type .mentor-card-slot span.month {
+.card.mentor-card .mentor-card-slot span.month {
   display: block;
-  color: var(--primary);
+  color: var(--orange);
 }
 
-.card.mentor-card > div:last-of-type .mentor-card-slot span.day {
+.card.mentor-card .mentor-card-slot span.day {
   display: block;
   text-align: center;
 }
 
-.card.mentor-card > div:last-of-type .mentor-card-slot > div:last-of-type {
+.card.mentor-card .mentor-card-slot > div:last-of-type {
   margin-left: 1rem;
 }
 
