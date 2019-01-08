@@ -10,8 +10,7 @@ export default class People extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedStartTime: 0,
-      selectedId: 0,
+      selectedSlot: '',
       showPopup: 0,
       mentorExists: 0,
       mentor: {
@@ -99,14 +98,25 @@ export default class People extends Component {
   }
 
   selectSlot = (event) => {
-    console.log(event.target.dataset.id)
-    /*
-    this.setState({
-      selectedStartTime: this.state.mentor.freeSlots.find(slot => slot.sid === event.target.dataset.id).start,
-      selectedId: event.target.dataset.id,
-      showPopup: 1
-    })
-    */
+    let target = event.target
+    while(target.parentNode && !target.dataset.id && !target.classList.contains('mentor-card-slot')) target = target.parentNode
+    
+    if(target.dataset.id && target.classList.contains('mentor-card-slot')) {
+      // remove current active slot
+      document.querySelectorAll('.mentor-card-slot.active').forEach((slot) => slot.classList.remove('active'))
+      // change selected slot to active mode
+      target.classList.add('active') 
+
+      this.setState({ selectedSlot: target.dataset.id }, () => { console.log(this.state) })
+    }
+  }
+
+  showPopup = (event) => {
+    if (this.state.selectedSlot) {
+      this.setState({
+        showPopup: 1
+      })
+    }
   }
 
   hidePopup = () => {
@@ -148,18 +158,20 @@ export default class People extends Component {
   render() {
     if (this.state.mentorExists === 1) {
       return (
-        <div className="container">
-          <Breadcrumbs />
-          <div className="card mentor-card">
-            {this.state.showPopup === 1
-              ? <MentorMeetupPopup
+        <div id="people" className="container">
+          {this.state.showPopup === 1
+              ?
+              <MentorMeetupPopup
                 show={this.state.showPopup}
                 hidePopup={this.hidePopup}
-                sid={this.state.selectedId}
+                sid={this.state.selectedSlot}
                 locations={this.state.mentor.favoriteLocations}
-                startTime={this.state.selectedStartTime} />
-              : null
-            }
+                name={this.state.mentor.name} />
+              :
+              null
+          }
+          <Breadcrumbs />
+          <div className="card mentor-card">
             <div>
               <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' />
               <div className="mentor-info">
@@ -183,6 +195,7 @@ export default class People extends Component {
               <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>*/}
               <ul className="mentor-card-slots">
                 {this.displayFreeSlots()}
+                <button className="btn btn-primary" onClick={this.showPopup}><li className="mentor-card-slot-request">Request</li></button>
               </ul>
               </div>
           </div>

@@ -14,7 +14,11 @@ export default class MentorMeetupPopup extends Component {
     this.state = {
       currentTab: 1,
       message: 'Write a message',
+
+      mentorName: this.props.name,
+      slotID: this.props.sid,
       location: this.props.locations[0],
+      
       email: '',
       name: ''
     }
@@ -75,15 +79,27 @@ export default class MentorMeetupPopup extends Component {
       return (
         <div className='dim-background'>
           <div id='mentor-meetup-popup' className='mentor-meetup-popup'>
-            <button onClick={this.props.hidePopup}>Close</button>
-            <h1>Reach out to Malik</h1>
-            <div onClick={this.grabCoffee}>
-              <h1>Grab a coffe</h1>
-              <p>Pick from a selection of Malik's favourite cafés and local coworking spaces.</p>
+            <div className="flex justify-center">
+              <h1 className="font-weight-normal">Reach out to {this.state.mentorName}</h1>
+              <span className="close" onClick={this.props.hidePopup}>&#215;</span>
             </div>
-            <div onClick={this.makeCall}>
-              <h1>Make a call remotely</h1>
-              <p>Reach out to Malik from anywhere in the world. A unique link will be generated and sent to your calendar privately.</p>
+            <span className="hr"></span>
+            <div className='meetup-options'>
+              <div className='meetup-option' onClick={this.grabCoffee}>
+                <img src="/media/coffee.svg"></img>
+                <div>
+                  <h1 className='meetup-option-title font-weight-normal'>Grab a coffe</h1>
+                  <p>Pick from a selection of Malik's favourite cafés and local coworking spaces.</p>
+                </div>
+              </div>
+
+              <div className='meetup-option' onClick={this.makeCall}>
+                <img src="/media/call.svg"></img>
+                <div>
+                  <h1 className='meetup-option-title font-weight-normal'>Make a call remotely</h1>
+                  <p>Reach out to Malik from anywhere in the world. A unique link will be generated and sent to your calendar privately.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -92,8 +108,10 @@ export default class MentorMeetupPopup extends Component {
       return (
         <div className='dim-background'>
           <div id='mentor-meetup-popup' className='mentor-meetup-popup'>
-            <button onClick={this.props.hidePopup}>Close</button>
-            <h1>Grab a coffee with Malik</h1>
+            <div className='flex justify-center'>
+              <h1 className='font-weight-normal'>Grab a coffee with {this.state.mentorName}</h1>
+              <span className='close' onClick={this.props.hidePopup}>&#215;</span>
+            </div>
             <p>Pick a nearby place</p>
             <select onChange={this.handleLocationChange}>
               {this.props.locations.map((location) => {
@@ -102,10 +120,10 @@ export default class MentorMeetupPopup extends Component {
                 )
               })}
             </select><br/>
-            <textarea name="message" cols="40" rows="5" onChange={this.handleMessageChange}>Write a message</textarea><br/>
-            <input type='email' onChange={this.handleEmailChange} /><br />
-            <input type='text' onChange={this.handleNameChange} /><br />
-            <button onClick={this.createMeetup}>Send</button>
+            <textarea name='message' cols='40' rows='5' onChange={this.handleMessageChange}>Write a message</textarea><br/>
+            <input type='email' placeholder='Your email' onChange={this.handleEmailChange} /><br />
+            <input type='text' placeholder='Your name' onChange={this.handleNameChange} /><br />
+            <button className='btn btn-primary' onClick={this.createMeetup}>Send</button>
           </div>
         </div>
       )
@@ -114,7 +132,7 @@ export default class MentorMeetupPopup extends Component {
         <div className='dim-background'>
           <div id='mentor-meetup-popup' className='mentor-meetup-popup'>
             <button onClick={this.props.hidePopup}>Close</button>
-            <h1>Make a call with Malik</h1>
+            <h1>Make a call with {this.state.mentorName}</h1>
             <textarea name="message" cols="40" rows="5" onChange={this.handleMessageChange}></textarea><br />
             <input type='email' onChange={this.handleEmailChange} /><br />
             <input type='text' onChange={this.handleNameChange} /><br />

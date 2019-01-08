@@ -163,7 +163,7 @@ input[type="file"] {
 
 .container {
   width: 75rem;
-  max-width: 90%;
+  max-width: 70%;
   margin: 0 auto;
 }
 
@@ -311,6 +311,10 @@ code {
 }
 
 /* Mentor card (mentor page) */
+#people.container {
+  padding-bottom: 4rem;
+}
+
 .card.mentor-card {
   display: flex;
   flex-wrap: wrap;
@@ -357,6 +361,7 @@ code {
 
 .card.mentor-card .mentor-info .mentor-card-tags .mentor-tag {
   cursor: pointer;
+  font-size: 0.9rem;
   color: var(--brownish-grey);
   padding: 1rem 1rem;
   border: 1px solid var(--border-lightgray);
@@ -371,10 +376,18 @@ code {
 
 .card.mentor-card .mentor-card-slot {
   color: #000;
+  font-size: 0.9rem;
   letter-spacing: 0.0125rem;
-  padding: .75rem 1.5rem;
+  padding: .5rem 1rem;
   border: 1px solid var(--border-lightgray);
   border-radius: 0.2rem;
+  cursor: pointer;
+  transition: .25s ease-in-out all;
+}
+
+.card.mentor-card .mentor-card-slot.active {
+  border-color: var(--primary);
+  box-shadow: 0 0 .25rem 0 var(--primary);
 }
 
 .card.mentor-card .mentor-card-slot:not(:last-child) {
@@ -393,6 +406,10 @@ code {
 
 .card.mentor-card .mentor-card-slot > div:last-of-type {
   margin-left: 1rem;
+}
+
+.card.mentor-card .mentor-card-slot-request {
+  letter-spacing: 0.10625rem;
 }
 
 /* Tags */
@@ -474,18 +491,81 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 }
 */
 
+.dim-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(27, 36, 65, 0.75);
+}
+
 .mentor-meetup-popup {
   display: block;
   background: white;
-  position: fixed;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  transform: translate(-50%, -50%);
   z-index: 999;
 }
 
-.dim-background {
-  height: calc(100% - 4rem - 1px);
-  width: 100%;
+.mentor-meetup-popup .close {
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.623);
+  top: 0;
+  right: 1rem;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: .25s ease-in-out all;
+}
+
+.mentor-meetup-popup .close:hover {
+  color: var(--primary);
+}
+
+.mentor-meetup-popup > div:first-child {
+  display: flex;
+  justify-items: center;
+}
+
+.mentor-meetup-popup > div:first-child h1 {
+  color: var(--brownish-grey);
+  letter-spacing: 0.03125rem;
+}
+
+.mentor-meetup-popup span.hr {
+  width: 85%; 
+}
+
+.mentor-meetup-popup .meetup-options {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.mentor-meetup-popup .meetup-option {
+  display: flex;
+  cursor: pointer;
+}
+
+.mentor-meetup-popup .meetup-option {
+  margin-bottom: 3rem;
+}
+
+.mentor-meetup-popup .meetup-option img {
+  margin-right: 2rem;
+}
+
+.mentor-meetup-popup .meetup-option h1 {
+  color: var(--primary);
+  margin: 0;
+}
+
+.mentor-meetup-popup .meetup-option p {
+  color: var(--slate-gray);
+  letter-spacing: 0.0125rem;
+  margin: 0;
 }
 
 textarea {
