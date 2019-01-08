@@ -141,17 +141,20 @@ export default class People extends Component {
       return this.state.mentor.freeSlots.map((slot, i) => {
         let startDate = new Date(slot.start)
         return (
-          <li className="mentor-card-slot flex" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
+          <li className="mentor-card-slot flex justify-center" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
             <div>
-              <span className="month font-weight-bold text-uppercase">{months[startDate.getMonth()]}</span>
-              <span className="day">{startDate.getDate()}</span>
-            </div>
-            <div className="flex items-center">
-              <span>{days[startDate.getDay()]} {startDate.getHours()}.{startDate.getMinutes()} {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
+              <div className="flex flex-column">
+                <span className="month font-weight-bold text-uppercase">{months[startDate.getMonth()]}</span>
+                <span className="day">{startDate.getDate()}</span>
+              </div>
+              <div className="flex items-center">
+                <span>{days[startDate.getDay()]} {startDate.getHours()}.{startDate.getMinutes() < 10 ? `0${startDate.getMinutes()}` : startDate.getMinutes() } {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
+              </div>
             </div>
           </li>
         )
       })
+      
     }
   }
 
@@ -195,7 +198,10 @@ export default class People extends Component {
               <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>*/}
               <ul className="mentor-card-slots">
                 {this.displayFreeSlots()}
-                <button className="btn btn-primary" onClick={this.showPopup}><li className="mentor-card-slot-request">Request</li></button>
+                { this.state.mentor.freeSlots.length
+                  ? <button className="btn btn-primary" onClick={this.showPopup}><li className="mentor-card-slot-request">Request</li></button>
+                  : null
+                }
               </ul>
               </div>
           </div>

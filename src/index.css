@@ -66,6 +66,10 @@ label.light-gray {
   text-transform: uppercase; 
 }
 
+.text-center {
+  text-align: center;
+}
+
 /* FLEXBOX */
 .flex {
   display: flex;
@@ -100,6 +104,7 @@ label.light-gray {
 ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 /* ALIGNING */
@@ -375,12 +380,16 @@ code {
 }
 
 .card.mentor-card .mentor-card-slot {
+  flex-basis: 8rem;
+  display: flex;
+  justify-content: center;
   color: #000;
   font-size: 0.9rem;
   letter-spacing: 0.0125rem;
   padding: .5rem 1rem;
   border: 1px solid var(--border-lightgray);
   border-radius: 0.2rem;
+  margin-bottom: 1rem;
   cursor: pointer;
   transition: .25s ease-in-out all;
 }
@@ -388,6 +397,10 @@ code {
 .card.mentor-card .mentor-card-slot.active {
   border-color: var(--primary);
   box-shadow: 0 0 .25rem 0 var(--primary);
+}
+
+.card.mentor-card .mentor-card-slot > div {
+  display: flex;
 }
 
 .card.mentor-card .mentor-card-slot:not(:last-child) {
@@ -404,7 +417,7 @@ code {
   text-align: center;
 }
 
-.card.mentor-card .mentor-card-slot > div:last-of-type {
+.card.mentor-card .mentor-card-slot > div div:last-of-type {
   margin-left: 1rem;
 }
 
@@ -501,7 +514,6 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 }
 
 .mentor-meetup-popup {
-  display: block;
   background: white;
   position: absolute;
   top: 50%;
@@ -525,6 +537,11 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   color: var(--primary);
 }
 
+.mentor-meetup-popup .hr {
+  width: 95%;
+  margin: 0 auto 2rem auto;
+}
+
 .mentor-meetup-popup > div:first-child {
   display: flex;
   justify-items: center;
@@ -535,10 +552,6 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   letter-spacing: 0.03125rem;
 }
 
-.mentor-meetup-popup span.hr {
-  width: 85%; 
-}
-
 .mentor-meetup-popup .meetup-options {
   width: 90%;
   margin: 0 auto;
@@ -547,14 +560,18 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 .mentor-meetup-popup .meetup-option {
   display: flex;
   cursor: pointer;
+  padding: 1rem;
+  margin-bottom: 3rem;
+  transition: .25s ease-in-out background-color;
 }
 
-.mentor-meetup-popup .meetup-option {
-  margin-bottom: 3rem;
+.mentor-meetup-popup .meetup-option:hover {
+  background-color: #d3d3d3;
 }
 
 .mentor-meetup-popup .meetup-option img {
   margin-right: 2rem;
+
 }
 
 .mentor-meetup-popup .meetup-option h1 {
@@ -567,6 +584,15 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   letter-spacing: 0.0125rem;
   margin: 0;
 }
+
+/* MEETUP OPTION */
+.mentor-meetup-popup#coffee span.hr {
+  margin: 0 auto;
+}
+
+.mentor-meetup-popup #meetup-form > * {
+  margin-bottom: 1rem;
+} 
 
 textarea {
   resize: none;
