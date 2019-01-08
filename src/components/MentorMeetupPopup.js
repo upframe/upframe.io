@@ -13,7 +13,7 @@ export default class MentorMeetupPopup extends Component {
     super(props)
     this.state = {
       currentTab: 1,
-      message: 'Write a message',
+      message: 'Notes',
 
       mentorName: this.props.name,
       slotID: this.props.sid,
@@ -128,7 +128,7 @@ export default class MentorMeetupPopup extends Component {
                   )
                 })}
               </select>
-              <textarea name='message' cols='40' rows='5' maxLength='256' value='Notes here' onChange={this.handleMessageChange}></textarea>
+              <textarea name='message' cols='40' rows='5' maxLength='256' value={this.state.message} onChange={this.handleMessageChange}></textarea>
               <input type='email' placeholder='Your email' onChange={this.handleEmailChange} />
               <input type='text' placeholder='Your name' onChange={this.handleNameChange} />
               <button className='btn btn-primary center' onClick={this.createMeetup}>Send</button>
@@ -146,7 +146,7 @@ export default class MentorMeetupPopup extends Component {
             </div>
             <span className='hr'></span>
             <div id='meetup-form' className='flex flex-column'>
-              <textarea name='message' cols='40' rows='5' maxLength='256' value='Notes here' onChange={this.handleMessageChange}></textarea>
+              <textarea name='message' cols='40' rows='5' maxLength='256' value={this.state.message} onChange={this.handleMessageChange}></textarea>
               <input type='email' placeholder='Your email' onChange={this.handleEmailChange} />
               <input type='text' placeholder='Your name' onChange={this.handleNameChange} />
               <button className='btn btn-primary center' onClick={this.createMeetup}>Send</button>
