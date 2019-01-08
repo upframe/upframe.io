@@ -23,7 +23,7 @@ export default class MainSearchBar extends Component {
     if (this.state.tags !== []) {
       return (
         <div class="popular-tags">
-          <h2 className="normal">Popular Tags</h2>
+          <h2 className="font-weight-normal">Popular Tags</h2>
           <div>
             {this.state.tags.map((tag) => {
               return (

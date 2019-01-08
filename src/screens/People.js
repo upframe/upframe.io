@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
-import * as Api from '../utils/Api';
-import MentorMeetupPopup from '../components/MentorMeetupPopup';
+import React, { Component } from 'react'
+
+import * as Api from '../utils/Api'
+
+import Breadcrumbs from '../components/Breadcrumbs'
+import MentorMeetupPopup from '../components/MentorMeetupPopup'
 
 export default class People extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      selectedStartTime: 0,
-      selectedId: 0,
+      selectedSlot: '',
       showPopup: 0,
       mentorExists: 0,
       mentor: {
@@ -96,11 +98,25 @@ export default class People extends Component {
   }
 
   selectSlot = (event) => {
-    this.setState({
-      selectedStartTime: this.state.mentor.freeSlots.find(slot => slot.sid === event.target.id).start,
-      selectedId: event.target.id,
-      showPopup: 1
-    })
+    let target = event.target
+    while(target.parentNode && !target.dataset.id && !target.classList.contains('mentor-card-slot')) target = target.parentNode
+    
+    if(target.dataset.id && target.classList.contains('mentor-card-slot')) {
+      // remove current active slot
+      document.querySelectorAll('.mentor-card-slot.active').forEach((slot) => slot.classList.remove('active'))
+      // change selected slot to active mode
+      target.classList.add('active') 
+
+      this.setState({ selectedSlot: target.dataset.id }, () => { console.log(this.state) })
+    }
+  }
+
+  showPopup = (event) => {
+    if (this.state.selectedSlot) {
+      this.setState({
+        showPopup: 1
+      })
+    }
   }
 
   hidePopup = () => {
@@ -109,60 +125,86 @@ export default class People extends Component {
     })
   }
 
+  mentorTagsToElement = (tags) => {
+    return tags.map((tag, i) => {
+      return (
+        <li key={i} className='mentor-tag'>{tag.text}</li>
+      )
+    })
+  }
+
+  displayFreeSlots = () => {
+    let days = ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat']
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
+    if (this.state.mentor.freeSlots) {
+      return this.state.mentor.freeSlots.map((slot, i) => {
+        let startDate = new Date(slot.start)
+        return (
+          <li className="mentor-card-slot flex" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
+            <div>
+              <span className="month font-weight-bold text-uppercase">{months[startDate.getMonth()]}</span>
+              <span className="day">{startDate.getDate()}</span>
+            </div>
+            <div className="flex items-center">
+              <span>{days[startDate.getDay()]} {startDate.getHours()}.{startDate.getMinutes()} {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
+            </div>
+          </li>
+        )
+      })
+    }
+  }
+
   render() {
     if (this.state.mentorExists === 1) {
       return (
-        <div>
-          {this.state.showPopup === 1 
-            ? <MentorMeetupPopup 
-                show={this.state.showPopup} 
-                hidePopup={this.hidePopup} 
-                sid={this.state.selectedId}
+        <div id="people" className="container">
+          {this.state.showPopup === 1
+              ?
+              <MentorMeetupPopup
+                show={this.state.showPopup}
+                hidePopup={this.hidePopup}
+                sid={this.state.selectedSlot}
                 locations={this.state.mentor.favoriteLocations}
-                startTime={this.state.selectedStartTime}/> 
-            : null
+                name={this.state.mentor.name} />
+              :
+              null
           }
-          <img src={this.state.mentor.profilePic} alt='Profile' />
-          <p>{this.state.mentor.name}</p>
-          <p>{this.state.mentor.role} at {this.state.mentor.company}</p>
-          <p>{this.state.mentor.location}</p>
-          <ul className='mentor-card-tags'>
-          {this.mentorTagsToElement(this.state.mentor.tags)}
-          </ul>
-          <p>{this.state.mentor.bio}</p>
-          <a href={'http://www.twitter.com/' + this.state.mentor.twitter}>Twitter</a><br />
-          <a href={'http://www.linkedin.com/' + this.state.mentor.linkedin}>LinkedIn</a><br />
-          <a href={'http://www.github.com/' + this.state.mentor.github}>Github</a><br />
-          <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
-          <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>
-          {this.displayFreeSlots()}
+          <Breadcrumbs />
+          <div className="card mentor-card">
+            <div>
+              <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' />
+              <div className="mentor-info">
+                <h1 className="font-weight-normal">{this.state.mentor.name}</h1>
+                <p>{this.state.mentor.role} at {this.state.mentor.company}</p>
+                <p>{this.state.mentor.location}</p>
+                <ul className="mentor-card-tags">
+                  {this.mentorTagsToElement(this.state.mentor.tags)}
+                </ul>
+                <p>{this.state.mentor.bio}</p>
+              </div>
+            </div>
+            
+            <span className="hr"></span>
+
+            <div>
+              {/*<a href={'http://www.twitter.com/' + this.state.mentor.twitter}>Twitter</a><br />
+              <a href={'http://www.linkedin.com/' + this.state.mentor.linkedin}>LinkedIn</a><br />
+              <a href={'http://www.github.com/' + this.state.mentor.github}>Github</a><br />
+              <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
+              <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>*/}
+              <ul className="mentor-card-slots">
+                {this.displayFreeSlots()}
+                <button className="btn btn-primary" onClick={this.showPopup}><li className="mentor-card-slot-request">Request</li></button>
+              </ul>
+              </div>
+          </div>
         </div>
       )
     } else {
       return (
         <h1>Este mentor não existe</h1>
       );
-    }
-  }
-
-  mentorTagsToElement = (tags) => {
-    return tags.map((tag) => {
-      return (
-        <li className='mentor-tags-list-element'>{tag.text}</li>
-      )
-    })
-  }
-
-  displayFreeSlots = () => {
-    if (this.state.mentor.freeSlots) {
-      return this.state.mentor.freeSlots.map((slot) => {
-        let startDate = new Date(slot.start)
-        return (
-          <div onClick={this.selectSlot} id={slot.sid}>
-            <p id={slot.sid}>{startDate.getDate()}-{startDate.getMonth()}-{startDate.getUTCFullYear()} @ {startDate.getHours()}:{startDate.getMinutes()}</p>
-          </div>
-        )
-      })
     }
   }
 
