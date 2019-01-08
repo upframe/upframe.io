@@ -83,14 +83,14 @@ export default class MentorMeetupPopup extends Component {
       return (
         <div className='dim-background'>
           <div className='mentor-meetup-popup flex flex-column'>
-            <div className="flex justify-center">
-              <h1 className="font-weight-normal">Reach out to {this.state.mentorName}</h1>
-              <span className="close" onClick={this.props.hidePopup}>&#215;</span>
+            <div className='flex justify-center'>
+              <h1 className='font-weight-normal'>Reach out to {this.state.mentorName}</h1>
+              <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>
-            <span className="hr"></span>
+            <span className='hr'></span>
             <div className='meetup-options'>
               <div className='meetup-option' onClick={this.grabCoffee}>
-                <img src="/media/coffee.svg"></img>
+                <img src='/media/coffee.svg' alt='Coffee cup'></img>
                 <div>
                   <h1 className='meetup-option-title font-weight-normal'>Grab a coffe</h1>
                   <p>Pick from a selection of Malik's favourite cafés and local coworking spaces.</p>
@@ -98,7 +98,7 @@ export default class MentorMeetupPopup extends Component {
               </div>
 
               <div className='meetup-option' onClick={this.makeCall}>
-                <img src="/media/call.svg"></img>
+                <img src='/media/call.svg' alt='Phone'></img>
                 <div>
                   <h1 className='meetup-option-title font-weight-normal'>Make a call remotely</h1>
                   <p>Reach out to Malik from anywhere in the world. A unique link will be generated and sent to your calendar privately.</p>
@@ -122,13 +122,13 @@ export default class MentorMeetupPopup extends Component {
             </div>
             <div id='meetup-form' className='flex flex-column'>
               <select onChange={this.handleLocationChange}>
-                {this.props.locations.map((location) => {
+                {this.props.locations.map((location, i) => {
                   return (
-                    <option value={location}>{location}</option>
+                    <option key={i} value={location}>{location}</option>
                   )
                 })}
               </select>
-              <textarea name='message' cols='40' rows='5' onChange={this.handleMessageChange}>Notes here</textarea>
+              <textarea name='message' cols='40' rows='5' maxLength='256' value='Notes here' onChange={this.handleMessageChange}></textarea>
               <input type='email' placeholder='Your email' onChange={this.handleEmailChange} />
               <input type='text' placeholder='Your name' onChange={this.handleNameChange} />
               <button className='btn btn-primary center' onClick={this.createMeetup}>Send</button>
@@ -146,7 +146,7 @@ export default class MentorMeetupPopup extends Component {
             </div>
             <span className='hr'></span>
             <div id='meetup-form' className='flex flex-column'>
-              <textarea name='message' cols='40' rows='5' onChange={this.handleMessageChange}>Notes here</textarea>
+              <textarea name='message' cols='40' rows='5' maxLength='256' value='Notes here' onChange={this.handleMessageChange}></textarea>
               <input type='email' placeholder='Your email' onChange={this.handleEmailChange} />
               <input type='text' placeholder='Your name' onChange={this.handleNameChange} />
               <button className='btn btn-primary center' onClick={this.createMeetup}>Send</button>
