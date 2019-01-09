@@ -305,5 +305,5 @@ export function googleCodeToTokens(code) {
       'Content-Type': 'application/json'
     }
   }
-  return fetch(`https://www.googleapis.com/oauth2/v4/token`, fetchData).then((res) => res.json())
+  return fetch(`https://api.upframe.io/auth/sync`, fetchData).then((res) => res.json())
 }
