@@ -293,3 +293,17 @@ export function getFreeSlots (start, end) {
   }
   return fetch(`${schema}://${host}:${port}/mentor/slots?start=${start}&?end=${end}`, fetchData).then((res) => res.json()) //?start=${start}&?end=${end}
 }
+
+export function googleCodeToTokens(code) {
+  let fetchData = {
+    method: 'POST',
+    mode: 'cors',
+    body: {
+      'code': code
+    },
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  return fetch(`https://www.googleapis.com/oauth2/v4/token`, fetchData).then((res) => res.json())
+}
