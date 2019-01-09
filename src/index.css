@@ -367,6 +367,7 @@ code {
 .card.mentor-card .mentor-info .mentor-card-tags .mentor-tag {
   cursor: pointer;
   font-size: 0.9rem;
+  text-align: center;
   color: var(--brownish-grey);
   padding: 1rem 1rem;
   border: 1px solid var(--border-lightgray);
@@ -381,8 +382,6 @@ code {
 
 .card.mentor-card .mentor-card-slot {
   flex-basis: 8rem;
-  display: flex;
-  justify-content: center;
   color: #000;
   font-size: 0.9rem;
   letter-spacing: 0.0125rem;
@@ -423,6 +422,33 @@ code {
 
 .card.mentor-card .mentor-card-slot-request {
   letter-spacing: 0.10625rem;
+}
+
+@media (max-width: 960px) {
+  #people.container {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 640px) {
+  #people.container .card.mentor-card > div:first-of-type,
+  #people.container .card.mentor-card ul.mentor-card-slots {
+    flex-direction: column;
+  }
+
+  #people.container .card.mentor-card ul.mentor-card-tags {
+    justify-content: center;
+    margin: 1rem auto;
+  }
+
+  #people.container .card.mentor-card h1,
+  #people.container .card.mentor-card p:not(:last-of-type) {
+    text-align: center;
+  }
+
+  .card.mentor-card .mentor-info {
+    margin: 0;
+  }
 }
 
 /* Tags */

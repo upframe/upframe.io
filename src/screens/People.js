@@ -142,12 +142,12 @@ export default class People extends Component {
         let startDate = new Date(slot.start)
         return (
           <li className="mentor-card-slot flex justify-center" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
-            <div>
-              <div className="flex flex-column">
+            <div className='flex items-center'>
+              <div>
                 <span className="month font-weight-bold text-uppercase">{months[startDate.getMonth()]}</span>
                 <span className="day">{startDate.getDate()}</span>
               </div>
-              <div className="flex items-center">
+              <div>
                 <span>{days[startDate.getDay()]} {startDate.getHours()}.{startDate.getMinutes() < 10 ? `0${startDate.getMinutes()}` : startDate.getMinutes() } {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
               </div>
             </div>
@@ -174,7 +174,7 @@ export default class People extends Component {
               null
           }
           <Breadcrumbs />
-          <div className="card mentor-card">
+          <div className="card mentor-card flex justify-center">
             <div>
               <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' />
               <div className="mentor-info">
