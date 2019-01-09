@@ -206,7 +206,7 @@ export default class SettingsSyncTab extends Component {
   calendarEvents = (calendarId) => { //TODO - Move to API
     let customHeaders = new Headers()
     let data = new Date()
-    let dataLimite = moment().add('days', 30)
+    let dataLimite = moment().add(30, 'days')
     customHeaders.append('Authorization', 'Bearer ' + this.state.googleAccessToken)
     return fetch('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events?maxResults=2500&timeMin=' + data.toISOString() + '&timeMax=' + dataLimite.toISOString() + '&singleEvents=true',
       {
@@ -320,8 +320,8 @@ export default class SettingsSyncTab extends Component {
           <GoogleLogin
             clientId="821697749752-k7h981c73hrji0k96235q2cblsjpkm7t.apps.googleusercontent.com"
             buttonText="Login"
-            accessType="offline"
-            responseType="code"
+            // accessType="offline"
+            // responseType="code"
             onSuccess={this.googleSyncSuccess}
             onFailure={this.googleSyncFailure}
             scope="profile email https://www.googleapis.com/auth/calendar"
