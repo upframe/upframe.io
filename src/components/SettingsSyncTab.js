@@ -55,45 +55,45 @@ export default class SettingsSyncTab extends Component {
   }
 
   googleSyncSuccess = (e) => {
-    let accessCode = e.code
-    console.log(e)
-    Api.googleCodeToTokens(accessCode).then((res) => {
-      console.log(res)
-    })
-    // this.getCalendarList(e.accessToken).then((res) => {
-    //   let alreadyHasUpframeCalendar = false
-    //   let newCalendarsList = res.items.filter((element) => { //Lets show the users calendars excluding Upframe's free slots
-    //     if (element.summary === 'Upframe Calendar') { //If we find our calendar we save its ID for future use (saving free slots)
-    //       this.setState({
-    //         upframeCalendarId: element.id
-    //       })
-    //       alreadyHasUpframeCalendar = true
-    //     }
-    //     return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.summary.includes('Upframe Calendar')
-    //   }).map((element) => { //Here we can transform Google events into React Big Calendar events
-    //     return {
-    //       id: element.id,
-    //       summary: element.summary,
-    //       checked: false
-    //     }
-    //   })
-    //   if (!alreadyHasUpframeCalendar) { //In case there is no Upframe Calendar we will create a new one
-    //     this.addUpframeCalendar(e.accessToken).then((res) => {
-    //       if (res.summary === 'Upframe Calendar') {
-    //         alert('Adicionamos um novo calendário ao qual vao estar associados os free slots')
-    //         this.setState({
-    //           upframeCalendarId: res.id //After we create a new one we save its ID for future use
-    //         })
-    //       } else { //Else we couldn't make it :( just display an error.
-    //         alert('Não conseguimos adicionar um calendário novo. Mas os seus free slots são guardados na mesma :D')
-    //       }
-    //     })
-    //   }
-    //   this.setState({ //Save the fresh access token and the calendars list into the state so that we display it on next render
-    //     googleAccessToken: e.accessToken,
-    //     calendars: newCalendarsList
-    //   })
+    // let accessCode = e.code
+    // console.log(e)
+    // Api.googleCodeToTokens(accessCode).then((res) => {
+    //   console.log(res)
     // })
+    this.getCalendarList(e.accessToken).then((res) => {
+      let alreadyHasUpframeCalendar = false
+      let newCalendarsList = res.items.filter((element) => { //Lets show the users calendars excluding Upframe's free slots
+        if (element.summary === 'Upframe Calendar') { //If we find our calendar we save its ID for future use (saving free slots)
+          this.setState({
+            upframeCalendarId: element.id
+          })
+          alreadyHasUpframeCalendar = true
+        }
+        return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.summary.includes('Upframe Calendar')
+      }).map((element) => { //Here we can transform Google events into React Big Calendar events
+        return {
+          id: element.id,
+          summary: element.summary,
+          checked: false
+        }
+      })
+      if (!alreadyHasUpframeCalendar) { //In case there is no Upframe Calendar we will create a new one
+        this.addUpframeCalendar(e.accessToken).then((res) => {
+          if (res.summary === 'Upframe Calendar') {
+            alert('Adicionamos um novo calendário ao qual vao estar associados os free slots')
+            this.setState({
+              upframeCalendarId: res.id //After we create a new one we save its ID for future use
+            })
+          } else { //Else we couldn't make it :( just display an error.
+            alert('Não conseguimos adicionar um calendário novo. Mas os seus free slots são guardados na mesma :D')
+          }
+        })
+      }
+      this.setState({ //Save the fresh access token and the calendars list into the state so that we display it on next render
+        googleAccessToken: e.accessToken,
+        calendars: newCalendarsList
+      })
+    })
   }
 
   googleSyncFailure = (e) => {
@@ -206,7 +206,7 @@ export default class SettingsSyncTab extends Component {
   calendarEvents = (calendarId) => { //TODO - Move to API
     let customHeaders = new Headers()
     let data = new Date()
-    let dataLimite = moment().add('days', 30)
+    let dataLimite = moment().add(30, 'days')
     customHeaders.append('Authorization', 'Bearer ' + this.state.googleAccessToken)
     return fetch('https://www.googleapis.com/calendar/v3/calendars/' + calendarId + '/events?maxResults=2500&timeMin=' + data.toISOString() + '&timeMax=' + dataLimite.toISOString() + '&singleEvents=true',
       {
@@ -320,8 +320,8 @@ export default class SettingsSyncTab extends Component {
           <GoogleLogin
             clientId="821697749752-k7h981c73hrji0k96235q2cblsjpkm7t.apps.googleusercontent.com"
             buttonText="Login"
-            accessType="offline"
-            responseType="code"
+            // accessType="offline"
+            // responseType="code"
             onSuccess={this.googleSyncSuccess}
             onFailure={this.googleSyncFailure}
             scope="profile email https://www.googleapis.com/auth/calendar"
