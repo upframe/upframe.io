@@ -20,7 +20,7 @@ export default class Navbar extends Component {
           {this.props.loggedIn ?
             <ul>
               <li><Link to='/settings'>Settings</Link></li>
-              <li><button onClick={this.logout}></button></li>
+              <li><button onClick={this.logout}>Logout</button></li>
             </ul>
           :
             <ul>
