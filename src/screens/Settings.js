@@ -11,7 +11,7 @@ export default class Settings extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentTab: 1
+      currentTab: window.location.search.split('?code=')[1] ? 3 : 1
     }
   }
 
