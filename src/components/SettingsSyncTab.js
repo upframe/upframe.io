@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { GoogleLogin } from 'react-google-login';
 import moment from 'moment';
 import BigCalendar from 'react-big-calendar';
 
@@ -15,6 +14,7 @@ export default class SettingsSyncTab extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      code: window.location.search.split('?code=')[1],
       googleAccessToken: '',
       calendars: [{
         summary: '',
@@ -25,79 +25,109 @@ export default class SettingsSyncTab extends Component {
       freeSlotsUnsaved: [],
       freeSlotsSaved: [],
       freeSlotsToDelete: [],
-      freeSlots: [],
       currId: 0,
       upframeCalendarId: ''
     }
   }
 
-  componentDidMount() { //Here we need to fetch the previous known free slots from our DB
-    //After we get them we need to convert them and display them.
-    let nowDate = new Date()
-    let limitDate = moment().add('days', 30)
-    Api.getFreeSlots(nowDate, limitDate).then((res) => {
-      console.log('Recebemos free slots')
-      console.log(res)
-      if (res.ok === 1) {
-        this.setState({
-          freeSlotsSaved: res.slots.map((unconvertedSlot) => {
-            return {
-              mentorUID: unconvertedSlot.mentorUID,
-              recurrency: unconvertedSlot.recurrency,
-              id: unconvertedSlot.sid,
-              start: new Date(unconvertedSlot.start),
-              end: new Date(unconvertedSlot.end)
+  //Are we not synced at all
+  //Have we synced and we need to fetch access token
+  //Or have we already synced in the past
+  componentDidMount() { 
+    if (this.state.code) {
+      //We have synced. We need to send the code to the backend
+      Api.getTokens(this.state.code).then((res) => {
+        if (res.ok === 1) {
+          //We just synced. 
+          //DONE-Lets save the token here 
+          //DONE-and add upframe calendar (we can do both at same time)
+          //TODO-Add upframe calendar error handling
+          //DONE-and fetch calendars
+          this.getCalendarList(res.token).then((res) => {
+            let newCalendarsList = res.items.filter((element) => {
+              return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.id.includes('#contacts@group.v.calendar.google.com')
+            }).map((element) => {
+              return {
+                id: element.id,
+                summary: element.summary,
+                checked: false
+              }
+            })
+            this.setState({
+              calendars: newCalendarsList
+            })
+          })
+
+          this.addUpframeCalendar(res.token).then((res) => {
+            //TODO - Check if add Upframe Calendar was successful
+            //if it was save to state
+            console.log('Tried to add Upframe Calendar')
+            console.log(res)
+          })
+          this.setState({
+            code: '',
+            googleAccessToken: res.token
+          })
+        } else {
+          alert('An error ocurred exchanging code for tokens')
+        }
+      })
+    } else {
+      //Either we have not synced at all
+      //Or we have synced in the past
+      Api.getUserInfo().then((res) => {
+        if (res.user.googleAccessToken) {
+          //We have synced in the past
+          //DONE - Here we need to fetch the previous known free slots from our DB
+          //DONE - After we get them we need to convert them and display them.
+          //DONE - At the same time we need to fetch the users calendar list and display that too
+          //DONE - save upframe calendar in state
+          this.getCalendarList(res.user.googleAccessToken).then((res) => {
+            let newCalendarsList = res.items.filter((element) => {
+              return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.id.includes('#contacts@group.v.calendar.google.com')
+            }).map((element) => {
+              return {
+                id: element.id,
+                summary: element.summary,
+                checked: false
+              }
+            })
+            this.setState({
+              calendars: newCalendarsList
+            })
+          })
+          
+          let nowDate = new Date()
+          let limitDate = moment().add('days', 30)
+          Api.getFreeSlots(nowDate, limitDate).then((res) => {
+            if (res.ok === 1) {
+              this.setState({
+                freeSlotsSaved: res.slots.map((unconvertedSlot) => {
+                  return {
+                    mentorUID: unconvertedSlot.mentorUID,
+                    recurrency: unconvertedSlot.recurrency,
+                    id: unconvertedSlot.sid,
+                    start: new Date(unconvertedSlot.start),
+                    end: new Date(unconvertedSlot.end)
+                  }
+                })
+              })
             }
           })
-        })
-      }
-    })
-  }
-
-  googleSyncSuccess = (e) => {
-    // let accessCode = e.code
-    // console.log(e)
-    // Api.googleCodeToTokens(accessCode).then((res) => {
-    //   console.log(res)
-    // })
-    this.getCalendarList(e.accessToken).then((res) => {
-      let alreadyHasUpframeCalendar = false
-      let newCalendarsList = res.items.filter((element) => { //Lets show the users calendars excluding Upframe's free slots
-        if (element.summary === 'Upframe Calendar') { //If we find our calendar we save its ID for future use (saving free slots)
           this.setState({
-            upframeCalendarId: element.id
+            upframeCalendarId: res.user.upframeCalendarId
           })
-          alreadyHasUpframeCalendar = true
-        }
-        return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.summary.includes('Upframe Calendar')
-      }).map((element) => { //Here we can transform Google events into React Big Calendar events
-        return {
-          id: element.id,
-          summary: element.summary,
-          checked: false
+        } else {
+          //We have never synced if we dont do anything the button is displayed.
         }
       })
-      if (!alreadyHasUpframeCalendar) { //In case there is no Upframe Calendar we will create a new one
-        this.addUpframeCalendar(e.accessToken).then((res) => {
-          if (res.summary === 'Upframe Calendar') {
-            alert('Adicionamos um novo calendário ao qual vao estar associados os free slots')
-            this.setState({
-              upframeCalendarId: res.id //After we create a new one we save its ID for future use
-            })
-          } else { //Else we couldn't make it :( just display an error.
-            alert('Não conseguimos adicionar um calendário novo. Mas os seus free slots são guardados na mesma :D')
-          }
-        })
-      }
-      this.setState({ //Save the fresh access token and the calendars list into the state so that we display it on next render
-        googleAccessToken: e.accessToken,
-        calendars: newCalendarsList
-      })
-    })
+    }
   }
 
-  googleSyncFailure = (e) => {
-    alert('Looks like the platform you are using is blocking trackers. Can you add an exception so that we can log you in using Google?')
+  googleSync = () => {
+    Api.getGoogleSyncUrl().then((res) => {
+      window.location = res.url
+    })
   }
 
   calendarVisibilityChange = (event) => { //After displaying the calendars we want to show their visibility according to checks
@@ -317,14 +347,17 @@ export default class SettingsSyncTab extends Component {
       return (
         <div id='settings-synctab' className='tab center'>
           <h1>Syncronize your google account here</h1>
-          <GoogleLogin
-            clientId="821697749752-k7h981c73hrji0k96235q2cblsjpkm7t.apps.googleusercontent.com"
-            buttonText="Login"
-            // accessType="offline"
-            // responseType="code"
-            onSuccess={this.googleSyncSuccess}
-            onFailure={this.googleSyncFailure}
-            scope="profile email https://www.googleapis.com/auth/calendar"
+          <button onClick={this.googleSync}>Google Sync</button>
+          <button onClick={this.saveFreeSlots}>Save slots</button>
+          <BigCalendar
+            localizer={localizer}
+            showMultiDayTimes={true}
+            selectable
+            defaultDate={new Date()}
+            defaultView='week'
+            events={[...this.state.events, ...this.state.freeSlotsSaved, ...this.state.freeSlotsUnsaved]}
+            onSelectEvent={event => this.deleteFreeSlot(event)}
+            onSelectSlot={slot => this.addFreeSlot(slot)}
           />
         </div>
       )       

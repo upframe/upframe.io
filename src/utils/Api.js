@@ -308,36 +308,22 @@ export function getFreeSlots (start, end) {
   return fetch(`${schema}://${host}:${port}/mentor/slots?start=${start}&?end=${end}`, fetchData).then((res) => res.json()) //?start=${start}&?end=${end}
 }
 
-export function googleCodeToTokens(code) {
-
-  const params = {
-    code: code,
-    client_id: '821697749752-k7h981c73hrji0k96235q2cblsjpkm7t.apps.googleusercontent.com',
-    client_secret: 'Uxd6biwXVue993gNOij5cFRs',
-    redirect_uri: 'https://connect.upframe.io/oauth',
-    grant_type: 'authorization_code',
-  }
-  const searchParams = Object.keys(params).map((key) => {
-    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
-  }).join('&')
-  console.log(searchParams)
+export function getGoogleSyncUrl () {
   const fetchData = {
-    method: 'POST',
+    method: 'GET',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      'Content-Type': 'application/json',
     },
-    body: searchParams,
   }
-  return fetch('https://www.googleapis.com/oauth2/v4/token', fetchData).then((res) => res.json())
-  // let fetchData = {
-  //   method: 'POST',
-  //   mode: 'cors',
-  //   body: {
-  //     'code': code
-  //   },
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   }
-  // }
-  // return fetch(`https://api.upframe.io/auth/sync`, fetchData).then((res) => res.json())
+  return fetch(`${schema}://${host}:${port}/auth/google`, fetchData).then((res) => res.json())
+}
+
+export function getTokens (code) {
+  const fetchData = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+  return fetch(`${schema}://${host}:${port}/auth/oauthcode?code=` + code, fetchData).then((res) => res.json())
 }
