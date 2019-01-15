@@ -12,11 +12,25 @@ export function login (email, password) {
     method: 'POST',
     mode: 'cors',
     body: JSON.stringify(fetchBody),
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
     }
   }
   return fetch(`${schema}://${host}:${port}/auth/login`, fetchData).then((res) => res.json())
+}
+
+export function logout () {
+  let fetchData = {
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  return fetch(`${schema}://${host}:${port}/auth/logout`, fetchData).then((res) => res.json())
 }
 
 export function register (email, password, name) {

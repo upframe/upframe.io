@@ -17,7 +17,6 @@ import ErrorPage from './screens/404';
 import DevPlayground from './screens/DevPlayground';
 import Sync from './components/SettingsSyncTab';
 
-import * as Cookies from './utils/Cookies';
 import * as Api from './utils/Api';
 
 export default class App extends Component {
@@ -36,7 +35,6 @@ export default class App extends Component {
           loggedIn : true
         })
       } else {
-        Cookies.removeItem('access_token', '/', '.upframe.io')
         this.setState({
           loggedIn : false
         })

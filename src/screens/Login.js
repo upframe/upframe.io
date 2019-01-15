@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import { Redirect } from 'react-router-dom';
 import * as Api from '../utils/Api';
-import * as Cookies from '../utils/Cookies';
 
 export default class Login extends Component {
 
@@ -20,7 +19,6 @@ export default class Login extends Component {
         if (res.ok === 0) {
           alert('Login errado')
         } else {
-          Cookies.setItem('access_token', res.token, Infinity, '/', '.upframe.io', true)
           this.props.setLoggedInState(true)
         }
       })

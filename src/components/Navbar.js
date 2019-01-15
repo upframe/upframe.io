@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-
 import { Link } from 'react-router-dom'
 
-import * as Cookies from '../utils/Cookies';
+import * as Api from '../utils/Api'
 
 export default class Navbar extends Component {
 
   logout = () => {
-    Cookies.removeItem('access_token', '/', '.upframe.io')
+    Api.logout()
     this.props.setLoggedInState(false)
   }
 
