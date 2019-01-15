@@ -315,7 +315,7 @@ export default class SettingsSyncTab extends Component {
     if (this.state.googleAccessToken === '') {
       //Nao temos token, queremos ir busca lo
       return (
-        <div>
+        <div id='settings-synctab' className='tab center'>
           <h1>Syncronize your google account here</h1>
           <GoogleLogin
             clientId="821697749752-k7h981c73hrji0k96235q2cblsjpkm7t.apps.googleusercontent.com"

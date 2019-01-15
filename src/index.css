@@ -16,11 +16,12 @@ body {
   --slate: #708090;
   --darkgray: #303030;
 
-  --brownish-grey: #646464;
   --orange: #fe2813;
   --pink: #ff004b;
-  --slate-gray: #5f6163;
-  --blue-gray: #898b8e;
+  --brownish-grey: #646464;
+  --slate-grey: #5f6163;
+  --blue-grey: #898b8e;
+  --light-grey: #c8c5c5;
 }
 
 /* * * * * * * * *
@@ -62,12 +63,25 @@ label.light-gray {
   font-weight: 700;
 }
 
+.text-capitalize {
+  text-transform: capitalize;
+}
+
 .text-uppercase {
   text-transform: uppercase; 
 }
 
+.text-lowercase {
+  text-transform: lowercase;
+}
+
 .text-center {
   text-align: center;
+}
+
+/* POSITION */
+.block {
+  display: block;
 }
 
 /* FLEXBOX */
@@ -135,6 +149,16 @@ input[type="password"] {
   outline: none;
 }
 
+/* FORM/INPUT GROUPS */
+.input-group:not(:last-of-type) {
+  margin-bottom: 2rem;
+}
+
+.input-group h2 {
+  font-weight: normal;
+  color: var(--brownish-grey);
+}
+
 /* FILE INPUT */
 input[type="file"] {
   display: none;
@@ -151,8 +175,8 @@ input[type="file"] {
   outline: none;
   cursor: pointer;
 
-  --bc: var(--blue-gray);
-  --color: var(--blue-gray);
+  --bc: var(--blue-grey);
+  --color: var(--blue-grey);
 }
 
 .btn:not(.btn-fill) {
@@ -182,6 +206,10 @@ input[type="file"] {
 }
 
 /* CONTAINERS */
+.App {
+  padding-bottom: 1rem;
+}
+
 .App main {
   padding-top: 2rem;
 }
@@ -337,13 +365,32 @@ code {
 
 /* SETTINGS PAGE */
 
-/* PUBLIC TAB */
-#settings-publictab {
-  max-width: 75%;
-  width: 60rem;
-  margin: 0 auto;
+#settings.grid {
+  grid-template-columns: 20% 80%;
+  max-width: 90%;
+  width: 70rem;
+  margin: 0 auto 0 2rem;
 }
 
+#settings #tablist {
+  padding-top: 12.5rem;
+}
+
+#settings #tablist label {
+  color: var(--light-grey);
+  transition: .25s ease-in-out color;
+  cursor: pointer;
+}
+
+#settings #tablist label.active {
+  color: var(--primary);
+}
+
+#settings .tab {
+  width: 80%;
+}
+
+/* PUBLIC TAB */
 #settings-publictab div:first-of-type .profile-pic {
   max-width: 12rem;
   max-height: 12rem;
@@ -355,7 +402,7 @@ code {
 }
 
 #settings-publictab div:first-of-type #bio p {
-  color: var(--blue-gray);
+  color: var(--blue-grey);
   margin: 1rem 0 0 0;
 }
 
@@ -369,11 +416,12 @@ code {
 
 #settings-publictab div:nth-of-type(2) label,
 #settings-publictab div:nth-of-type(2) input {
-  color: var(--blue-gray);
+  color: var(--blue-grey);
 }
 
 #settings-publictab div:nth-of-type(2) input {
   width: 100%;
+  padding-left: 1.5rem;
 }
 
 /* MENTOR CARD (MENTOR PAGE) */
@@ -384,7 +432,7 @@ code {
 .card.mentor-card {
   display: flex;
   flex-wrap: wrap;
-  color: var(--slate-gray);
+  color: var(--slate-grey);
   box-shadow: 0 0.5px 3px 0 rgba(0, 0, 0, 0.5);
   padding: 3rem;
   margin-top: 3rem;
@@ -536,14 +584,14 @@ div.ReactTags__tagInput input.ReactTags__tagInputField:focus {
 }
 
 div.ReactTags__selected span.ReactTags__tag {
-  border: 1px solid #ddd;
+  display: inline-flex;
   background: #eee;
-  font-size: 12px;
-  display: inline-block;
+  font-size: 0.75rem;
   padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 0.125rem;
   margin: 0 5px 1em 0;
   cursor: move;
-  border-radius: 2px;
 }
 
 div.ReactTags__selected a.ReactTags__remove {
@@ -667,7 +715,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 }
 
 .mentor-meetup-popup .meetup-option p {
-  color: var(--slate-gray);
+  color: var(--slate-grey);
   letter-spacing: 0.0125rem;
   margin: 0;
 }
@@ -683,4 +731,12 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 
 textarea {
   resize: none;
+}
+
+
+/* BROWSER BUGFIXING/ISSUE FIXING */
+
+/* Remove Firefox's automatic text outline when button is clicked */
+button::-moz-focus-inner {
+  border: 0;
 }
