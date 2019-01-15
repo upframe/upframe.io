@@ -16,9 +16,7 @@ export default class Settings extends Component {
   }
 
   viewPublicTab = () => {this.setState({ currentTab : 1 })}
-
   viewAccountTab = () => { this.setState({ currentTab: 2 }) }
-
   viewSyncTab = () => { this.setState({ currentTab: 3 }) }
 
   renderCurrentTab = () => {
