@@ -42,7 +42,7 @@ export default class SettingsAccountTab extends Component {
 
   render() {
     return (
-      <div className='tab-content'>
+      <div id='settings-accounttab' className='tab center'>
         <h1>Email</h1>
         <p>
           Your email address is <a href={'mailto:' + this.state.email}>{this.state.email}</a>. This information will not be publicly displayed

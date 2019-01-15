@@ -192,7 +192,7 @@ export default class SettingsPublicTab extends Component {
 
   render() {
     return (
-      <div id='settings-publictab'>
+      <div id='settings-publictab' class='tab center'>
         <div className='flex'>
           <img className='profile-pic' alt='profile-pic' src={this.state.profilePic} />
           <input id='file-select' type='file' accept='image/*' onChange={this.uploadPhoto} />
@@ -205,53 +205,77 @@ export default class SettingsPublicTab extends Component {
           </div>
         </div>
         <div>
-          <label for='name'>Your name</label>
-          <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' />
-          <label for='location'>Location</label>
-          <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' />
-          <label for='role'>Your role</label>
-          <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' />
-          <label for='company'>Company</label>
-          <input type='text' onChange={this.handleCompanyChange} value={this.state.company} id='company' />
-          <label for='website'>Website</label>
-          <input type='text' onChange={this.handleWebsiteChange} value={this.state.website} id='website'/>
-          <label for='twitter'>Twitter</label>
-          <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' />
-          <label for='linkedin'>LinkedIn page</label>
-          <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' />
-          <label for='github'>Github</label>
-          <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' />
-          <label for='facebook'>Facebook</label>
-          <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' />
-          <label for='dribbble'>Dribbble</label>
-          <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' />
-          <label for='bio'>Bio</label>
-          <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio' />
-          <div>
+          <div className='input-group'>
+            <label for='name'>Your name</label>
+            <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' />
+          </div>
+          <div className='input-group'>
+            <label for='location'>Location</label>
+            <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' />
+          </div>
+          <div className='input-group'>
+            <label for='role'>Your role</label>
+            <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' />
+          </div>
+          <div className='input-group'>
+            <label for='company'>Company</label>
+            <input type='text' onChange={this.handleCompanyChange} value={this.state.company} id='company' />
+          </div>
+          <div className='input-group'>
+            <label for='website'>Website</label>
+            <input type='text' onChange={this.handleWebsiteChange} value={this.state.website} id='website'/>
+          </div>
+          <div className='input-group'>
+            <label for='twitter'>Twitter</label>
+            <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' />
+          </div>
+          <div className='input-group'>
+            <label for='linkedin'>LinkedIn page</label>
+            <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' />
+          </div>
+          <div className='input-group'>
+            <label for='github'>Github</label>
+            <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' />
+          </div>
+          <div className='input-group'>
+            <label for='facebook'>Facebook</label>
+            <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' />
+          </div>
+          <div className='input-group'>
+            <label for='dribbble'>Dribbble</label>
+            <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' />
+          </div>
+          <div className='input-group'>
+            <label for='bio'>Bio</label>
+            <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio' />
+          </div>
+          <div className='input-group'>
             https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode}/>
           </div>
-        </div>
-        <div>
-          <h2>Your skills</h2>
-          <p>Add up to 7 skills to display in your profile.</p>
-          <ReactTags tags={this.state.tags}
-            autofocus={false}
-            handleDelete={this.handleDeleteTag}
-            handleAddition={this.handleAddTag}
-            handleDrag={this.handleDragTag}
-            delimiter={delimiters} />
-        </div>
-        <div>
-          <h2>Favorite Locations</h2>
-          <p>First location</p>
-          <input type='text' onChange={this.handleFirstFavoriteLocationChange} value={this.state.favoriteLocations[0]} />
-          <p>Second location</p>
-          <input type='text' onChange={this.handleSecondFavoriteLocationChange} value={this.state.favoriteLocations[1]} />
-          <p>Third location</p>
-          <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} />
-        </div>
-        <div>
-          <button onClick={this.saveChanges}>Save changes</button>
+          <div className='input-group'>
+            <h2>Your skills</h2>
+            <p>Add up to 7 skills to display in your profile.</p>
+            <ReactTags tags={this.state.tags}
+              autofocus={false}
+              handleDelete={this.handleDeleteTag}
+              handleAddition={this.handleAddTag}
+              handleDrag={this.handleDragTag}
+              delimiter={delimiters} />
+          </div>
+
+          <div className='input-group'>
+            <h2>Favorite Locations</h2>
+            <label for='location-1'>First location</label>
+            <input type='text' onChange={this.handleFirstFavoriteLocationChange} value={this.state.favoriteLocations[0]} id='location-1' />
+            <label for='location-2'>Second location</label>
+            <input type='text' onChange={this.handleSecondFavoriteLocationChange} value={this.state.favoriteLocations[1]} id='location-2'/>
+            <label for='location-3'>Third location</label>
+            <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} id='location-3'/>
+          </div>
+
+          <div className='input-group'>
+            <button className='btn btn-fill btn-primary block center' onClick={this.saveChanges}>Save changes</button>
+          </div>
         </div>
       </div>
     )
