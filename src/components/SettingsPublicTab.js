@@ -192,38 +192,41 @@ export default class SettingsPublicTab extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          <img alt='profile-pic' src={this.state.profilePic} />
+      <div id='settings-publictab'>
+        <div className='flex'>
+          <img className='profile-pic' alt='profile-pic' src={this.state.profilePic} />
           <input id='file-select' type='file' accept='image/*' onChange={this.uploadPhoto} />
-          <p>We're big on pictures around here.</p>
-          <p>Add an updated picture so you don't like a <span role='img' aria-label='robot'>🤖</span></p>
-          <button onClick={this.openUploadDialog}>Upload new photo</button>
-          <button onClick={this.removePhoto}>Remove</button>
+          <div id='bio'>
+            <h1 className='font-weight-normal'>Profile Picture</h1>
+            <p>We're big on pictures around here.</p>
+            <p>Add an updated picture so you don't like a <span role='img' aria-label='robot'>🤖</span></p>
+            <button className='btn btn-round btn-primary' onClick={this.openUploadDialog}>Upload new picture</button>
+            <button className='btn btn-round' onClick={this.removePhoto}>Remove</button>
+          </div>
         </div>
         <div>
-          <p>Your name</p>
-          <input type='text' onChange={this.handleNameChange} value={this.state.name}/>
-          <p>Location</p>
-          <input type='text' onChange={this.handleLocationChange} value={this.state.location}/>
-          <p>Your role</p>
-          <input type='text' onChange={this.handleRoleChange} value={this.state.role}/>
-          <p>Company</p>
-          <input type='text' onChange={this.handleCompanyChange} value={this.state.company}/>
-          <p>Website</p>
-          <input type='text' onChange={this.handleWebsiteChange} value={this.state.website}/>
-          <p>Twitter</p>
-          <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter}/>
-          <p>LinkedIn page</p>
-          <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin}/>
-          <p>Github</p>
-          <input type='text' onChange={this.handleGithubChange} value={this.state.github}/>
-          <p>Facebook</p>
-          <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook}/>
-          <p>Dribbble</p>
-          <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble}/>
-          <p>Bio</p>
-          <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio}/>
+          <label for='name'>Your name</label>
+          <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' />
+          <label for='location'>Location</label>
+          <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' />
+          <label for='role'>Your role</label>
+          <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' />
+          <label for='company'>Company</label>
+          <input type='text' onChange={this.handleCompanyChange} value={this.state.company} id='company' />
+          <label for='website'>Website</label>
+          <input type='text' onChange={this.handleWebsiteChange} value={this.state.website} id='website'/>
+          <label for='twitter'>Twitter</label>
+          <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' />
+          <label for='linkedin'>LinkedIn page</label>
+          <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' />
+          <label for='github'>Github</label>
+          <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' />
+          <label for='facebook'>Facebook</label>
+          <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' />
+          <label for='dribbble'>Dribbble</label>
+          <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' />
+          <label for='bio'>Bio</label>
+          <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio' />
           <div>
             https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode}/>
           </div>

@@ -20,7 +20,7 @@ body {
   --orange: #fe2813;
   --pink: #ff004b;
   --slate-gray: #5f6163;
-
+  --blue-gray: #898b8e;
 }
 
 /* * * * * * * * *
@@ -131,7 +131,7 @@ input[type="password"] {
   font-size: 1.5rem;
   padding: 0.5rem;
   border: 1px solid var(--light-gray);
-  border-radius: 0.125rem;
+  border-radius: 0.25rem;
   outline: none;
 }
 
@@ -142,23 +142,43 @@ input[type="file"] {
 
 /* BUTTONS */
 .btn {
-  font-size: 1rem;
   font-weight: 700;
+  width: 10rem;
+  background: none;
   padding: 1rem 0.5rem;
   border: 1px solid var(--light-gray);
   border-radius: 0.2rem;
   outline: none;
-  width: 10rem;
+  cursor: pointer;
+
+  --bc: var(--blue-gray);
+  --color: var(--blue-gray);
 }
 
-.btn:hover {
-  cursor: pointer;
+.btn:not(.btn-fill) {
+  border: 1px solid var(--color);
+  color: var(--color);
+}
+
+.btn:not(.btn-fill):hover {
+  background-color: var(--bc);
+  color: var(--primarytext);
+  transition: .25s ease-in-out all;
+}
+
+.btn.btn-round {
+  border-radius: 10rem;
+}
+
+.btn.btn-fill {
+  background-color: var(--bc);
+  color: var(--primarytext);
+  border: none;
 }
 
 .btn.btn-primary {
-  background: var(--primary);
-  color: var(--primarytext);
-  border: none;
+  --bc: var(--primary);
+  --color: var(--primary);
 }
 
 /* CONTAINERS */
@@ -315,7 +335,48 @@ code {
   margin-top: 1rem;
 }
 
-/* Mentor card (mentor page) */
+/* SETTINGS PAGE */
+
+/* PUBLIC TAB */
+#settings-publictab {
+  max-width: 75%;
+  width: 60rem;
+  margin: 0 auto;
+}
+
+#settings-publictab div:first-of-type .profile-pic {
+  max-width: 12rem;
+  max-height: 12rem;
+  margin-right: 2rem;
+}
+
+#settings-publictab div:first-of-type #bio h1 {
+  color: var(--brownish-grey);
+}
+
+#settings-publictab div:first-of-type #bio p {
+  color: var(--blue-gray);
+  margin: 1rem 0 0 0;
+}
+
+#settings-publictab div:first-of-type #bio p:last-of-type {
+  margin: .25rem 0 1rem 0;
+}
+
+#settings-publictab div:first-of-type #bio .btn:first-of-type {
+  margin-right: 1rem;
+}
+
+#settings-publictab div:nth-of-type(2) label,
+#settings-publictab div:nth-of-type(2) input {
+  color: var(--blue-gray);
+}
+
+#settings-publictab div:nth-of-type(2) input {
+  width: 100%;
+}
+
+/* MENTOR CARD (MENTOR PAGE) */
 #people.container {
   padding-bottom: 4rem;
 }
