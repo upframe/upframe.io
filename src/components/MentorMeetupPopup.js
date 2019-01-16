@@ -92,7 +92,7 @@ export default class MentorMeetupPopup extends Component {
               <div className='meetup-option' onClick={this.grabCoffee}>
                 <img src='/media/coffee.svg' alt='Coffee cup'></img>
                 <div>
-                  <h1 className='meetup-option-title font-weight-normal'>Grab a coffe</h1>
+                  <h1 className='meetup-option-title font-weight-normal'>Grab a coffEe</h1>
                   <p>Pick from a selection of Malik's favourite cafés and local coworking spaces.</p>
                 </div>
               </div>
