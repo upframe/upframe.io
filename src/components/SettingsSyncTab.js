@@ -14,7 +14,6 @@ export default class SettingsSyncTab extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      code: window.location.search.split('?code=')[1],
       googleAccessToken: '',
       calendars: [{
         summary: '',
@@ -30,98 +29,75 @@ export default class SettingsSyncTab extends Component {
     }
   }
 
+  //TODO - delete automatically calendar
+  unlinkGoogle = () => {
+    Api.updateUserInfo({
+      googleAccessToken: '',
+      googleRefreshToken: '',
+      upframeCalendarId: ''
+    }).then(() => {
+      this.setState({
+        googleAccessToken: '',
+        calendars: [{
+          summary: '',
+          id: '',
+          checked: false
+        }],
+        upframeCalendarId: ''
+      })
+    })
+  }
+
   //Are we not synced at all
   //Have we synced and we need to fetch access token
   //Or have we already synced in the past
   componentDidMount() { 
-    if (this.state.code) {
-      //We have synced. We need to send the code to the backend
-      Api.getTokens(this.state.code).then((res) => {
-        if (res.ok === 1) {
-          //We just synced. 
-          //DONE-Lets save the token here 
-          //DONE-and add upframe calendar (we can do both at same time)
-          //TODO-Add upframe calendar error handling
-          //DONE-and fetch calendars
-          this.getCalendarList(res.token).then((res) => {
-            let newCalendarsList = res.items.filter((element) => {
-              return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.id.includes('#contacts@group.v.calendar.google.com')
-            }).map((element) => {
-              return {
-                id: element.id,
-                summary: element.summary,
-                checked: false
-              }
-            })
-            this.setState({
-              calendars: newCalendarsList
-            })
-          })
-
-          this.addUpframeCalendar(res.token).then((res) => {
-            //TODO - Check if add Upframe Calendar was successful
-            //if it was save to state
-            console.log('Tried to add Upframe Calendar')
-            console.log(res)
-          })
-          this.setState({
-            code: '',
-            googleAccessToken: res.token
-          })
-        } else {
-          alert('An error ocurred exchanging code for tokens')
-        }
-      })
-    } else {
-      //Either we have not synced at all
-      //Or we have synced in the past
-      Api.getUserInfo().then((res) => {
-        if (res.user.googleAccessToken) {
-          //We have synced in the past
-          //DONE - Here we need to fetch the previous known free slots from our DB
-          //DONE - After we get them we need to convert them and display them.
-          //DONE - At the same time we need to fetch the users calendar list and display that too
-          //DONE - save upframe calendar in state
-          this.getCalendarList(res.user.googleAccessToken).then((res) => {
-            let newCalendarsList = res.items.filter((element) => {
-              return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.id.includes('#contacts@group.v.calendar.google.com')
-            }).map((element) => {
-              return {
-                id: element.id,
-                summary: element.summary,
-                checked: false
-              }
-            })
-            this.setState({
-              calendars: newCalendarsList
-            })
-          })
-          
-          let nowDate = new Date()
-          let limitDate = moment().add('days', 30)
-          Api.getFreeSlots(nowDate, limitDate).then((res) => {
-            if (res.ok === 1) {
-              this.setState({
-                freeSlotsSaved: res.slots.map((unconvertedSlot) => {
-                  return {
-                    mentorUID: unconvertedSlot.mentorUID,
-                    recurrency: unconvertedSlot.recurrency,
-                    id: unconvertedSlot.sid,
-                    start: new Date(unconvertedSlot.start),
-                    end: new Date(unconvertedSlot.end)
-                  }
-                })
-              })
+    Api.getUserInfo().then((res) => {
+      if (res.user.googleAccessToken !== '') {
+        console.log('Tem access token')
+        //We have synced in the past
+        //DONE - Here we need to fetch the previous known free slots from our DB
+        //DONE - After we get them we need to convert them and display them.
+        //DONE - At the same time we need to fetch the users calendar list and display that too
+        //DONE - save upframe calendar in state
+        let googleAccessToken = res.user.googleAccessToken
+        this.getCalendarList(res.user.googleAccessToken).then((res) => {
+          console.log('Recebemos calendar list')
+          let newCalendarsList = res.items.filter((element) => {
+            return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.id.includes('#contacts@group.v.calendar.google.com')
+          }).map((element) => {
+            return {
+              id: element.id,
+              summary: element.summary,
+              checked: false
             }
           })
           this.setState({
-            upframeCalendarId: res.user.upframeCalendarId
+            calendars: newCalendarsList
           })
-        } else {
-          //We have never synced if we dont do anything the button is displayed.
-        }
-      })
-    }
+        })
+
+        let nowDate = new Date()
+        let limitDate = moment().add(30, 'days')
+        Api.getFreeSlots(nowDate, limitDate).then((res) => {
+          console.log('Recebemos free slots')
+          if (res.ok === 1) {
+            this.setState({
+              freeSlotsSaved: res.slots.map((unconvertedSlot) => {
+                return {
+                  mentorUID: unconvertedSlot.mentorUID,
+                  recurrency: unconvertedSlot.recurrency,
+                  id: unconvertedSlot.sid,
+                  start: new Date(unconvertedSlot.start),
+                  end: new Date(unconvertedSlot.end)
+                }
+              }),
+              googleAccessToken: googleAccessToken
+            })
+          }
+        })
+      }
+    })
   }
 
   googleSync = () => {
@@ -301,7 +277,7 @@ export default class SettingsSyncTab extends Component {
         //Wrong! Because the new saved slots are in incorrect form
         //We need to fetch slots again
         let nowDate = new Date()
-        let limitDate = moment().add('days', 30)
+        let limitDate = moment().add(30, 'days')
         Api.getFreeSlots(nowDate, limitDate).then((res) => {
           console.log(res)
           if (res.ok === 1) {
@@ -340,7 +316,6 @@ export default class SettingsSyncTab extends Component {
   }
 
   render() {
-    console.log(this.state)
     //Ou temos token para ir buscar calendários ou nao temos
     if (this.state.googleAccessToken === '') {
       //Nao temos token, queremos ir busca lo
@@ -372,6 +347,7 @@ export default class SettingsSyncTab extends Component {
               </div>
             )
           })}
+          <button onClick={this.unlinkGoogle}>Unlink Google</button>
           <button onClick={this.saveFreeSlots}>Save slots</button>
           <BigCalendar
             localizer={localizer}

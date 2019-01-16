@@ -16,6 +16,7 @@ import ErrorPage from './screens/404';
 
 import DevPlayground from './screens/DevPlayground';
 import Sync from './components/SettingsSyncTab';
+import GoogleSync from './components/Sync';
 
 import * as Api from './utils/Api';
 
@@ -89,6 +90,7 @@ export default class App extends Component {
 
             <Route exact path='/meetup/confirm*' component={this.MeetupConfirm} />
             <Route exact path='/meetup/refuse*' component={this.MeetupRefuse} />
+            <Route exact path='/sync' component={GoogleSync} />
 
             <Route exact path='/expertise*' component={Expertise} />
             <Route exact path='/company*' component={Company} />
