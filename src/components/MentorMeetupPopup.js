@@ -13,7 +13,7 @@ export default class MentorMeetupPopup extends Component {
     super(props)
     this.state = {
       currentTab: 1,
-      message: 'Notes',
+      message: 'What can I help you with?',
 
       mentorName: this.props.name,
       slotID: this.props.sid,
