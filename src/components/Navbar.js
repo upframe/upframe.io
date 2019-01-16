@@ -23,9 +23,10 @@ export default class Navbar extends Component {
               <li><button onClick={this.logout}>Logout</button></li>
             </ul>
           :
-            <ul>
-              {window.location.pathname === '/login' ? null : <li><Link to='/login'>Login</Link></li> }
-            </ul>
+            // <ul>
+            //   {window.location.pathname === '/login' ? null : <li><Link to='/login'>Login</Link></li> }
+            // </ul>
+            null
           }
         </div>
       </nav>
