@@ -277,6 +277,7 @@ nav .wrapper div {
 nav .wrapper .dropdown img {
   max-width: 2rem;
   max-height: 2rem;
+  border-radius: 50%;
   cursor: pointer;
 }
 
@@ -497,8 +498,7 @@ code {
 .card.mentor-card .mentor-profilepic {
   min-width: 12rem;
   max-height: 12rem;
-  border-radius: 2px;
-
+  border-radius: 0.125rem;
 }
 
 .card.mentor-card h1 {
@@ -636,6 +636,11 @@ code {
 
   #people .card.mentor-card .mentor-card-slots {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  #people .mentor-meetup-popup {
+    max-width: 90%;
+    width: 30rem;
   }
 
   #login > div {

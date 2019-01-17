@@ -120,7 +120,7 @@ export default class People extends Component {
                 <span className="day">{startDate.getDate()}</span>
               </div>
               <div>
-                <span>{days[startDate.getDay()]} {startDate.getHours()}:{startDate.getMinutes() < 10 ? `0${startDate.getMinutes()}` : startDate.getMinutes() } {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
+                <span>{days[startDate.getDay()]} {startDate.getHours() > 12 ? startDate.getHours() - 12: startDate.getHours()}:{startDate.getMinutes() < 10 ? `0${startDate.getMinutes()}` : startDate.getMinutes() } {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
               </div>
             </div>
           </li>
@@ -148,7 +148,9 @@ export default class People extends Component {
           <Breadcrumbs />
           <div className="card mentor-card flex justify-center">
             <div>
-              <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' />
+              <div>
+                <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' />
+              </div>
               <div className="mentor-info">
                 <h1 className="font-weight-normal">{this.state.mentor.name}</h1>
                 <p>{this.state.mentor.role} at {this.state.mentor.company}</p>
@@ -171,7 +173,7 @@ export default class People extends Component {
               <ul className='mentor-card-slots grid'>
                 {this.displayFreeSlots()}
                 { this.state.mentor.freeSlots.length
-                  ? <button className='btn btn-primary mentor-card-slot-request' onClick={this.showPopup}>Request</button>
+                  ? <button className='btn btn-primary btn-fill mentor-card-slot-request' onClick={this.showPopup}>Request</button>
                   : null
                 }
               </ul>
