@@ -265,6 +265,7 @@ nav .wrapper {
   margin: 0 auto;
 }
 
+/* nav .wrapper a#logo {  Antigamente era*/
 .logo {
   position: absolute;
   left: 50%;
@@ -481,13 +482,14 @@ code {
 
 .card.mentor-card .mentor-info .mentor-card-tags .mentor-tag {
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-align: center;
   color: var(--brownish-grey);
   padding: 1rem 1rem;
   border: 1px solid var(--border-lightgray);
   border-radius: 10rem;
-  margin: 0 .75rem 0 0;
+  margin: 0.9rem .75rem 0.9rem 0;
+  padding: 10px 16px 10px 16px;
 }
 
 .card.mentor-card .mentor-card-slots {
