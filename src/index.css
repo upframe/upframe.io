@@ -305,6 +305,7 @@ code {
 
 /* BREADCRUMBS */
 .breadcrumbs {
+  z-index: 5;
   display: flex;
   text-transform: uppercase;
   color: var(--greyish-brown);
@@ -317,7 +318,6 @@ code {
 
 .breadcrumbs li:not(:last-of-type)::after {
   content: '>';
-  position: relative;
   margin-right: 0.8rem;
   margin-left: 0.8rem;
 }
@@ -452,8 +452,10 @@ code {
 }
 
 .card.mentor-card .mentor-profilepic {
-  min-width: 13rem;
-  max-height: 13rem;
+  min-width: 12rem;
+  max-height: 12rem;
+  border-radius: 2px;
+
 }
 
 .card.mentor-card h1 {
@@ -504,6 +506,7 @@ code {
   margin-bottom: 1rem;
   cursor: pointer;
   transition: .25s ease-in-out all;
+  height: 37px;
 }
 
 .card.mentor-card .mentor-card-slot.active {
@@ -660,7 +663,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   padding: 1rem;
   border-radius: 0.25rem;
   transform: translate(-50%, -50%);
-  z-index: 999;
+  z-index: 1000;
 }
 
 .mentor-meetup-popup .close {
