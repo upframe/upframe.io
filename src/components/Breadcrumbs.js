@@ -25,8 +25,11 @@ export default class Breadcrumbs extends Component {
   render() {
     return (
       <ul className="breadcrumbs">
-        <Link to="/"><li>Directory</li></Link>
-        {this.returnLinks()}
+        {/* <Link to="/"><li>Directory ></li></Link> */}
+        <li>Directory</li>
+        <li>People</li>
+        <li className="font-weight-bold">Malik Piara</li>
+        {/* {this.returnLinks()} */}
       </ul>
     )
   }
