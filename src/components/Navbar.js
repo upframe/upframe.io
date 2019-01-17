@@ -14,9 +14,9 @@ export default class Navbar extends Component {
     return (
       <nav>
         <div className="wrapper flex justify-center items-center">
-          <Link to="/" id="logo">
+          {/* <Link to="/" id="logo"> */}
             <img src="/logo.svg" alt="" className="logo"></img>
-          </Link>
+          {/* </Link> */}
           {this.props.loggedIn ?
             <ul>
               <li><Link to='/settings'>Settings</Link></li>
