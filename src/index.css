@@ -605,13 +605,6 @@ code {
     width: 95%;
   }
 
-  nav .wrapper #logo {
-    position: relative;
-    left: unset;
-    margin-right: auto;
-    transform: none;
-  }
-
   #people .card.mentor-card {
     padding: 1rem;
   }
