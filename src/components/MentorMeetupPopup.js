@@ -84,7 +84,7 @@ export default class MentorMeetupPopup extends Component {
         <div className='dim-background'>
           <div className='mentor-meetup-popup flex flex-column'>
             <div className='flex justify-center'>
-              <h1 className='font-weight-normal'>Reach out to {this.state.mentorName}</h1>
+              <h1 className='font-weight-normal text-center'>Reach out to {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>
             <span className='hr'></span>
@@ -113,7 +113,7 @@ export default class MentorMeetupPopup extends Component {
         <div className='dim-background'>
           <div id='coffee' className='mentor-meetup-popup flex flex-column'>
             <div className='flex justify-center'>
-              <h1 className='font-weight-normal'>Grab a coffee with {this.state.mentorName}</h1>
+              <h1 className='font-weight-normal text-center'>Grab a coffee with {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>
             <span className="hr"></span>
