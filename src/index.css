@@ -10,7 +10,6 @@ body {
   --primary: #ff004b;  
   --primarytext: #fff;
 
-  --light-gray: #c2c5ca;
   --border-lightgray: #d0d2d6;
 
   --slate: #708090;
@@ -40,15 +39,15 @@ a.link {
   display: unset;
 }
 
-p.light-gray,
-h1.light-gray,
-h2.light-gray,
-h3.light-gray,
-h4.light-gray,
-h5.light-gray,
-h6.light-gray,
-label.light-gray {
-  color: var(--light-gray);
+p.light-grey,
+h1.light-grey,
+h2.light-grey,
+h3.light-grey,
+h4.light-grey,
+h5.light-grey,
+h6.light-grey,
+label.light-grey {
+  color: var(--light-grey);
 }
 
 .font-weight-thin {
@@ -101,7 +100,7 @@ label.light-gray {
   align-content: center;
 }
 
-.flex.items-center {
+.flex.align-items-center {
   align-items: center;
 }
 
@@ -144,7 +143,7 @@ input[type="email"],
 input[type="password"] {
   font-size: 1.5rem;
   padding: 0.5rem;
-  border: 1px solid var(--light-gray);
+  border: 1px solid var(--light-grey);
   border-radius: 0.25rem;
   outline: none;
 }
@@ -170,7 +169,7 @@ input[type="file"] {
   width: 10rem;
   background: none;
   padding: 1rem 0.5rem;
-  border: 1px solid var(--light-gray);
+  border: 1px solid var(--light-grey);
   border-radius: 0.2rem;
   outline: none;
   cursor: pointer;
@@ -208,11 +207,11 @@ input[type="file"] {
 
 /* CONTAINERS */
 .App {
-  padding-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .App main {
-  padding-top: 2rem;
+  margin-top: 2rem;
 }
 
 .container {
@@ -255,7 +254,6 @@ img {
 nav {
   height: 4rem;
   box-shadow:  0 0 5px rgba(0, 0, 0, .1);
-  margin-bottom: 5rem;
 }
 
 nav .wrapper {
@@ -265,15 +263,57 @@ nav .wrapper {
   margin: 0 auto;
 }
 
-/* nav .wrapper a#logo {  Antigamente era*/
-.logo {
+nav .wrapper #logo {
+  display: flex;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
 }
 
-nav .wrapper ul {
+nav .wrapper div {
   margin-left: auto;
+}
+
+nav .wrapper .dropdown img {
+  max-width: 2rem;
+  max-height: 2rem;
+  cursor: pointer;
+}
+
+nav .wrapper .dropdown:not(.active) ul {
+  margin-left: auto;
+  display: none;
+}
+
+nav .wrapper .dropdown.active ul {
+  display: block;
+  position: absolute;
+  top: 4rem;
+  background-color: #fff;
+  box-shadow: 0 0px 5px rgba(0, 0, 0, .1);
+}
+
+nav .wrapper .dropdown.active ul::before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: -1;
+  background-color: #fff;
+  width: 1rem;
+  height: 1rem;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  box-shadow: 0 0px 5px rgba(0, 0, 0, .1);
+}
+
+nav .wrapper .dropdown ul li {
+  padding: 0.5rem;
+  transition: .25s ease-in-out all;
+  cursor: pointer;
+}
+
+nav .wrapper .dropdown ul li:hover {
+  background-color: var(--light-grey);
 }
 
 /* CODE SECTION */
@@ -397,7 +437,9 @@ code {
 
 /* PUBLIC TAB */
 #settings-publictab div:first-of-type .profile-pic {
+  min-width: 12rem;
   max-width: 12rem;
+  min-height: 12rem;
   max-height: 12rem;
   margin-right: 2rem;
 }
@@ -430,7 +472,7 @@ code {
 }
 
 /* MENTOR CARD (MENTOR PAGE) */
-#people.container {
+#people {
   padding-bottom: 4rem;
 }
 
@@ -440,7 +482,7 @@ code {
   color: var(--slate-grey);
   box-shadow: 0 0.5px 1px 0 rgba(0, 0, 0, .2);
   padding: 3rem;
-  margin-top: 3rem;
+  margin-top: 1.5rem;
 }
 
 .card.mentor-card > div,
@@ -493,19 +535,18 @@ code {
 }
 
 .card.mentor-card .mentor-card-slots {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 1rem;
 }
 
 .card.mentor-card .mentor-card-slot {
-  flex-basis: 8rem;
   color: #000;
   font-size: 0.9rem;
   letter-spacing: 0.0125rem;
   padding: .5rem 1rem;
   border: 1px solid var(--border-lightgray);
   border-radius: 0.2rem;
-  margin-bottom: 1rem;
   cursor: pointer;
   transition: .25s ease-in-out all;
   max-height: 37.05px;
@@ -519,10 +560,6 @@ code {
 
 .card.mentor-card .mentor-card-slot > div {
   display: flex;
-}
-
-.card.mentor-card .mentor-card-slot:not(:last-child) {
-  margin-right: 1rem;
 }
 
 .card.mentor-card .mentor-card-slot span.month {
@@ -539,34 +576,96 @@ code {
   margin-left: 1rem;
 }
 
-.card.mentor-card .mentor-card-slot-request {
+.card.mentor-card button.mentor-card-slot-request {
   letter-spacing: 0.10625rem;
+  width: 100%;
 }
 
+
+/* MEDIUM AND SMALL SCREENS */
 @media (max-width: 960px) {
   #people.container {
     max-width: 95%;
   }
+
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
-  #people.container .card.mentor-card > div:first-of-type,
-  #people.container .card.mentor-card ul.mentor-card-slots {
+  nav .wrapper {
+    max-width: 95%;
+    width: 95%;
+  }
+
+  nav .wrapper #logo {
+    position: relative;
+    left: unset;
+    margin-right: auto;
+    transform: none;
+  }
+
+  #people .card.mentor-card {
+    padding: 1rem;
+  }
+
+  #people .card.mentor-card > div:first-of-type {
     flex-direction: column;
   }
 
-  #people.container .card.mentor-card ul.mentor-card-tags {
+  #people .card.mentor-card ul.mentor-card-tags {
     justify-content: center;
     margin: 1rem auto;
   }
 
-  #people.container .card.mentor-card h1,
-  #people.container .card.mentor-card p:not(:last-of-type) {
+  #people .card.mentor-card h1,
+  #people .card.mentor-card p:not(:last-of-type) {
     text-align: center;
   }
 
-  .card.mentor-card .mentor-info {
+  #people .card.mentor-card .mentor-info {
     margin: 0;
+  }
+
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #login > div {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* LARGER SCREENS */
+@media (min-width: 1020px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1350px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(6, 1fr);
   }
 }
 
