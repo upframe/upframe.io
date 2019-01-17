@@ -148,7 +148,7 @@ export default class People extends Component {
                 <span className="day">{startDate.getDate()}</span>
               </div>
               <div>
-                <span>{days[startDate.getDay()]} {startDate.getHours()}.{startDate.getMinutes() < 10 ? `0${startDate.getMinutes()}` : startDate.getMinutes() } {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
+                <span>{days[startDate.getDay()]} {startDate.getHours()}:{startDate.getMinutes() < 10 ? `0${startDate.getMinutes()}` : startDate.getMinutes() } {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
               </div>
             </div>
           </li>
