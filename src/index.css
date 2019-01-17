@@ -306,21 +306,24 @@ code {
 .breadcrumbs {
   display: flex;
   text-transform: uppercase;
+  color: var(--greyish-brown);
+  font-size: 12px;
 }
 
 .breadcrumbs a {
   display: flex;
 }
 
-.breadcrumbs a:not(:last-of-type)::after {
+.breadcrumbs li:not(:last-of-type)::after {
   content: '>';
   position: relative;
-  margin-right: 1rem;
+  margin-right: 0.8rem;
+  margin-left: 0.8rem;
 }
 
-.breadcrumbs a:not(:last-of-type) li {
+/* .breadcrumbs li:not(:last-of-type) li {
   margin-right: 1rem;
-}
+} */
 
 /* HOME PAGE */
 #home .container.grid {
