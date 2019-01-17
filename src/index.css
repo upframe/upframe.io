@@ -265,7 +265,7 @@ nav .wrapper {
   margin: 0 auto;
 }
 
-nav .wrapper a#logo {
+.logo {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
