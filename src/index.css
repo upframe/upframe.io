@@ -506,7 +506,8 @@ code {
   margin-bottom: 1rem;
   cursor: pointer;
   transition: .25s ease-in-out all;
-  height: 37px;
+  max-height: 37.05px;
+  max-width: 126.05px;
 }
 
 .card.mentor-card .mentor-card-slot.active {
