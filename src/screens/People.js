@@ -161,7 +161,7 @@ export default class People extends Component {
   render() {
     if (this.state.mentorExists === 1) {
       return (
-        <div id="people" className="container">
+        <main id='people' className='container'>
           {this.state.showPopup === 1
               ?
               <MentorMeetupPopup
@@ -196,16 +196,16 @@ export default class People extends Component {
               <a href={'http://www.github.com/' + this.state.mentor.github}>Github</a><br />
               <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
               <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>*/}
-              <ul className="mentor-card-slots">
+              <ul className='mentor-card-slots grid'>
                 {this.displayFreeSlots()}
                 { this.state.mentor.freeSlots.length
-                  ? <button className="btn btn-primary" onClick={this.showPopup}><li className="mentor-card-slot-request">Request</li></button>
+                  ? <button className='btn btn-primary mentor-card-slot-request' onClick={this.showPopup}>Request</button>
                   : null
                 }
               </ul>
               </div>
           </div>
-        </div>
+        </main>
       )
     } else {
       return (
