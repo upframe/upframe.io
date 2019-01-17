@@ -146,9 +146,9 @@ export default class People extends Component {
               null
           }
           <Breadcrumbs />
-          <div className="card mentor-card flex justify-center">
+          <div className='card mentor-card flex justify-center'>
             <div>
-              <div>
+              <div className='flex justify-center'>
                 <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' />
               </div>
               <div className="mentor-info">
