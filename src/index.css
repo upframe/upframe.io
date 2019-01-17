@@ -248,7 +248,7 @@ img {
 .hr {
   height: 1px;
   background-color: var(--border-lightgray);
-  margin: 2rem;
+  margin: 2rem 0 2rem 0;
 }
 
 /* NAVBAR */
