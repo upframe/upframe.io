@@ -36,39 +36,11 @@ export default class People extends Component {
   }
 
   componentDidMount() {
-    // this.setState({ //DEBUG
-    //   mentorExists: 1,
-    //   mentor: {
-    //     bio: 'res.mentor.bio',
-    //     company: 'res.mentor.company',
-    //     dribbble: 'res.mentor.dribbble',
-    //     email: 'res.mentor.email',
-    //     facebook: 'res.mentor.facebook',
-    //     github: 'res.mentor.github',
-    //     linkedin: 'res.mentor.linkedin',
-    //     location: 'res.mentor.location',
-    //     name: 'res.mentor.name',
-    //     profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png',
-    //     role: 'res.mentor.role',
-    //     twitter: 'res.mentor.twitter',
-    //     uid: 'asd',
-    //     website: 'asd',
-    //     tags: [],
-    //     freeSlots: [
-    //       {
-    //         start: new Date(),
-    //         end: new Date(),
-    //         sid: '123'
-    //       }
-    //     ],
-    //     favoriteLocations: ['Startup Lisboa', 'Arabesco']
-    //   }
-    // })
     let keycode = window.location.pathname.split('/')[1]
     Api.getMentorInfo(keycode).then((res) => {
       if (res.message) {
         this.setState({
-          mentorExists: 0
+          mentorExists: 2
         })
       } else {
         this.setState({
@@ -207,10 +179,16 @@ export default class People extends Component {
           </div>
         </div>
       )
-    } else {
+    } else if (this.state.mentorExists === 2)  {
       return (
         <h1>Este mentor não existe</h1>
       );
+    } else {
+      return (
+        <div className="center-container">
+          <div className="loader"></div>
+        </div>
+      )
     }
   }
 
