@@ -35,7 +35,7 @@ export default class Login extends Component {
       return <Redirect to='/' />
     } else {
       return (
-        <main>
+        <main id='login'>
           <div className='container flex justify-center'>
             <div className='flex flex-column'>
               <div className='field-group'>

@@ -128,7 +128,7 @@ export default class People extends Component {
   mentorTagsToElement = (tags) => {
     return tags.map((tag, i) => {
       return (
-        <li key={i} className='mentor-tag'>{tag.text}</li>
+        <li key={i} className='flex align-items-center mentor-tag'>{tag.text}</li>
       )
     })
   }
@@ -142,7 +142,7 @@ export default class People extends Component {
         let startDate = new Date(slot.start)
         return (
           <li className="mentor-card-slot flex justify-center" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
-            <div className='flex items-center'>
+            <div className='flex align-items-center'>
               <div>
                 <span className="month font-weight-bold text-uppercase">{months[startDate.getMonth()]}</span>
                 <span className="day">{startDate.getDate()}</span>
