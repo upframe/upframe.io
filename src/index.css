@@ -6,6 +6,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* COLOR */
 :root {
   --primary: #ff004b;  
   --primarytext: #fff;
@@ -23,9 +24,24 @@ body {
   --light-grey: #c8c5c5;
 }
 
-/* * * * * * * * *
- * TEXT
- * * * * * * * * */
+.color-primary {
+  color: var(--primary);
+}
+
+/* FONT SIZES */
+.font-100 {
+  font-size: 1rem;
+}
+
+.font-150 {
+  font-size: 1.5rem !important;
+}
+
+.font-200 {
+  font-size: 2rem;
+}
+
+/* TEXT */
 a,
 a:active,
 a:hover,
@@ -516,6 +532,10 @@ code {
 
 .card.mentor-card .mentor-info {
   margin-left: 2rem;
+}
+
+.card.mentor-card .mentor-info #location i.icon {
+  margin-right: 0.5rem;
 }
 
 .card.mentor-card .mentor-info .mentor-card-tags {
