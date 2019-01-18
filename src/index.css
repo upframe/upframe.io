@@ -543,7 +543,8 @@ code {
 }
 
 .card.mentor-card .mentor-info #tags {
-  display: flex;
+  flex-wrap: wrap;
+  margin: 0.9rem .75rem 0.9rem 0;
 }
 
 .card.mentor-card .mentor-info #tags .mentor-tag {
@@ -551,11 +552,14 @@ code {
   font-size: 0.8rem;
   text-align: center;
   color: var(--brownish-grey);
-  padding: 1rem 1rem;
+  padding: 0.8rem 1rem;
   border: 1px solid var(--border-lightgray);
   border-radius: 10rem;
-  margin: 0.9rem .75rem 0.9rem 0;
-  padding: 10px 16px 10px 16px;
+  margin: 0 1rem 0.5rem 0;
+}
+
+.card.mentor-card .mentor-info #bio {
+  line-height: 1.8rem;
 }
 
 .card.mentor-card .mentor-card-slots {
@@ -573,8 +577,6 @@ code {
   border-radius: 0.2rem;
   cursor: pointer;
   transition: .25s ease-in-out all;
-  max-height: 37.05px;
-  max-width: 126.05px;
 }
 
 .card.mentor-card .mentor-card-slot.active {
@@ -586,13 +588,15 @@ code {
   display: flex;
 }
 
-.card.mentor-card .mentor-card-slot span.month {
+.card.mentor-card .mentor-card-slot span#month {
   display: block;
+  font-size: 0.75rem;
   color: var(--orange);
 }
 
-.card.mentor-card .mentor-card-slot span.day {
+.card.mentor-card .mentor-card-slot span#day {
   display: block;
+  font-size: 1.125rem;
   text-align: center;
 }
 
@@ -607,7 +611,7 @@ code {
 
 
 /* MEDIUM AND SMALL SCREENS */
-@media (max-width: 960px) {
+@media (max-width: 1020px) {
   #people.container {
     max-width: 95%;
   }
@@ -717,7 +721,7 @@ code {
 
 @media (min-width: 1350px) {
   #people .card.mentor-card .mentor-card-slots {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 

@@ -116,11 +116,11 @@ export default class People extends Component {
           <li className="mentor-card-slot flex justify-center" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
             <div className='flex align-items-center'>
               <div>
-                <span className="month font-weight-bold text-uppercase">{months[startDate.getMonth()]}</span>
-                <span className="day">{startDate.getDate()}</span>
+                <span id='month' className='font-weight-bold text-uppercase'>{months[startDate.getMonth()]}</span>
+                <span id="day">{startDate.getDate()}</span>
               </div>
               <div>
-                <span>{days[startDate.getDay()]} {startDate.getHours() > 12 ? startDate.getHours() - 12: startDate.getHours()}:{startDate.getMinutes() < 10 ? `0${startDate.getMinutes()}` : startDate.getMinutes() } {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
+                <span id='time'>{days[startDate.getDay()]} {startDate.getHours() > 12 ? startDate.getHours() - 12: startDate.getHours()}:{startDate.getMinutes() < 10 ? `0${startDate.getMinutes()}` : startDate.getMinutes() } {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
               </div>
             </div>
           </li>
