@@ -542,11 +542,11 @@ code {
   margin-right: 0.5rem;
 }
 
-.card.mentor-card .mentor-info .mentor-card-tags {
+.card.mentor-card .mentor-info #tags {
   display: flex;
 }
 
-.card.mentor-card .mentor-info .mentor-card-tags .mentor-tag {
+.card.mentor-card .mentor-info #tags .mentor-tag {
   cursor: pointer;
   font-size: 0.8rem;
   text-align: center;
@@ -645,7 +645,7 @@ code {
     justify-content: center;
   }
 
-  #people .card.mentor-card ul.mentor-card-tags {
+  #people .card.mentor-card ul#tags {
     justify-content: center;
     margin: 1rem auto;
   }

@@ -151,14 +151,14 @@ export default class People extends Component {
               <div className='flex justify-center'>
                 <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' />
               </div>
-              <div className="mentor-info">
+              <div className='mentor-info'>
                 <h1 id='name' className="font-weight-normal">{this.state.mentor.name}</h1>
                 <p id='role-company'>{this.state.mentor.role} at {this.state.mentor.company}</p>
                 <p id='location' className='flex align-items-center'><i className='fa fa-map-marker icon color-primary font-150'></i>{this.state.mentor.location}</p>
-                <ul className="mentor-card-tags">
+                <ul id='tags' class='flex'>
                   {this.mentorTagsToElement(this.state.mentor.tags)}
                 </ul>
-                <p>{this.state.mentor.bio}</p>
+                <p id='bio'>{this.state.mentor.bio}</p>
               </div>
             </div>
             
