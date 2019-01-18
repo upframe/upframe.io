@@ -534,6 +534,10 @@ code {
   margin-left: 2rem;
 }
 
+.card.mentor-card .mentor-info p:not(:last-of-type) {
+  margin: 0.1rem 0;
+}
+
 .card.mentor-card .mentor-info #location i.icon {
   margin-right: 0.5rem;
 }
@@ -631,6 +635,14 @@ code {
 
   #people .card.mentor-card > div:first-of-type {
     flex-direction: column;
+  }
+
+  #people .card.mentor-card .mentor-info #name {
+    margin-top: 1rem;
+  }
+
+  #people .card.mentor-card .mentor-info #location {
+    justify-content: center;
   }
 
   #people .card.mentor-card ul.mentor-card-tags {
