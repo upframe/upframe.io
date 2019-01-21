@@ -13,7 +13,7 @@ export default class MentorMeetupPopup extends Component {
     super(props)
     this.state = {
       currentTab: 1,
-      message: 'What can I help you with?',
+      message: '',
 
       mentorName: this.props.name,
       slotID: this.props.sid,
@@ -116,21 +116,30 @@ export default class MentorMeetupPopup extends Component {
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>
             <span className="hr"></span>
-            <div className="text-center">
-              <p>Pick a nearby place</p>
-            </div>
             <div id='meetup-form' className='flex flex-column'>
-              <select onChange={this.handleLocationChange}>
-                {this.props.locations.map((location, i) => {
-                  return (
-                    <option key={i} value={location}>{location}</option>
-                  )
-                })}
-              </select>
-              <textarea name='message' cols='40' rows='5' maxLength='256' value={this.state.message} onChange={this.handleMessageChange}></textarea>
-              <input type='email' placeholder='Your email' onChange={this.handleEmailChange} />
-              <input type='text' placeholder='Your name' onChange={this.handleNameChange} />
-              <button className='btn btn-primary center' onClick={this.createMeetup}>Send</button>
+              <div className='input-group'>
+                <label for='location'>Pick a nearby place</label>
+                <select id='location' onChange={this.handleLocationChange}>
+                  {this.props.locations.map((location, i) => {
+                    return (
+                      <option key={i} value={location}>{location}</option>
+                    )
+                  })}
+                </select>
+              </div>
+              <div className='input-group'>
+                <label for='message'>Message</label>
+                <textarea id='message' name='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange}></textarea>
+              </div>
+              <div className='input-group'>
+                <label for='email'>Your email</label>
+                <input id='email' type='email' placeholder='Your email' onChange={this.handleEmailChange} />
+              </div>
+              <div className='input-group'>
+                <label for='name'>Your name</label>
+                <input id='name' type='text' placeholder='Your name' onChange={this.handleNameChange} />
+              </div>
+              <button className='btn btn-fill btn-primary right' onClick={this.createMeetup}>Send</button>
             </div>
           </div>
         </div>
@@ -140,15 +149,24 @@ export default class MentorMeetupPopup extends Component {
         <div className='dim-background'>
           <div id='call' className='mentor-meetup-popup flex flex-column'>
             <div className='flex justify-center'>
-              <h1>Make a call with {this.state.mentorName}</h1>
+              <h1 className='font-weight-normal text-center'>Make a call with {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>
             <span className='hr'></span>
             <div id='meetup-form' className='flex flex-column'>
-              <textarea name='message' cols='40' rows='5' maxLength='256' value={this.state.message} onChange={this.handleMessageChange}></textarea>
-              <input type='email' placeholder='Your email' onChange={this.handleEmailChange} />
-              <input type='text' placeholder='Your name' onChange={this.handleNameChange} />
-              <button className='btn btn-primary center' onClick={this.createMeetup}>Send</button>
+              <div className='input-group'>
+                <label for='message'>Message</label>
+                <textarea id='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange}></textarea>
+              </div>
+              <div className='input-group'>
+                <label for='email'>Your email</label>
+                <input id='email' type='email' placeholder='Your email' onChange={this.handleEmailChange} />
+              </div>
+              <div className='input-group'>
+                <label for='name'>Your name</label>
+                <input id='name' type='text' placeholder='Your name' onChange={this.handleNameChange} />
+              </div>
+              <button className='btn btn-fill btn-primary right' onClick={this.createMeetup}>Send</button>
             </div>
           </div>
         </div>
