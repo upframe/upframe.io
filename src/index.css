@@ -141,6 +141,10 @@ ul {
   margin: 0 auto;
 }
 
+.right {
+  margin-left: auto;
+}
+
 /* INPUTS */
 label {
   display: block;
@@ -149,6 +153,7 @@ label {
 
 input {
   font-size: 2rem;
+  box-sizing: border-box;
   border-radius: 0.125rem;
   outline: none;
   color: black;
@@ -157,8 +162,28 @@ input {
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-  font-size: 1.5rem;
+  font-size: 1rem;
   padding: 0.5rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 0.25rem;
+  outline: none;
+}
+
+textarea {
+  font-family: 'Noto Sans';
+  color: var(--blue-grey);
+  box-sizing: border-box;
+  padding: 1rem 1.5rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 0.25rem;
+  outline: none;
+  resize: none;
+}
+
+select {
+  font-size: 1rem;
+  color: var(--blue-grey);
+  padding: 1rem 1rem;
   border: 1px solid var(--light-grey);
   border-radius: 0.25rem;
   outline: none;
@@ -172,6 +197,10 @@ input[type="password"] {
 .input-group h2 {
   font-weight: normal;
   color: var(--brownish-grey);
+}
+
+.input-group label {
+  color: var(--blue-grey);
 }
 
 /* FILE INPUT */
@@ -432,6 +461,12 @@ code {
   max-width: 90%;
   width: 70rem;
   margin: unset auto 0 2rem;
+}
+
+#settings input[type="text"],
+#settings input[type="email"],
+#settings input[type="password"] {
+  font-size: 1.5rem;
 }
 
 #settings #tablist {
@@ -818,10 +853,14 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   position: absolute;
   top: 50%;
   left: 50%;
-  padding: 1rem;
+  padding: 1rem 2rem;
   border-radius: 0.25rem;
   transform: translate(-50%, -50%);
   z-index: 1000;
+}
+
+.mentor-meetup-popup h1 {
+  margin: 0rem auto 1rem auto;
 }
 
 .mentor-meetup-popup .close {
@@ -861,7 +900,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   display: flex;
   cursor: pointer;
   padding: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   transition: .25s ease-in-out background-color;
 }
 
@@ -871,7 +910,6 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 
 .mentor-meetup-popup .meetup-option img {
   margin-right: 2rem;
-
 }
 
 .mentor-meetup-popup .meetup-option h1 {
@@ -885,18 +923,23 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   margin: 0;
 }
 
-/* MEETUP OPTION */
+.mentor-meetup-popup input,
+.mentor-meetup-popup textarea {
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+
+/* MEETUP OPTION SPECIFIC */
 .mentor-meetup-popup#coffee span.hr {
-  margin: 0 auto;
+  width: 100%;
+  margin: 0 auto 2rem auto;
 }
 
 .mentor-meetup-popup #meetup-form > * {
   margin-bottom: 1rem;
 } 
-
-textarea {
-  resize: none;
-}
 
 /* LOADER */
 .center-container {
