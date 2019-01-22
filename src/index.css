@@ -577,6 +577,10 @@ code {
   margin-right: 0.5rem;
 }
 
+.card.mentor-card .mentor-info #location .location-icon {
+  margin-right: 0.3rem;
+}
+
 .card.mentor-card .mentor-info #tags {
   flex-wrap: wrap;
   margin: 0.9rem .75rem 0.9rem 0;
