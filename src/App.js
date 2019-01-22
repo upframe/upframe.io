@@ -3,19 +3,19 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Loadable from 'react-loadable';
 /* Routes */
 import Navbar from './components/Navbar';
-import Main from './screens/Main';
+// import Main from './screens/Main';
 import Login from './screens/Login'; //needs props
-import Onboarding from './screens/Onboarding';
+// import Onboarding from './screens/Onboarding';
 import Settings from './screens/Settings'; //needs props
-import ChangeEmail from './screens/ChangeEmail';
-import ResetPassword from './screens/ResetPassword';
-import People from './screens/People';
-import Expertise from './screens/Expertise';
+// import ChangeEmail from './screens/ChangeEmail';
+// import ResetPassword from './screens/ResetPassword';
+// import People from './screens/People';
+// import Expertise from './screens/Expertise';
 import Meetup from './screens/Meetup'; //needs props
-import Company from './screens/Company';
-import ErrorPage from './screens/404';
-import DevPlayground from './screens/DevPlayground';
-import GoogleSync from './components/Sync';
+// import Company from './screens/Company';
+// import ErrorPage from './screens/404';
+// import DevPlayground from './screens/DevPlayground';
+// import GoogleSync from './components/Sync';
 /* End of Routes */
 
 import * as Api from './utils/Api';
