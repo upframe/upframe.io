@@ -91,7 +91,7 @@ export default class SettingsPublicTab extends Component {
   handleBioChange = (event) => { this.setState({bio : event.target.value})}
   handleKeycodeChange = (event) => { this.setState({ keycode: event.target.value }) }
 
-  handleFirstFavoriteLocationChange = (event) => { 
+  handleFirstFavoriteLocationChange = (event) => {
     let newFavoriteLocations = this.state.favoriteLocations
     newFavoriteLocations[0] = event.target.value
     this.setState({ favoriteLocations: newFavoriteLocations})
@@ -112,18 +112,24 @@ export default class SettingsPublicTab extends Component {
   openUploadDialog = () => {
     document.querySelector("input[type='file']").click()
   }
-  
+
   uploadPhoto = () => {
-    Api.uploadPhoto().then((res) => {
-      if (res.ok === 1) {
-        alert('File upload successful')
-        this.setState({
-          profilePic: res.url
-        })
-      } else {
-        alert('Could not update picture')
-      }
-    })
+    let fileSize = document.querySelector('input[type="file"]').files[0].size / 1048576
+    if (fileSize < 5) {
+      Api.uploadPhoto().then((res) => {
+        console.log(res)
+        if (res.ok === 1) {
+          alert('File upload successful')
+          this.setState({
+            profilePic: res.url
+          })
+        } else {
+          alert('Could not update picture')
+        }
+      })
+    } else {
+      alert('Sorry but that file is too big for upload')
+    }
   }
 
   removePhoto = () => {
