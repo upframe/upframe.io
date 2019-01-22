@@ -199,7 +199,7 @@ export default class SettingsPublicTab extends Component {
           <div id='bio'>
             <h1 className='font-weight-normal'>Profile Picture</h1>
             <p>We're big on pictures around here.</p>
-            <p>Add an updated picture so you don't like a <span role='img' aria-label='robot'>🤖</span></p>
+            <p>Add an updated picture so you don't look like a <span role='img' aria-label='robot'>🤖</span></p>
             <button className='btn btn-round btn-primary' onClick={this.openUploadDialog}>Upload new picture</button>
             <button className='btn btn-round' onClick={this.removePhoto}>Remove</button>
           </div>
