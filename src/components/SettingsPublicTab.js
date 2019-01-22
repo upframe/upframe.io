@@ -213,50 +213,50 @@ export default class SettingsPublicTab extends Component {
         <div>
           <div className='input-group'>
             <label for='name'>Your Name</label>
-            <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' />
+            <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' maxlength='50' />
           </div>
           <div className='input-group'>
             <label for='location'>Location</label>
-            <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' />
+            <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' maxlength='50' />
           </div>
           <div className='input-group'>
             <label for='role'>Your Position</label>
-            <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' />
+            <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' maxlength='50' />
           </div>
           <div className='input-group'>
             <label for='company'>Company</label>
-            <input type='text' onChange={this.handleCompanyChange} value={this.state.company} id='company' />
+            <input type='text' onChange={this.handleCompanyChange} value={this.state.company} id='company' maxlength='50' />
           </div>
           <div className='input-group'>
             <label for='website'>Website</label>
-            <input type='text' onChange={this.handleWebsiteChange} value={this.state.website} id='website'/>
+            <input type='text' onChange={this.handleWebsiteChange} value={this.state.website} id='website' maxlength='50' />
           </div>
           <div className='input-group'>
             <label for='twitter'>Twitter</label>
-            <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' />
+            <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' maxlength='50' />
           </div>
           <div className='input-group'>
             <label for='linkedin'>LinkedIn</label>
-            <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' />
+            <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' maxlength='50' />
           </div>
           <div className='input-group'>
             <label for='github'>Github</label>
-            <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' />
+            <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' maxlength='50' />
           </div>
           <div className='input-group'>
             <label for='facebook'>Facebook</label>
-            <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' />
+            <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' maxlength='50' />
           </div>
           <div className='input-group'>
             <label for='dribbble'>Dribbble</label>
-            <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' />
+            <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' maxlength='50' />
           </div>
           <div className='input-group'>
             <label for='bio'>Biography</label>
-            <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio' />
+            <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio' maxlength='255' />
           </div>
           <div className='input-group'>
-            https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode}/>
+            https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode} maxlength='50'/>
           </div>
           <div className='input-group'>
             <h2>Your Skills</h2>
