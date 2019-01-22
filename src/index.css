@@ -218,7 +218,7 @@ input[type="file"] {
   border-radius: 0.2rem;
   outline: none;
   cursor: pointer;
-  height: 55px;
+  height: 46px;
 
   --bc: var(--blue-grey);
   --color: var(--blue-grey);
@@ -469,6 +469,10 @@ code {
   font-size: 1.5rem;
 }
 
+#settings input[type="text"] {
+  height: 60px;
+}
+
 #settings #tablist {
   padding-top: 12.5rem;
 }
@@ -484,7 +488,7 @@ code {
 }
 
 #settings .tab {
-  width: 80%;
+  width: 75%;
 }
 
 /* PUBLIC TAB */
@@ -493,7 +497,11 @@ code {
   max-width: 12rem;
   min-height: 12rem;
   max-height: 12rem;
-  margin-right: 2rem;
+  margin-right: 3rem;
+}
+
+#settings-publictab #bio {
+  margin-bottom: 3rem;
 }
 
 #settings-publictab div:first-of-type #bio h1 {
@@ -520,7 +528,16 @@ code {
 
 #settings-publictab div:nth-of-type(2) input {
   width: 100%;
-  padding-left: 1.5rem;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+#settings-publictab #bio {
+  width: 100%;
+  height: 12rem;
+  font-size: 18px;
 }
 
 /* MENTOR CARD (MENTOR PAGE) */
