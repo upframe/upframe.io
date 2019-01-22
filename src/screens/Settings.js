@@ -34,9 +34,9 @@ export default class Settings extends Component {
       return (
         <main id='settings' className='grid'>
           <div id='tablist'>
-            <label className={this.state.currentTab === 1 ? 'active': null} onClick={this.viewPublicTab}>Public Tab</label>
-            <label className={this.state.currentTab === 2 ? 'active': null} onClick={this.viewAccountTab}>Account Tab</label>
-            <label className={this.state.currentTab === 3 ? 'active': null} onClick={this.viewSyncTab}>Sync Tab</label>
+            <label className={this.state.currentTab === 1 ? 'active': null} onClick={this.viewPublicTab}>Public Profile</label>
+            <label className={this.state.currentTab === 2 ? 'active': null} onClick={this.viewAccountTab}>Account Settings</label>
+            <label className={this.state.currentTab === 3 ? 'active': null} onClick={this.viewSyncTab}>Calendar Sync</label>
           </div>
           {this.renderCurrentTab()}
         </main>
