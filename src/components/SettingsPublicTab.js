@@ -212,7 +212,7 @@ export default class SettingsPublicTab extends Component {
         </div>
         <div>
           <div className='input-group'>
-            <label for='name'>Your name</label>
+            <label for='name'>Your Name</label>
             <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' />
           </div>
           <div className='input-group'>
@@ -220,7 +220,7 @@ export default class SettingsPublicTab extends Component {
             <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' />
           </div>
           <div className='input-group'>
-            <label for='role'>Your role</label>
+            <label for='role'>Your Position</label>
             <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' />
           </div>
           <div className='input-group'>
@@ -236,7 +236,7 @@ export default class SettingsPublicTab extends Component {
             <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' />
           </div>
           <div className='input-group'>
-            <label for='linkedin'>LinkedIn page</label>
+            <label for='linkedin'>LinkedIn</label>
             <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' />
           </div>
           <div className='input-group'>
@@ -252,14 +252,14 @@ export default class SettingsPublicTab extends Component {
             <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' />
           </div>
           <div className='input-group'>
-            <label for='bio'>Bio</label>
+            <label for='bio'>Biography</label>
             <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio' />
           </div>
           <div className='input-group'>
             https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode}/>
           </div>
           <div className='input-group'>
-            <h2>Your skills</h2>
+            <h2>Your Skills</h2>
             <p>Add up to 7 skills to display in your profile.</p>
             <ReactTags tags={this.state.tags}
               autofocus={false}
