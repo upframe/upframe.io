@@ -587,7 +587,7 @@ code {
 }
 
 .card.mentor-card .mentor-info p:not(:last-of-type) {
-  margin: 0.1rem 0;
+  margin: 0.2rem 0;
 }
 
 .card.mentor-card .mentor-info #location i.icon {
