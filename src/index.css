@@ -540,11 +540,12 @@ code {
   font-size: 18px;
 }
 
-/* MENTOR CARD (MENTOR PAGE) */
+/* MENTOR PAGE */
 #people {
   padding-bottom: 4rem;
 }
 
+/* MENTOR CARD */
 .card.mentor-card {
   display: flex;
   flex-wrap: wrap;
@@ -665,6 +666,12 @@ code {
   width: 100%;
 }
 
+/* LOGIN */ 
+#login .container input {
+  padding: 1rem;
+}
+
+/* MEDIA QUERIES */
 
 /* MEDIUM AND SMALL SCREENS */
 @media (max-width: 1020px) {
