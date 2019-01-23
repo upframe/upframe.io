@@ -42,6 +42,10 @@ body {
 }
 
 /* TEXT */
+p {
+  margin: 0;
+}
+
 a,
 a:active,
 a:hover,
@@ -67,15 +71,15 @@ label.light-grey {
 }
 
 .font-weight-thin {
-  font-weight: 300;
+  font-weight: 300 !important;
 }
 
 .font-weight-normal {
-  font-weight: 400;
+  font-weight: 400 !important;
 }
 
 .font-weight-bold {
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
 .text-capitalize {
@@ -211,14 +215,15 @@ input[type="file"] {
 /* BUTTONS */
 .btn {
   font-weight: 700;
+  letter-spacing: 0.01rem;
   width: 10rem;
   background: none;
-  padding: 1rem 0.5rem;
+  padding: 0.5rem;
   border: 1px solid var(--light-grey);
   border-radius: 0.2rem;
   outline: none;
   cursor: pointer;
-  height: 46px;
+  height: 2.8rem;
 
   --bc: var(--blue-grey);
   --color: var(--blue-grey);
@@ -474,7 +479,7 @@ code {
 }
 
 #settings #tablist {
-  padding-top: 12.5rem;
+  padding: 12.5rem 0 0 1rem;
 }
 
 #settings #tablist label {
@@ -506,11 +511,11 @@ code {
 
 #settings-publictab div:first-of-type #bio h1 {
   color: var(--brownish-grey);
+  margin-bottom: 0.25rem;
 }
 
 #settings-publictab div:first-of-type #bio p {
   color: var(--blue-grey);
-  margin: 1rem 0 0 0;
 }
 
 #settings-publictab div:first-of-type #bio p:last-of-type {
@@ -621,11 +626,18 @@ code {
 
 .card.mentor-card .mentor-card-slots {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 1fr;
+  grid-auto-columns: repeat(5, 1fr);
   grid-gap: 1rem;
 }
 
+.card.mentor-card .mentor-card-slots > * {
+  box-sizing: border-box;
+  height: 100%;
+}
+
 .card.mentor-card .mentor-card-slot {
+  box-sizing: border-box;
   color: #000;
   font-size: 0.9rem;
   letter-spacing: 0.0125rem;
@@ -661,9 +673,10 @@ code {
   margin-left: 1rem;
 }
 
-.card.mentor-card button.mentor-card-slot-request {
+.card.mentor-card button#request {
   letter-spacing: 0.10625rem;
   width: 100%;
+  height: 100%;
 }
 
 /* LOGIN */ 

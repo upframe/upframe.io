@@ -173,7 +173,7 @@ export default class People extends Component {
               <ul className='mentor-card-slots grid'>
                 {this.displayFreeSlots()}
                 { this.state.mentor.freeSlots.length
-                  ? <button className='btn btn-primary btn-fill mentor-card-slot-request' onClick={this.showPopup}>Request</button>
+                  ? <button id='request' className='btn btn-primary btn-fill' onClick={this.showPopup}>Request</button>
                   : null
                 }
               </ul>
