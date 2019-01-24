@@ -39,6 +39,7 @@ export default class Meetup extends Component {
   }
 
   render() {
+    console.log(this.props)
     if (this.props.confirm === 0) {
       return (
         <div>

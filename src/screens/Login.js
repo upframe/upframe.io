@@ -7,6 +7,7 @@ export default class Login extends Component {
 
   constructor (props) {
     super(props) 
+    console.log(props)
     this.state = {
       email : '',
       password : ''
@@ -50,6 +51,7 @@ export default class Login extends Component {
             </div>
           </div>
         </main>
+
       );
     }
   }
