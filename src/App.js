@@ -4,17 +4,15 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import * as Loadable from './components/LoadableComponents';
 
-Loadable.preload()
-
 export default class App extends Component {
 
   state = {
     loggedIn: false
   }
 
-  // componentDidMount() {
-  //   Loadable.preload()
-  // }
+  componentDidMount() {
+    Loadable.preload()
+  }
 
   // componentDidMount() {
   //   Api.getUserInfo().then((res) => {
