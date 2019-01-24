@@ -4,8 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import * as Loadable from './components/LoadableComponents';
 
-// import Main from './screens/Main';
-// import People from './screens/People';
+Loadable.preload()
 
 export default class App extends Component {
 
@@ -68,7 +67,6 @@ export default class App extends Component {
           <Navbar loggedIn={this.state.loggedIn} setLoggedInState={this.setLoggedInState}/>
           <Switch>
             <Route exact path='/' component={Loadable.Main} />
-            {/* <Route exact path='/' component={Main} /> */}
             <Route exact path='/login' component={Loadable.Login} />
             <Route exact path='/settings' component={Loadable.Settings} />
             <Route exact path='/404' component={Loadable.ErrorPage} />
@@ -82,7 +80,6 @@ export default class App extends Component {
             <Route exact path='/dev' component={Loadable.DevPlayground} />
             <Route exact path='/onboarding/:keycode' component={Loadable.Onboarding} />
             <Route exact path='/:keycode' component={Loadable.People} />
-            {/* <Route exact path='/:keycode' component={People} /> */}
             <Route component={Loadable.ErrorPage} />
           </Switch>
         </div>
