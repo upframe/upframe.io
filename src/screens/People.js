@@ -131,6 +131,7 @@ export default class People extends Component {
   }
 
   render() {
+    console.log(this.props)
     if (this.state.mentorExists === 1) {
       return (
         <main id='people' className='container'>
