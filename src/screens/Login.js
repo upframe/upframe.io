@@ -32,6 +32,7 @@ export default class Login extends Component {
   handlePasswordChange = (e) => { this.setState({ password: e.target.value }) }
 
   render() {
+    console.log(this.props)
     if (this.props.loggedIn) {
       return <Redirect to='/' />
     } else {
