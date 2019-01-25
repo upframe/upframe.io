@@ -1,17 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
-import * as Loadable from './components/LoadableComponents';
+
+const Main = React.lazy(() => import('./screens/Main'))
+const Login = React.lazy(() => import('./screens/Login'))
+const Onboarding = React.lazy(() => import('./screens/Onboarding'))
+const Settings = React.lazy(() => import('./screens/Settings'))
+const ChangeEmail = React.lazy(() => import('./screens/ChangeEmail'))
+const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
+const People = React.lazy(() => import('./screens/People'))
+const Expertise = React.lazy(() => import('./screens/Expertise'))
+const Meetup = React.lazy(() => import('./screens/Meetup'))
+const Company = React.lazy(() => import('./screens/Company'))
+const ErrorPage = React.lazy(() => import('./screens/404'))
+const DevPlayground = React.lazy(() => import('./screens/DevPlayground'))
+const GoogleSync = React.lazy(() => import('./screens/Sync'))
 
 export default class App extends Component {
 
   state = {
     loggedIn: false
-  }
-
-  componentDidMount() {
-    Loadable.preload()
   }
 
   // componentDidMount() {
@@ -63,23 +72,25 @@ export default class App extends Component {
       <Router>
         <div className="App">
           <Navbar loggedIn={this.state.loggedIn} setLoggedInState={this.setLoggedInState}/>
-          <Switch>
-            <Route exact path='/' component={Loadable.Main} />
-            <Route exact path='/login' component={Loadable.Login} />
-            <Route exact path='/settings' component={Loadable.Settings} />
-            <Route exact path='/404' component={Loadable.ErrorPage} />
-            <Route exact path='/changemyemail/:token' component={Loadable.ChangeEmail} />
-            <Route exact path='/resetmypassword/:token' component={Loadable.ResetPassword} />
-            <Route exact path='/meetup/confirm/:meetupid' component={Loadable.Meetup} />
-            <Route exact path='/meetup/refuse/:meetupid' component={Loadable.Meetup} />
-            <Route exact path='/sync' component={Loadable.GoogleSync} />
-            <Route exact path='/expertise/:expertise' component={Loadable.Expertise} />
-            <Route exact path='/company/:company' component={Loadable.Company} />
-            <Route exact path='/dev' component={Loadable.DevPlayground} />
-            <Route exact path='/onboarding/:keycode' component={Loadable.Onboarding} />
-            <Route exact path='/:keycode' component={Loadable.People} />
-            <Route component={Loadable.ErrorPage} />
-          </Switch>
+          <Suspense fallback={<div>Loading...</div>}> 
+            <Switch>
+                <Route exact path='/' component={Main}/>
+                <Route exact path='/login' component={Login} />
+                <Route exact path='/settings' component={Settings} />
+                <Route exact path='/404' component={ErrorPage} />
+                <Route exact path='/changemyemail/:token' component={ChangeEmail} />
+                <Route exact path='/resetmypassword/:token' component={ResetPassword} />
+                <Route exact path='/meetup/confirm/:meetupid' component={Meetup} />
+                <Route exact path='/meetup/refuse/:meetupid' component={Meetup} />
+                <Route exact path='/sync' component={GoogleSync} />
+                <Route exact path='/expertise/:expertise' component={Expertise} />
+                <Route exact path='/company/:company' component={Company} />
+                <Route exact path='/dev' component={DevPlayground} />
+                <Route exact path='/onboarding/:keycode' component={Onboarding} />
+                <Route exact path='/:keycode' component={People} />
+                <Route component={ErrorPage} />
+            </Switch>
+          </Suspense>
         </div>
       </Router>
     );
