@@ -6,7 +6,11 @@ import SettingsPublicTab from '../components/SettingsPublicTab'
 import SettingsAccountTab from '../components/SettingsAccountTab'
 import SettingsSyncTab from '../components/SettingsSyncTab'
 
+import AppContext from '../components/AppContext'
+
 export default class Settings extends Component {
+
+  static contextType = AppContext
 
   constructor(props) {
     super(props)
@@ -30,7 +34,7 @@ export default class Settings extends Component {
   }
 
   render() {
-    if (this.props.loggedIn) {
+    if (this.context.loggedIn) {
       return (
         <main id='settings' className='grid'>
           <div id='tablist'>

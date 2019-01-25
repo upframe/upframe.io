@@ -1,29 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 
-import * as Api from '../utils/Api'
+import AppContext from './AppContext'
 
 export default class Navbar extends Component {
-  constructor() {
-    super()
-
-    this.state = {
-      profilePicSrc: ''
-    }
-    this.loadProfile()
-  }
-
-  async loadProfile() {
-    let user = await Api.getUserInfo()
-    if(user.code === 200) {
-      let picURL = user.user.profilePic
-      let newState = {
-        profilePicSrc: picURL
-      }
-
-      this.setState(newState)
-    }
-  }
+  static contextType = AppContext
 
   toggleDropdown = () => {
     let dropdown = document.querySelector('nav div.dropdown')
@@ -35,11 +16,6 @@ export default class Navbar extends Component {
     }
   }
 
-  logout = () => {
-    Api.logout()
-    this.props.setLoggedInState(false)
-  }
-
   render() {
     return (
       <nav>
@@ -48,12 +24,12 @@ export default class Navbar extends Component {
             <img src='/logo.svg' alt='' className='logo'></img>
           </Link>
 
-          {this.props.loggedIn ?
+          {this.context.loggedIn ?
             <div className='flex flex-column align-items-center dropdown'>
-              <img id='profilepic' src={this.state.profilePicSrc !== '' ? this.state.profilePicSrc : '' } alt='Profile pic' onClick={this.toggleDropdown}></img>
+              <img id='profilepic' src={this.context.user.profilePic !== '' ? this.context.user.profilePic : '' } alt='Profile pic' onClick={this.toggleDropdown}></img>
               <ul>
                 <li><Link to='/settings' className='text-center'>Settings</Link></li>
-                <li className='text-center' onClick={this.logout}>Logout</li>
+                <li className='text-center' onClick={this.context.logout}>Logout</li>
               </ul>
             </div>
           :

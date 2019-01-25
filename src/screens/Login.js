@@ -1,39 +1,29 @@
 import React, { Component } from 'react';
 
 import { Redirect } from 'react-router-dom';
-import * as Api from '../utils/Api';
+import AppContext from '../components/AppContext'
 
 export default class Login extends Component {
 
-  constructor (props) {
-    super(props) 
-    console.log(props)
-    this.state = {
-      email : '',
-      password : ''
-    }
+  static contextType = AppContext
+
+  state = {
+    email : '',
+    password : ''
   }
 
-  login = () => {
-    Api.login(this.state.email, this.state.password)
-      .then((res) => {
-        if (res.ok === 0) {
-          alert('Login errado')
-        } else {
-          this.props.setLoggedInState(true)
-        }
-      })
-  }
-
-  handleKeyUp = (e) => { if (e.keyCode === 13) { this.login() } }
+  handleKeyUp = (e) => { if (e.keyCode === 13) { this.context.login() } }
 
   handleEmailChange = (e) => { this.setState({ email: e.target.value }) }
 
   handlePasswordChange = (e) => { this.setState({ password: e.target.value }) }
 
+  login = () => {
+    this.context.login(this.state.email, this.state.password)
+  }
+
   render() {
-    console.log(this.props)
-    if (this.props.loggedIn) {
+    if (this.context.loggedIn) {
       return <Redirect to='/' />
     } else {
       return (
@@ -52,7 +42,6 @@ export default class Login extends Component {
             </div>
           </div>
         </main>
-
       );
     }
   }
