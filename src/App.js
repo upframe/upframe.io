@@ -1,7 +1,9 @@
 import React, { Component, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import AppContext from './components/AppContext';
 import Navbar from './components/Navbar';
+import * as Api from './utils/Api';
 
 const Main = React.lazy(() => import('./screens/Main'))
 const Login = React.lazy(() => import('./screens/Login'))
@@ -11,7 +13,8 @@ const ChangeEmail = React.lazy(() => import('./screens/ChangeEmail'))
 const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
 const People = React.lazy(() => import('./screens/People'))
 const Expertise = React.lazy(() => import('./screens/Expertise'))
-const Meetup = React.lazy(() => import('./screens/Meetup'))
+const MeetupConfirm = React.lazy(() => import('./screens/MeetupConfirm'))
+const MeetupRefuse = React.lazy(() => import('./screens/MeetupRefuse'))
 const Company = React.lazy(() => import('./screens/Company'))
 const ErrorPage = React.lazy(() => import('./screens/404'))
 const DevPlayground = React.lazy(() => import('./screens/DevPlayground'))
@@ -20,58 +23,63 @@ const GoogleSync = React.lazy(() => import('./screens/Sync'))
 export default class App extends Component {
 
   state = {
-    loggedIn: false
+    loggedIn: false,
+    user: {}
   }
 
-  // componentDidMount() {
-  //   Api.getUserInfo().then((res) => {
-  //     if (res.ok === 1) {
-  //       this.setState({
-  //         loggedIn : true
-  //       })
-  //     } else {
-  //       this.setState({
-  //         loggedIn : false
-  //       })
-  //     }
-  //   })
-  // }
+  login = (email, password) => {
+    Api.login(email, password).then((res) => {
+      if (res.ok === 1) {
+        Api.getUserInfo().then((res) => {
+          if (res.ok === 1 && res.code === 200) {
+            this.setState({
+              user: res.user,
+              loggedIn: true
+            })
+          }
+        })
+      }
+    })
+  }
 
-  // LoginScreen = () => {
-  //   return (
-  //     <Login loggedIn={this.state.loggedIn} setLoggedInState={this.setLoggedInState} />
-  //   )
-  // }
+  logout = () => {
+    Api.logout().then(() => {
+      this.setState({
+        loggedIn: false
+      })
+    })
+  }
 
-  // SettingsScreen = () => {
-  //   return (
-  //     <Settings loggedIn={this.state.loggedIn} />
-  //   )
-  // }
+  saveUserInfo = (user) => {
+    this.setState({
+      user: user
+    })
+  }
 
-  // MeetupConfirm = () => {
-  //   return (
-  //     <Meetup confirm={1} />
-  //   )
-  // }
-
-  // MeetupRefuse = () => {
-  //   return (
-  //     <Meetup confirm={0} />
-  //   )
-  // }
-
-  // setLoggedInState = (newState) => {
-  //   this.setState({
-  //     loggedIn: newState
-  //   })
-  // }
+  componentDidMount() {
+    Api.getUserInfo().then((res) => {
+      if (res.ok === 1 && res.code === 200) {
+        this.setState({
+          user: res.user,
+          loggedIn: true
+        })
+      }
+    })
+  }
 
   render() {
+    let contextValue = {
+      loggedIn: this.state.loggedIn,
+      user: this.state.user,
+      login: this.login,
+      logout: this.logout,
+      saveUserInfo: this.saveUserInfo
+    }
     return (
       <Router>
         <div className="App">
-          <Navbar loggedIn={this.state.loggedIn} setLoggedInState={this.setLoggedInState}/>
+        <AppContext.Provider value={contextValue}>
+          <Navbar />
           <Suspense fallback={<div>Loading...</div>}> 
             <Switch>
                 <Route exact path='/' component={Main}/>
@@ -80,8 +88,8 @@ export default class App extends Component {
                 <Route exact path='/404' component={ErrorPage} />
                 <Route exact path='/changemyemail/:token' component={ChangeEmail} />
                 <Route exact path='/resetmypassword/:token' component={ResetPassword} />
-                <Route exact path='/meetup/confirm/:meetupid' component={Meetup} />
-                <Route exact path='/meetup/refuse/:meetupid' component={Meetup} />
+                <Route exact path='/meetup/confirm/:meetupid' component={MeetupConfirm} />
+                <Route exact path='/meetup/refuse/:meetupid' component={MeetupRefuse} />
                 <Route exact path='/sync' component={GoogleSync} />
                 <Route exact path='/expertise/:expertise' component={Expertise} />
                 <Route exact path='/company/:company' component={Company} />
@@ -91,6 +99,7 @@ export default class App extends Component {
                 <Route component={ErrorPage} />
             </Switch>
           </Suspense>
+        </AppContext.Provider>
         </div>
       </Router>
     );

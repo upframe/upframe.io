@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 
+import AppContext from '../components/AppContext'
 import * as Api from '../utils/Api'
 
 export default class Sync extends Component {
+
+  static contextType = AppContext
+
   constructor (props) {
     super(props)
     this.state = {
@@ -22,8 +26,17 @@ export default class Sync extends Component {
             googleAccessToken: response1.token,
             googleRefreshToken: response1.refreshToken,
             upframeCalendarId: response2.id
-          }).then(() => {
-            window.location = '/settings'
+          }).then((res) => {
+            if (res.ok === 1) {
+              let newUser = this.context.user
+              newUser.googleAccessToken = response1.token
+              newUser.googleRefreshToken = response1.refreshToken
+              newUser.upframeCalendarId = response2.id
+              this.context.saveUserInfo(newUser)
+              window.location = '/settings'
+            } else {
+              alert('An error has ocurred')
+            }
           })
         })
       }
@@ -46,54 +59,14 @@ export default class Sync extends Component {
     return fetch('https://www.googleapis.com/calendar/v3/calendars', fetchData).then((res) => res.json())
   }
 
-  //Api.getTokens(this.state.code).then((res) => {
-    //     if (res.ok === 1) {
-    //       //We just synced. 
-    //       //DONE-Lets save the token here 
-    //       //DONE-and add upframe calendar (we can do both at same time)
-    //       //TODO-Add upframe calendar error handling
-    //       //DONE-and fetch calendars
-    //       window.location = '/settings'
-
-    //       Api.updateUserInfo({
-    //         googleAccessToken: res.token,
-    //         googleRefreshToken: res.refreshToken,
-    //       })
-
-    //       // this.getCalendarList(res.token).then((res) => {
-    //       //   let newCalendarsList = res.items.filter((element) => {
-    //       //     return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.id.includes('#contacts@group.v.calendar.google.com')
-    //       //   }).map((element) => {
-    //       //     return {
-    //       //       id: element.id,
-    //       //       summary: element.summary,
-    //       //       checked: false
-    //       //     }
-    //       //   })
-    //       //   this.setState({
-    //       //     calendars: newCalendarsList
-    //       //   })
-    //       // })
-
-    //       this.addUpframeCalendar(res.token).then((res) => {
-    //         //TODO - Check if add Upframe Calendar was successful
-    //         //if it was save to state
-    //         console.log('Tried to add Upframe Calendar')
-    //         console.log(res)
-    //         window.location = '/settings'
-    //       })
-    //       // this.setState({
-    //       //   code: '',
-    //       //   googleAccessToken: res.token
-    //       // })
-    //     } else {
-    //       alert('An error ocurred exchanging code for tokens')
-    //     }
-    //   })
-
   render() {
     return (
-      <h1>Syncing... You will be redirected shortly</h1>
+      <React.Fragment>
+        <h1>Syncing... You will be redirected shortly</h1>
+        <div className="center-container">
+          <div className="loader"></div>
+        </div>
+      </React.Fragment>
     )
   }
 }

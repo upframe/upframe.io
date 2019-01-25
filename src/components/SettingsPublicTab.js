@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { WithContext as ReactTags } from 'react-tag-input';
+import AppContext from './AppContext'
 import * as Api from '../utils/Api';
 
 const KeyCodes = {
@@ -14,6 +15,7 @@ const delimiters = [KeyCodes.comma, KeyCodes.enter]
 
 export default class SettingsPublicTab extends Component {
 
+  static contextType = AppContext
   // tags: [
   //   { id: "Thailand", text: "Thailand" },
   //   { id: "India", text: "India" }
@@ -27,55 +29,28 @@ export default class SettingsPublicTab extends Component {
   //   { id: 'Thailand', text: 'Thailand' }
   // ]
 
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
+    console.log('Contexto')
+    console.log(context)
     this.state = {
-      tags: [],
-      favoriteLocations: [],
+      tags: context.user.tags ? JSON.parse(context.user.tags) : [],
+      favoriteLocations: context.user.favoriteLocations ? JSON.parse(context.user.favoriteLocations) : [],
       suggestions: [],
-      profilePic : '',
-      name : '',
-      location : '',
-      role : '',
-      company : '',
-      website : '',
-      twitter : '',
-      linkedin : '',
-      github : '',
-      facebook : '',
-      dribbble : '',
-      bio : '',
-      keycode: ''
+      profilePic: context.user.profilePic,
+      name: context.user.name,
+      location: context.user.location,
+      role: context.user.role,
+      company: context.user.company,
+      website: context.user.website,
+      twitter: context.user.twitter,
+      linkedin: context.user.linkedin,
+      github: context.user.github,
+      facebook: context.user.facebook,
+      dribbble: context.user.dribbble,
+      bio: context.user.bio,
+      keycode: context.user.keycode
     }
-  }
-
-  componentDidMount() {
-    //Vamos buscar a info e dar load da mesma
-    Api.getUserInfo().then((res) => {
-      console.log(res)
-      if (res.ok === 1) {
-        let newState = {
-          tags: res.user.tags ? JSON.parse(res.user.tags) : [],
-          favoriteLocations: res.user.favoriteLocations ? JSON.parse(res.user.favoriteLocations) : [],
-          profilePic: res.user.profilePic,
-          name: res.user.name,
-          location: res.user.location,
-          role: res.user.role,
-          company: res.user.company,
-          website: res.user.website,
-          twitter: res.user.twitter,
-          linkedin: res.user.linkedin,
-          github: res.user.github,
-          facebook: res.user.facebook,
-          dribbble: res.user.dribbble,
-          bio: res.user.bio,
-          keycode: res.user.keycode
-        }
-        this.setState(newState)
-      } else {
-        alert('Could not fetch your latest info. Something might be wrong on our side')
-      }
-    })
   }
 
   handleNameChange = (event) => { this.setState({ name : event.target.value })}

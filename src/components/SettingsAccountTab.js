@@ -1,31 +1,14 @@
 import React, { Component } from 'react';
 
 import * as Api from '../utils/Api'
+import AppContext from './AppContext'
 
 export default class SettingsAccountTab extends Component {
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      email : ''
-    }
-  }
-
-  componentDidMount() {
-    Api.getUserInfo().then((res) => {
-      if (res.ok === 1) {
-        let newState = {
-          email: res.user.email
-        }
-        this.setState(newState)
-      } else {
-        alert('An error ocurred')
-      }
-    })
-  }
+  static contextType = AppContext
 
   changeEmail = () => {
-    Api.changeEmail(this.state.email).then((res) => {
+    Api.changeEmail(this.context.user.email).then((res) => {
       if (res.ok === 1) {
         alert('An email has been sent to you')
       }
@@ -33,7 +16,7 @@ export default class SettingsAccountTab extends Component {
   }
 
   changePassword = () => {
-    Api.resetPassword(this.state.email).then((res) => {
+    Api.resetPassword(this.context.user.email).then((res) => {
       if (res.ok === 1) {
         alert('An email has been sent to you')
       }
@@ -45,7 +28,7 @@ export default class SettingsAccountTab extends Component {
       <div id='settings-accounttab' className='tab center'>
         <h1>Email</h1>
         <p>
-          Your email address is <a href={'mailto:' + this.state.email}>{this.state.email}</a>. This information will not be publicly displayed
+          Your email address is <a href={'mailto:' + this.context.user.email}>{this.context.user.email}</a>. This information will not be publicly displayed
         </p>
         <button onClick={this.changeEmail}>Change Email</button>
         <h1>Password</h1>
