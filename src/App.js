@@ -36,23 +36,38 @@ export default class App extends Component {
               user: res.user,
               loggedIn: true
             })
+            return "Login successful"
           }
         })
+      } else {
+        return "Could not log you in"
       }
     })
   }
 
   logout = () => {
-    Api.logout().then(() => {
-      this.setState({
-        loggedIn: false
-      })
+    Api.logout().then((res) => {
+      if (res === 1) {
+        this.setState({
+          loggedIn: false
+        })
+        return "Logged out"
+      } else {
+        return "Could not log you out"
+      }
     })
   }
 
   saveUserInfo = (user) => {
-    this.setState({
-      user: user
+    Api.updateUserInfo(user).then((res) => {
+      if (res.ok === 1) {
+        this.setState({
+          user: user
+        })
+        return "Information saved"
+      } else {
+        return "There was a problem saving your information"
+      }
     })
   }
 

@@ -6,10 +6,13 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 import '../calendar.css';
 
 import * as Api from '../utils/Api';
+import AppContext from './AppContext'
 
 const localizer = BigCalendar.momentLocalizer(moment) 
 
 export default class SettingsSyncTab extends Component {
+
+  static contextType = AppContext
 
   constructor(props) {
     super(props)
@@ -160,9 +163,28 @@ export default class SettingsSyncTab extends Component {
   }
 
   addFreeSlot = (slot) => {
+    //We need to check if there are no overlaps and if we are not adding a slot to the past.
     let today = new Date()
-    if (slot.start < today) {
-      alert('You can\'t add free slots in the past')
+    let stop = false
+    if (slot.start < today) { //Cant add slots in the past
+      stop = true
+    }
+
+    if (!stop) {
+      //Extra tests of overlap
+      let allFreeSlots = [...this.state.freeSlotsUnsaved, ...this.state.freeSlotsSaved]
+      let leng = allFreeSlots.length
+      for (let x = 0; x < leng && !stop; x++) {
+        if ((slot.end > allFreeSlots[x].start) && (slot.end < allFreeSlots[x].end)) {
+          stop = true
+        } else if ((slot.start > allFreeSlots[x].start) && (slot.start < allFreeSlots[x].end)) {
+          stop = true
+        }
+      }
+    }
+
+    if (stop) {
+      alert('You can\'t add a free there!')
     } else {
       let currentId = this.state.currId
       let newFreeSlots = this.state.freeSlotsUnsaved
