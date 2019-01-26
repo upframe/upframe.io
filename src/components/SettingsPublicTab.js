@@ -108,24 +108,27 @@ export default class SettingsPublicTab extends Component {
   }
 
   removePhoto = () => {
-    Api.updateUserInfo({
+    this.context.saveUserInfo({
       profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png'
-    }).then((res) => {
-      if (res.ok === 1) {
-        alert('Set picture to default')
-        this.setState({
-          profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png'
-        })
-      } else {
-        alert('Could not set picture to default. Error ocurred')
-        console.log(res)
-      }
     })
+    // Api.updateUserInfo({
+    //   profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png'
+    // }).then((res) => {
+    //   if (res.ok === 1) {
+    //     alert('Set picture to default')
+    //     this.setState({
+    //       profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png'
+    //     })
+    //     this.context.saveUserInfo({ profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png'})
+    //   } else {
+    //     alert('Could not set picture to default. Error ocurred')
+    //     console.log(res)
+    //   }
+    // })
   }
 
   saveChanges = () => {
-    console.log(this.state)
-    Api.updateUserInfo({
+    this.context.saveUserInfo({
       tags: JSON.stringify(this.state.tags),
       favoriteLocations: JSON.stringify(this.state.favoriteLocations),
       name: this.state.name,
@@ -140,13 +143,30 @@ export default class SettingsPublicTab extends Component {
       dribbble: this.state.dribbble,
       bio: this.state.bio,
       keycode: this.state.keycode
-    }).then((res) => {
-      if (res.ok === 1) {
-        alert('Information saved!')
-      } else {
-        alert('Oops, an error ocurred')
-      }
     })
+    // console.log(this.state)
+    // Api.updateUserInfo({
+    //   tags: JSON.stringify(this.state.tags),
+    //   favoriteLocations: JSON.stringify(this.state.favoriteLocations),
+    //   name: this.state.name,
+    //   location: this.state.location,
+    //   role: this.state.role,
+    //   company: this.state.company,
+    //   website: this.state.website,
+    //   twitter: this.state.twitter,
+    //   linkedin: this.state.linkedin,
+    //   github: this.state.github,
+    //   facebook: this.state.facebook,
+    //   dribbble: this.state.dribbble,
+    //   bio: this.state.bio,
+    //   keycode: this.state.keycode
+    // }).then((res) => {
+    //   if (res.ok === 1) {
+    //     alert('Information saved!')
+    //   } else {
+    //     alert('Oops, an error ocurred')
+    //   }
+    // })
   }
 
   handleDeleteTag = (i) => {
