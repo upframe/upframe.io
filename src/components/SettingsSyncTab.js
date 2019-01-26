@@ -92,7 +92,8 @@ export default class SettingsSyncTab extends Component {
                   recurrency: unconvertedSlot.recurrency,
                   id: unconvertedSlot.sid,
                   start: new Date(unconvertedSlot.start),
-                  end: new Date(unconvertedSlot.end)
+                  end: new Date(unconvertedSlot.end),
+                  isMine: true
                 }
               }),
               googleAccessToken: googleAccessToken
@@ -193,7 +194,8 @@ export default class SettingsSyncTab extends Component {
         start: slot.start,
         end: slot.end,
         title: 'Upframe Free Slot',
-        tag: 'upframe-free-slot'
+        tag: 'upframe-free-slot',
+        isMine: true,
       })
       this.setState({
         currId: currentId + 1,
@@ -310,7 +312,8 @@ export default class SettingsSyncTab extends Component {
                   recurrency: unconvertedSlot.recurrency,
                   id: unconvertedSlot.sid,
                   start: new Date(unconvertedSlot.start),
-                  end: new Date(unconvertedSlot.end)
+                  end: new Date(unconvertedSlot.end),
+                  isMine: true,
                 }
               }),
               freeSlotsToDelete: [],
@@ -380,6 +383,23 @@ export default class SettingsSyncTab extends Component {
             events={[...this.state.events, ...this.state.freeSlotsSaved, ...this.state.freeSlotsUnsaved]}
             onSelectEvent={event => this.deleteFreeSlot(event)}
             onSelectSlot={slot => this.addFreeSlot(slot)}
+            eventPropGetter={(event, start, end, isSelected) => {
+              let newStyle = {
+                backgroundColor: '#2b3778',
+                borderColor: '#2b3778',
+                color: 'white',
+              };
+
+              if (event.isMine) {
+                newStyle.backgroundColor = '#ff004b'
+                newStyle.borderColor = '#ff004b'
+              }
+
+              return {
+                className: "",
+                style: newStyle
+              };
+            }}
           />
         </div>
       )
