@@ -5,17 +5,6 @@ import AppContext from './components/AppContext';
 import Navbar from './components/Navbar';
 import * as Api from './utils/Api';
 
-// const MainPromise
-// const LoginPromise
-// const OnboardingPromise
-// const SettingsPromise
-// const ChangeEmailPromise
-// const ResetPasswordPromise
-// const PeoplePromise
-// const ExpertisePromise
-// const MeetupConfirmPromise
-// const MeetupRefusePromise
-
 const Main = React.lazy(() => import(/* webpackChunkName: "Main", webpackPrefetch: true */'./screens/Main'))
 const Login = React.lazy(() => import(/* webpackChunkName: "Login", webpackPrefetch: true */'./screens/Login'))
 const Onboarding = React.lazy(() => import(/* webpackChunkName: "Onboarding", webpackPrefetch: true */'./screens/Onboarding'))
