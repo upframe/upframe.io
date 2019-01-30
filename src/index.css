@@ -469,7 +469,6 @@ code {
 #settings.grid {
   grid-template-columns: 20% 80%;
   max-width: 90%;
-  width: 70rem;
   margin: unset auto 0 2rem;
 }
 
