@@ -262,7 +262,7 @@ input[type="file"] {
 }
 
 .App main {
-  margin-top: 2rem;
+  padding: 5rem 0;
 }
 
 .container {
@@ -303,7 +303,11 @@ img {
 
 /* NAVBAR */
 nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
   height: 4rem;
+  background: #fff;
   box-shadow:  0 0 5px rgba(0, 0, 0, .1);
 }
 
@@ -551,10 +555,6 @@ code {
 }
 
 /* MENTOR PAGE */
-#people {
-  padding-bottom: 4rem;
-}
-
 /* MENTOR CARD */
 .card.mentor-card {
   display: flex;
