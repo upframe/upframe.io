@@ -248,7 +248,7 @@ export default class SettingsPublicTab extends Component {
           </div>
           <div className='input-group'>
             <label for='bio'>Biography</label>
-            <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio' maxlength='255' />
+            <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio' maxlength='600' />
           </div>
           <div className='input-group'>
             https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode} maxlength='50'/>
