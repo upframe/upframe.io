@@ -47,7 +47,7 @@ export default class App extends Component {
 
   logout = () => {
     Api.logout().then((res) => {
-      if (res === 1) {
+      if (res.ok === 1) {
         this.setState({
           loggedIn: false
         })
