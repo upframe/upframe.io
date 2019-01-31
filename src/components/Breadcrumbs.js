@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-export default class Breadcrumbs extends Component {
-  constructor() {
-    super()
+import AppContext from './AppContext'
 
-    this.state = {
-      path: window.location.pathname
-    }
-  }
+export default class Breadcrumbs extends Component {
+  static contextType = AppContext
 
   returnLinks() {
     let list = this.state.path.split('/')
@@ -28,7 +24,7 @@ export default class Breadcrumbs extends Component {
         {/* <Link to="/"><li>Directory ></li></Link> */}
         <li>Directory</li>
         <li>People</li>
-        <li className="font-weight-bold">Malik Piara</li>
+        <li className="font-weight-bold">{this.props.name}</li>
         {/* {this.returnLinks()} */}
       </ul>
     )

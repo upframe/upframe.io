@@ -146,7 +146,7 @@ export default class People extends Component {
               :
               null
           }
-          <Breadcrumbs />
+          <Breadcrumbs name={this.state.mentor.name} />
           <div className='card mentor-card flex justify-center'>
             <div>
               <div className='flex justify-center'>
