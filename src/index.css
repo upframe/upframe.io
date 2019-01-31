@@ -109,6 +109,10 @@ label.light-grey {
   display: flex;
 }
 
+.flex.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .flex.flex-column {
   flex-direction: column;
 }
@@ -551,6 +555,11 @@ code {
 
 #settings-accounttab p a {
   display: inline;
+}
+
+#settings-synctab #calendar-list {
+  grid-template-columns: repeat(5, 1fr);
+  margin-bottom: 2rem;
 }
 
 /* MENTOR PAGE */
