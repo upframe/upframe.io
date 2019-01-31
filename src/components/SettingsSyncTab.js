@@ -340,6 +340,10 @@ export default class SettingsSyncTab extends Component {
     })
   }
 
+  listCalendars() {
+    console.log(this.state.calendars)
+  }
+
   render() {
     //Ou temos token para ir buscar calendários ou nao temos
     if (this.state.googleAccessToken === '') {
@@ -363,15 +367,20 @@ export default class SettingsSyncTab extends Component {
       )       
     } else {
       return (
-        <div>
-          {this.state.calendars.map(element => {
-            return (
-              <div>
-                <label>{element.summary}</label>
-                <input type='checkbox' id={element.id} onChange={this.calendarVisibilityChange} defaultChecked={element.checked}/>
-              </div>
-            )
-          })}
+        <div id='settings-synctab'>
+          {this.state.calendars ?
+            <div id='calendar-list' className='grid'>
+              {this.state.calendars.map(element => {
+                return (
+                  <div id='calendar-item'>
+                    <label for={element.id}><input type='checkbox' id={element.id} onChange={this.calendarVisibilityChange} defaultChecked={element.checked} />{element.summary}</label>
+                  </div>
+                )
+              })}
+            </div>
+          :
+            null
+          }
           <button onClick={this.unlinkGoogle}>Unlink Google</button>
           <button onClick={this.saveFreeSlots}>Save slots</button>
           <BigCalendar
