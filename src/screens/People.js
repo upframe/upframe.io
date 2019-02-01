@@ -159,7 +159,11 @@ export default class People extends Component {
                 <ul id='tags' className='flex'>
                   {this.mentorTagsToElement(this.state.mentor.tags)}
                 </ul>
-                <p id='bio'>{this.state.mentor.bio}</p>
+                {this.state.mentor.bio.split('\n').map((element) => {
+                  return (
+                    <p id='bio'>{element}</p>
+                  )
+                })}
               </div>
             </div>
             
