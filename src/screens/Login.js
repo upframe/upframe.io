@@ -24,7 +24,7 @@ export default class Login extends Component {
 
   render() {
     if (this.context.loggedIn) {
-      return <Redirect to='/' />
+      return <Redirect to='/settings' />
     } else {
       return (
         <main id='login'>

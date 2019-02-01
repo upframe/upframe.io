@@ -6,14 +6,21 @@ import AppContext from './AppContext'
 export default class Navbar extends Component {
   static contextType = AppContext
 
-  toggleDropdown = () => {
+  openDropdown = () => {
     let dropdown = document.querySelector('nav div.dropdown')
+    dropdown.classList.add('active')
+    document.addEventListener("click", this.closeDropdown)
+  }
 
-    if (dropdown.classList.contains('active')) {
-      dropdown.classList.remove('active')
-    } else {
-      dropdown.classList.add('active')
-    }
+  closeDropdown = () => {
+    let dropdown = document.querySelector('nav div.dropdown')
+    dropdown.classList.remove('active')
+    document.removeEventListener("click", this.closeDropdown)
+  }
+
+  logout = () => {
+    this.closeDropdown()
+    this.context.logout()
   }
 
   render() {
@@ -31,10 +38,10 @@ export default class Navbar extends Component {
 
           {this.context.loggedIn ?
             <div className='flex flex-column align-items-center dropdown'>
-              <img id='profilepic' src={this.context.user.profilePic !== '' ? this.context.user.profilePic : '' } alt='Profile pic' onClick={this.toggleDropdown}></img>
+              <img id='profilepic' src={this.context.user.profilePic !== '' ? this.context.user.profilePic : '' } alt='Profile pic' onClick={this.openDropdown}></img>
               <ul>
-                <li><Link to='/settings' className='text-center'>Settings</Link></li>
-                <li className='text-center' onClick={this.context.logout}>Logout</li>
+                <li onClick={this.closeDropdown}><Link to='/settings' className='text-center'>Settings</Link></li>
+                <li className='text-center' onClick={this.logout}>Logout</li>
               </ul>
             </div>
           :
