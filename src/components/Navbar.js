@@ -20,9 +20,14 @@ export default class Navbar extends Component {
     return (
       <nav>
         <div className='wrapper flex justify-center align-items-center'>
-          <Link to='/' id='logo'>
-            <img src='/logo.svg' alt='' className='logo'></img>
-          </Link>
+          {this.context.user.keycode ?
+            <Link to={'/' + this.context.user.keycode} id='logo'>
+              <img src='/logo.svg' alt='' className='logo'></img>
+            </Link> :
+            <Link to='/' id='logo'>
+              <img src='/logo.svg' alt='' className='logo'></img>
+            </Link>
+          }
 
           {this.context.loggedIn ?
             <div className='flex flex-column align-items-center dropdown'>
