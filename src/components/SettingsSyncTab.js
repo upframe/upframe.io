@@ -74,7 +74,7 @@ export default class SettingsSyncTab extends Component {
             return {
               id: element.id,
               summary: element.summary,
-              checked: true
+              checked: false
             }
           })
 
