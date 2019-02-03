@@ -107,6 +107,7 @@ export default class App extends Component {
                 <Route exact path='/' component={Main}/>
                 <Route exact path='/login' component={Login} />
                 <Route exact path='/settings' component={Settings} />
+                <Route exact path='/settings/:page' component={Settings} />
                 <Route exact path='/404' component={ErrorPage} />
                 <Route exact path='/changemyemail/:token' component={ChangeEmail} />
                 <Route exact path='/resetmypassword/:token' component={ResetPassword} />
