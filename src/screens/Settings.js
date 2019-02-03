@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 import SettingsPublicTab from '../components/SettingsPublicTab'
 import SettingsAccountTab from '../components/SettingsAccountTab'
@@ -14,14 +14,36 @@ export default class Settings extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      currentTab: 1
+
+    let currentTab = 1
+    if (props.match.params.page === 'public') {
+      currentTab = 1
+    } else if (props.match.params.page === 'account') {
+      currentTab = 2
+    } else if (props.match.params.page === 'sync') {
+      currentTab = 3
     }
+    this.state = {currentTab}
   }
 
-  viewPublicTab = () => {this.setState({ currentTab : 1 })}
-  viewAccountTab = () => { this.setState({ currentTab: 2 }) }
-  viewSyncTab = () => { this.setState({ currentTab: 3 }) }
+  // viewPublicTab = () => {this.setState({ currentTab : 1 })}
+  // viewAccountTab = () => { this.setState({ currentTab: 2 }) }
+  // viewSyncTab = () => { this.setState({ currentTab: 3 }) }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.match !== this.props.match) {
+      console.log('Did update')
+      let currentTab = 1
+      if (this.props.match.params.page === 'public') {
+        currentTab = 1
+      } else if (this.props.match.params.page === 'account') {
+        currentTab = 2
+      } else if (this.props.match.params.page === 'sync') {
+        currentTab = 3
+      }
+      this.setState({ currentTab })
+    }
+  }
 
   renderCurrentTab = () => {
     if (this.state.currentTab === 1) {
@@ -34,13 +56,14 @@ export default class Settings extends Component {
   }
 
   render() {
+    console.log(this.props)
     if (this.context.loggedIn) {
       return (
         <main id='settings' className='grid'>
           <div id='tablist'>
-            <label className={this.state.currentTab === 1 ? 'active': null} onClick={this.viewPublicTab}>Public Profile</label>
-            <label className={this.state.currentTab === 2 ? 'active': null} onClick={this.viewAccountTab}>Account Settings</label>
-            <label className={this.state.currentTab === 3 ? 'active': null} onClick={this.viewSyncTab}>Calendar Sync</label>
+            <Link to='/settings/public'><label className={this.state.currentTab === 1 ? 'active' : null}>Public Profile</label></Link>
+            <Link to='/settings/account'><label className={this.state.currentTab === 2 ? 'active' : null}>Account Settings</label></Link>
+            <Link to='/settings/sync'><label className={this.state.currentTab === 3 ? 'active' : null}>Calendar Sync</label></Link>
           </div>
           {this.renderCurrentTab()}
         </main>

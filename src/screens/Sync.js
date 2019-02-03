@@ -33,7 +33,7 @@ export default class Sync extends Component {
               newUser.googleRefreshToken = response1.refreshToken
               newUser.upframeCalendarId = response2.id
               this.context.saveUserInfo(newUser)
-              window.location = '/settings'
+              window.location = '/settings/sync'
             } else {
               alert('An error has ocurred')
             }
