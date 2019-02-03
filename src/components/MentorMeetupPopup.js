@@ -92,7 +92,7 @@ export default class MentorMeetupPopup extends Component {
                 <img src='/media/coffee.svg' alt='Coffee cup'></img>
                 <div>
                   <h1 className='meetup-option-title font-weight-normal'>Grab a coffee</h1>
-                  <p>Pick from a selection of Malik's favourite cafés and local coworking spaces.</p>
+                  <p>Pick from a selection of {this.state.mentorName}'s favourite cafés and local coworking spaces.</p>
                 </div>
               </div>
 
@@ -100,7 +100,7 @@ export default class MentorMeetupPopup extends Component {
                 <img src='/media/call.svg' alt='Phone'></img>
                 <div>
                   <h1 className='meetup-option-title font-weight-normal'>Make a call remotely</h1>
-                  <p>Reach out to Malik from anywhere in the world. A unique link will be generated and sent to your calendar privately.</p>
+                  <p>Reach out to {this.state.mentorName} from anywhere in the world. A unique link will be generated and sent to your calendar privately.</p>
                 </div>
               </div>
             </div>
