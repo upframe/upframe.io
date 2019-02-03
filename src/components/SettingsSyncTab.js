@@ -74,11 +74,15 @@ export default class SettingsSyncTab extends Component {
             return {
               id: element.id,
               summary: element.summary,
-              checked: false
+              checked: true
             }
           })
-          this.setState({
-            calendars: newCalendarsList
+
+          this.getCalendarEvents(newCalendarsList).then(data => { //Here we fetch the events for all the checked calendars
+            this.setState({
+              calendars: newCalendarsList,
+              events: data
+            })
           })
         })
 
