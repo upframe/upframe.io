@@ -1,5 +1,5 @@
-import { Component } from 'react';
-// import { Redirect } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom'
 
 // import MainMentorList from '../components/MainMentorList'
 // import MainPopularTags from '../components/MainPopularTags'
@@ -8,17 +8,15 @@ import { Component } from 'react';
 export default class Main extends Component {
 
   render() {
-    window.location = 'https://facebook.com/upframe'
-    return (null)
-    // return (
-    //   <Redirect to='https://facebook.com/upframe' />
-    //   // <main id="home">
-    //   //   <div className="container grid">
-    //   //     <MainSearchBar />
-    //   //     <MainPopularTags />
-    //   //     <MainMentorList />
-    //   //   </div>
-    //   // </main>
-    // );
+    return (
+      <Redirect to='/login' />
+      // <main id="home">
+      //   <div className="container grid">
+      //     <MainSearchBar />
+      //     <MainPopularTags />
+      //     <MainMentorList />
+      //   </div>
+      // </main>
+    );
   }
 }
