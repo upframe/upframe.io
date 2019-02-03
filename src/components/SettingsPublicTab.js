@@ -128,10 +128,16 @@ export default class SettingsPublicTab extends Component {
     // })
   }
 
+  noFavoriteLocation = () => {
+    return (this.state.favoriteLocations[0].replace(/\s/g, '') === '') && (this.state.favoriteLocations[1].replace(/\s/g, '') === '') && (this.state.favoriteLocations[2].replace(/\s/g, '') === '')
+  }
+
   saveChanges = () => {
     let numOfChars = JSON.stringify(this.state.tags).length
     if (numOfChars > 254) {
       alert('Your expertise tags are too long! Delete some so we can save your info :D')
+    } else if (this.noFavoriteLocation()) {
+      alert('You need at least one favorite location')
     } else {
       this.context.saveUserInfo({
         tags: JSON.stringify(this.state.tags),
