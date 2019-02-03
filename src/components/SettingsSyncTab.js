@@ -368,7 +368,7 @@ export default class SettingsSyncTab extends Component {
       )       
     } else {
       return (
-        <div id='settings-synctab'>
+        <div id='settings-synctab' className='tab center'>
           {this.state.calendars ?
             <div id='calendar-list' className='grid'>
               {this.state.calendars.map(element => {
