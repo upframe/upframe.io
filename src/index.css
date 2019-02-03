@@ -351,6 +351,7 @@ nav .wrapper .dropdown.active ul {
   position: absolute;
   top: 4rem;
   background-color: #fff;
+  color: var(--blue-grey);
   box-shadow: 0 0px 5px rgba(0, 0, 0, .1);
 }
 
@@ -558,10 +559,31 @@ code {
   display: inline;
 }
 
+/* ACCOUNT TAB */
+#settings-accounttab h1 {
+  color: var(--brownish-grey);
+  margin-bottom: .5rem;
+}
+
+#settings-accounttab p {
+  color: var(--blue-grey);
+  margin-bottom: .5rem;
+}
+
 /* SYNC TAB */
+#settings-synctab h1 {
+  color: var(--brownish-grey);  
+}
+
 #settings-synctab #calendar-list {
-  grid-template-columns: repeat(5, 1fr);
+  flex-wrap: wrap;
+  justify-content: space-between;
   margin-bottom: 2rem;
+  color: var(--blue-grey);
+}
+
+#settings-synctab #calendar-list #calendar-item {
+  flex-basis: 33%;
 }
 
 #settings-synctab #controls {
