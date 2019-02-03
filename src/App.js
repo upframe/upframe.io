@@ -69,6 +69,14 @@ export default class App extends Component {
     })
   }
 
+  setProfilePic = (url) => {
+    this.setState({
+      user: {
+        profilePic: url
+      }
+    })
+  }
+
   componentDidMount() {
     Api.getUserInfo().then((res) => {
       if (res.ok === 1 && res.code === 200) {
@@ -86,7 +94,8 @@ export default class App extends Component {
       user: this.state.user,
       login: this.login,
       logout: this.logout,
-      saveUserInfo: this.saveUserInfo
+      saveUserInfo: this.saveUserInfo,
+      setProfilePic: this.setProfilePic
     }
     return (
       <Router>

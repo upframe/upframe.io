@@ -95,6 +95,7 @@ export default class SettingsPublicTab extends Component {
         console.log(res)
         if (res.ok === 1) {
           alert('File upload successful')
+          this.context.setProfilePic(res.url)
           this.setState({
             profilePic: res.url
           })
