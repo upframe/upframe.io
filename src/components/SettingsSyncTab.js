@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import BigCalendar from 'react-big-calendar';
 
+// React big calendar CSS
 import 'react-big-calendar/lib/css/react-big-calendar.css'
+// Our custom Calendar CSS
 import '../calendar.css';
 
 import * as Api from '../utils/Api';
@@ -340,19 +342,17 @@ export default class SettingsSyncTab extends Component {
     })
   }
 
-  listCalendars() {
-    console.log(this.state.calendars)
-  }
-
   render() {
     //Ou temos token para ir buscar calendários ou nao temos
     if (this.state.googleAccessToken === '') {
       //Nao temos token, queremos ir busca lo
       return (
         <div id='settings-synctab' className='tab center'>
-          <h1>Syncronize your google account here</h1>
-          <button onClick={this.googleSync}>Google Sync</button>
-          <button onClick={this.saveFreeSlots}>Save slots</button>
+          <div id='controls'>
+            <h1>Syncronize your google account here</h1>
+            <button className='btn btn-secondary' onClick={this.googleSync}>Google Sync</button>
+            <button className='btn btn-fill btn-primary' onClick={this.saveFreeSlots}>Save slots</button>
+          </div>
           <BigCalendar
             localizer={localizer}
             showMultiDayTimes={true}
@@ -381,8 +381,10 @@ export default class SettingsSyncTab extends Component {
           :
             null
           }
-          <button onClick={this.unlinkGoogle}>Unlink Google</button>
-          <button onClick={this.saveFreeSlots}>Save slots</button>
+          <div id='controls'>
+            <button className='btn btn-secondary' onClick={this.unlinkGoogle}>Unlink Google</button>
+            <button className='btn btn-fill btn-primary' onClick={this.saveFreeSlots}>Save slots</button>
+          </div>
           <BigCalendar
             localizer={localizer}
             showMultiDayTimes={true}
