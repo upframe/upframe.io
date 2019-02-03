@@ -374,7 +374,7 @@ export default class SettingsSyncTab extends Component {
       return (
         <div id='settings-synctab'>
           {this.state.calendars ?
-            <div id='calendar-list' className='grid'>
+            <div id='calendar-list' className='flex'>
               {this.state.calendars.map(element => {
                 return (
                   <div id='calendar-item'>
