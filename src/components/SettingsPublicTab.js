@@ -49,7 +49,8 @@ export default class SettingsPublicTab extends Component {
       facebook: context.user.facebook,
       dribbble: context.user.dribbble,
       bio: context.user.bio,
-      keycode: context.user.keycode
+      keycode: context.user.keycode,
+      email: context.user.email
     }
   }
 
@@ -154,7 +155,8 @@ export default class SettingsPublicTab extends Component {
         dribbble: this.state.dribbble,
         bio: this.state.bio,
         keycode: this.state.keycode,
-        profilePic: this.state.profilePic
+        profilePic: this.state.profilePic,
+        email: this.state.email
       })
     }
     // console.log(this.state)
