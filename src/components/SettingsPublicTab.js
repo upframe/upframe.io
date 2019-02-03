@@ -142,7 +142,8 @@ export default class SettingsPublicTab extends Component {
       facebook: this.state.facebook,
       dribbble: this.state.dribbble,
       bio: this.state.bio,
-      keycode: this.state.keycode
+      keycode: this.state.keycode,
+      profilePic: this.state.profilePic
     })
     // console.log(this.state)
     // Api.updateUserInfo({
