@@ -347,7 +347,7 @@ export default class SettingsSyncTab extends Component {
     if (this.state.googleAccessToken === '') {
       //Nao temos token, queremos ir busca lo
       return (
-        <div id='settings-synctab' className='tab center'>
+        <div id='settings-synctab'>
           <div id='controls'>
             <h1>Syncronize your google account here</h1>
             <button className='btn btn-secondary' onClick={this.googleSync}>Google Sync</button>
@@ -368,7 +368,7 @@ export default class SettingsSyncTab extends Component {
       )       
     } else {
       return (
-        <div id='settings-synctab' className='tab center'>
+        <div id='settings-synctab'>
           {this.state.calendars ?
             <div id='calendar-list' className='grid'>
               {this.state.calendars.map(element => {
