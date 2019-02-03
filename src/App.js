@@ -36,11 +36,10 @@ export default class App extends Component {
               user: res.user,
               loggedIn: true
             })
-            return "Login successful"
           }
         })
       } else {
-        return "Could not log you in"
+        alert('Could not log you in')
       }
     })
   }
@@ -51,9 +50,8 @@ export default class App extends Component {
         this.setState({
           loggedIn: false
         })
-        return "Logged out"
       } else {
-        return "Could not log you out"
+        alert('Could not log you out')
       }
     })
   }
@@ -64,9 +62,9 @@ export default class App extends Component {
         this.setState({
           user: user
         })
-        return "Information saved"
+        alert('User information saved')
       } else {
-        return "There was a problem saving your information"
+        alert('There was a problem saving your information')
       }
     })
   }
