@@ -128,7 +128,7 @@ export default class SettingsPublicTab extends Component {
   }
 
   saveChanges = () => {
-    alert(this.context.saveUserInfo({
+    this.context.saveUserInfo({
       tags: JSON.stringify(this.state.tags),
       favoriteLocations: JSON.stringify(this.state.favoriteLocations),
       name: this.state.name,
@@ -143,7 +143,7 @@ export default class SettingsPublicTab extends Component {
       dribbble: this.state.dribbble,
       bio: this.state.bio,
       keycode: this.state.keycode
-    }))
+    })
     // console.log(this.state)
     // Api.updateUserInfo({
     //   tags: JSON.stringify(this.state.tags),
