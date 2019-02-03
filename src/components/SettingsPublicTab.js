@@ -129,23 +129,28 @@ export default class SettingsPublicTab extends Component {
   }
 
   saveChanges = () => {
-    this.context.saveUserInfo({
-      tags: JSON.stringify(this.state.tags),
-      favoriteLocations: JSON.stringify(this.state.favoriteLocations),
-      name: this.state.name,
-      location: this.state.location,
-      role: this.state.role,
-      company: this.state.company,
-      website: this.state.website,
-      twitter: this.state.twitter,
-      linkedin: this.state.linkedin,
-      github: this.state.github,
-      facebook: this.state.facebook,
-      dribbble: this.state.dribbble,
-      bio: this.state.bio,
-      keycode: this.state.keycode,
-      profilePic: this.state.profilePic
-    })
+    let numOfChars = JSON.stringify(this.state.tags).length
+    if (numOfChars > 254) {
+      alert('Your expertise tags are too long! Delete some so we can save your info :D')
+    } else {
+      this.context.saveUserInfo({
+        tags: JSON.stringify(this.state.tags),
+        favoriteLocations: JSON.stringify(this.state.favoriteLocations),
+        name: this.state.name,
+        location: this.state.location,
+        role: this.state.role,
+        company: this.state.company,
+        website: this.state.website,
+        twitter: this.state.twitter,
+        linkedin: this.state.linkedin,
+        github: this.state.github,
+        facebook: this.state.facebook,
+        dribbble: this.state.dribbble,
+        bio: this.state.bio,
+        keycode: this.state.keycode,
+        profilePic: this.state.profilePic
+      })
+    }
     // console.log(this.state)
     // Api.updateUserInfo({
     //   tags: JSON.stringify(this.state.tags),
