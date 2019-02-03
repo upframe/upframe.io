@@ -568,9 +568,11 @@ code {
   margin-bottom: 1rem;
 }
 
-#settings-synctab #controls button {
-  margin-right: 1rem;
+#settings-synctab #calendar {
+  grid-template-columns: 8fr 1fr;
+  grid-column-gap: 1rem;
 }
+
 
 /* MENTOR PAGE */
 /* MENTOR CARD */
