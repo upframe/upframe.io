@@ -558,9 +558,18 @@ code {
   display: inline;
 }
 
+/* SYNC TAB */
 #settings-synctab #calendar-list {
   grid-template-columns: repeat(5, 1fr);
   margin-bottom: 2rem;
+}
+
+#settings-synctab #controls {
+  margin-bottom: 1rem;
+}
+
+#settings-synctab #controls button {
+  margin-right: 1rem;
 }
 
 /* MENTOR PAGE */
