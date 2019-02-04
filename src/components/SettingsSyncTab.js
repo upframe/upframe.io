@@ -360,7 +360,6 @@ export default class SettingsSyncTab extends Component {
         </div>
       )       
     } else {
-      alert('Temos token')
       return (
         <div id='settings-synctab'>
           {this.state.calendars ?
