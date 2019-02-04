@@ -4,7 +4,11 @@ import * as Api from '../utils/Api'
 
 import { Redirect } from 'react-router-dom'
 
+import AppContext from '../components/AppContext'
+
 export default class ChangeEmail extends Component {
+
+  static contextType = AppContext
 
   constructor (props) {
     super(props)
@@ -23,7 +27,9 @@ export default class ChangeEmail extends Component {
   changeEmail = () => {
     Api.changeEmailWithToken(this.state.token, this.state.email).then((res) => {
       if (res.ok === 1) {
-        return <Redirect to='/login' />
+        alert('Email changed')
+        this.context.logout()
+        this.props.history.push('/login')
       } else {
         alert('Something went wrong')
       }
