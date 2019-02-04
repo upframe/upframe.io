@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/mixpanel-browser": "^2.23.0",
     "mixpanel-browser": "^2.26.0",
     "moment": "^2.24.0",
     "react": "^16.7.0",

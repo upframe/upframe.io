@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import mixpanel from 'mixpanel-browser'
 
 import AppContext from './components/AppContext';
 import Navbar from './components/Navbar';
@@ -97,6 +98,9 @@ export default class App extends Component {
       saveUserInfo: this.saveUserInfo,
       setProfilePic: this.setProfilePic
     }
+
+    mixpanel.init("993a3d7a78434079b7a9bec245dbaec2");
+
     return (
       <Router>
         <div className="App">
