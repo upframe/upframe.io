@@ -118,7 +118,7 @@ export default class People extends Component {
       // change selected slot to active mode
       target.classList.add('active') 
 
-      this.setState({ selectedSlot: target.dataset.id }, () => { console.log(this.state) })
+      this.setState({ selectedSlot: target.dataset.id })
     }
   }
 
@@ -170,7 +170,6 @@ export default class People extends Component {
   }
 
   render() {
-    console.log(this.props)
     if (this.state.mentorExists === 1) {
       return (
         <main id='people' className='container'>

@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import BigCalendar from 'react-big-calendar';
 
-// React big calendar CSS
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-// Our custom Calendar CSS
 import '../calendar.css';
 
 import * as Api from '../utils/Api';
@@ -59,7 +57,6 @@ export default class SettingsSyncTab extends Component {
   componentDidMount() { 
     Api.getUserInfo().then((res) => {
       if (res.user.googleAccessToken !== '') {
-        console.log('Tem access token')
         //We have synced in the past
         //DONE - Here we need to fetch the previous known free slots from our DB
         //DONE - After we get them we need to convert them and display them.
@@ -67,7 +64,6 @@ export default class SettingsSyncTab extends Component {
         //DONE - save upframe calendar in state
         let googleAccessToken = res.user.googleAccessToken
         this.getCalendarList(res.user.googleAccessToken).then((res) => {
-          console.log('Recebemos calendar list')
           let newCalendarsList = res.items.filter((element) => {
             return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.id.includes('#contacts@group.v.calendar.google.com')
           }).map((element) => {
@@ -89,7 +85,6 @@ export default class SettingsSyncTab extends Component {
         let nowDate = new Date()
         let limitDate = moment().add(30, 'days')
         Api.getFreeSlots(nowDate, limitDate).then((res) => {
-          console.log('Recebemos free slots')
           if (res.ok === 1) {
             this.setState({
               freeSlotsSaved: res.slots.map((unconvertedSlot) => {
@@ -302,14 +297,12 @@ export default class SettingsSyncTab extends Component {
     //2. clear to Delete
     //3. merge unsaved into saved
     Api.addFreeSlots(this.state.freeSlotsUnsaved, this.state.freeSlotsToDelete).then((res) => {
-      console.log(res)
       if (res.ok === 1) { //We have added new slots and deleted the ones that were saved (not created in this session)
         //Wrong! Because the new saved slots are in incorrect form
         //We need to fetch slots again
         let nowDate = new Date()
         let limitDate = moment().add(30, 'days')
         Api.getFreeSlots(nowDate, limitDate).then((res) => {
-          console.log(res)
           if (res.ok === 1) {
             this.setState({
               freeSlotsSaved: res.slots.map((unconvertedSlot) => {

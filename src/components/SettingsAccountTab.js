@@ -11,6 +11,8 @@ export default class SettingsAccountTab extends PureComponent {
     Api.changeEmail(this.context.user.email).then((res) => {
       if (res.ok === 1) {
         alert('An email has been sent to you')
+      } else {
+        alert('Could not complete request. Contact support.')
       }
     })
   }
@@ -19,6 +21,8 @@ export default class SettingsAccountTab extends PureComponent {
     Api.resetPassword(this.context.user.email).then((res) => {
       if (res.ok === 1) {
         alert('An email has been sent to you')
+      } else {
+        alert('Could not complete request. Contact support.')
       }
     })
   }

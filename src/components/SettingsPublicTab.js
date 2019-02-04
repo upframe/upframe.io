@@ -31,8 +31,6 @@ export default class SettingsPublicTab extends Component {
 
   constructor(props, context) {
     super(props, context)
-    console.log('Contexto')
-    console.log(context)
     this.state = {
       tags: context.user.tags ? JSON.parse(context.user.tags) : [],
       favoriteLocations: context.user.favoriteLocations ? JSON.parse(context.user.favoriteLocations) : [],
@@ -93,7 +91,6 @@ export default class SettingsPublicTab extends Component {
     let fileSize = document.querySelector('input[type="file"]').files[0].size / 1048576
     if (fileSize < 5) {
       Api.uploadPhoto().then((res) => {
-        console.log(res)
         if (res.ok === 1) {
           alert('File upload successful')
           this.context.setProfilePic(res.url)

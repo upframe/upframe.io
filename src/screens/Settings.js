@@ -32,7 +32,6 @@ export default class Settings extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.match !== this.props.match) {
-      console.log('Did update')
       let currentTab = 1
       if (this.props.match.params.page === 'public') {
         currentTab = 1
@@ -56,7 +55,6 @@ export default class Settings extends Component {
   }
 
   render() {
-    console.log(this.props)
     if (this.context.loggedIn) {
       return (
         <main id='settings' className='grid'>

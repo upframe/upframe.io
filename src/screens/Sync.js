@@ -20,8 +20,6 @@ export default class Sync extends Component {
         this.addUpframeCalendar(response1.token).then((response2) => {
           //TODO - Check if add Upframe Calendar was successful
           //if it was save to state
-          console.log('Tried to add Upframe Calendar')
-          console.log(response2)
           Api.updateUserInfo({
             googleAccessToken: response1.token,
             googleRefreshToken: response1.refreshToken,
