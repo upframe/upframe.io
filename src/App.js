@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AppContext from './components/AppContext';
 import Navbar from './components/Navbar';
 import * as Api from './utils/Api';
-import mixpanel from 'mixpanel-browser';
 
 const Main = React.lazy(() => import(/* webpackChunkName: "Main", webpackPrefetch: true */'./screens/Main'))
 const Login = React.lazy(() => import(/* webpackChunkName: "Login", webpackPrefetch: true */'./screens/Login'))
@@ -33,7 +32,6 @@ export default class App extends Component {
       if (res.ok === 1) {
         Api.getUserInfo().then((res) => {
           if (res.ok === 1 && res.code === 200) {
-            mixpanel.track("Logged in")
             this.setState({
               user: res.user,
               loggedIn: true

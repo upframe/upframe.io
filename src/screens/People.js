@@ -5,6 +5,8 @@ import * as Api from '../utils/Api'
 import Breadcrumbs from '../components/Breadcrumbs'
 import MentorMeetupPopup from '../components/MentorMeetupPopup'
 
+import mixpanel from 'mixpanel-browser';
+
 export default class People extends Component {
 
   constructor(props) {
@@ -46,6 +48,7 @@ export default class People extends Component {
                 mentorExists: 2
               })
             } else {
+              mixpanel.track('[Visit] - ' + res.mentor.name)
               this.setState({
                 mentorExists: 1,
                 mentor: {
@@ -82,6 +85,7 @@ export default class People extends Component {
           mentorExists: 2
         })
       } else {
+        mixpanel.track('[Visit] ' + res.mentor.name)
         this.setState({
           mentorExists: 1,
           mentor: {

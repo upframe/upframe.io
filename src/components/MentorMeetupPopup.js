@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as Api from '../utils/Api';
+import mixpanel from 'mixpanel-browser';
 /* Neste popup vamos ter dois dialogos, um para escolher
  * um meetup, outro para escolher uma chamada, podemos
  * juntar tudo neste.
@@ -44,6 +45,7 @@ export default class MentorMeetupPopup extends Component {
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
           // window.location = '/'
+          mixpanel.track('[Meetup] Talk w/ ' + name)
         } else {
           alert('Error creating meetup')
           // window.location = '/'
@@ -55,6 +57,7 @@ export default class MentorMeetupPopup extends Component {
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
           // window.location = '/'
+          mixpanel.track('[Meetup] Meetup w/ ' + name)
         } else {
           alert('Error creating meetup')
           // window.location = '/'

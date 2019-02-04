@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import BigCalendar from 'react-big-calendar';
+import mixpanel from 'mixpanel-browser';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import '../calendar.css';
@@ -198,6 +199,7 @@ export default class SettingsSyncTab extends Component {
         currId: currentId + 1,
         freeSlotsUnsaved: newFreeSlots
       }) 
+      mixpanel.track('[Free Slots] ' + this.context.user.name + ' - created free slots')
     }
   }
 
