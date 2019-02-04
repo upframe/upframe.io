@@ -29,10 +29,10 @@ export default class Navbar extends Component {
         <div className='wrapper flex justify-center align-items-center'>
           {this.context.user.keycode ?
             <Link to={'/' + this.context.user.keycode} id='logo'>
-              <img src='/logo.svg' alt='' className='logo'></img>
+              <img src='/logo.svg' alt='Upframe logo' className='logo'></img>
             </Link> :
             <Link to='/' id='logo'>
-              <img src='/logo.svg' alt='' className='logo'></img>
+              <img src='/logo.svg' alt='Upframe logo' className='logo'></img>
             </Link>
           }
 
