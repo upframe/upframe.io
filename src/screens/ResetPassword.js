@@ -4,7 +4,11 @@ import * as Api from '../utils/Api'
 
 import { Redirect } from 'react-router-dom'
 
+import AppContext from '../components/AppContext'
+
 export default class ResetPassword extends Component {
+
+  static contextType = AppContext
 
   constructor (props) {
     super(props)
@@ -24,7 +28,8 @@ export default class ResetPassword extends Component {
     Api.resetPasswordWithToken(this.state.token, this.state.password).then((res) => {
       if (res.ok === 1) {
         alert('Password changed')
-        return <Redirect to='/login' />
+        this.context.logout()
+        this.props.history.push('/login')
       } else {
         alert('Something went wrong')
       }
