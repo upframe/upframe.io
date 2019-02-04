@@ -107,7 +107,9 @@ export default class SettingsPublicTab extends Component {
   }
 
   removePhoto = () => {
-    this.context.setProfilePic('https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png')
+    this.context.saveUserInfo({
+      profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png'
+    })
     this.setState({
       profilePic: 'https://s3.eu-west-2.amazonaws.com/connect-api-profile-pictures/default.png'
     })
