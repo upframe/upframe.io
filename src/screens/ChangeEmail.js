@@ -32,10 +32,10 @@ export default class ChangeEmail extends Component {
 
   render() {
     return (
-      <div>
+      <div className="screen">
         Welcome to the email change!
         <input type='email' onChange={this.handleEmailChange}/>
-        <button onClick={this.changeEmail}>Change Email</button>
+        <button className="btn btn-primary" onClick={this.changeEmail}>Change Email</button>
       </div>
     );
   }

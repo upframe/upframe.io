@@ -33,10 +33,10 @@ export default class ResetPassword extends Component {
 
   render() {
     return (
-      <div>
+      <div className="screen">
         Welcome to the password change!
         <input type='password' onChange={this.handlePasswordChange}/>
-        <button onClick={this.changePassword}>Change Password</button>
+        <button className="btn btn-primary" onClick={this.changePassword}>Change Password</button>
       </div>
     );
   }

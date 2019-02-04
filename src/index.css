@@ -1030,6 +1030,10 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   margin-bottom: 1rem;
 } 
 
+.screen {
+  margin-top: 100px;
+}
+
 /* LOADER */
 .center-container {
   display: flex;
