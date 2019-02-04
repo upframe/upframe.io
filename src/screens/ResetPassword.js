@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import * as Api from '../utils/Api'
 
-import { Redirect } from 'react-router-dom'
-
 import AppContext from '../components/AppContext'
 
 export default class ResetPassword extends Component {
