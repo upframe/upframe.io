@@ -56,6 +56,8 @@ export default class SettingsSyncTab extends Component {
   //Or have we already synced in the past
   componentDidMount() { 
     Api.getUserInfo().then((res) => {
+      console.log('User info')
+      console.log(res)
       if (res.user.googleAccessToken !== '') {
         //We have synced in the past
         //DONE - Here we need to fetch the previous known free slots from our DB
@@ -64,6 +66,8 @@ export default class SettingsSyncTab extends Component {
         //DONE - save upframe calendar in state
         let googleAccessToken = res.user.googleAccessToken
         this.getCalendarList(res.user.googleAccessToken).then((res) => {
+          console.log('Calendar list')
+          console.log(res)
           let newCalendarsList = res.items.filter((element) => {
             return !element.id.includes('#holiday@group.v.calendar.google.com') && !element.id.includes('#contacts@group.v.calendar.google.com')
           }).map((element) => {
@@ -74,7 +78,9 @@ export default class SettingsSyncTab extends Component {
             }
           })
 
-          this.getCalendarEvents(newCalendarsList).then(data => { //Here we fetch the events for all the checked calendars
+          this.getCalendarEvents(newCalendarsList).then(data => { //Here we fetch the events for all the checked calendars~
+            console.log('EVentos')
+            console.log(data)
             this.setState({
               calendars: newCalendarsList,
               events: data

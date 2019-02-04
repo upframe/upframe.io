@@ -9,7 +9,7 @@ export default class ChangeEmail extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      token : window.location.href.split('?token=')[1],
+      token: this.props.match.params.token,
       email : ''
     }
   }
