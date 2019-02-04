@@ -199,7 +199,6 @@ export default class SettingsSyncTab extends Component {
         currId: currentId + 1,
         freeSlotsUnsaved: newFreeSlots
       }) 
-      mixpanel.track('[Free Slots] ' + this.context.user.name + ' - created free slots')
     }
   }
 
@@ -328,6 +327,7 @@ export default class SettingsSyncTab extends Component {
             }
           }
         }, () => {
+          mixpanel.track('[Free Slots] ' + this.context.user.name + ' - created free slots')
           alert('Free slots saved')
         })
       } else {
