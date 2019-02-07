@@ -45,7 +45,7 @@ export default class MentorMeetupPopup extends Component {
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
           // window.location = '/'
-          mixpanel.track('[Meetup] Talk w/ ' + name)
+          mixpanel.track('[Meetup] Talk w/ ' + this.state.mentorName)
         } else {
           alert('Error creating meetup')
           // window.location = '/'
@@ -57,7 +57,7 @@ export default class MentorMeetupPopup extends Component {
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
           // window.location = '/'
-          mixpanel.track('[Meetup] Meetup w/ ' + name)
+          mixpanel.track('[Meetup] Meetup w/ ' + this.state.mentorName)
         } else {
           alert('Error creating meetup')
           // window.location = '/'
