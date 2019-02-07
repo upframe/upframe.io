@@ -118,8 +118,9 @@ export default class MentorMeetupPopup extends Component {
                 </select>
               </div>
               <div className='input-group'>
+              <div className='flex justify-center warning'>Messages are temporarily disabled</div>
                 <label for='message'>Message</label>
-                <textarea id='message' name='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange}></textarea>
+                <textarea id='message' name='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange} disabled></textarea>
               </div>
               <div className='input-group'>
                 <label for='email'>Your email</label>
@@ -145,8 +146,9 @@ export default class MentorMeetupPopup extends Component {
             <span className='hr'></span>
             <div id='meetup-form' className='flex flex-column'>
               <div className='input-group'>
+                <div className='flex justify-center warning'>Messages are temporarily disabled</div>
                 <label for='message'>Message</label>
-                <textarea id='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange}></textarea>
+                <textarea id='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange} disabled></textarea>
               </div>
               <div className='input-group'>
                 <label for='email'>Your email</label>

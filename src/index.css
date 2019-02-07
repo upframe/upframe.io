@@ -29,6 +29,12 @@ body {
   color: var(--primary);
 }
 
+
+
+.warning {
+  color: var(--primary);
+}
+
 /* FONT SIZES */
 .font-100 {
   font-size: 1rem;
