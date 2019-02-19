@@ -502,10 +502,20 @@ code {
   color: var(--light-grey);
   transition: .25s ease-in-out color;
   cursor: pointer;
+  position: fixed;
+}
+
+#account-label {
+  margin-top: 35px;
+}
+
+#sync-label {
+  margin-top: 70px;
 }
 
 #settings #tablist label.active {
   color: var(--primary);
+  position: fixed;
 }
 
 #settings .tab {

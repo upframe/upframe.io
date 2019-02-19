@@ -60,8 +60,8 @@ export default class Settings extends Component {
         <main id='settings' className='grid'>
           <div id='tablist'>
             <Link to='/settings/public'><label className={this.state.currentTab === 1 ? 'active' : null}>Public Profile</label></Link>
-            <Link to='/settings/account'><label className={this.state.currentTab === 2 ? 'active' : null}>Account Settings</label></Link>
-            <Link to='/settings/sync'><label className={this.state.currentTab === 3 ? 'active' : null}>Calendar Sync</label></Link>
+            <Link to='/settings/account'><label id="account-label" className={this.state.currentTab === 2 ? 'active' : null}>Account Settings</label></Link>
+            <Link to='/settings/sync'><label id="sync-label" className={this.state.currentTab === 3 ? 'active' : null}>Calendar Sync</label></Link>
           </div>
           {this.renderCurrentTab()}
         </main>
