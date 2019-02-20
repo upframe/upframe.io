@@ -15,6 +15,20 @@ cd connect
 yarn install
 ```
 
+After this you have all the front end dependencies ready to rock. Now it's time for the backend. Go to our backend repository and learn how to get it up and running then come back. If you already have a backend instance running you can now set the following environment variables (no " or ' needed):
+
+REACT_APP_APIHOST - 127.0.0.1
+REACT_APP_APIPORT - 80
+REACT_APP_APISCHEMA - http
+
+We use this to make sure our production deployment uses different settings but we can still try everything out locally. We are now ready to run! Fingers crossed and:
+
+```
+yarn start
+```
+
+Your default browser will automatically open a running version of Connect.
+
 # Running
 
 ```
