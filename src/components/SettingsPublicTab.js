@@ -170,6 +170,7 @@ export default class SettingsPublicTab extends Component {
 
   render() {
     return (
+      <React.Fragment>
       <div id='settings-publictab' className='tab center'>
         <div className='flex'>
           <img className='profile-pic' alt='profile-pic' src={this.state.profilePic} />
@@ -251,11 +252,17 @@ export default class SettingsPublicTab extends Component {
             <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} id='location-3'/>
           </div>
 
-          <div className='input-group'>
+          {/* <div className='input-group'>
             <button className='btn btn-fill btn-primary block center' onClick={this.saveChanges}>Save changes</button>
-          </div>
+          </div> */}
         </div>
       </div>
+      <div className="fixed-save-changes">
+      <div className="input-group">
+            <button className='btn btn-fill btn-primary block save-changes' onClick={this.saveChanges}>Save changes</button>
+      </div>
+      </div>
+      </React.Fragment>
     )
   }
 }

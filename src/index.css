@@ -510,7 +510,7 @@ code {
 }
 
 #sync-label {
-  margin-top: 70px;
+  margin-top: 68px;
 }
 
 #settings #tablist label.active {
@@ -569,6 +569,20 @@ code {
   width: 100%;
   height: 12rem;
   font-size: 18px;
+}
+
+.fixed-save-changes {
+  box-shadow: 5px 0 5px rgba(0, 0, 0, .1);
+  position: fixed;
+  margin: center;
+  width: 100%;
+  height: 110px;
+  bottom: 0;
+  background-color: white;
+}
+
+.save-changes {
+  margin: 30px 70%;
 }
 
 #settings-accounttab p a {
