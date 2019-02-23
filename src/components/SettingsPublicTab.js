@@ -140,13 +140,33 @@ export default class SettingsPublicTab extends Component {
     return (this.state.favoriteLocations[0].replace(/\s/g, '') === '') && (this.state.favoriteLocations[1].replace(/\s/g, '') === '') && (this.state.favoriteLocations[2].replace(/\s/g, '') === '')
   }
 
+  informationChanged = () => {
+    let old = this.context.user
+    let actual = this.state
+
+    return old.bio !== actual.bio || 
+      old.company !== actual.company ||
+      old.dribbble !== actual.dribbble ||
+      old.facebook !== actual.facebook ||
+      old.favoriteLocations !== JSON.stringify(actual.favoriteLocations) ||
+      old.github !== actual.github ||
+      old.keycode !== actual.keycode ||
+      old.linkedin !== actual.linkedin ||
+      old.location !== actual.location ||
+      old.name !== actual.name ||
+      old.role !== actual.role ||
+      old.tags !== JSON.stringify(actual.tags) ||
+      old.twitter !== actual.twitter ||
+      old.website !== actual.website
+  }
+
   saveChanges = () => {
     let numOfChars = JSON.stringify(this.state.tags).length
     if (numOfChars > 254) {
       alert('Your expertise tags are too long! Delete some so we can save your info :D')
     } else if (this.noFavoriteLocation()) {
       alert('You need at least one favorite location')
-    } else {
+    } else if (this.informationChanged()) {
       this.context.saveUserInfo({
         tags: JSON.stringify(this.state.tags),
         favoriteLocations: JSON.stringify(this.state.favoriteLocations),
@@ -172,11 +192,15 @@ export default class SettingsPublicTab extends Component {
     const { tags } = this.state
     this.setState({
       tags: tags.filter((tag, index) => index !== i)
+    }, () => {
+      this.saveChanges()
     })
   }
 
   handleAddTag = (tag) => {
-    this.setState((state) => ({ tags: [...state.tags, tag] }))
+    this.setState((state) => ({ tags: [...state.tags, tag] }), () => {
+      this.saveChanges()
+    })
   }
 
   handleDragTag = (tag, currPos, newPos) => {
@@ -186,7 +210,9 @@ export default class SettingsPublicTab extends Component {
     newTags.splice(currPos, 1)
     newTags.splice(newPos, 0, tag)
 
-    this.setState({ tags: newTags })
+    this.setState({ tags: newTags }, () => {
+      this.saveChanges()
+    })
   }
 
   render() {
@@ -207,50 +233,50 @@ export default class SettingsPublicTab extends Component {
         <div>
           <div className='input-group'>
             <label htmlFor='name'>Your Name</label>
-              <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' maxLength='50' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <label htmlFor='location'>Location</label>
-              <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' maxLength='50' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <label htmlFor='role'>Your Position</label>
-              <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' maxLength='50' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <label htmlFor='company'>Company</label>
-              <input type='text' onChange={this.handleCompanyChange} value={this.state.company} id='company' maxLength='50' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleCompanyChange} value={this.state.company} id='company' maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <label htmlFor='website'>Website</label>
-              <input type='text' onChange={this.handleWebsiteChange} value={this.state.website} id='website' maxLength='50' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleWebsiteChange} value={this.state.website} id='website' maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <label htmlFor='twitter'>Twitter</label>
-              <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' maxLength='50' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <label htmlFor='linkedin'>LinkedIn</label>
-              <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' maxLength='50' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <label htmlFor='github'>Github</label>
-              <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' maxLength='50' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <label htmlFor='facebook'>Facebook</label>
-              <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' maxLength='50' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <label htmlFor='dribbble'>Dribbble</label>
-              <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' maxLength='50' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <label htmlFor='bio'>Biography</label>
-              <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio-text' maxLength='600' />
+              <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio-text' maxLength='600' onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
-              https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode} maxLength='50' onKeyUp={this.handleKeyUp}/>
+              https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode} maxLength='50' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
           <div className='input-group'>
             <h2>Your Skills</h2>
@@ -266,11 +292,11 @@ export default class SettingsPublicTab extends Component {
           <div className='input-group'>
             <h2>Favorite Locations</h2>
             <label htmlFor='location-1'>First location</label>
-              <input type='text' onChange={this.handleFirstFavoriteLocationChange} value={this.state.favoriteLocations[0]} id='location-1' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleFirstFavoriteLocationChange} value={this.state.favoriteLocations[0]} id='location-1' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
             <label htmlFor='location-2'>Second location</label>
-              <input type='text' onChange={this.handleSecondFavoriteLocationChange} value={this.state.favoriteLocations[1]} id='location-2' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleSecondFavoriteLocationChange} value={this.state.favoriteLocations[1]} id='location-2' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
             <label htmlFor='location-3'>Third location</label>
-              <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} id='location-3' onKeyUp={this.handleKeyUp}/>
+              <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} id='location-3' onKeyUp={this.handleKeyUp} onBlur={this.saveChanges}/>
           </div>
 
           {/* <div className='input-group'>
@@ -278,9 +304,9 @@ export default class SettingsPublicTab extends Component {
           </div> */}
         </div>
       </div>
-      <div className="fixed-save-changes">
+      {/* <div className="fixed-save-changes">
             <button className='btn btn-fill btn-primary block save-changes' onClick={this.saveChanges}>Save changes</button>
-      </div>
+      </div> */}
       </React.Fragment>
     )
   }

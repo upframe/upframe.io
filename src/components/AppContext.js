@@ -5,5 +5,7 @@ export default React.createContext({
   user: {},
   login: () => {},
   logout: () => {},
-  saveUserInfo: () => {}
+  saveUserInfo: () => {},
+  setProfilePic: () => {},
+  showToast: () => {},
 })
