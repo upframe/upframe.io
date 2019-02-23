@@ -132,33 +132,22 @@ export default class SettingsSyncTab extends Component {
    * delete it.
    */
   deleteFreeSlot = (event) => {
-    let isUnsavedFreeSlot = this.state.freeSlotsUnsaved.some(slot => slot.id === event.id)
-    if (isUnsavedFreeSlot) {
-      //Simple, we just remove it from the array
-      this.setState({
-        freeSlotsUnsaved: this.state.freeSlotsUnsaved.filter(slot => slot.id !== event.id)
-      })
-    } else {
-      //This free slots is saved on our DB. We gotta send a delete request.
-      //Lets add it to the delete pile.
-      //We want to remove it from the freeSlotsSaved and add it to freeSlotsToDelete
-      //queremos remover event.id
+    let newFreeSlotsSaved = []
+    let newFreeSlotsToDelete = this.state.freeSlotsToDelete
+    this.state.freeSlotsSaved.forEach(slot => {
+      if (slot.id === event.id) { //evento para remover adicionamos ao delete
+        newFreeSlotsToDelete.push(slot)
+      } else { //outro evento, deixamos estar
+        newFreeSlotsSaved.push(slot)
+      }
+    })
 
-      let newFreeSlotsSaved = []
-      let newFreeSlotsToDelete = this.state.freeSlotsToDelete
-      this.state.freeSlotsSaved.forEach(slot => {
-        if (slot.id === event.id) { //evento para remover adicionamos ao delete
-          newFreeSlotsToDelete.push(slot)
-        } else { //outro evento, deixamos estar
-          newFreeSlotsSaved.push(slot)
-        }
-      })
-
-      this.setState({
-        freeSlotsSaved: newFreeSlotsSaved,
-        freeSlotsToDelete: newFreeSlotsToDelete
-      })
-    }
+    this.setState({
+      freeSlotsSaved: newFreeSlotsSaved,
+      freeSlotsToDelete: newFreeSlotsToDelete
+    }, () => {
+      this.saveFreeSlots()
+    })
   }
 
   addFreeSlot = (slot) => {
@@ -198,6 +187,8 @@ export default class SettingsSyncTab extends Component {
       this.setState({
         currId: currentId + 1,
         freeSlotsUnsaved: newFreeSlots
+      }, () => {
+        this.saveFreeSlots()
       }) 
     }
   }
@@ -299,6 +290,7 @@ export default class SettingsSyncTab extends Component {
         //We need to fetch slots again
         let nowDate = new Date()
         let limitDate = moment().add(30, 'days')
+        this.context.showToast()
         Api.getFreeSlots(nowDate, limitDate).then((res) => {
           if (res.ok === 1) {
             this.setState({
@@ -328,7 +320,6 @@ export default class SettingsSyncTab extends Component {
           }
         }, () => {
           mixpanel.track('[Free Slots] ' + this.context.user.name + ' - created free slots')
-          alert('Free slots saved')
         })
       } else {
         //An eror ocurred
@@ -411,9 +402,9 @@ export default class SettingsSyncTab extends Component {
                 };
               }}
             />
-            <div className='flex align-items-center'>
+            {/* <div className='flex align-items-center'>
               <button className='btn btn-fill btn-primary' onClick={this.saveFreeSlots}>Save slots</button>
-            </div>
+            </div> */}
           </div>
         </div>
       )

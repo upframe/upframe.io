@@ -63,7 +63,8 @@ export default class App extends Component {
         this.setState({
           user: user
         })
-        alert('User information saved')
+        console.log('Save')
+        this.showToast()
       } else {
         alert('There was a problem saving your information')
       }
@@ -89,6 +90,12 @@ export default class App extends Component {
     })
   }
 
+  showToast () {
+    let x = document.getElementById("snackbar");
+    x.className = "show";
+    setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+  }
+
   render() {
     let contextValue = {
       loggedIn: this.state.loggedIn,
@@ -96,7 +103,8 @@ export default class App extends Component {
       login: this.login,
       logout: this.logout,
       saveUserInfo: this.saveUserInfo,
-      setProfilePic: this.setProfilePic
+      setProfilePic: this.setProfilePic,
+      showToast: this.showToast,
     }
 
     mixpanel.init("993a3d7a78434079b7a9bec245dbaec2");
@@ -126,6 +134,7 @@ export default class App extends Component {
                 <Route component={ErrorPage} />
             </Switch>
           </Suspense>
+          <div id="snackbar">Information saved</div>
         </AppContext.Provider>
         </div>
       </Router>
