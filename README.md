@@ -21,19 +21,15 @@ After this you have all the front end dependencies ready to rock. Now it's time 
 **REACT_APP_APIPORT** - 80  
 **REACT_APP_APISCHEMA** - http  
 
-We use this to make sure our production deployment uses different settings but we can still try everything out locally. We are now ready to run! Fingers crossed and:
-
-```
-yarn start
-```
-
-Your default browser will automatically open a running version of Connect.
+We use this to make sure our production deployment uses different settings but we can still try everything out locally. We are now ready to run! Fingers crossed and ...
 
 # Running
 
 ```
 yarn start
 ```
+
+Your default browser will automatically open a running version of Connect.
 
 # Code Structure
 
