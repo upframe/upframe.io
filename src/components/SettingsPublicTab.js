@@ -111,15 +111,18 @@ export default class SettingsPublicTab extends Component {
   uploadPhoto = () => {
     let fileSize = document.querySelector('input[type="file"]').files[0].size / 1048576
     if (fileSize < 5) {
+      document.getElementById('title').innerHTML = "Uploading"
       Api.uploadPhoto().then((res) => {
         if (res.ok === 1) {
           alert('File upload successful')
           this.context.setProfilePic(res.url)
+          document.getElementById('title').innerHTML = 'Profile Picture'
           this.setState({
             profilePic: res.url
           })
         } else {
           alert('Could not update picture')
+          document.getElementById('title').innerHTML = 'Profile Picture'
         }
       })
     } else {
@@ -223,7 +226,7 @@ export default class SettingsPublicTab extends Component {
           <img className='profile-pic' alt='profile-pic' src={this.state.profilePic} />
           <input id='file-select' type='file' accept='image/*' onChange={this.uploadPhoto} />
           <div id='bio'>
-            <h1 className='font-weight-normal'>Profile Picture</h1>
+            <h1 id='title' className='font-weight-normal'>Profile Picture</h1>
             <p>We're big on pictures around here.</p>
             <p>Add an updated picture so you don't look like a <span role='img' aria-label='robot'>🤖</span></p>
             <button className='btn btn-round btn-primary font-weight-thin' onClick={this.openUploadDialog}>Upload new picture</button>
