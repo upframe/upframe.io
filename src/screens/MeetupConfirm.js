@@ -32,10 +32,10 @@ export default class MeetupConfirm extends Component {
   }
 
   render() {
+    this.confirmMeetup()
     return (
       <div>
-        <h1>Click here to confirm the meetup</h1>
-        <button onClick={this.confirmMeetup}>Confirm</button>
+        <h1>Confirming...</h1>
       </div>
     );
   }

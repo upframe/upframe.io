@@ -22,10 +22,10 @@ export default class MeetupRefuse extends Component {
   }
 
   render() {
+    this.refuseMeetup()
     return (
       <div>
-        <h1>Click here to refuse the meetup</h1>
-        <button onClick={this.refuseMeetup}>Refuse</button>
+        <h1>Refusing...</h1>
       </div>
     );
   }
