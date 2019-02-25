@@ -10,13 +10,7 @@ export default class MeetupConfirm extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      meetupId: this.props.match.params.meetupid
-    }
-  }
-
-  confirmMeetup = () => {
-    Api.confirmMeetup(this.state.meetupId).then((res) => {
+    Api.confirmMeetup(this.props.match.params.meetupid).then((res) => {
       if (res.ok === 0) {
         alert('Could not confirm your meetup, make sure you are logged in')
       } else {
@@ -32,7 +26,6 @@ export default class MeetupConfirm extends Component {
   }
 
   render() {
-    this.confirmMeetup()
     return (
       <div>
         <h1>Confirming...</h1>
