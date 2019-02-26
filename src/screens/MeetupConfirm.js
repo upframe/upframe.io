@@ -10,10 +10,11 @@ export default class MeetupConfirm extends Component {
 
   componentDidMount () {
     Api.confirmMeetup(this.props.match.params.meetupid).then((res) => {
+      console.log(res)
       if (res.ok === 0) {
         alert('Could not confirm your meetup, make sure you are logged in')
       } else {
-        if (this.state.meetupId.charAt(0) === 't') {
+        if (this.props.match.params.meetupid.charAt(0) === 't') {
           mixpanel.track('[' + this.context.user.name + '] - Confirmed talk')
         } else {
           mixpanel.track('[' + this.context.user.name + '] - Confirmed meetup')
