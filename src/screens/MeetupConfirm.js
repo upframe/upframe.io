@@ -15,9 +15,9 @@ export default class MeetupConfirm extends Component {
         alert('Could not confirm your meetup, make sure you are logged in')
       } else {
         if (this.state.meetupId.charAt(0) === 't') {
-          mixpanel.track('[' + this.context.user.name + '] - Confirmed talk')
+          mixpanel.track('[' + context.user.name + '] - Confirmed talk')
         } else {
-          mixpanel.track('[' + this.context.user.name + '] - Confirmed meetup')
+          mixpanel.track('[' + context.user.name + '] - Confirmed meetup')
         }
         alert('Meetup confirmed!')
         window.location = '/settings'
