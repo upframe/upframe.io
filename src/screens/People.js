@@ -42,37 +42,37 @@ export default class People extends Component {
       this.setState({
         mentorExists: 0
       }, () => {
-          Api.getMentorInfo(this.props.match.params.keycode).then((res) => {
-            if (res.message) {
-              this.setState({
-                mentorExists: 2
-              })
-            } else {
-              mixpanel.track('[Visit] - ' + res.mentor.name)
-              this.setState({
-                mentorExists: 1,
-                mentor: {
-                  bio: res.mentor.bio,
-                  company: res.mentor.company,
-                  dribbble: res.mentor.dribbble,
-                  email: res.mentor.email,
-                  facebook: res.mentor.facebook,
-                  github: res.mentor.github,
-                  linkedin: res.mentor.linkedin,
-                  location: res.mentor.location,
-                  name: res.mentor.name,
-                  profilePic: res.mentor.profilePic,
-                  role: res.mentor.role,
-                  twitter: res.mentor.twitter,
-                  uid: res.mentor.uid,
-                  website: res.mentor.website,
-                  tags: res.mentor.tags ? JSON.parse(res.mentor.tags) : [],
-                  freeSlots: res.mentor.slots,
-                  favoriteLocations: res.mentor.favoriteLocations ? JSON.parse(res.mentor.favoriteLocations) : []
-                }
-              })
-            }
-          })
+        Api.getMentorInfo(this.props.match.params.keycode).then((res) => {
+          if (res.message) {
+            this.setState({
+              mentorExists: 2
+            })
+          } else {
+            mixpanel.track('[Visit] - ' + res.mentor.name)
+            this.setState({
+              mentorExists: 1,
+              mentor: {
+                bio: res.mentor.bio,
+                company: res.mentor.company,
+                dribbble: res.mentor.dribbble,
+                email: res.mentor.email,
+                facebook: res.mentor.facebook,
+                github: res.mentor.github,
+                linkedin: res.mentor.linkedin,
+                location: res.mentor.location,
+                name: res.mentor.name,
+                profilePic: res.mentor.profilePic,
+                role: res.mentor.role,
+                twitter: res.mentor.twitter,
+                uid: res.mentor.uid,
+                website: res.mentor.website,
+                tags: res.mentor.tags ? JSON.parse(res.mentor.tags) : [],
+                freeSlots: res.mentor.slots,
+                favoriteLocations: res.mentor.favoriteLocations ? JSON.parse(res.mentor.favoriteLocations) : []
+              }
+            })
+          }
+        })
       })
     }
   }
