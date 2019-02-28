@@ -86,13 +86,11 @@ export default class SettingsPublicTab extends Component {
   handleKeyUp = (e) => { 
     if (e.keyCode === 13) { 
       let inputs = document.querySelectorAll('input');
-      console.log(e.target.id)
       for (let i = 0; i < inputs.length; i++) {
         if (e.target.id === 'location-3') {
           break;
         }
         if (e.target.id === 'dribbble') {
-          console.log(document.getElementById('bio'))
           document.getElementById('bio-text').focus()
           break;
         }
