@@ -40,7 +40,7 @@ export default class Navbar extends Component {
             <div className='flex flex-column align-items-center dropdown'>
               <img id='profilepic' src={this.context.user.profilePic !== '' ? this.context.user.profilePic : '' } alt='Profile pic' onClick={this.openDropdown}></img>
               <ul>
-                <li onClick={this.closeDropdown}><Link to='/settings' className='text-center'>Settings</Link></li>
+                <li onClick={this.closeDropdown}><Link to='/settings/public' className='text-center'>Settings</Link></li>
                 <li className='text-center' onClick={this.logout}>Logout</li>
               </ul>
             </div>

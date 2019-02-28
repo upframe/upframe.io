@@ -52,6 +52,7 @@ export default class App extends Component {
           loggedIn: false,
           user: {}
         })
+        window.location = '/login'
       } else {
         alert('Could not log you out')
       }
