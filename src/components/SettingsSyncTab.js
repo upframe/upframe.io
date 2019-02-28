@@ -132,22 +132,28 @@ export default class SettingsSyncTab extends Component {
    * delete it.
    */
   deleteFreeSlot = (event) => {
-    let newFreeSlotsSaved = []
-    let newFreeSlotsToDelete = this.state.freeSlotsToDelete
-    this.state.freeSlotsSaved.forEach(slot => {
-      if (slot.id === event.id) { //evento para remover adicionamos ao delete
-        newFreeSlotsToDelete.push(slot)
-      } else { //outro evento, deixamos estar
-        newFreeSlotsSaved.push(slot)
-      }
-    })
+    let isUnsavedFreeSlot = this.state.freeSlotsUnsaved.some(slot => slot.id === event.id)
+    if (isUnsavedFreeSlot) {
+      this.setState({
+      freeSlotsUnsaved: this.state.freeSlotsUnsaved.filter(slot => slot.id !== event.id)
+      })
+    } else {
 
-    this.setState({
-      freeSlotsSaved: newFreeSlotsSaved,
-      freeSlotsToDelete: newFreeSlotsToDelete
-    }, () => {
-      this.saveFreeSlots()
-    })
+      let newFreeSlotsSaved = []
+      let newFreeSlotsToDelete = this.state.freeSlotsToDelete
+      this.state.freeSlotsSaved.forEach(slot => {
+        if (slot.id === event.id) { //evento para remover adicionamos ao delete
+          newFreeSlotsToDelete.push(slot)
+        } else { //outro evento, deixamos estar
+          newFreeSlotsSaved.push(slot)
+        }
+      })
+
+      this.setState({
+        freeSlotsSaved: newFreeSlotsSaved,
+        freeSlotsToDelete: newFreeSlotsToDelete
+      })
+    }
   }
 
   addFreeSlot = (slot) => {
@@ -187,8 +193,6 @@ export default class SettingsSyncTab extends Component {
       this.setState({
         currId: currentId + 1,
         freeSlotsUnsaved: newFreeSlots
-      }, () => {
-        this.saveFreeSlots()
       }) 
     }
   }
@@ -402,9 +406,9 @@ export default class SettingsSyncTab extends Component {
                 };
               }}
             />
-            {/* <div className='flex align-items-center'>
+            <div className='flex align-items-center'>
               <button className='btn btn-fill btn-primary' onClick={this.saveFreeSlots}>Save slots</button>
-            </div> */}
+            </div>
           </div>
         </div>
       )
