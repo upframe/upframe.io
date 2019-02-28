@@ -64,14 +64,22 @@ export default class MentorMeetupPopup extends Component {
         }
       })
     }
-    
+  }
+
+  clickOutside = (e) => {
+    e.stopPropagation()
+    this.props.hidePopup()
+  }
+  
+  noPropagation = (e) => {
+    e.stopPropagation()
   }
 
   render() {
     if (this.state.currentTab === 1) {
       return (
-        <div className='dim-background'>
-          <div className='mentor-meetup-popup flex flex-column'>
+        <div className='dim-background' onClick={this.clickOutside}>
+          <div className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
             <div className='flex justify-center'>
               <h1 className='font-weight-normal text-center'>Reach out to {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
@@ -99,8 +107,8 @@ export default class MentorMeetupPopup extends Component {
       );
     } else if (this.state.currentTab === 2) { //Grab a coffe
       return (
-        <div className='dim-background'>
-          <div id='coffee' className='mentor-meetup-popup flex flex-column'>
+        <div className='dim-background' onClick={this.clickOutside}>
+          <div id='coffee' className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
             <div className='flex justify-center'>
               <h1 className='font-weight-normal text-center'>Grab a coffee with {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
@@ -136,8 +144,8 @@ export default class MentorMeetupPopup extends Component {
       )
     } else if (this.state.currentTab === 3) { //Make a call
       return (
-        <div className='dim-background'>
-          <div id='call' className='mentor-meetup-popup flex flex-column'>
+        <div className='dim-background' onClick={this.clickOutside}>
+          <div id='call' className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
             <div className='flex justify-center'>
               <h1 className='font-weight-normal text-center'>Make a call with {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
