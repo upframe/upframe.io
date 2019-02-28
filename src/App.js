@@ -49,7 +49,8 @@ export default class App extends Component {
     Api.logout().then((res) => {
       if (res.ok === 1) {
         this.setState({
-          loggedIn: false
+          loggedIn: false,
+          user: {}
         })
       } else {
         alert('Could not log you out')
@@ -63,7 +64,6 @@ export default class App extends Component {
         this.setState({
           user: user
         })
-        console.log('Save')
         this.showToast()
       } else {
         alert('There was a problem saving your information')

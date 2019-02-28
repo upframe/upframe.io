@@ -152,7 +152,6 @@ export function createMeetup (sid, location, message, email, name) {
       'Content-Type': 'application/json'
     }
   }
-  console.log(fetchBody)
   return fetch(`${schema}://${host}:${port}/meetup/`, fetchData).then((res) => res.json())
 }
 
@@ -218,17 +217,16 @@ export function updateUserInfo (updateInfo) {
 }
 
 export function uploadPhoto () {
-  var input = document.querySelector('input[type="file"]')
-
-  var data = new FormData()
+  let input = document.querySelector('input[type="file"]')
+  let data = new FormData()
   data.append('file', input.files[0])
-
-  return fetch(`${schema}://${host}:${port}/profile/image`, {
+  let fetchData = {
     method: 'POST',
     credentials: 'include',
     mode: 'cors',
     body: data
-  }).then((res) => res.json())
+  }
+  return fetch(`${schema}://${host}:${port}/profile/image`, fetchData).then((res) => res.json())
 }
 
 export function searchQuick(query) {
@@ -283,7 +281,6 @@ export function addFreeSlots(freeSlotsToSave, freeSlotsToDelete) {
     'updated': updatedSlots,
     'deleted': deletedSlots
   }
-  console.log(body)
   let fetchData = {
     method: 'POST',
     mode: 'cors',
