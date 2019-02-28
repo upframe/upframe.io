@@ -13,9 +13,7 @@ export default class Login extends Component {
   }
 
   handleKeyUp = (e) => { if (e.keyCode === 13) { this.context.login(this.state.email, this.state.password) } }
-
   handleEmailChange = (e) => { this.setState({ email: e.target.value }) }
-
   handlePasswordChange = (e) => { this.setState({ password: e.target.value }) }
 
   login = () => {
