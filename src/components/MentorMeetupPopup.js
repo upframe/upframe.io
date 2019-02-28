@@ -46,8 +46,10 @@ export default class MentorMeetupPopup extends Component {
           alert('Meetup created! Now wait for mentor confirmation')
           // window.location = '/'
           mixpanel.track('[Meetup] Talk w/ ' + this.state.mentorName)
+          this.props.hidePopup()
         } else {
           alert('Error creating meetup')
+          this.props.hidePopup()
           // window.location = '/'
         }
       })
@@ -58,9 +60,11 @@ export default class MentorMeetupPopup extends Component {
           alert('Meetup created! Now wait for mentor confirmation')
           // window.location = '/'
           mixpanel.track('[Meetup] Meetup w/ ' + this.state.mentorName)
+          this.props.hidePopup()
         } else {
           alert('Error creating meetup')
           // window.location = '/'
+          this.props.hidePopup()
         }
       })
     }
