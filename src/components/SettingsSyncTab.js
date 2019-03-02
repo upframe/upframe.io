@@ -368,8 +368,8 @@ export default class SettingsSyncTab extends Component {
             <div id='calendar-list' className='flex'>
               {this.state.calendars.map(element => {
                 return (
-                  <div id='calendar-item'>
-                    <label for={element.id}><input type='checkbox' id={element.id} onChange={this.calendarVisibilityChange} defaultChecked={element.checked} />{element.summary}</label>
+                  <div key={element.id} id='calendar-item'>
+                    <label key={element.id} htmlFor={element.id}><input key={element.id} type='checkbox' id={element.id} onChange={this.calendarVisibilityChange} defaultChecked={element.checked} />{element.summary}</label>
                   </div>
                 )
               })}
