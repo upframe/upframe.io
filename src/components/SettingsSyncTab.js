@@ -169,9 +169,11 @@ export default class SettingsSyncTab extends Component {
       let allFreeSlots = [...this.state.freeSlotsUnsaved, ...this.state.freeSlotsSaved]
       let leng = allFreeSlots.length
       for (let x = 0; x < leng && !stop; x++) {
-        if ((slot.end > allFreeSlots[x].start) && (slot.end < allFreeSlots[x].end)) {
+        if ((slot.end > allFreeSlots[x].start) && (slot.end < allFreeSlots[x].end)) { //The end in inside another slot
           stop = true
-        } else if ((slot.start > allFreeSlots[x].start) && (slot.start < allFreeSlots[x].end)) {
+        } else if ((slot.start > allFreeSlots[x].start) && (slot.start < allFreeSlots[x].end)) { //The beginning is inside another slot
+          stop = true
+        } else if ((slot.end >= allFreeSlots[x].end) && (slot.start <= allFreeSlots[x].start)) { //THis slot contains another one
           stop = true
         }
       }
