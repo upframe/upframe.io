@@ -355,9 +355,12 @@ export default class SettingsSyncTab extends Component {
               onSelectEvent={event => this.deleteFreeSlot(event)}
               onSelectSlot={slot => this.addFreeSlot(slot)}
             />
-            <div className='flex align-items-center'>
+            {/* <div className='flex align-items-center'>
               <button className='btn btn-fill btn-primary' onClick={this.saveFreeSlots}>Save slots</button>
-            </div>
+            </div> */}
+          </div>
+          <div className='fixed-save-changes'>
+            <button className='btn btn-fill btn-primary block save-changes' onClick={this.saveFreeSlots}>Save changes</button>
           </div>
         </div>
       )       
@@ -408,9 +411,12 @@ export default class SettingsSyncTab extends Component {
                 };
               }}
             />
-            <div className='flex align-items-center'>
+            {/* <div className='flex align-items-center'>
               <button className='btn btn-fill btn-primary' onClick={this.saveFreeSlots}>Save slots</button>
-            </div>
+            </div> */}
+          </div>
+          <div className='fixed-save-changes'>
+            <button className='btn btn-fill btn-primary block save-changes' onClick={this.saveFreeSlots}>Save changes</button>
           </div>
         </div>
       )
