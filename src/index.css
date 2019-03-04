@@ -358,7 +358,9 @@ nav .wrapper .dropdown.active ul {
   top: 4rem;
   background-color: #fff;
   color: var(--blue-grey);
-  box-shadow: 0 0px 5px rgba(0, 0, 0, .1);
+  font-size: 1rem;
+  padding: 1rem 0;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 nav .wrapper .dropdown.active ul::before {
@@ -369,6 +371,7 @@ nav .wrapper .dropdown.active ul::before {
   background-color: #fff;
   width: 1rem;
   height: 1rem;
+  top: 0;
   left: 50%;
   transform: translate(-50%, -50%) rotate(45deg);
   box-shadow: 0 0px 5px rgba(0, 0, 0, .1);
@@ -378,10 +381,15 @@ nav .wrapper .dropdown ul li {
   padding: 0.5rem;
   transition: .25s ease-in-out all;
   cursor: pointer;
+  padding: 0.5rem 1rem;
 }
 
 nav .wrapper .dropdown ul li:hover {
   background-color: var(--light-grey);
+}
+
+nav .wrapper .dropdown ul li a {
+  color: var(--blue-grey);
 }
 
 /* CODE SECTION */
