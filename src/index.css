@@ -378,6 +378,7 @@ nav .wrapper .dropdown.active ul::before {
 }
 
 nav .wrapper .dropdown ul li {
+  color: var(--blue-grey);
   padding: 0.5rem;
   transition: .25s ease-in-out all;
   cursor: pointer;
@@ -388,7 +389,7 @@ nav .wrapper .dropdown ul li:hover {
   background-color: var(--light-grey);
 }
 
-nav .wrapper .dropdown ul li a {
+nav .wrapper .dropdown ul a {
   color: var(--blue-grey);
 }
 
