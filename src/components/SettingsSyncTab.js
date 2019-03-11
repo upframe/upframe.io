@@ -366,59 +366,61 @@ export default class SettingsSyncTab extends Component {
       )       
     } else {
       return (
-        <div id='settings-synctab'>
-          {this.state.calendars ?
-            <div id='calendar-list' className='flex'>
-              {this.state.calendars.map(element => {
-                return (
-                  <div key={element.id} id='calendar-item'>
-                    <label key={element.id} htmlFor={element.id}><input key={element.id} type='checkbox' id={element.id} onChange={this.calendarVisibilityChange} defaultChecked={element.checked} />{element.summary}</label>
-                  </div>
-                )
-              })}
+        <React.Fragment>
+          <div id='settings-synctab'>
+            {this.state.calendars ?
+              <div id='calendar-list' className='flex'>
+                {this.state.calendars.map(element => {
+                  return (
+                    <div key={element.id} id='calendar-item'>
+                      <label key={element.id} htmlFor={element.id}><input key={element.id} type='checkbox' id={element.id} onChange={this.calendarVisibilityChange} defaultChecked={element.checked} />{element.summary}</label>
+                    </div>
+                  )
+                })}
+              </div>
+            :
+              null
+            }
+            <div id='controls'>
+              <button className='btn btn-secondary' onClick={this.unlinkGoogle}>Unlink Google</button>
             </div>
-          :
-            null
-          }
-          <div id='controls'>
-            <button className='btn btn-secondary' onClick={this.unlinkGoogle}>Unlink Google</button>
-          </div>
-          <div id='calendar' className='grid'>
-            <BigCalendar
-              localizer={localizer}
-              showMultiDayTimes={true}
-              selectable
-              defaultDate={new Date()}
-              defaultView='week'
-              events={[...this.state.events, ...this.state.freeSlotsSaved, ...this.state.freeSlotsUnsaved]}
-              onSelectEvent={event => this.deleteFreeSlot(event)}
-              onSelectSlot={slot => this.addFreeSlot(slot)}
-              eventPropGetter={(event, start, end, isSelected) => {
-                let newStyle = {
-                  backgroundColor: '#2b3778',
-                  borderColor: '#2b3778',
-                  color: 'white',
-                };
+            <div id='calendar' className='grid'>
+              <BigCalendar
+                localizer={localizer}
+                showMultiDayTimes={true}
+                selectable
+                defaultDate={new Date()}
+                defaultView='week'
+                events={[...this.state.events, ...this.state.freeSlotsSaved, ...this.state.freeSlotsUnsaved]}
+                onSelectEvent={event => this.deleteFreeSlot(event)}
+                onSelectSlot={slot => this.addFreeSlot(slot)}
+                eventPropGetter={(event, start, end, isSelected) => {
+                  let newStyle = {
+                    backgroundColor: '#2b3778',
+                    borderColor: '#2b3778',
+                    color: 'white',
+                  };
 
-                if (event.isMine) {
-                  newStyle.backgroundColor = '#ff004b'
-                  newStyle.borderColor = '#ff004b'
-                }
+                  if (event.isMine) {
+                    newStyle.backgroundColor = '#ff004b'
+                    newStyle.borderColor = '#ff004b'
+                  }
 
-                return {
-                  className: "",
-                  style: newStyle
-                };
-              }}
-            />
-            {/* <div className='flex align-items-center'>
-              <button className='btn btn-fill btn-primary' onClick={this.saveFreeSlots}>Save slots</button>
-            </div> */}
+                  return {
+                    className: "",
+                    style: newStyle
+                  };
+                }}
+              />
+              {/* <div className='flex align-items-center'>
+                <button className='btn btn-fill btn-primary' onClick={this.saveFreeSlots}>Save slots</button>
+              </div> */}
+            </div>
           </div>
           <div className='fixed-save-changes'>
             <button className='btn btn-fill btn-primary block save-changes' onClick={this.saveFreeSlots}>Save changes</button>
           </div>
-        </div>
+        </React.Fragment>
       )
     }
   }
