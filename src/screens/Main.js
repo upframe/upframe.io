@@ -7,6 +7,18 @@ import * as Api from '../utils/Api';
 // import MainPopularTags from '../components/MainPopularTags'
 // import MainSearchBar from '../components/MainSearchBar'
 
+const Tags = (props) => {
+  if (props.content === "" || props.content === "[]") {
+    return null
+  } else {
+    let tags = JSON.parse(props.content)
+    let hello = tags.map((tag) =>
+      <li className='mentor-tags-list-element'>{tag.text}</li>
+    )
+    return hello
+  }
+}
+
 export default class Main extends Component {
 
   constructor (props) {
@@ -24,32 +36,6 @@ export default class Main extends Component {
     })
   }
 
-  mentorTagsToElement = (tags) => {
-    return tags.map((tag) => {
-      return (
-        <li className='mentor-tags-list-element'>{tag}</li>
-      )
-    })
-  }
-
-  mentorToElement = (mentor) => {
-    return (
-      <Link to={mentor.keycode}>
-        <div className='flex'>
-          <img className='mentor-card-image' src={mentor.profilePic} alt={mentor.name} />
-          <div className='mentor-card-info'>
-            <h1>{mentor.name}</h1>
-            <p>{mentor.role} @ <Link to={'/companies/' + mentor.company}>{mentor.company}</Link></p>
-            <p>{mentor.bio}</p>
-          </div>
-          {/*DEBUG for now <ul className='mentor-card-tags'>
-            {this.mentorTagsToElement(mentor.tags)}
-          </ul> */}
-        </div>
-      </Link>
-    )
-  }
-
   render() {
     if (this.state.mentors !== []) {
       return (
@@ -57,7 +43,21 @@ export default class Main extends Component {
           <div className="container grid">
             <div className="mentor-list">
               {this.state.mentors.map((mentor) => {
-                return this.mentorToElement(mentor)
+                return (
+                  <Link to={mentor.keycode}>
+                    <div className='flex'>
+                      <img className='mentor-card-image' src={mentor.profilePic} alt={mentor.name} />
+                      <div className='mentor-card-info'>
+                        <h1>{mentor.name}</h1>
+                        <p>{mentor.role} @ <Link to={'/companies/' + mentor.company}>{mentor.company}</Link></p>
+                        <p>{mentor.bio}</p>
+                      </div>
+                      <ul className='mentor-card-tags'>
+                        <Tags content={mentor.tags}/>
+                      </ul>
+                    </div>
+                  </Link>
+                )
               })}
             </div>
           </div>
