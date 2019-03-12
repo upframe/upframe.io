@@ -120,6 +120,17 @@ export function verifyUniqueId(uniqueid) {
   return fetch(`${schema}://${host}:${port}/mentor/verify?uniqueid=${uniqueid}`, fetchData).then((res) => res.json())
 }
 
+export function getAllMentors() {
+  let fetchData = {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  }
+  return fetch(`${schema}://${host}:${port}/mentor/all`, fetchData).then((res) => res.json())
+}
+
 export function getRandomMentors() {
   let fetchData = {
     method: 'GET',
