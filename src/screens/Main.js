@@ -12,8 +12,8 @@ const Tags = (props) => {
     return null
   } else {
     let tags = JSON.parse(props.content)
-    let hello = tags.map((tag) =>
-      <li className='mentor-tags-list-element'>{tag.text}</li>
+    let hello = tags.map((tag, i) =>
+      <li key={i} className='flex align-items-center mentor-tag'>{tag.text}</li>
     )
     return hello
   }
@@ -51,10 +51,10 @@ export default class Main extends Component {
                         <h1>{mentor.name}</h1>
                         <p>{mentor.role} @ <Link to={'/companies/' + mentor.company}>{mentor.company}</Link></p>
                         <p>{mentor.bio}</p>
+                        <ul id='tags' className='flex'>
+                          <Tags content={mentor.tags} />
+                        </ul>
                       </div>
-                      <ul className='mentor-card-tags'>
-                        <Tags content={mentor.tags}/>
-                      </ul>
                     </div>
                   </Link>
                 )
