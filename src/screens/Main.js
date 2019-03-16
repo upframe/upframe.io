@@ -45,15 +45,17 @@ export default class Main extends Component {
               {this.state.mentors.map((mentor) => {
                 return (
                   <Link to={mentor.keycode}>
-                    <div className='flex'>
-                      <img className='mentor-card-image' src={mentor.profilePic} alt={mentor.name} />
-                      <div className='mentor-card-info'>
-                        <h1>{mentor.name}</h1>
-                        <p>{mentor.role} @ <Link to={'/companies/' + mentor.company}>{mentor.company}</Link></p>
-                        <p>{mentor.bio}</p>
-                        <ul id='tags' className='flex'>
-                          <Tags content={mentor.tags} />
-                        </ul>
+                    <div className='card mentor-card flex justify-center'>
+                      <div>
+                        <img className='mentor-profilepic' src={mentor.profilePic} alt={mentor.name} />
+                        <div className='mentor-info'>
+                          <h1 id='name' className='font-150 font-weight-normal'>{mentor.name}</h1>
+                          <p id='role-company'>{mentor.role} at {mentor.company}</p>
+                          <p id='location'>{mentor.bio}</p>
+                          <ul id='tags' className='flex'>
+                            <Tags content={mentor.tags} />
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </Link>

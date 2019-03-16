@@ -450,7 +450,23 @@ code {
 
 /* HOME PAGE */
 
-#home .mentor-list > a {
+#home .mentor-list .card.mentor-card {
+  padding: 0;
+}
+
+#home .mentor-list .card.mentor-card .mentor-info {
+  margin: 1.3rem 0rem 2rem 2rem;
+}
+
+#home .mentor-list .card.mentor-card .mentor-info h1 {
+  font-size: 1.75rem;
+}
+
+.card.mentor-card .mentor-info p#role-company {
+  margin: 0rem 0 1.2rem 0;
+}
+
+/* #home .mentor-list > a {
   display: block;
   border: 1px solid var(--border-lightgray);
   border-radius: 0.25rem;
@@ -509,7 +525,7 @@ code {
   border: 1px solid var(--border-lightgray);
   border-radius: 10rem;
   margin: 0 .5rem 0.5rem 0;
-}
+} */
 
 /* SETTINGS PAGE */
 
