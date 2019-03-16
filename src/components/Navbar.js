@@ -27,21 +27,17 @@ export default class Navbar extends Component {
     return (
       <nav>
         <div className='wrapper flex justify-center align-items-center'>
-          {this.context.user.keycode ?
-            <Link to={'/' + this.context.user.keycode} id='logo'>
-              <img src='/logo.svg' alt='Upframe logo' className='logo'></img>
-            </Link> :
-            <Link to='/' id='logo'>
-              <img src='/logo.svg' alt='Upframe logo' className='logo'></img>
-            </Link>
-          }
+          <Link to='/' id='logo'>
+            <img src='/logo.svg' alt='Upframe logo' className='logo'></img>
+          </Link>
 
           {this.context.loggedIn ?
             <div className='flex flex-column align-items-center dropdown'>
               <img id='profilepic' src={this.context.user.profilePic !== '' ? this.context.user.profilePic : '' } alt='Profile pic' onClick={this.openDropdown}></img>
               <ul>
-                <Link to='/settings/public' className='text-center' onClick={this.closeDropdown}><li>Settings</li></Link>
-                <li className='text-center' onClick={this.logout}><Link to='#0'>Sign Out</Link></li>
+                <Link to={'/' + this.context.user.keycode} onClick={this.closeDropdown}><li>My Profile</li></Link>
+                <Link to='/settings/public' onClick={this.closeDropdown}><li>Settings</li></Link>
+                <li onClick={this.logout}><Link to='#0'>Sign Out</Link></li>
               </ul>
             </div>
           :
