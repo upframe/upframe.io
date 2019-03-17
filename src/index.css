@@ -608,7 +608,7 @@ code {
   color: var(--blue-grey);
 }
 
-#settings-publictab div:nth-of-type(2) input {
+#settings-publictab div:nth-of-type(2) input:not([type='checkbox']) {
   width: 100%;
   padding-left: 30px;
   padding-right: 30px;
