@@ -759,6 +759,7 @@ code {
 .card.mentor-card .mentor-info #tags .mentor-tag {
   cursor: pointer;
   font-size: 0.8rem;
+  text-transform: capitalize;
   text-align: center;
   color: var(--brownish-grey);
   padding: 0.8rem 1rem;
