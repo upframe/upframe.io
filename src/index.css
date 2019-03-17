@@ -459,15 +459,22 @@ code {
 }
 
 #home .mentor-list .card.mentor-card .mentor-info {
-  margin: 1.3rem 0rem 2rem 2rem;
+  /* margin: 1.3rem 0rem 2rem 2rem; */
+  margin: 0.8rem 0.5rem 0rem 2rem;
 }
 
 #home .mentor-list .card.mentor-card .mentor-info h1 {
   font-size: 1.75rem;
 }
 
-.card.mentor-card .mentor-info p#role-company {
-  margin: 0rem 0 1.2rem 0;
+#home .mentor-list .card.mentor-card .mentor-info p#role-company {
+  font-size: 0.9rem;
+  margin: 0 0 0.75rem 0;
+}
+
+#home .mentor-list .card.mentor-card .mentor-info #tags {
+  flex-wrap: wrap;
+  margin: .9rem .75rem 0 0;
 }
 
 /* #home .mentor-list > a {
