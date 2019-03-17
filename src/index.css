@@ -477,6 +477,14 @@ code {
   margin: .9rem .75rem 0 0;
 }
 
+#home .mentor-list .card.mentor-card .mentor-info #bio {
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
 /* #home .mentor-list > a {
   display: block;
   border: 1px solid var(--border-lightgray);
