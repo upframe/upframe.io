@@ -438,6 +438,10 @@ code {
   display: flex;
 }
 
+.breadcrumbs li {
+  display: flex;
+}
+
 .breadcrumbs li:not(:last-of-type)::after {
   content: '>';
   margin-right: 0.8rem;

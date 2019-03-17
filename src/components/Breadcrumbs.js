@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react'
+import { Link } from 'react-router-dom'
 
 export default class Breadcrumbs extends PureComponent {
 
   render() {
     return (
       <ul className="breadcrumbs">
-        <li>Directory</li>
-        <li>People</li>
+        <li><Link to='/'>Directory</Link></li>
+        <li><Link to='/'>People</Link></li>
         <li className="font-weight-bold">{this.props.name}</li>
       </ul>
     )
