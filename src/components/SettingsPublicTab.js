@@ -48,7 +48,8 @@ export default class SettingsPublicTab extends Component {
       dribbble: context.user.dribbble,
       bio: context.user.bio,
       keycode: context.user.keycode,
-      email: context.user.email
+      email: context.user.email,
+      newsfeed: context.user.newsfeed === 'N'
     }
   }
 
@@ -64,6 +65,7 @@ export default class SettingsPublicTab extends Component {
   handleDribbbleChange = (event) => { this.setState({ dribbble: event.target.value })}
   handleBioChange = (event) => { this.setState({bio : event.target.value})}
   handleKeycodeChange = (event) => { this.setState({ keycode: event.target.value }) }
+  handleHideProfile = (event) => { this.setState({ newsfeed: event.target.checked }) }
 
   handleFirstFavoriteLocationChange = (event) => {
     let newFavoriteLocations = this.state.favoriteLocations
@@ -158,7 +160,8 @@ export default class SettingsPublicTab extends Component {
       old.role !== actual.role ||
       old.tags !== JSON.stringify(actual.tags) ||
       old.twitter !== actual.twitter ||
-      old.website !== actual.website
+      old.website !== actual.website ||
+      old.newsfeed !== actual.newsfeed
   }
 
   saveChanges = () => {
@@ -184,7 +187,8 @@ export default class SettingsPublicTab extends Component {
         bio: this.state.bio,
         keycode: this.state.keycode,
         profilePic: this.state.profilePic,
-        email: this.state.email
+        email: this.state.email,
+        newsfeed: (this.state.newsfeed ? 'N' : 'Y') 
       })
     }
   }
@@ -286,12 +290,20 @@ export default class SettingsPublicTab extends Component {
 
           <div className='input-group'>
             <h2>Favorite Locations</h2>
+            
             <label htmlFor='location-1'>First location</label>
-              <input type='text' onChange={this.handleFirstFavoriteLocationChange} value={this.state.favoriteLocations[0]} id='location-1' onKeyUp={this.handleKeyUp} />
+            <input type='text' onChange={this.handleFirstFavoriteLocationChange} value={this.state.favoriteLocations[0]} id='location-1' onKeyUp={this.handleKeyUp} />
+            
             <label htmlFor='location-2'>Second location</label>
-              <input type='text' onChange={this.handleSecondFavoriteLocationChange} value={this.state.favoriteLocations[1]} id='location-2' onKeyUp={this.handleKeyUp} />
+            <input type='text' onChange={this.handleSecondFavoriteLocationChange} value={this.state.favoriteLocations[1]} id='location-2' onKeyUp={this.handleKeyUp} />
+            
             <label htmlFor='location-3'>Third location</label>
-              <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} id='location-3' onKeyUp={this.handleKeyUp} />
+            <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} id='location-3' onKeyUp={this.handleKeyUp} />
+          </div>
+
+          <div className='input-group'>
+            <h2>Privacy</h2>
+            <label htmlFor='newsfeed'><input type='checkbox' id='newsfeed' onChange={this.handleHideProfile} checked={this.state.newsfeed}></input> Hide my profile from the homepage</label>
           </div>
 
           {/* <div className='input-group'>
