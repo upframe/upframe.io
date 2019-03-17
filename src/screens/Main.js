@@ -51,7 +51,7 @@ export default class Main extends Component {
                         <div className='mentor-info'>
                           <h1 id='name' className='font-150 font-weight-normal'>{mentor.name}</h1>
                           <p id='role-company'>{mentor.role} at {mentor.company}</p>
-                          <p id='bio'>{mentor.bio}</p>
+                          <p id='bio' style={{ WebkitBoxOrient: 'vertical'}}>{mentor.bio}</p>
                           <ul id='tags' className='flex'>
                             <Tags content={mentor.tags} />
                           </ul>
