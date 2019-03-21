@@ -663,6 +663,10 @@ code {
   display: inline;
 }
 
+#newsfeed {
+  margin: 0
+}
+
 /* ACCOUNT TAB */
 #settings-accounttab h1 {
   color: var(--brownish-grey);
