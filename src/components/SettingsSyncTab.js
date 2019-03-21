@@ -290,6 +290,8 @@ export default class SettingsSyncTab extends Component {
     //1. Delete toDelete + Save unsaved
     //2. clear to Delete
     //3. merge unsaved into saved
+    document.getElementById('save-button').disabled = true
+    document.getElementById('save-button').innerHTML = 'Saving...'
     Api.addFreeSlots(this.state.freeSlotsUnsaved, this.state.freeSlotsToDelete).then((res) => {
       if (res.ok === 1) { //We have added new slots and deleted the ones that were saved (not created in this session)
         //Wrong! Because the new saved slots are in incorrect form
@@ -298,6 +300,8 @@ export default class SettingsSyncTab extends Component {
         let limitDate = moment().add(30, 'days')
         this.context.showToast()
         Api.getFreeSlots(nowDate, limitDate).then((res) => {
+          document.getElementById('save-button').disabled = false
+          document.getElementById('save-button').innerHTML = 'Save changes'
           if (res.ok === 1) {
             this.setState({
               freeSlotsSaved: res.slots.map((unconvertedSlot) => {
@@ -360,7 +364,7 @@ export default class SettingsSyncTab extends Component {
             </div> */}
           </div>
           <div className='fixed-save-changes'>
-            <button className='btn btn-fill btn-primary block save-changes' onClick={this.saveFreeSlots}>Save changes</button>
+            <button id='save-button' className='btn btn-fill btn-primary block save-changes' onClick={this.saveFreeSlots}>Save changes</button>
           </div>
         </div>
       )       
@@ -418,7 +422,7 @@ export default class SettingsSyncTab extends Component {
             </div>
           </div>
           <div className='fixed-save-changes'>
-            <button className='btn btn-fill btn-primary block save-changes' onClick={this.saveFreeSlots}>Save changes</button>
+            <button id='save-button' className='btn btn-fill btn-primary block save-changes' onClick={this.saveFreeSlots}>Save changes</button>
           </div>
         </React.Fragment>
       )
