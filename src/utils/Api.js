@@ -335,3 +335,17 @@ export function getTokens (code) {
   }
   return fetch(`${schema}://${host}:${port}/auth/oauthcode?code=` + code, fetchData).then((res) => res.json())
 }
+
+export function requestTimeSlot(keycode, date, time, message) {
+  let fetchBody = { keycode, date, time, message }
+  console.log(fetchBody)
+  let fetchData = {
+    method: 'POST',
+    mode: 'cors',
+    body: JSON.stringify(fetchBody),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  return fetch(`${schema}://${host}:${port}/mentor/request`, fetchData).then((res) => res.json())
+}

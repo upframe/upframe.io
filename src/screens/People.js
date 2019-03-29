@@ -4,8 +4,7 @@ import * as Api from '../utils/Api'
 
 import Breadcrumbs from '../components/Breadcrumbs'
 import MentorMeetupPopup from '../components/MentorMeetupPopup'
-
-import mixpanel from 'mixpanel-browser';
+import MentorRequestPopup from '../components/MentorRequestPopup';
 
 export default class People extends Component {
 
@@ -14,6 +13,7 @@ export default class People extends Component {
     this.state = {
       selectedSlot: '',
       showPopup: 0,
+      showRequestPopup: 0,
       mentorExists: 0,
       mentor: {
         bio: 'Loading',
@@ -48,7 +48,6 @@ export default class People extends Component {
               mentorExists: 2
             })
           } else {
-            mixpanel.track('[Visit] - ' + res.mentor.name)
             this.setState({
               mentorExists: 1,
               mentor: {
@@ -85,7 +84,6 @@ export default class People extends Component {
           mentorExists: 2
         })
       } else {
-        mixpanel.track('[Visit] ' + res.mentor.name)
         this.setState({
           mentorExists: 1,
           mentor: {
@@ -112,26 +110,25 @@ export default class People extends Component {
     })
   }
 
-  selectSlot = (event) => {
+  selectSlot = (event) => { //TODO - Vai passar a ir diretamente ao popup
     let target = event.target
     while(target.parentNode && !target.dataset.id && !target.classList.contains('mentor-card-slot')) target = target.parentNode
-    
-    if(target.dataset.id && target.classList.contains('mentor-card-slot')) {
-      // remove current active slot
-      document.querySelectorAll('.mentor-card-slot.active').forEach((slot) => slot.classList.remove('active'))
-      // change selected slot to active mode
-      target.classList.add('active') 
-
-      this.setState({ selectedSlot: target.dataset.id })
-    }
+    this.setState({ 
+      selectedSlot: target.dataset.id,
+      showPopup: 1
+    })
   }
 
-  showPopup = (event) => {
-    if (this.state.selectedSlot) {
-      this.setState({
-        showPopup: 1
-      })
-    }
+  showRequestPopup = (event) => {
+    this.setState({
+      showRequestPopup: 1
+    })
+  }
+
+  hideRequestPopup = () => {
+    this.setState({
+      showRequestPopup: 0
+    })
   }
 
   hidePopup = () => {
@@ -180,13 +177,20 @@ export default class People extends Component {
           {this.state.showPopup === 1
               ?
               <MentorMeetupPopup
-                show={this.state.showPopup}
                 hidePopup={this.hidePopup}
                 sid={this.state.selectedSlot}
                 locations={this.state.mentor.favoriteLocations}
                 name={this.state.mentor.name} />
               :
               null
+          }
+          {this.state.showRequestPopup === 1
+            ?
+            <MentorRequestPopup 
+              hideRequestPopup={this.hideRequestPopup}
+            />
+            :
+            null
           }
           <Breadcrumbs name={this.state.mentor.name} />
           <div className='card mentor-card flex justify-center'>
@@ -219,10 +223,7 @@ export default class People extends Component {
               <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>*/}
               <ul className='mentor-card-slots grid'>
                 {this.displayFreeSlots()}
-                { this.state.mentor.freeSlots.length
-                  ? <button id='request' className='btn btn-primary btn-fill' onClick={this.showPopup}>Request</button>
-                  : null
-                }
+                <button id='request' className='btn btn-primary btn-fill' onClick={this.showRequestPopup}>Request</button>
               </ul>
               </div>
           </div>
