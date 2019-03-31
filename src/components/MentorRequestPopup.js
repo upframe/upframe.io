@@ -13,7 +13,9 @@ export default class MentorRequestPopup extends Component {
     this.state = {
       message: '',
       time: '10:10',
-      date: today.getFullYear() + '-01-01'
+      date: today.getFullYear() + '-01-01',
+      name: '',
+      email: '',
     }
   }
 
@@ -50,14 +52,29 @@ export default class MentorRequestPopup extends Component {
       this.state.date,
       this.state.time,
       this.state.message,
+      this.state.name,
+      this.state.email,
     ).then((res) => {
       if (res.ok === 1) {
+        mixpanel.track('[Meetup Request] ' + this.state.mentorName)
         alert('Time slots requested. Now wait for mentor confirmation.')
         this.props.hideRequestPopup()
       } else {
         alert('Something failed! Contact our dev team!')
         this.props.hideRequestPopup()
       }
+    })
+  }
+
+  handleEmailChange = (e) => {
+    this.setState({
+      email: e.target.value
+    })
+  }
+
+  handleNameChange = (e) => {
+    this.setState({
+      name: e.target.value
     })
   }
 
@@ -77,6 +94,14 @@ export default class MentorRequestPopup extends Component {
             <div className='input-group'>
               <label for='message'>Message</label>
               <textarea id='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange}></textarea>
+            </div>
+            <div className='input-group'>
+              <label for='email'>Your email</label>
+              <input id='email' type='email' placeholder='Your email' onChange={this.handleEmailChange} />
+            </div>
+            <div className='input-group'>
+              <label for='name'>Your name</label>
+              <input id='name' type='text' placeholder='Your name' onChange={this.handleNameChange} />
             </div>
             <button className='btn btn-fill btn-primary right' onClick={this.requestTimeSlot}>Request</button>
           </div>
