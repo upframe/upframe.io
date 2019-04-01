@@ -298,7 +298,7 @@ export default class SettingsSyncTab extends Component {
         //We need to fetch slots again
         let nowDate = new Date()
         let limitDate = moment().add(30, 'days')
-        this.context.showToast()
+        this.context.showToast('Free slots saved')
         Api.getFreeSlots(nowDate, limitDate).then((res) => {
           document.getElementById('save-button').disabled = false
           document.getElementById('save-button').innerHTML = 'Save changes'
