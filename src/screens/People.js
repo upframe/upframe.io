@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 
 import * as Api from '../utils/Api'
 
+import AppContext from '../components/AppContext'
 import Breadcrumbs from '../components/Breadcrumbs'
 import MentorMeetupPopup from '../components/MentorMeetupPopup'
 
 import mixpanel from 'mixpanel-browser';
 
 export default class People extends Component {
+
+  static contextType = AppContext
 
   constructor(props) {
     super(props)
@@ -118,6 +121,7 @@ export default class People extends Component {
       return
     }
     navigator.clipboard.writeText('https://upfra.me/' + this.props.match.params.keycode)
+    this.context.showToast('URL Copied')
   }
 
   fallbackCopyUrlToClipboad = (text) => {
@@ -128,8 +132,10 @@ export default class People extends Component {
     textArea.select();
     try {
       document.execCommand('copy');
+      this.context.showToast('URL Copied')
     } catch (err) {
       // Error
+      this.context.showToast('Could not copy URL')
     }
     document.body.removeChild(textArea);
   }
@@ -214,7 +220,7 @@ export default class People extends Component {
           <div className='card mentor-card flex justify-center'>
             <div>
               <div className='flex justify-center'>
-                <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' onClick={this.copyUrlToClipboard}/>
+                <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile'/>
               </div>
               <div className='mentor-info'>
                 <h1 id='name' className="font-weight-normal">{this.state.mentor.name}</h1>
@@ -246,7 +252,9 @@ export default class People extends Component {
                   : null
                 }
               </ul>
-              </div>
+            </div>
+          </div>
+          <div className='copy-url' onClick={this.copyUrlToClipboard}>
           </div>
         </main>
       )

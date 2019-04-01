@@ -114,7 +114,7 @@ export default class SettingsPublicTab extends Component {
       document.getElementById('title').innerHTML = "Uploading"
       Api.uploadPhoto().then((res) => {
         if (res.ok === 1) {
-          alert('File upload successful')
+          this.context.showToast('File upload successful')
           this.context.setProfilePic(res.url)
           document.getElementById('title').innerHTML = 'Profile Picture'
           this.setState({
@@ -167,9 +167,9 @@ export default class SettingsPublicTab extends Component {
   saveChanges = () => {
     let numOfChars = JSON.stringify(this.state.tags).length
     if (numOfChars > 254) {
-      alert('Your expertise tags are too long! Delete some so we can save your info :D')
+      this.context.showToast('Your expertise tags are too long! Delete some so we can save your info :D')
     } else if (this.noFavoriteLocation()) {
-      alert('You need at least one favorite location')
+      this.context.showToast('You need at least one favorite location')
     } else if (this.informationChanged()) {
       this.context.saveUserInfo({
         tags: JSON.stringify(this.state.tags),

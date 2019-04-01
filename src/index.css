@@ -835,6 +835,24 @@ code {
   height: 100%;
 }
 
+.copy-url {
+  position: absolute;
+  top: 26rem;
+  left: 5rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 0.5px 3px 0 rgba(0, 0, 0, 0.5);
+  background-image: url('img/chainGrey.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.copy-url:hover {
+  background-color: var(--primary);
+  background-image: url('img/chainWhite.png');
+}
+
 /* LOGIN */ 
 #login .container input {
   padding: 1rem;
@@ -850,6 +868,10 @@ code {
 
   #people .card.mentor-card .mentor-card-slots {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .copy-url {
+    display: none;
   }
 }
 
@@ -1178,7 +1200,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   visibility: hidden; /* Hidden by default. Visible on click */
   min-width: 250px; /* Set a default minimum width */
   margin-left: -125px; /* Divide value of min-width by 2 */
-  background-color: #333; /* Black background color */
+  background-color: var(--primary); /* Black background color */
   color: #fff; /* White text color */
   text-align: center; /* Centered text */
   border-radius: 2px; /* Rounded borders */
