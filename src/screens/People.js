@@ -252,7 +252,9 @@ export default class People extends Component {
       )
     } else if (this.state.mentorExists === 2)  {
       return (
-        <h1>Este mentor não existe</h1>
+        <div className="center-container">
+          <h1>This mentor does not exist</h1>
+        </div>
       );
     } else {
       return (
