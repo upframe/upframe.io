@@ -727,7 +727,7 @@ code {
 .card.mentor-card .mentor-profilepic {
   min-width: 12rem;
   max-height: 12rem;
-  border-radius: 0.125rem;
+  border-radius: 0.18rem;
 }
 
 .card.mentor-card h1 {
