@@ -846,6 +846,7 @@ code {
   background-image: url('img/chainGrey.png');
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
 }
 
 .copy-url:hover {
