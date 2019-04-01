@@ -14,8 +14,10 @@ const Tags = (props) => {
     let tags = JSON.parse(props.content)
     // We want to keep tags to a max of 3
     if (tags.length > 3) {
-      tags = tags.slice(0, 2)
-      tags.push("+")
+      tags = tags.slice(0, 3)
+      tags.push({
+        text: "+"
+      })
     }
     let hello = tags.map((tag, i) =>
       <li key={i} className='flex align-items-center mentor-tag'>{tag.text}</li>
