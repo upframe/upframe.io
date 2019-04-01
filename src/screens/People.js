@@ -46,7 +46,7 @@ export default class People extends Component {
         mentorExists: 0
       }, () => {
         Api.getMentorInfo(this.props.match.params.keycode).then((res) => {
-          if (res.message) {
+          if (res.ok === 0) {
             this.setState({
               mentorExists: 2
             })
@@ -83,7 +83,7 @@ export default class People extends Component {
   componentDidMount() {
     let keycode = window.location.pathname.split('/')[1]
     Api.getMentorInfo(keycode).then((res) => {
-      if (res.message) {
+      if (res.ok === 0) {
         this.setState({
           mentorExists: 2
         })
@@ -260,9 +260,9 @@ export default class People extends Component {
       )
     } else if (this.state.mentorExists === 2)  {
       return (
-        <div className="center-container">
-          <h1>This mentor does not exist</h1>
-        </div>
+        <main id='people' className='container'>
+          <h1>Upframe 404 - Mentor not found <span role="img" aria-label="sad emoji">😔</span></h1>
+        </main>
       );
     } else {
       return (
