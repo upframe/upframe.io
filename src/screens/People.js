@@ -112,6 +112,28 @@ export default class People extends Component {
     })
   }
 
+  copyUrlToClipboard = () => {
+    if (!navigator.clipboard) {
+      this.fallbackCopyUrlToClipboard('https://upfra.me/' + this.props.match.params.keycode);
+      return
+    }
+    navigator.clipboard.writeText('https://upfra.me/' + this.props.match.params.keycode)
+  }
+
+  fallbackCopyUrlToClipboad = (text) => {
+    let textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+    } catch (err) {
+      // Error
+    }
+    document.body.removeChild(textArea);
+  }
+
   selectSlot = (event) => {
     let target = event.target
     while(target.parentNode && !target.dataset.id && !target.classList.contains('mentor-card-slot')) target = target.parentNode
@@ -192,7 +214,7 @@ export default class People extends Component {
           <div className='card mentor-card flex justify-center'>
             <div>
               <div className='flex justify-center'>
-                <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' />
+                <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' onClick={this.copyUrlToClipboard}/>
               </div>
               <div className='mentor-info'>
                 <h1 id='name' className="font-weight-normal">{this.state.mentor.name}</h1>
