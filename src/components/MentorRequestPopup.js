@@ -9,14 +9,23 @@ export default class MentorRequestPopup extends Component {
 
   constructor(props) {
     super(props)
-    let today = new Date()
     this.state = {
       message: '',
-      time: '10:10',
-      date: today.getFullYear() + '-01-01',
       name: '',
       email: '',
     }
+  }
+
+  handleEmailChange = (e) => {
+    this.setState({
+      email: e.target.value
+    })
+  }
+
+  handleNameChange = (e) => {
+    this.setState({
+      name: e.target.value
+    })
   }
 
   handleMessageChange = (event) => {
@@ -34,23 +43,9 @@ export default class MentorRequestPopup extends Component {
     e.stopPropagation()
   }
 
-  handleDateChange = (e) => {
-    this.setState({
-      date: e.target.value
-    })
-  }
-
-  handleTimeChange = (e) => {
-    this.setState({
-      time: e.target.value
-    })
-  }
-
   requestTimeSlot = () => {
     Api.requestTimeSlot(
       window.location.pathname.substring(1),
-      this.state.date,
-      this.state.time,
       this.state.message,
       this.state.name,
       this.state.email,
@@ -66,18 +61,6 @@ export default class MentorRequestPopup extends Component {
     })
   }
 
-  handleEmailChange = (e) => {
-    this.setState({
-      email: e.target.value
-    })
-  }
-
-  handleNameChange = (e) => {
-    this.setState({
-      name: e.target.value
-    })
-  }
-
   render() {
     return (
       <div className='dim-background' onClick={this.clickOutside}>
@@ -88,9 +71,7 @@ export default class MentorRequestPopup extends Component {
           </div>
           <span className='hr'></span>
           <div>
-            <h1>What time are you free?</h1>
-            <input type='time' id='time-request' name='time-request' value={this.state.time} onChange={this.handleTimeChange}/>
-            <input type='date' id='time-request' name='time-request' value={this.state.date} onChange={this.handleDateChange}/>
+            <h1>How can I help you?</h1>
             <div className='input-group'>
               <label for='message'>Message</label>
               <textarea id='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange}></textarea>
