@@ -9,9 +9,6 @@ export default class MainSearchBar extends Component {
     super(props)
     this.state = {
       search: '',
-      expertise: [],
-      company: [],
-      people: []
     }
   }
 
@@ -22,80 +19,23 @@ export default class MainSearchBar extends Component {
       if (this.state.search && this.state.search.length > 1) {
         this.getInfo()
       } else if (!this.state.query && this.state.search.length === 1) {
-        this.setState({
-          expertise: [],
-          company: [],
-          people: []
+        Api.getAllMentors().then((res) => {
+          this.props.setMentors(res.mentors)
         })
       }
     })
   }
 
   getInfo = () => {
-    Api.searchQuick(this.state.search).then((res) => {
-      console.log(res)
-      this.setState({
-        expertise: res.expertise ? res.expertise : [],
-        company: res.company ? res.company : [],
-        people: res.people ? res.people : []
-      })
+    Api.searchFull(this.state.search).then((res) => {
+      this.props.setMentors(res.search)
     })
-  }
-
-  expertise = (props) => {
-    if (!props) {
-      return 
-    }
-    const expertise = props.map((element) => (
-      <Link to={'/expertise/' + element.name}>
-        <li key={element.name}>
-          {element.name}
-          {element.description}
-        </li>
-      </Link>
-    ))
-    return <ul>{expertise}</ul>
-  }
-
-  people = (props) => {
-    if (!props) {
-      return
-    }
-    const people = props.map((element) => (
-      <Link to={'/people/' + element.keycode}>
-        <li key={element.name}>
-          {element.name}
-          {element.keycode}
-          {element.bio}
-          {element.profilePic}
-        </li>
-      </Link>
-    ))
-    return <ul>{people}</ul>
-  }
-
-  company = (props) => {
-    if (!props) {
-      return
-    }
-    const company = props.map((element) => (
-      <Link to={'/company/' + element.name}>
-        <li key={element.name}>
-          {element.name}
-          {element.description}
-        </li>
-      </Link>
-    ))
-    return <ul>{company}</ul>
   }
 
   render() {
     return (
       <div>
         <input onChange={this.handleChange} />
-        {this.expertise(this.state.expertise)}
-        {this.people(this.state.people)}
-        {this.company(this.state.company)}
       </div>
     );
   }
