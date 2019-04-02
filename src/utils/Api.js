@@ -336,8 +336,8 @@ export function getTokens (code) {
   return fetch(`${schema}://${host}:${port}/auth/oauthcode?code=` + code, fetchData).then((res) => res.json())
 }
 
-export function requestTimeSlot(keycode, date, time, message, name, email) {
-  let fetchBody = { keycode, date, time, message, name, email }
+export function requestTimeSlot(keycode, message, name, email) {
+  let fetchBody = { keycode, message, name, email }
   let fetchData = {
     method: 'POST',
     mode: 'cors',
