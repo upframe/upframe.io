@@ -12,6 +12,24 @@ const Tags = (props) => {
     return null
   } else {
     let tags = JSON.parse(props.content)
+    // We want to keep tags to a max of 3
+    // ABaixo de 1290 pomos so 2 + o simbolo
+    if (tags.length > 3) {
+      if (props.small) {
+        tags = tags.slice(0, 2)
+      } else {
+        tags = tags.slice(0, 3)
+      }
+      tags.push({
+        text: "+"
+      })
+    }
+    if (tags.length === 3 & props.small) {
+      tags = tags.slice(0, 2)
+      tags.push({
+        text: "+"
+      })
+    }
     let hello = tags.map((tag, i) =>
       <li key={i} className='flex align-items-center mentor-tag'>{tag.text}</li>
     )
@@ -37,6 +55,10 @@ export default class Main extends Component {
   }
 
   render() {
+    let small = false
+    if (document.body.clientWidth < 1290) {
+      small = true
+    }
     if (this.state.mentors !== []) {
       return (
         <main id='home'>
@@ -53,7 +75,7 @@ export default class Main extends Component {
                           <p id='role-company'>{mentor.role} at {mentor.company}</p>
                           <p id='bio' style={{ WebkitBoxOrient: 'vertical'}}>{mentor.bio}</p>
                           <ul id='tags' className='flex'>
-                            <Tags content={mentor.tags} />
+                            <Tags content={mentor.tags} small={small} />
                           </ul>
                         </div>
                       </div>

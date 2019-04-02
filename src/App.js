@@ -65,7 +65,7 @@ export default class App extends Component {
         this.setState({
           user: user
         })
-        this.showToast()
+        this.showToast('Information saved')
       } else {
         alert('There was a problem saving your information')
       }
@@ -91,10 +91,13 @@ export default class App extends Component {
     })
   }
 
-  showToast () {
+  showToast (text) {
     let x = document.getElementById("snackbar");
+    x.innerHTML = text
     x.className = "show";
-    setTimeout(function () { x.className = x.className.replace("show", ""); }, 2000);
+    setTimeout(function () { 
+      x.className = x.className.replace("show", ""); 
+    }, 2000);
   }
 
   render() {

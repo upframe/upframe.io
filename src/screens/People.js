@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 
 import * as Api from '../utils/Api'
 
+import AppContext from '../components/AppContext'
 import Breadcrumbs from '../components/Breadcrumbs'
 import MentorMeetupPopup from '../components/MentorMeetupPopup'
 import MentorRequestPopup from '../components/MentorRequestPopup';
 
 export default class People extends Component {
+
+  static contextType = AppContext
 
   constructor(props) {
     super(props)
@@ -43,7 +46,7 @@ export default class People extends Component {
         mentorExists: 0
       }, () => {
         Api.getMentorInfo(this.props.match.params.keycode).then((res) => {
-          if (res.message) {
+          if (res.ok === 0) {
             this.setState({
               mentorExists: 2
             })
@@ -79,7 +82,7 @@ export default class People extends Component {
   componentDidMount() {
     let keycode = window.location.pathname.split('/')[1]
     Api.getMentorInfo(keycode).then((res) => {
-      if (res.message) {
+      if (res.ok === 0) {
         this.setState({
           mentorExists: 2
         })
@@ -110,7 +113,32 @@ export default class People extends Component {
     })
   }
 
-  selectSlot = (event) => { //TODO - Vai passar a ir diretamente ao popup
+  copyUrlToClipboard = () => {
+    if (!navigator.clipboard) {
+      this.fallbackCopyUrlToClipboard('https://upfra.me/' + this.props.match.params.keycode);
+      return
+    }
+    navigator.clipboard.writeText('https://upfra.me/' + this.props.match.params.keycode)
+    this.context.showToast('URL Copied')
+  }
+
+  fallbackCopyUrlToClipboad = (text) => {
+    let textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    try {
+      document.execCommand('copy');
+      this.context.showToast('URL Copied')
+    } catch (err) {
+      // Error
+      this.context.showToast('Could not copy URL')
+    }
+    document.body.removeChild(textArea);
+  }
+
+  selectSlot = (event) => {
     let target = event.target
     while(target.parentNode && !target.dataset.id && !target.classList.contains('mentor-card-slot')) target = target.parentNode
     this.setState({ 
@@ -196,7 +224,7 @@ export default class People extends Component {
           <div className='card mentor-card flex justify-center'>
             <div>
               <div className='flex justify-center'>
-                <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile' />
+                <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile'/>
               </div>
               <div className='mentor-info'>
                 <h1 id='name' className="font-weight-normal">{this.state.mentor.name}</h1>
@@ -225,13 +253,17 @@ export default class People extends Component {
                 {this.displayFreeSlots()}
                 <button id='request' className='btn btn-primary btn-fill' onClick={this.showRequestPopup}>Request</button>
               </ul>
-              </div>
+            </div>
+          </div>
+          <div className='copy-url' onClick={this.copyUrlToClipboard}>
           </div>
         </main>
       )
     } else if (this.state.mentorExists === 2)  {
       return (
-        <h1>Este mentor não existe</h1>
+        <main id='people' className='container'>
+          <h1>Upframe 404 - Mentor not found <span role="img" aria-label="sad emoji">😔</span></h1>
+        </main>
       );
     } else {
       return (
