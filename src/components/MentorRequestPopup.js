@@ -83,7 +83,7 @@ export default class MentorRequestPopup extends Component {
             <div className='input-group'>
               <label for='name'>Your name</label>
               <input id='name' type='text' placeholder='Your name' onChange={this.handleNameChange} />
-            </div>
+            </div><br />
             <button className='btn btn-fill btn-primary right' onClick={this.requestTimeSlot}>Request</button>
           </div>
         </div>
