@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Api from '../utils/Api';
+import Api from '../../utils/Api';
+import './index.css';
 
 export default class MainSearchBar extends Component {
 
@@ -28,7 +29,7 @@ export default class MainSearchBar extends Component {
 
   render() {
     return (
-      <input onChange={this.handleChange} />
+      <input id="search-input" placeholder="Try looking a topic, a person or a startup" onChange={this.handleChange} />
     );
   }
 }
