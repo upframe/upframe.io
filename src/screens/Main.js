@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom'
 
-import * as Api from '../utils/Api';
+import Api from '../utils/Api';
 
 import MainMentorList from '../components/MainMentorList'
 // import MainPopularTags from '../components/MainPopularTags'

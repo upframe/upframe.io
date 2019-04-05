@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import AppContext from '../components/AppContext'
-import * as Api from '../utils/Api'
+import Api from '../utils/Api'
 
 export default class Sync extends Component {
 

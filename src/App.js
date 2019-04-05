@@ -4,7 +4,7 @@ import mixpanel from 'mixpanel-browser'
 
 import AppContext from './components/AppContext';
 import Navbar from './components/Navbar';
-import * as Api from './utils/Api';
+import Api from './utils/Api';
 
 const Main = React.lazy(() => import(/* webpackChunkName: "Main", webpackPrefetch: true */'./screens/Main'))
 const Login = React.lazy(() => import(/* webpackChunkName: "Login", webpackPrefetch: true */'./screens/Login'))

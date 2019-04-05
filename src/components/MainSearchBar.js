@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-
-import * as Api from '../utils/Api';
+import Api from '../utils/Api';
 
 export default class MainSearchBar extends Component {
 
@@ -16,19 +14,15 @@ export default class MainSearchBar extends Component {
     this.setState({
       search: event.target.value
     }, () => {
-      if (this.state.search && this.state.search.length > 1) {
-        this.getInfo()
-      } else if (!this.state.query && this.state.search.length === 1) {
+      if (this.state.search === '') {
         Api.getAllMentors().then((res) => {
           this.props.setMentors(res.mentors)
         })
+      } else {
+        Api.searchFull(this.state.search).then((res) => {
+          this.props.setMentors(res.search)
+        })
       }
-    })
-  }
-
-  getInfo = () => {
-    Api.searchFull(this.state.search).then((res) => {
-      this.props.setMentors(res.search)
     })
   }
 
