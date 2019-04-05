@@ -40,37 +40,31 @@ export default class MainMentorList extends Component {
     }
     if (this.props.mentors !== [] && this.props.mentors !== undefined) {
       return (
-        <main id='home'>
-          <div className="container grid">
-            <div className="mentor-list">
-              {this.props.mentors.map((mentor) => {
-                return (
-                  <Link to={mentor.keycode}>
-                    <div className='card mentor-card flex justify-center'>
-                      <div>
-                        <img className='mentor-profilepic' src={mentor.profilePic} alt={mentor.name} />
-                        <div className='mentor-info'>
-                          <h1 id='name' className='font-150 font-weight-normal'>{mentor.name}</h1>
-                          <p id='role-company'>{mentor.role} at {mentor.company}</p>
-                          <p id='bio' style={{ WebkitBoxOrient: 'vertical'}}>{mentor.bio}</p>
-                          <ul id='tags' className='flex'>
-                            <Tags content={mentor.tags} small={small} />
-                          </ul>
-                        </div>
-                      </div>
+        <div className="mentor-list">
+          {this.props.mentors.map((mentor) => {
+            return (
+              <Link to={mentor.keycode}>
+                <div className='card mentor-card flex justify-center'>
+                  <div>
+                    <img className='mentor-profilepic' src={mentor.profilePic} alt={mentor.name} />
+                    <div className='mentor-info'>
+                      <h1 id='name' className='font-150 font-weight-normal'>{mentor.name}</h1>
+                      <p id='role-company'>{mentor.role} at {mentor.company}</p>
+                      <p id='bio' style={{ WebkitBoxOrient: 'vertical'}}>{mentor.bio}</p>
+                      <ul id='tags' className='flex'>
+                        <Tags content={mentor.tags} small={small} />
+                      </ul>
                     </div>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        </main>
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
       )
     } else {
       return (
-        <main id='home'>
-          No mentors found
-        </main>
+        <p>No mentors found</p>
       )
     }
   }
