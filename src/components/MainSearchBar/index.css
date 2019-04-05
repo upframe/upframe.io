@@ -1,0 +1,5 @@
+#search-input {
+  border: 1px solid var(--light-grey);
+  border-radius: .25rem;
+  outline: none;
+}
