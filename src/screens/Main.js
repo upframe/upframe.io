@@ -33,7 +33,7 @@ export default class Main extends Component {
   render() {
     return (
       <main id='home'>
-        <div>
+        <div className = "container grid" >
           <MainSearchBar setMentors={this.setMentors}/>
           <MainMentorList mentors={this.state.mentors}/>
         </div>

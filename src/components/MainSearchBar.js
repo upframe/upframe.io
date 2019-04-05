@@ -28,9 +28,7 @@ export default class MainSearchBar extends Component {
 
   render() {
     return (
-      <div>
-        <input onChange={this.handleChange} />
-      </div>
+      <input onChange={this.handleChange} />
     );
   }
 }
