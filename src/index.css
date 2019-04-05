@@ -790,6 +790,7 @@ code {
 .card.mentor-card .mentor-card-slots > * {
   box-sizing: border-box;
   height: 100%;
+  min-height: 52px;
 }
 
 .card.mentor-card .mentor-card-slot {
