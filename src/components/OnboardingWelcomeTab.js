@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as Api from '../utils/Api';
+import Api from '../utils/Api';
 
 export default class OnboardingWelcomeTab extends Component {
 

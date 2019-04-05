@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import * as Api from '../utils/Api'
+import Api from '../utils/Api'
 import AppContext from './AppContext'
 
 export default class SettingsAccountTab extends PureComponent {

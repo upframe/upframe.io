@@ -6,7 +6,7 @@ import mixpanel from 'mixpanel-browser';
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import '../calendar.css';
 
-import * as Api from '../utils/Api';
+import Api from '../utils/Api';
 import AppContext from './AppContext'
 
 const localizer = BigCalendar.momentLocalizer(moment) 
