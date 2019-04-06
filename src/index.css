@@ -1,7 +1,11 @@
+* {
+  font-family: 'Poppins';
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Roboto", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-display: swap; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -167,6 +171,7 @@ label {
 }
 
 input {
+  /* font-family: 'Poppins'; */
   font-size: 2rem;
   box-sizing: border-box;
   border-radius: 0.125rem;
@@ -185,7 +190,7 @@ input[type="password"] {
 }
 
 textarea {
-  font-family: 'Noto Sans';
+  /* font-family: 'Poppins'; */
   color: var(--blue-grey);
   box-sizing: border-box;
   padding: 1rem 1.5rem;
@@ -395,11 +400,6 @@ nav .wrapper .dropdown ul li:hover {
 
 nav .wrapper .dropdown ul a {
   color: var(--blue-grey);
-}
-
-/* CODE SECTION */
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 /* POPULAR TAGS */
