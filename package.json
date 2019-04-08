@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@types/mixpanel-browser": "^2.23.0",
+    "aos": "^2.3.4",
     "mixpanel-browser": "^2.26.0",
     "moment": "^2.24.0",
     "react": "^16.7.0",

@@ -457,6 +457,12 @@ nav .wrapper .dropdown ul a {
   width: 60vw;
   padding: 0;
   margin: 1.5rem auto;
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.5);
+}
+
+#home .mentor-list .card.mentor-card img {
+  border-top-right-radius: unset;
+    border-bottom-right-radius: unset;
 }
 
 #home .mentor-list .card.mentor-card .mentor-info {

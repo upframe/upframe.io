@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import AOS from 'aos'
+
 export default class MentorCard extends Component {
+
+  componentWillReceiveProps() {
+    AOS.refresh()
+  }
 
   render() {
     const mentor = this.props.mentorInfo
     return (
       <Link to={mentor.keycode}>
-        <div className='card mentor-card flex justify-center'>
+        <div className='card mentor-card flex justify-center' data-aos={this.props.animation} data-aos-offset='0' data-aos-delay={(this.props.index * 250) + 250}>
           <div>
             <img className='mentor-profilepic' src={mentor.profilePic} alt={mentor.name} />
             <div className='mentor-info'>

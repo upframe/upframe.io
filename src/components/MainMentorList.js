@@ -7,9 +7,9 @@ export default class MainMentorList extends PureComponent {
     if (this.props.mentors !== [] && this.props.mentors !== undefined) {
       return (
         <div className="mentor-list">
-          {this.props.mentors.map((mentor) => {
+          {this.props.mentors.map((mentor, index) => {
             return (
-              <MentorCard mentorInfo={mentor} />
+              <MentorCard key={index} mentorInfo={mentor} animation='fade-up' index={index} />
             )
           })}
         </div>

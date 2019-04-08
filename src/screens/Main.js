@@ -7,6 +7,9 @@ import MainMentorList from '../components/MainMentorList'
 // import MainPopularTags from '../components/MainPopularTags'
 import MainSearchBar from '../components/MainSearchBar'
 
+import aos from 'aos'
+import 'aos/dist/aos.css'
+
 export default class Main extends Component {
 
   constructor (props) {
@@ -14,6 +17,10 @@ export default class Main extends Component {
     this.state = {
       mentors: []
     }
+
+    aos.init({
+      duration: 2000,
+    })
   }
 
   componentDidMount() {
