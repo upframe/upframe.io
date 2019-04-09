@@ -293,7 +293,6 @@ input[type="file"] {
 /* CARDS */
 .card {
   padding: 1rem;
-  border: 1px solid var(--border-lightgray);
   border-radius: 0.25rem;
   box-shadow: 0 0.5px 3px 0 rgba(0, 0, 0, 0.5);
 }
@@ -462,7 +461,7 @@ nav .wrapper .dropdown ul a {
 
 #home .mentor-list .card.mentor-card img {
   border-top-right-radius: unset;
-    border-bottom-right-radius: unset;
+  border-bottom-right-radius: unset;
 }
 
 #home .mentor-list .card.mentor-card .mentor-info {
@@ -716,7 +715,7 @@ nav .wrapper .dropdown ul a {
   display: flex;
   flex-wrap: wrap;
   color: var(--slate-grey);
-  box-shadow: 0 0.5px 1px 0 rgba(0, 0, 0, .2);
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.5);
   padding: 3rem;
   margin-top: 1.5rem;
 }
