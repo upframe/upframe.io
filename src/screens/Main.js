@@ -19,7 +19,7 @@ export default class Main extends Component {
     }
 
     aos.init({
-      duration: 2000,
+      duration: 1000,
     })
   }
 
