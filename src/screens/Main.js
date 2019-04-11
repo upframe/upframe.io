@@ -19,7 +19,10 @@ export default class Main extends Component {
     }
 
     aos.init({
-      duration: 1000,
+      duration: 750,
+      delay: 0,
+      offset: 0,
+      throttleDelay: 0,
     })
   }
 
@@ -40,7 +43,7 @@ export default class Main extends Component {
   render() {
     return (
       <main id='home'>
-        <div className = "container grid" >
+        <div className="container grid" >
           <MainSearchBar setMentors={this.setMentors}/>
           <MainMentorList mentors={this.state.mentors}/>
         </div>

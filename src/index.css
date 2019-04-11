@@ -89,6 +89,10 @@ label.light-grey {
   font-weight: 400 !important;
 }
 
+.font-weight-medium {
+  font-weight: 500 !important;
+}
+
 .font-weight-bold {
   font-weight: 700 !important;
 }
@@ -294,7 +298,12 @@ input[type="file"] {
 .card {
   padding: 1rem;
   border-radius: 0.25rem;
-  box-shadow: 0 0.5px 3px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.5);
+  transition: .2s ease box-shadow;
+}
+
+.card.hoverable:hover {
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* LOGO AND IMAGES */
@@ -447,50 +456,44 @@ nav .wrapper .dropdown ul a {
   margin-left: 0.8rem;
 }
 
-/* .breadcrumbs li:not(:last-of-type) li {
-  margin-right: 1rem;
-} */
-
 /* HOME PAGE */
-#home .mentor-list .card.mentor-card {
-  width: 60vw;
+#home .card.mentor-card {
   padding: 0;
   margin: 1.5rem auto;
-  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.5);
 }
 
-#home .mentor-list .card.mentor-card img {
+#home .card.mentor-card img {
   border-top-right-radius: unset;
   border-bottom-right-radius: unset;
 }
 
-#home .mentor-list .card.mentor-card .mentor-info {
+#home .card.mentor-card .mentor-info {
   /* margin: 1.3rem 0rem 2rem 2rem; */
   margin: 0.8rem 2rem 0rem 2rem;
 }
 
-#home .mentor-list .card.mentor-card .mentor-info h1 {
+#home .card.mentor-card .mentor-info h1 {
   font-size: 1.75rem;
 }
 
-#home .mentor-list .card.mentor-card .mentor-info p#role-company {
-  font-size: 0.9rem;
+#home .card.mentor-card .mentor-info p#role-company {
+  font-size: 1rem;
   margin: 0 0 0.6rem 0;
 }
 
-#home .mentor-list .card.mentor-card .mentor-info #bio {
+#home .card.mentor-card .mentor-info #bio {
   -webkit-line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
 }
 
-#home .mentor-list .card.mentor-card .mentor-info #tags {
+#home .card.mentor-card .mentor-info #tags {
   flex-wrap: wrap;
   margin: .65rem .75rem 0 0;
 }
 
-#home .mentor-list .card.mentor-card .mentor-info #tags .mentor-tag {
+#home .card.mentor-card .mentor-info #tags .mentor-tag {
   padding: 0.5rem 1rem;
 }
 
@@ -710,12 +713,12 @@ nav .wrapper .dropdown ul a {
 
 
 /* MENTOR PAGE */
+
 /* MENTOR CARD */
 .card.mentor-card {
   display: flex;
   flex-wrap: wrap;
   color: var(--slate-grey);
-  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.5);
   padding: 3rem;
   margin-top: 1.5rem;
 }
@@ -736,7 +739,7 @@ nav .wrapper .dropdown ul a {
 }
 
 .card.mentor-card h1 {
-  font-size: 2rem;
+  font-size: 1.375rem;
   letter-spacing: 0.03125rem;
   color: #000;
   margin: 0;
@@ -863,127 +866,6 @@ nav .wrapper .dropdown ul a {
 /* LOGIN */ 
 #login .container input {
   padding: 1rem;
-}
-
-/* MEDIA QUERIES */
-
-/* MEDIUM AND SMALL SCREENS */
-@media (max-width: 1020px) {
-  #people.container {
-    max-width: 95%;
-  }
-
-  #people .card.mentor-card .mentor-card-slots {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .copy-url {
-    display: none;
-  }
-}
-
-@media (max-width: 860px) {
-  #people .card.mentor-card .mentor-card-slots {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 640px) {
-  nav .wrapper {
-    max-width: 95%;
-    width: 95%;
-  }
-
-  #people .card.mentor-card {
-    padding: 1rem;
-  }
-
-  #people .card.mentor-card > div:first-of-type {
-    flex-direction: column;
-  }
-
-  #people .card.mentor-card .mentor-info #name {
-    margin-top: 1rem;
-  }
-
-  #people .card.mentor-card .mentor-info #location {
-    justify-content: center;
-  }
-
-  #people .card.mentor-card ul#tags {
-    justify-content: center;
-    margin: 1rem auto;
-  }
-
-  #people .card.mentor-card h1,
-  #people .card.mentor-card p:not(:last-of-type) {
-    text-align: center;
-  }
-
-  #people .card.mentor-card .mentor-info {
-    margin: 0;
-  }
-
-  #people .card.mentor-card .mentor-card-slots {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  #people .mentor-meetup-popup {
-    max-width: 100%;
-    width: 30rem;
-  }
-
-  #login > div {
-    width: 100%;
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 520px) {
-  #people .card.mentor-card .mentor-card-slots {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 400px) {
-  #people .card.mentor-card .mentor-card-slots {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  #people .mentor-meetup-popup {
-    width: 100%;
-    height: 100%;
-    padding: 0.5rem;
-  }
-
-  #people .mentor-meetup-popup .meetup-options {
-    width: 100%;
-  }
-
-  #people .mentor-meetup-popup .meetup-option {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    margin-bottom: 0;
-  }
-
-  #people .mentor-meetup-popup .meetup-option img {
-    margin: 0 auto;
-    max-width: 4rem;
-  }
-}
-
-/* LARGER SCREENS */
-@media (min-width: 1020px) {
-  #people .card.mentor-card .mentor-card-slots {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (min-width: 1350px) {
-  #people .card.mentor-card .mentor-card-slots {
-    grid-template-columns: repeat(5, 1fr);
-  }
 }
 
 /* Tags */
@@ -1253,4 +1135,168 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 /* Remove Firefox's automatic text outline when button is clicked */
 button::-moz-focus-inner {
   border: 0;
+}
+
+
+/* MEDIA QUERIES */
+
+
+/* LARGER SCREENS */
+@media (min-width: 1020px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1350px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* MEDIUM AND SMALL SCREENS */
+@media (max-width: 1020px) {
+  .container {
+    max-width: 95%;
+  }
+
+  #home .card.mentor-card {
+    width: 85vw;
+  }
+
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .copy-url {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  #home .mentor-list a {
+    display: block;
+    max-width: 18rem;
+    margin: 0 auto;
+  }
+
+  #home .card.mentor-card {
+    max-width: 18rem;
+  }
+
+  #home .card.mentor-card > div {
+    flex-direction: column;
+    max-width: 18rem;
+  }
+
+  #home .card.mentor-card img {
+    min-width: 18rem;
+    max-height: 18rem;
+    border-top-right-radius: 0.25rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  #home .card.mentor-card .mentor-info {
+    margin: 1rem;
+  }
+
+  #home .card.mentor-card .mentor-info #bio {
+    -webkit-line-clamp: 4;
+  }
+
+  #home .card.mentor-card .mentor-info #tags {
+    margin: .65rem 0 0 0;
+  }
+}
+
+@media (max-width: 640px) {
+  nav .wrapper {
+    max-width: 95%;
+    width: 95%;
+  }
+
+  #people .card.mentor-card {
+    padding: 1rem;
+  }
+
+  #people .card.mentor-card > div:first-of-type {
+    flex-direction: column;
+  }
+
+  #people .card.mentor-card .mentor-info #name {
+    margin-top: 1rem;
+  }
+
+  #people .card.mentor-card .mentor-info #location {
+    justify-content: center;
+  }
+
+  #people .card.mentor-card ul#tags {
+    justify-content: center;
+    margin: 1rem auto;
+  }
+
+  #people .card.mentor-card h1,
+  #people .card.mentor-card p:not(:last-of-type) {
+    text-align: center;
+  }
+
+  #people .card.mentor-card .mentor-info {
+    margin: 0;
+  }
+
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #people .mentor-meetup-popup {
+    max-width: 100%;
+    width: 30rem;
+  }
+
+  #login > div {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #people .mentor-meetup-popup {
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+  }
+
+  #people .mentor-meetup-popup .meetup-options {
+    width: 100%;
+  }
+
+  #people .mentor-meetup-popup .meetup-option {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  #people .mentor-meetup-popup .meetup-option img {
+    margin: 0 auto;
+    max-width: 4rem;
+  }
 }
