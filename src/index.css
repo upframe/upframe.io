@@ -298,12 +298,12 @@ input[type="file"] {
 .card {
   padding: 1rem;
   border-radius: 0.25rem;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
   transition: .2s ease box-shadow;
 }
 
 .card.hoverable:hover {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* LOGO AND IMAGES */
