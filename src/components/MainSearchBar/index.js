@@ -29,7 +29,7 @@ export default class MainSearchBar extends Component {
 
   render() {
     return (
-      <input id="search-input" placeholder="Try looking a topic, a person or a startup" onChange={this.handleChange} />
+      <input type='text' id="search-input" placeholder="Try looking a topic, a person or a startup" onChange={this.handleChange} />
     );
   }
 }
