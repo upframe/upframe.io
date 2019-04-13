@@ -1180,6 +1180,10 @@ button::-moz-focus-inner {
 }
 
 @media (max-width: 720px) {
+  #home #search-input {
+    width: 95vw;
+  }
+  
   #home .mentor-list a {
     display: block;
     max-width: 18rem;
