@@ -1024,6 +1024,8 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 }
 
 .mentor-meetup-popup .meetup-option img {
+  flex-basis: 20%;
+  flex-shrink: 0;
   margin-right: 2rem;
 }
 
@@ -1311,6 +1313,5 @@ button::-moz-focus-inner {
 
   #people .mentor-meetup-popup .meetup-option img {
     margin: 0 auto;
-    max-width: 4rem;
   }
 }
