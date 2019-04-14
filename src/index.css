@@ -193,6 +193,12 @@ input[type="password"] {
   outline: none;
 }
 
+input[type='text']::placeholder,
+input[type='email']::placeholder,
+input[type='password']::placeholder {
+  color: var(--light-grey);
+}
+
 textarea {
   /* font-family: 'Poppins'; */
   color: var(--blue-grey);
