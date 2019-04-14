@@ -71,7 +71,6 @@ export default class MentorRequestPopup extends Component {
           </div>
           <span className='hr'></span>
           <div>
-            <h1>How can I help you?</h1>
             <div className='input-group'>
               <label for='message'>Message</label>
               <textarea id='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange}></textarea>
