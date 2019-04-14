@@ -70,7 +70,7 @@ export default class MentorRequestPopup extends Component {
             <span className='close' onClick={this.props.hideRequestPopup}>&#215;</span>
           </div>
           <span className='hr'></span>
-          <div>
+          <div id='meetup-form' className='flex flex-column'>
             <div className='input-group'>
               <label for='message'>Message</label>
               <textarea id='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange}></textarea>
