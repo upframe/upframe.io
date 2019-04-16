@@ -12,7 +12,7 @@ export default class MentorCard extends Component {
   render() {
     const mentor = this.props.mentorInfo
     return (
-      <Link to={mentor.keycode} data-aos={this.props.animation} data-aos-offset='0' data-aos-delay={(this.props.index * 250) + 250}>
+      <Link to={mentor.keycode} data-aos={this.props.animation} data-aos-offset='0' data-aos-delay={100}>
         <div className='card hoverable mentor-card flex justify-center'>
           <div>
             <img className='mentor-profilepic' src={mentor.profilePic} alt={mentor.name} />

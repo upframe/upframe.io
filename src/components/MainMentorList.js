@@ -9,7 +9,7 @@ export default class MainMentorList extends PureComponent {
         <div className="mentor-list flex flex-column">
           {this.props.mentors.map((mentor, index) => {
             return (
-              <MentorCard key={index} mentorInfo={mentor} animation='fade-up' index={index} />
+              <MentorCard key={index} mentorInfo={mentor} animation='fade-up' />
             )
           })}
         </div>
