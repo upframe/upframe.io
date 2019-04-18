@@ -470,28 +470,41 @@ nav .wrapper .dropdown ul a {
   width: 49rem;
 }
 
+#home #search-input {
+  background: #f1f3f4;
+  height: 3rem;
+  border: 1px solid transparent;
+  margin-bottom: 2rem;
+}
+
+#home .mentor-list > a {
+  margin: 1rem;
+}
+
 #home .card.mentor-card {
   padding: 0;
-  margin: 1.5rem auto;
+  margin: 0 auto;
 }
 
 #home .card.mentor-card img {
+  min-width: 13.25rem;
+  max-height: 13.25rem;
   border-top-right-radius: unset;
   border-bottom-right-radius: unset;
 }
 
 #home .card.mentor-card .mentor-info {
   /* margin: 1.3rem 0rem 2rem 2rem; */
-  margin: 0.8rem 2rem 0rem 2rem;
+  margin: 1.5rem 2rem 0rem 2.25rem;
 }
 
 #home .card.mentor-card .mentor-info h1 {
-  font-size: 1.35rem;
+  font-size: 1.20rem;
 }
 
 #home .card.mentor-card .mentor-info p#role-company {
   font-size: 1rem;
-  margin: 0 0 0.6rem 0;
+  margin: -0.25rem 0 0.6rem 0;
 }
 
 #home .card.mentor-card .mentor-info #bio {
@@ -798,7 +811,7 @@ nav .wrapper .dropdown ul a {
 }
 
 .card.mentor-card .mentor-info #bio {
-  line-height: 1.8rem;
+  line-height: 1.5rem;
 }
 
 .card.mentor-card .mentor-card-slots {
