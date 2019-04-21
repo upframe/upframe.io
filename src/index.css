@@ -1213,11 +1213,14 @@ button::-moz-focus-inner {
   #home #search-input {
     width: 95vw;
   }
+
+  #home .mentor-list > a {
+    margin: 1rem auto;
+  }
   
   #home .mentor-list a {
     display: block;
     max-width: 18rem;
-    margin: 0 auto;
   }
 
   #home .card.mentor-card {
