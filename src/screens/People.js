@@ -168,7 +168,7 @@ export default class People extends Component {
   mentorTagsToElement = (tags) => {
     return tags.map((tag, i) => {
       return (
-        <li key={i} className='flex align-items-center mentor-tag'>{tag.text}</li>
+        <li key={i} className='flex alignitems-center mentor-tag'>{tag.text}</li>
       )
     })
   }
@@ -181,8 +181,8 @@ export default class People extends Component {
       return this.state.mentor.freeSlots.map((slot, i) => {
         let startDate = new Date(slot.start)
         return (
-          <li className="mentor-card-slot flex justify-center" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
-            <div className='flex align-items-center'>
+          <li className="mentor-card-slot flex justifycontent-center" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
+            <div className='flex alignitems-center'>
               <div>
                 <span id='month' className='font-weight-bold text-uppercase'>{months[startDate.getMonth()]}</span>
                 <span id="day">{startDate.getDate()}</span>
@@ -221,15 +221,15 @@ export default class People extends Component {
             null
           }
           <Breadcrumbs name={this.state.mentor.name} />
-          <div className='card mentor-card flex justify-center'>
+          <div className='card mentor-card flex justifycontent-center'>
             <div>
-              <div className='flex justify-center'>
+              <div className='flex justifycontent-center'>
                 <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile'/>
               </div>
               <div className='mentor-info'>
                 <h1 id='name' className="font-150 font-weight-medium">{this.state.mentor.name}</h1>
                 <p id='role-company'>{this.state.mentor.role} at {this.state.mentor.company}</p>
-                <p id='location' className='flex align-items-center'><img src='/location.svg' alt='location' className="location-icon"></img>{this.state.mentor.location}</p>
+                <p id='location' className='flex alignitems-center'><img src='/location.svg' alt='location' className="location-icon"></img>{this.state.mentor.location}</p>
                 <ul id='tags' className='flex'>
                   {this.mentorTagsToElement(this.state.mentor.tags)}
                 </ul>

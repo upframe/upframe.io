@@ -84,7 +84,7 @@ export default class MentorMeetupPopup extends Component {
       return (
         <div className='dim-background' onClick={this.clickOutside}>
           <div className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
-            <div className='flex justify-center'>
+            <div className='flex justifycontent-center'>
               <h1 className='font-weight-normal text-center'>Reach out to {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>
@@ -113,7 +113,7 @@ export default class MentorMeetupPopup extends Component {
       return (
         <div className='dim-background' onClick={this.clickOutside}>
           <div id='coffee' className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
-            <div className='flex justify-center'>
+            <div className='flex justifycontent-center'>
               <h1 className='font-weight-normal text-center'>Grab a coffee with {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>
@@ -150,7 +150,7 @@ export default class MentorMeetupPopup extends Component {
       return (
         <div className='dim-background' onClick={this.clickOutside}>
           <div id='call' className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
-            <div className='flex justify-center'>
+            <div className='flex justifycontent-center'>
               <h1 className='font-weight-normal text-center'>Make a call with {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>

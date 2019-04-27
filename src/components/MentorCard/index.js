@@ -13,7 +13,7 @@ export default class MentorCard extends Component {
     const mentor = this.props.mentorInfo
     return (
       <Link to={mentor.keycode} data-aos={this.props.animation} data-aos-offset='0' data-aos-delay={100}>
-        <div className='card hoverable mentor-card flex justify-center'>
+        <div className='card hoverable mentor-card flex justifycontent-center'>
           <div>
             <img className='mentor-profilepic' src={mentor.profilePic} alt={mentor.name} />
             <div className='mentor-info'>
@@ -55,7 +55,7 @@ const Tags = (props) => {
       })
     }
     let hello = tags.map((tag, i) =>
-      <li key={i} className='flex align-items-center mentor-tag'>{tag.text}</li>
+      <li key={i} className='flex alignitems-center mentor-tag'>{tag.text}</li>
     )
     return hello
   }
