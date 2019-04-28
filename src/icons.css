@@ -1,0 +1,21 @@
+.cupcake::after {
+  content: ' \129473';
+  display: block;
+}
+
+.arrow {
+  background: #fff;
+  width: 1rem;
+  height: 0.25rem;
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+
+.arrow::after {
+  content: '';
+  display: block;
+  background: #fff;
+  width: 1rem;
+  height: 0.25rem;
+  transform: rotate(-90deg);
+}

@@ -289,6 +289,7 @@ input[type="file"] {
 
 .App main {
   padding: 6rem 0;
+  transition: 0.5s ease padding-top;
 }
 
 .App header#with-notification + main {
@@ -350,7 +351,20 @@ header #first-visit-notification {
   width: 100%;
   background-color: var(--secondary);
   color: #fff;
-  min-height: 3rem;
+  height: 3rem;
+}
+
+header.hide #first-visit-notification {
+  animation: slideUpHeight 0.5s 0.5s both;
+}
+
+header.hide #first-visit-notification p {
+  animation: fadeOut 0.5s both;
+} 
+
+header #first-visit-notification .arrow {
+  position: absolute;
+  right: 2.5vw;
 }
 
 nav {
@@ -1151,27 +1165,57 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   visibility: visible; /* Show the snackbar */
   /* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
   However, delay the fade out process for 2.5 seconds */
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  -webkit-animation: toastFadeIn 0.5s, toastFadeOut 0.5s 2.5s;
+  animation: toastFadeIn 0.5s, toastFadeOut 0.5s 2.5s;
 }
 
-/* Animations to fade the snackbar in and out */
-@-webkit-keyframes fadein {
+/* Animations */
+@-webkit-keyframes slideUpHeight {
+  to { height: 0; }
+}
+
+@keyframes slideUpHeight {
+  to { height: 0; }
+}
+
+/* Generic Fade Animations */
+@-webkit-keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@-webkit-keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; } 
+}
+
+/* Toast Fade Animations */
+@-webkit-keyframes toastFadeIn {
   from {bottom: 0; opacity: 0;} 
   to {bottom: 30px; opacity: 1;}
 }
 
-@keyframes fadein {
+@keyframes toastFadeIn {
   from {bottom: 0; opacity: 0;}
   to {bottom: 30px; opacity: 1;}
 }
 
-@-webkit-keyframes fadeout {
+@-webkit-keyframes toastFadeOut {
   from {bottom: 30px; opacity: 1;} 
   to {bottom: 0; opacity: 0;}
 }
 
-@keyframes fadeout {
+@keyframes toastFadeOut {
   from {bottom: 30px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
 }
@@ -1182,7 +1226,6 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 button::-moz-focus-inner {
   border: 0;
 }
-
 
 /* MEDIA QUERIES */
 
