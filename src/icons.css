@@ -1,6 +1,9 @@
-.cupcake::after {
-  content: ' \129473';
-  display: block;
+.cupcake {
+  background-image: url('/media/cupcake.png');
+  width: 1.5rem;
+  height: 1.5rem;
+  background-size: 1.5rem;
+  background-repeat: no-repeat;
 }
 
 .arrow {
