@@ -1,0 +1,7 @@
+#categories-list p {
+  color: var(--slate-grey);
+}
+
+#categories-list .grid .category-item {
+  background: url('/media/category.jpg');
+}

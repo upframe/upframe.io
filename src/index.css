@@ -46,7 +46,7 @@ body {
 }
 
 .font-150 {
-  font-size: 1.5rem !important;
+  font-size: 1.5rem;
 }
 
 .font-200 {
@@ -82,19 +82,19 @@ label.light-grey {
   color: var(--light-grey);
 }
 
-.font-weight-thin {
+.fontweight-thin {
   font-weight: 300 !important;
 }
 
-.font-weight-normal {
+.fontweight-normal {
   font-weight: 400 !important;
 }
 
-.font-weight-medium {
+.fontweight-medium {
   font-weight: 500 !important;
 }
 
-.font-weight-bold {
+.fontweight-bold {
   font-weight: 700 !important;
 }
 
@@ -510,7 +510,7 @@ nav .wrapper .dropdown ul a {
 }
 
 #home .mentor-list > a {
-  margin: 1rem;
+  margin: 1rem 0;
 }
 
 #home .card.mentor-card {

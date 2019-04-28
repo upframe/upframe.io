@@ -66,7 +66,7 @@ export default class MentorRequestPopup extends Component {
       <div className='dim-background' onClick={this.clickOutside}>
         <div className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
           <div className='flex justifycontent-center'>
-            <h1 className='font-weight-normal text-center'>Request a new slot</h1>
+            <h1 className='fontweight-normal text-center'>Request a new slot</h1>
             <span className='close' onClick={this.props.hideRequestPopup}>&#215;</span>
           </div>
           <span className='hr'></span>

@@ -184,7 +184,7 @@ export default class People extends Component {
           <li className="mentor-card-slot flex justifycontent-center" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
             <div className='flex alignitems-center'>
               <div>
-                <span id='month' className='font-weight-bold text-uppercase'>{months[startDate.getMonth()]}</span>
+                <span id='month' className='fontweight-bold text-uppercase'>{months[startDate.getMonth()]}</span>
                 <span id="day">{startDate.getDate()}</span>
               </div>
               <div>
@@ -227,7 +227,7 @@ export default class People extends Component {
                 <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile'/>
               </div>
               <div className='mentor-info'>
-                <h1 id='name' className="font-150 font-weight-medium">{this.state.mentor.name}</h1>
+                <h1 id='name' className="font-150 fontweight-medium">{this.state.mentor.name}</h1>
                 <p id='role-company'>{this.state.mentor.role} at {this.state.mentor.company}</p>
                 <p id='location' className='flex alignitems-center'><img src='/location.svg' alt='location' className="location-icon"></img>{this.state.mentor.location}</p>
                 <ul id='tags' className='flex'>

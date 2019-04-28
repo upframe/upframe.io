@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 
 import Api from '../utils/Api';
 
+import MainCategories from '../components/MainCategories'
 import MainMentorList from '../components/MainMentorList'
 // import MainPopularTags from '../components/MainPopularTags'
 import MainSearchBar from '../components/MainSearchBar'
@@ -44,8 +45,9 @@ export default class Main extends Component {
     return (
       <main id='home'>
         <div className="container grid" >
-          <MainSearchBar setMentors={this.setMentors}/>
-          <MainMentorList mentors={this.state.mentors}/>
+          <MainSearchBar setMentors={this.setMentors} />
+          <MainCategories/>
+          <MainMentorList mentors={this.state.mentors} />
         </div>
       </main>
     )
