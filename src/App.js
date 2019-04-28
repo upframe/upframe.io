@@ -8,6 +8,7 @@ import Api from './utils/Api';
 
 const Main = React.lazy(() => import(/* webpackChunkName: "Main", webpackPrefetch: true */'./screens/Main'))
 const Login = React.lazy(() => import(/* webpackChunkName: "Login", webpackPrefetch: true */'./screens/Login'))
+const Register = React.lazy(() => import(/* webpackChunkName: "Login", webpackPrefetch: true */'./screens/Register'))
 const Onboarding = React.lazy(() => import(/* webpackChunkName: "Onboarding", webpackPrefetch: true */'./screens/Onboarding'))
 const Settings = React.lazy(() => import(/* webpackChunkName: "Settings", webpackPrefetch: true */'./screens/Settings'))
 const ChangeEmail = React.lazy(() => import(/* webpackChunkName: "ChangeEmail", webpackPrefetch: true */'./screens/ChangeEmail'))
@@ -122,6 +123,7 @@ export default class App extends Component {
             <Switch>
                 <Route exact path='/' component={Main}/>
                 <Route exact path='/login' component={Login} />
+                <Route exact path='/register' component={Register} />
                 <Route exact path='/settings' component={Settings} />
                 <Route exact path='/settings/:page' component={Settings} />
                 <Route exact path='/404' component={ErrorPage} />
