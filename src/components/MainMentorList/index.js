@@ -9,7 +9,7 @@ export default class MainMentorList extends PureComponent {
     if (this.props.mentors !== [] && this.props.mentors !== undefined) {
       return (
         <React.Fragment>
-          <h1 className='font-150 fontweight-medium'>Featured Mentors</h1>
+          <h1 className='font-150 fontweight-medium'><i class="em em-hot_pepper"></i>Featured Mentors</h1>
           <p>Our in-house curators work alongside with startup founders, community shapers and domain
             experts across Europe to make sure you can find people who can help you tackle the challenges
             of today and tomorrow.</p>
