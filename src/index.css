@@ -358,9 +358,10 @@ header.hide #first-visit-notification {
   animation: slideUpHeight 0.5s 0.5s both;
 }
 
-header.hide #first-visit-notification p {
+header.hide #first-visit-notification p,
+header.hide #first-visit-notification .arrow {
   animation: fadeOut 0.5s both;
-} 
+}
 
 header #first-visit-notification .arrow {
   position: absolute;
