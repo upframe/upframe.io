@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom'
 
 import Api from '../utils/Api';
-
 import MainCategories from '../components/MainCategories'
 import MainMentorList from '../components/MainMentorList'
-// import MainPopularTags from '../components/MainPopularTags'
 import MainSearchBar from '../components/MainSearchBar'
 
 import aos from 'aos'
@@ -46,7 +43,7 @@ export default class Main extends Component {
       <main id='home'>
         <div className="container grid" >
           <MainSearchBar setMentors={this.setMentors} />
-          <MainCategories/>
+          <MainCategories setMentors={this.setMentors} />
           <MainMentorList mentors={this.state.mentors} />
         </div>
       </main>

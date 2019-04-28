@@ -16,6 +16,7 @@
   background: url('/media/category.jpg');
   background-size: contain;
   background-repeat: no-repeat;
+  cursor: pointer;
 }
 
 #categories-list .grid .category-item h1 {

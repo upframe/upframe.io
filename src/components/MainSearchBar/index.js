@@ -7,13 +7,17 @@ export default class MainSearchBar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      search: '',
+      search: props.search ? props.search : '',
     }
   }
 
   handleChange = (event) => {
+    this.setSearch(event.target.value)
+  }
+
+  setSearch = (search) => {
     this.setState({
-      search: event.target.value
+      search: search
     }, () => {
       if (this.state.search === '') {
         Api.getAllMentors().then((res) => {
