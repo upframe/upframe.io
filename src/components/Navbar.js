@@ -21,7 +21,19 @@ export default class Navbar extends Component {
     this.state = {
       firstVisit,
       cookieUpdated: false,
+      scroll: false,
     }
+  }
+
+  componentDidMount() {
+    this.watchScroll()
+  }
+
+  watchScroll() {
+    document.addEventListener('scroll', (e) => {
+      if (window.scrollY > 0 && this.state.scroll === false) this.setState({ scroll: true })
+      else this.setState({ scroll: false })
+    })
   }
 
   openDropdown = () => {
@@ -57,7 +69,7 @@ export default class Navbar extends Component {
         className={this.state.cookieUpdated ? 'hide' : null}>
         { this.state.firstVisit === true ?
           <div id='first-visit-notification' className='flex alignitems-center justifycontent-center'>
-            {/* <span className='cupcake'></span> */}
+            <span className='emoji cupcake'></span>
             <p>Ahoy! Upframe is currently invite-only. Drop us some lines at
             team@upframe.io and we’ll keep you posted.</p>
             <span className='arrow' onClick={this.hideNotification}></span>  
@@ -65,7 +77,7 @@ export default class Navbar extends Component {
           : null
         }
 
-        <nav>
+        <nav className={window.scrollY > 0 ? 'active' : null}>
           <div className='wrapper flex justifycontent-center alignitems-center'>
             <Link to='/' id='logo'>
               <img src='/logo.svg' alt='Upframe logo' className='logo'></img>
