@@ -2,6 +2,23 @@
   color: var(--slate-grey);
 }
 
+#categories-list .grid {
+  margin-top: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto;
+}
+
 #categories-list .grid .category-item {
+  height: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: url('/media/category.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+#categories-list .grid .category-item h1 {
+  font-size: 1.125rem;
+  color: #fff;
 }
