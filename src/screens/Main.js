@@ -54,10 +54,15 @@ export default class Main extends Component {
             <MainCategories setMentors={this.setMentors} />
           : null
           }
-          <h1 className='font-150 fontweight-medium'><i class="em em-hot_pepper"></i>Featured Mentors</h1>
-          <p>Our in-house curators work alongside with startup founders, community shapers and domain
-            experts across Europe to make sure you can find people who can help you tackle the challenges
-            of today and tomorrow.</p>
+          <h1 className='font-150 fontweight-medium' data-aos='fade-up'
+            data-aos-delay='600' data-aos-offset='0'>
+            <i class="em em-hot_pepper"></i>Featured Mentors
+          </h1>
+          <p data-aos='fade-up' data-aos-delay='700' data-aos-offset='0'>Our in-house curators work
+            alongside with startup founders, community shapers and domain experts across Europe to
+            make sure you can find people who can help you tackle the challenges
+            of today and tomorrow.
+          </p>
           <MainMentorList mentors={this.state.mentors} />
         </div>
       </main>
