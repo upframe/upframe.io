@@ -23,7 +23,6 @@ const DevPlayground = React.lazy(() => import(/* webpackChunkName: "DevPlaygroun
 const GoogleSync = React.lazy(() => import(/* webpackChunkName: "GoogleSync", webpackPrefetch: true */'./screens/Sync'))
 
 export default class App extends Component {
-
   state = {
     loggedIn: false,
     user: {}
