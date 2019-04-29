@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Api from '../utils/Api';
 
-const Register = props => {
+const Register = () => {
 
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
