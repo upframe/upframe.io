@@ -44,6 +44,10 @@ export default class Main extends Component {
         <div className="container grid" >
           <MainSearchBar setMentors={this.setMentors} />
           <MainCategories setMentors={this.setMentors} />
+          <h1 className='font-150 fontweight-medium'><i class="em em-hot_pepper"></i>Featured Mentors</h1>
+          <p>Our in-house curators work alongside with startup founders, community shapers and domain
+            experts across Europe to make sure you can find people who can help you tackle the challenges
+            of today and tomorrow.</p>
           <MainMentorList mentors={this.state.mentors} />
         </div>
       </main>

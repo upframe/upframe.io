@@ -8,7 +8,7 @@ import Api from './utils/Api';
 
 const Main = React.lazy(() => import(/* webpackChunkName: "Main", webpackPrefetch: true */'./screens/Main'))
 const Login = React.lazy(() => import(/* webpackChunkName: "Login", webpackPrefetch: true */'./screens/Login'))
-const Register = React.lazy(() => import(/* webpackChunkName: "Login", webpackPrefetch: true */'./screens/Register'))
+const Register = React.lazy(() => import(/* webpackChunkName: "Register", webpackPrefetch: true */'./screens/Register'))
 const Onboarding = React.lazy(() => import(/* webpackChunkName: "Onboarding", webpackPrefetch: true */'./screens/Onboarding'))
 const Settings = React.lazy(() => import(/* webpackChunkName: "Settings", webpackPrefetch: true */'./screens/Settings'))
 const ChangeEmail = React.lazy(() => import(/* webpackChunkName: "ChangeEmail", webpackPrefetch: true */'./screens/ChangeEmail'))
@@ -21,6 +21,7 @@ const Company = React.lazy(() => import(/* webpackChunkName: "Company", webpackP
 const ErrorPage = React.lazy(() => import(/* webpackChunkName: "ErrorPage", webpackPrefetch: true */'./screens/404'))
 const DevPlayground = React.lazy(() => import(/* webpackChunkName: "DevPlayground", webpackPrefetch: true */'./screens/DevPlayground'))
 const GoogleSync = React.lazy(() => import(/* webpackChunkName: "GoogleSync", webpackPrefetch: true */'./screens/Sync'))
+const MentorGroup = React.lazy(() => import(/* webpackChunkName: "MentorGroup", webpackPrefetch: true */'./screens/MentorGroup'))
 
 export default class App extends Component {
   state = {
@@ -135,6 +136,9 @@ export default class App extends Component {
                 <Route exact path='/company/:company' component={Company} />
                 <Route exact path='/dev' component={DevPlayground} />
                 <Route exact path='/onboarding/:keycode' component={Onboarding} />
+                <Route exact path='/business' component={MentorGroup} />
+                <Route exact path='/design' component={MentorGroup} />
+                <Route exact path='/technology' component={MentorGroup} />
                 <Route exact path='/:keycode' component={People} />
                 <Route component={ErrorPage} />
             </Switch>
