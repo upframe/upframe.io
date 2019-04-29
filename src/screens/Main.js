@@ -13,7 +13,8 @@ export default class Main extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      mentors: []
+      mentors: [],
+      searchQuery: '',
     }
 
     aos.init({
@@ -38,12 +39,21 @@ export default class Main extends Component {
     })
   }
 
+  updateSearchQuery = (query) => {
+    this.setState({ searchQuery: query })
+  }
+
   render() {
+    let queryLength = this.state.searchQuery.length
+
     return (
       <main id='home'>
         <div className="container grid" >
-          <MainSearchBar setMentors={this.setMentors} />
-          <MainCategories setMentors={this.setMentors} />
+          <MainSearchBar setMentors={this.setMentors} searchChanged={this.updateSearchQuery}/>
+          { !queryLength ? 
+            <MainCategories setMentors={this.setMentors} />
+          : null
+          }
           <h1 className='font-150 fontweight-medium'><i class="em em-hot_pepper"></i>Featured Mentors</h1>
           <p>Our in-house curators work alongside with startup founders, community shapers and domain
             experts across Europe to make sure you can find people who can help you tackle the challenges

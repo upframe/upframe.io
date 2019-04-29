@@ -29,11 +29,15 @@ export default class MainSearchBar extends Component {
         })
       }
     })
+
+    // update query in parent component
+    this.props.searchChanged(search)
   }
 
   render() {
     return (
-      <input type='text' id="search-input" className='icon' placeholder="Try looking for a person..." onChange={this.handleChange} />
+      <input type='text' id="search-input" className='icon' placeholder="Try looking for a person..."
+        onChange={this.handleChange} />
     );
   }
 }
