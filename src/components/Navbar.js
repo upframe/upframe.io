@@ -53,7 +53,11 @@ export default class Navbar extends Component {
     this.context.logout()
   }
 
-  // Redefine cookie to hide notification and
+  resetSearch = () => {
+    if (window.location.pathname === '/') this.context.setSearchQuery('')
+  }
+
+  // Redefine cookie to hide notification and animate it
   hideNotification = () => {
     docCookies.setItem('firstVisit', 0, Infinity, '/', '', false)
     
@@ -79,7 +83,7 @@ export default class Navbar extends Component {
 
         <nav className={window.scrollY > 0 ? 'active' : null}>
           <div className='wrapper flex justifycontent-center alignitems-center'>
-            <Link to='/' id='logo'>
+            <Link to='/' id='logo' onClick={this.resetSearch}>
               <img src='/logo.svg' alt='Upframe logo' className='logo'></img>
             </Link>
 

@@ -26,7 +26,19 @@ const MentorGroup = React.lazy(() => import(/* webpackChunkName: "MentorGroup", 
 export default class App extends Component {
   state = {
     loggedIn: false,
+    searchQuery: '',
     user: {}
+  }
+
+  componentDidMount() {
+    Api.getUserInfo().then((res) => {
+      if (res.ok === 1 && res.code === 200) {
+        this.setState({
+          user: res.user,
+          loggedIn: true
+        })
+      }
+    })
   }
 
   login = (email, password) => {
@@ -81,14 +93,9 @@ export default class App extends Component {
     })
   }
 
-  componentDidMount() {
-    Api.getUserInfo().then((res) => {
-      if (res.ok === 1 && res.code === 200) {
-        this.setState({
-          user: res.user,
-          loggedIn: true
-        })
-      }
+  setSearchQuery = (query) => {
+    this.setState({
+      searchQuery: query
     })
   }
 
@@ -103,13 +110,15 @@ export default class App extends Component {
 
   render() {
     let contextValue = {
-      loggedIn: this.state.loggedIn,
-      user: this.state.user,
       login: this.login,
       logout: this.logout,
+      loggedIn: this.state.loggedIn,
+      searchQuery: this.state.searchQuery,
+      setSearchQuery: this.setSearchQuery,
       saveUserInfo: this.saveUserInfo,
       setProfilePic: this.setProfilePic,
       showToast: this.showToast,
+      user: this.state.user,
     }
 
     mixpanel.init("993a3d7a78434079b7a9bec245dbaec2");
