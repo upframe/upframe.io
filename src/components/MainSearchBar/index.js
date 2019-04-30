@@ -30,6 +30,14 @@ export default class MainSearchBar extends Component {
   }
 
   render() {
+    if (this.context.searchQuery.length === 0 && this.context.resetSearchQuery) {
+      this.context.setSearchQuery('', false)
+
+      Api.getAllMentors().then((res) => {
+        this.props.setMentors(res.mentors)
+      })
+    }
+
     return (
       <input type='text' id="search-input" className='icon' placeholder="Try looking for a person..."
         onChange={this.handleChange} value={this.context.searchQuery} />

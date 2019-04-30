@@ -10,4 +10,6 @@ export default React.createContext({
   setProfilePic: () => {},
   showToast: () => {},
   searchQuery: '',
+
+  resetSearchQuery: false,
 })

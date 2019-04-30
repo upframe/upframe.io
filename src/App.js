@@ -27,6 +27,7 @@ export default class App extends Component {
   state = {
     loggedIn: false,
     searchQuery: '',
+    resetSearchQuery: false,
     user: {}
   }
 
@@ -93,9 +94,10 @@ export default class App extends Component {
     })
   }
 
-  setSearchQuery = (query) => {
+  setSearchQuery = (query, didSearchReset) => {
     this.setState({
-      searchQuery: query
+      searchQuery: query,
+      resetSearchQuery: didSearchReset ? true : false,
     })
   }
 
@@ -119,6 +121,8 @@ export default class App extends Component {
       setProfilePic: this.setProfilePic,
       showToast: this.showToast,
       user: this.state.user,
+
+      resetSearchQuery: this.state.resetSearchQuery,
     }
 
     mixpanel.init("993a3d7a78434079b7a9bec245dbaec2");

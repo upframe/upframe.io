@@ -37,19 +37,6 @@ export default class Main extends Component {
     })
   }
 
-  componentWillUpdate() {
-    if (this.context.searchQuery.length === 0 && !this.state.fetched) {
-      Api.getAllMentors().then((res) => {
-        console.log('Fetched mentors')
-        this.setState({
-          mentors: res.mentors,
-          fetched: true,
-        })
-      })
-
-    }
-  }
-
   setMentors = (mentors) => {
     this.setState({
       mentors: mentors

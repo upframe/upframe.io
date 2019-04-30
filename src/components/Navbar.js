@@ -54,7 +54,7 @@ export default class Navbar extends Component {
   }
 
   resetSearch = () => {
-    if (window.location.pathname === '/') this.context.setSearchQuery('')
+    if (window.location.pathname === '/') this.context.setSearchQuery('', true)
   }
 
   // Redefine cookie to hide notification and animate it
