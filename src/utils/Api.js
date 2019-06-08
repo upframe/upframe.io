@@ -43,11 +43,13 @@ export class Api {
     return fetch(`${this.schema}://${this.host}:${this.port}/auth/logout`, fetchData).then((res) => res.json())
   }
 
-  register(email, password, name) {
+  register(email, password, name, developerPass) {
     let fetchBody = {
       email,
       password,
-      name
+      type: 'mentor',
+      name,
+      developerPass
     }
     let fetchData = {
       method: 'POST',

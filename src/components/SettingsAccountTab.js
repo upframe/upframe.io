@@ -30,12 +30,12 @@ export default class SettingsAccountTab extends PureComponent {
   render() {
     return (
       <div id='settings-accounttab' className='tab center'>
-        <h1 className='font-weight-normal'>Email</h1>
+        <h1 className='fontweight-normal'>Email</h1>
         <p>
           Your email address is <a href={'mailto:' + this.context.user.email}>{this.context.user.email}</a>. This information will not be publicly displayed
         </p>
         <button onClick={this.changeEmail}>Change Email</button>
-        <h1 className='font-weight-normal'>Password</h1>
+        <h1 className='fontweight-normal'>Password</h1>
         <p>Set a unique password to protect your account</p>
         <button onClick={this.changePassword}>Change Password</button>
       </div>

@@ -26,7 +26,7 @@ export default class Login extends Component {
     } else {
       return (
         <main id='login'>
-          <div className='container flex justify-center'>
+          <div className='container flex justifycontent-center'>
             <div className='flex flex-column'>
               <div className='field-group'>
                 <label for='email'>Email</label>

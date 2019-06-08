@@ -84,8 +84,8 @@ export default class MentorMeetupPopup extends Component {
       return (
         <div className='dim-background' onClick={this.clickOutside}>
           <div className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
-            <div className='flex justify-center'>
-              <h1 className='font-weight-normal text-center'>Reach out to {this.state.mentorName}</h1>
+            <div className='flex justifycontent-center'>
+              <h1 className='fontweight-normal text-center'>Reach out to {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>
             <span className='hr'></span>
@@ -93,7 +93,7 @@ export default class MentorMeetupPopup extends Component {
               <div className='meetup-option' onClick={this.grabCoffee}>
                 <img src='/media/coffee.svg' alt='Coffee cup'></img>
                 <div>
-                  <h1 className='meetup-option-title font-weight-normal'>Grab a coffee</h1>
+                  <h1 className='meetup-option-title fontweight-normal'>Grab a coffee</h1>
                   <p>Pick from a selection of {this.state.mentorName}'s favourite cafés and local coworking spaces.</p>
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default class MentorMeetupPopup extends Component {
               <div className='meetup-option' onClick={this.makeCall}>
                 <img src='/media/call.svg' alt='Phone'></img>
                 <div>
-                  <h1 className='meetup-option-title font-weight-normal'>Make a call remotely</h1>
+                  <h1 className='meetup-option-title fontweight-normal'>Make a call remotely</h1>
                   <p>Reach out to {this.state.mentorName} from anywhere in the world. A unique link will be generated and sent to your calendar privately.</p>
                 </div>
               </div>
@@ -113,8 +113,8 @@ export default class MentorMeetupPopup extends Component {
       return (
         <div className='dim-background' onClick={this.clickOutside}>
           <div id='coffee' className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
-            <div className='flex justify-center'>
-              <h1 className='font-weight-normal text-center'>Grab a coffee with {this.state.mentorName}</h1>
+            <div className='flex justifycontent-center'>
+              <h1 className='fontweight-normal text-center'>Grab a coffee with {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>
             <span className="hr"></span>
@@ -150,8 +150,8 @@ export default class MentorMeetupPopup extends Component {
       return (
         <div className='dim-background' onClick={this.clickOutside}>
           <div id='call' className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
-            <div className='flex justify-center'>
-              <h1 className='font-weight-normal text-center'>Make a call with {this.state.mentorName}</h1>
+            <div className='flex justifycontent-center'>
+              <h1 className='fontweight-normal text-center'>Make a call with {this.state.mentorName}</h1>
               <span className='close' onClick={this.props.hidePopup}>&#215;</span>
             </div>
             <span className='hr'></span>

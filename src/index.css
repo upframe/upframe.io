@@ -15,6 +15,7 @@ body {
 :root {
   --primary: #ff004b;  
   --primarytext: #fff;
+  --secondary: #182064;
 
   --border-lightgray: #d0d2d6;
 
@@ -45,7 +46,7 @@ body {
 }
 
 .font-150 {
-  font-size: 1.5rem !important;
+  font-size: 1.5rem;
 }
 
 .font-200 {
@@ -81,19 +82,19 @@ label.light-grey {
   color: var(--light-grey);
 }
 
-.font-weight-thin {
+.fontweight-thin {
   font-weight: 300 !important;
 }
 
-.font-weight-normal {
+.fontweight-normal {
   font-weight: 400 !important;
 }
 
-.font-weight-medium {
+.fontweight-medium {
   font-weight: 500 !important;
 }
 
-.font-weight-bold {
+.fontweight-bold {
   font-weight: 700 !important;
 }
 
@@ -131,7 +132,7 @@ label.light-grey {
   flex-direction: column;
 }
 
-.flex.justify-center {
+.flex.justifycontent-center {
   justify-content: center;
 }
 
@@ -139,7 +140,7 @@ label.light-grey {
   align-content: center;
 }
 
-.flex.align-items-center {
+.flex.alignitems-center {
   align-items: center;
 }
 
@@ -288,6 +289,15 @@ input[type="file"] {
 
 .App main {
   padding: 6rem 0;
+  transition: 0.5s ease padding-top;
+}
+
+.App header#with-notification nav .wrapper .dropdown.active ul {
+  top: 7rem;
+}
+
+.App header#with-notification + main {
+  padding-top: 8rem;
 }
 
 .container {
@@ -333,14 +343,49 @@ img {
   margin: 2rem 0 2rem 0;
 }
 
-/* NAVBAR */
-nav {
+/* HEADER AND NAVBAR */
+header {
   position: fixed;
-  top: 0;
+  z-index: 10;
+  width: 100%;
+}
+
+/* FIRST VISIT NOTIFICATION */
+header #first-visit-notification {
+  width: 100%;
+  background-color: var(--secondary);
+  height: 3rem;
+}
+
+header #first-visit-notification p {
+  color: #fff;
+  margin-left: 0.5rem;
+}
+
+header.hide #first-visit-notification {
+  animation: slideUpHeight 0.5s 0.5s both;
+}
+
+header.hide #first-visit-notification .emoji.cupcake,
+header.hide #first-visit-notification p,
+header.hide #first-visit-notification .arrow {
+  animation: fadeOut 0.5s both;
+}
+
+header #first-visit-notification .arrow {
+  position: absolute;
+  right: 2.5vw;
+}
+
+nav {
   z-index: 5;
   width: 100%;
   height: 4rem;
   background: #fff;
+  transition: 0.5s ease box-shadow;
+}
+
+nav.active {
   box-shadow:  0 0 5px rgba(0, 0, 0, .1);
 }
 
@@ -475,7 +520,7 @@ nav .wrapper .dropdown ul a {
 }
 
 #home .mentor-list > a {
-  margin: 1rem;
+  margin: 1rem 0;
 }
 
 #home .card.mentor-card {
@@ -975,7 +1020,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 6;
+  z-index: 11;
   height: 100vh;
   width: 100vw;
   background-color: rgba(27, 36, 65, 0.75);
@@ -1131,27 +1176,57 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   visibility: visible; /* Show the snackbar */
   /* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
   However, delay the fade out process for 2.5 seconds */
-  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  -webkit-animation: toastFadeIn 0.5s, toastFadeOut 0.5s 2.5s;
+  animation: toastFadeIn 0.5s, toastFadeOut 0.5s 2.5s;
 }
 
-/* Animations to fade the snackbar in and out */
-@-webkit-keyframes fadein {
+/* Animations */
+@-webkit-keyframes slideUpHeight {
+  to { height: 0; }
+}
+
+@keyframes slideUpHeight {
+  to { height: 0; }
+}
+
+/* Generic Fade Animations */
+@-webkit-keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@-webkit-keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; } 
+}
+
+/* Toast Fade Animations */
+@-webkit-keyframes toastFadeIn {
   from {bottom: 0; opacity: 0;} 
   to {bottom: 30px; opacity: 1;}
 }
 
-@keyframes fadein {
+@keyframes toastFadeIn {
   from {bottom: 0; opacity: 0;}
   to {bottom: 30px; opacity: 1;}
 }
 
-@-webkit-keyframes fadeout {
+@-webkit-keyframes toastFadeOut {
   from {bottom: 30px; opacity: 1;} 
   to {bottom: 0; opacity: 0;}
 }
 
-@keyframes fadeout {
+@keyframes toastFadeOut {
   from {bottom: 30px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
 }
@@ -1162,7 +1237,6 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 button::-moz-focus-inner {
   border: 0;
 }
-
 
 /* MEDIA QUERIES */
 
