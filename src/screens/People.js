@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Helmet } from 'react-helmet'
 
 import Api from '../utils/Api'
 
@@ -220,6 +221,15 @@ export default class People extends Component {
             :
             null
           }
+
+          <Helmet>
+            <meta property="og:title" content={`${this.state.mentor.name} | Upfame`}></meta>
+            <meta property="og:description" content={`Setup a meetup with ${this.state.mentor.name}`}></meta>
+            <meta property="og:image" content={this.state.mentor.profilePic}></meta>
+            <meta property="og:url" content={window.location.href}></meta>
+            <meta name="twitter:card" content="summary_large_image"></meta>
+          </Helmet>
+          
           <Breadcrumbs name={this.state.mentor.name} />
           <div className='card mentor-card flex justifycontent-center'>
             <div>

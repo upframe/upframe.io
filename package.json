@@ -12,6 +12,7 @@
     "react-confetti": "^2.3.0",
     "react-dom": "^16.7.0",
     "react-easy-crop": "^1.10.0",
+    "react-helmet": "^5.2.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
     "react-tag-input": "6.2.0"

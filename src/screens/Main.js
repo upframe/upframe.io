@@ -43,6 +43,34 @@ export default class Main extends Component {
     })
   }
 
+  constructor (props) {
+    super(props)
+    this.state = {
+      mentors: []
+    }
+
+    aos.init({
+      duration: 750,
+      delay: 0,
+      offset: 0,
+      throttleDelay: 0,
+    })
+  }
+
+  componentDidMount() {
+    Api.getAllMentors().then((res) => {
+      this.setState({
+        mentors: res.mentors
+      })
+    })
+  }
+
+  setMentors = (mentors) => {
+    this.setState({
+      mentors: mentors
+    })
+  }
+
   render() {
     let emptyQuery = this.context.searchQuery.length === 0
 
