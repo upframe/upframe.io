@@ -223,10 +223,10 @@ export default class People extends Component {
           }
 
           <Helmet>
-            <meta property="og:title" content={`${this.state.mentor.name} | Upfame`}></meta>
+            <title>{this.state.mentor.name} | Upframe</title>
+            <meta property="og:title" content={`${this.state.mentor.name} | Upframe`}></meta>
             <meta property="og:description" content={`Setup a meetup with ${this.state.mentor.name}`}></meta>
             <meta property="og:image" content={this.state.mentor.profilePic}></meta>
-            <meta property="og:url" content={window.location.href}></meta>
             <meta name="twitter:card" content="summary_large_image"></meta>
           </Helmet>
           

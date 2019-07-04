@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { Helmet } from 'react-helmet'
 
 // import app context
 import AppContext from '../components/AppContext'
@@ -47,27 +48,38 @@ export default class Main extends Component {
     let emptyQuery = this.context.searchQuery.length === 0
 
     return (
-      <main id='home'>
-        <div className="container grid" >
-          <MainSearchBar setMentors={this.setMentors} />
-          {emptyQuery ?
-            <React.Fragment>
-              <MainCategories setMentors={this.setMentors} />
-              <h1 className='font-150 fontweight-medium' data-aos='fade-up'
-                data-aos-delay='600' data-aos-offset='0'>
-                <i className="em em-hot_pepper"></i>Featured Mentors
-              </h1>
-              <p data-aos='fade-up' data-aos-delay='700' data-aos-offset='0'>Our in-house curators work
-                alongside with startup founders, community shapers and domain experts across Europe to
-                make sure you can find people who can help you tackle the challenges
-                of today and tomorrow.
-              </p>
-            </React.Fragment>
-            : null
-          }
-          <MainMentorList mentors={this.state.mentors} />
-        </div>
-      </main>
+      <React.Fragment>
+        <Helmet>
+          <title>Home | Upframe</title>
+          <meta property="og:title" content="Home | Upframe"></meta>
+          <meta property="og:description" content="Start making your projects a reality with experienced worldwide mentors"></meta>
+          <meta property="og:image" content="/android-chrome-192x192.png"></meta>
+          <meta name="twitter:card" content="summary_large_image"></meta>
+        </Helmet>
+
+
+        <main id='home'>
+          <div className="container grid" >
+            <MainSearchBar setMentors={this.setMentors} />
+            {emptyQuery ?
+              <React.Fragment>
+                <MainCategories setMentors={this.setMentors} />
+                <h1 className='font-150 fontweight-medium' data-aos='fade-up'
+                  data-aos-delay='600' data-aos-offset='0'>
+                  <i className="em em-hot_pepper"></i>Featured Mentors
+                </h1>
+                <p data-aos='fade-up' data-aos-delay='700' data-aos-offset='0'>Our in-house curators work
+                  alongside with startup founders, community shapers and domain experts across Europe to
+                  make sure you can find people who can help you tackle the challenges
+                  of today and tomorrow.
+                </p>
+              </React.Fragment>
+              : null
+            }
+            <MainMentorList mentors={this.state.mentors} />
+          </div>
+        </main>
+      </React.Fragment>
     )
   }
 }

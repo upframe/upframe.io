@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { Helmet } from 'react-helmet'
 
 import Api from '../utils/Api'
 
@@ -36,11 +37,21 @@ export default class ResetPassword extends Component {
 
   render() {
     return (
-      <div className="screen">
-        Welcome to the password change!
-        <input type='password' onChange={this.handlePasswordChange}/>
-        <button className="btn btn-primary" onClick={this.changePassword}>Change Password</button>
-      </div>
+      <React.Fragment>
+        <Helmet>
+          <title>Reset your password | Upframe</title>
+          <meta property="og:title" content="Reset your password | Upframe"></meta>
+          <meta property="og:description" content="Reset your password and keep using Connect by Upframe"></meta>
+          <meta property="og:image" content="/android-chrome-192x192.png"></meta>
+          <meta name="twitter:card" content="summary_large_image"></meta>
+        </Helmet>
+
+        <div className="screen">
+          Welcome to the password change!
+          <input type='password' onChange={this.handlePasswordChange}/>
+          <button className="btn btn-primary" onClick={this.changePassword}>Change Password</button>
+        </div>
+      </React.Fragment>
     );
   }
 }

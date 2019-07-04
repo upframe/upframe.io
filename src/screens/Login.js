@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { Helmet } from 'react-helmet'
 
 import { Redirect } from 'react-router-dom';
 import AppContext from '../components/AppContext'
@@ -25,21 +26,31 @@ export default class Login extends Component {
       return <Redirect to='/settings/public' />
     } else {
       return (
-        <main id='login'>
-          <div className='container flex justifycontent-center'>
-            <div className='flex flex-column'>
-              <div className='field-group'>
-                <label for='email'>Email</label>
-                <input id='email' type='email' name='email' placeholder='codemonkey@startup.com' onChange={this.handleEmailChange} onKeyUp={this.handleKeyUp}/>
+        <React.Fragment>
+          <Helmet>
+            <title>Settings | Upframe</title>
+            <meta property="og:title" content="Settings | Upframe"></meta>
+            <meta property="og:description" content="Change your profile information and settings"></meta>
+            <meta property="og:image" content="/android-chrome-192x192.png"></meta>
+            <meta name="twitter:card" content="summary_large_image"></meta>
+          </Helmet>
+          
+          <main id='login'>
+            <div className='container flex justifycontent-center'>
+              <div className='flex flex-column'>
+                <div className='field-group'>
+                  <label for='email'>Email</label>
+                  <input id='email' type='email' name='email' placeholder='codemonkey@startup.com' onChange={this.handleEmailChange} onKeyUp={this.handleKeyUp}/>
+                </div>
+                <div className='field-group'>
+                  <label for='password'>Password</label>
+                  <input id='password' type='password' placeholder='Nuclear code' onChange={this.handlePasswordChange} onKeyUp={this.handleKeyUp} />
+                </div>
+                <button type='submit' className='btn btn-primary center' onClick={this.login}>Login</button>
               </div>
-              <div className='field-group'>
-                <label for='password'>Password</label>
-                <input id='password' type='password' placeholder='Nuclear code' onChange={this.handlePasswordChange} onKeyUp={this.handleKeyUp} />
-              </div>
-              <button type='submit' className='btn btn-primary center' onClick={this.login}>Login</button>
             </div>
-          </div>
-        </main>
+          </main>
+        </React.Fragment>
       );
     }
   }

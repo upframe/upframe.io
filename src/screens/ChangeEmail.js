@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { Helmet } from 'react-helmet'
 
 import Api from '../utils/Api'
 
@@ -36,11 +37,21 @@ export default class ChangeEmail extends Component {
 
   render() {
     return (
-      <div className="screen">
-        Welcome to the email change!
-        <input type='email' onChange={this.handleEmailChange}/>
-        <button className="btn btn-primary" onClick={this.changeEmail}>Change Email</button>
-      </div>
+      <React.Fragment>
+        <Helmet>
+          <title>Change your email | Upframe</title>
+          <meta property="og:title" content="Change your email | Upframe"></meta>
+          <meta property="og:description" content="Change your account email and keep connecting..."></meta>
+          <meta property="og:image" content="/android-chrome-192x192.png"></meta>
+          <meta name="twitter:card" content="summary_large_image"></meta>
+        </Helmet>
+        
+        <div className="screen">
+          Welcome to the email change!
+          <input type='email' onChange={this.handleEmailChange}/>
+          <button className="btn btn-primary" onClick={this.changeEmail}>Change Email</button>
+        </div>
+      </React.Fragment>
     );
   }
 }
