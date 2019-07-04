@@ -51,7 +51,7 @@ export default class MentorRequestPopup extends Component {
       this.state.email,
     ).then((res) => {
       if (res.ok === 1) {
-        mixpanel.track('[Meetup Request] ' + this.state.mentorName)
+        mixpanel.track('[Meetup Request] ' + this.state.name + ' w/ ' + this.state.email)
         alert('Time slots requested. Now wait for mentor confirmation.')
         this.props.hideRequestPopup()
       } else {
