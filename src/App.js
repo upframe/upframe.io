@@ -8,6 +8,7 @@ import Api from './utils/Api';
 
 const Main = React.lazy(() => import(/* webpackChunkName: "Main", webpackPrefetch: true */'./screens/Main'))
 const Login = React.lazy(() => import(/* webpackChunkName: "Login", webpackPrefetch: true */'./screens/Login'))
+const Register = React.lazy(() => import(/* webpackChunkName: "Register", webpackPrefetch: true */'./screens/Register'))
 const Onboarding = React.lazy(() => import(/* webpackChunkName: "Onboarding", webpackPrefetch: true */'./screens/Onboarding'))
 const Settings = React.lazy(() => import(/* webpackChunkName: "Settings", webpackPrefetch: true */'./screens/Settings'))
 const ChangeEmail = React.lazy(() => import(/* webpackChunkName: "ChangeEmail", webpackPrefetch: true */'./screens/ChangeEmail'))
@@ -20,12 +21,25 @@ const Company = React.lazy(() => import(/* webpackChunkName: "Company", webpackP
 const ErrorPage = React.lazy(() => import(/* webpackChunkName: "ErrorPage", webpackPrefetch: true */'./screens/404'))
 const DevPlayground = React.lazy(() => import(/* webpackChunkName: "DevPlayground", webpackPrefetch: true */'./screens/DevPlayground'))
 const GoogleSync = React.lazy(() => import(/* webpackChunkName: "GoogleSync", webpackPrefetch: true */'./screens/Sync'))
+const MentorGroup = React.lazy(() => import(/* webpackChunkName: "MentorGroup", webpackPrefetch: true */'./screens/MentorGroup'))
 
 export default class App extends Component {
-
   state = {
     loggedIn: false,
+    searchQuery: '',
+    resetSearchQuery: false,
     user: {}
+  }
+
+  componentDidMount() {
+    Api.getUserInfo().then((res) => {
+      if (res.ok === 1 && res.code === 200) {
+        this.setState({
+          user: res.user,
+          loggedIn: true
+        })
+      }
+    })
   }
 
   login = (email, password) => {
@@ -80,14 +94,10 @@ export default class App extends Component {
     })
   }
 
-  componentDidMount() {
-    Api.getUserInfo().then((res) => {
-      if (res.ok === 1 && res.code === 200) {
-        this.setState({
-          user: res.user,
-          loggedIn: true
-        })
-      }
+  setSearchQuery = (query, didSearchReset) => {
+    this.setState({
+      searchQuery: query,
+      resetSearchQuery: didSearchReset ? true : false,
     })
   }
 
@@ -102,13 +112,17 @@ export default class App extends Component {
 
   render() {
     let contextValue = {
-      loggedIn: this.state.loggedIn,
-      user: this.state.user,
       login: this.login,
       logout: this.logout,
+      loggedIn: this.state.loggedIn,
+      searchQuery: this.state.searchQuery,
+      setSearchQuery: this.setSearchQuery,
       saveUserInfo: this.saveUserInfo,
       setProfilePic: this.setProfilePic,
       showToast: this.showToast,
+      user: this.state.user,
+
+      resetSearchQuery: this.state.resetSearchQuery,
     }
 
     mixpanel.init("993a3d7a78434079b7a9bec245dbaec2");
@@ -122,6 +136,7 @@ export default class App extends Component {
             <Switch>
                 <Route exact path='/' component={Main}/>
                 <Route exact path='/login' component={Login} />
+                <Route exact path='/register' component={Register} />
                 <Route exact path='/settings' component={Settings} />
                 <Route exact path='/settings/:page' component={Settings} />
                 <Route exact path='/404' component={ErrorPage} />
@@ -134,6 +149,9 @@ export default class App extends Component {
                 <Route exact path='/company/:company' component={Company} />
                 <Route exact path='/dev' component={DevPlayground} />
                 <Route exact path='/onboarding/:keycode' component={Onboarding} />
+                <Route exact path='/business' component={MentorGroup} />
+                <Route exact path='/design' component={MentorGroup} />
+                <Route exact path='/technology' component={MentorGroup} />
                 <Route exact path='/:keycode' component={People} />
                 <Route component={ErrorPage} />
             </Switch>

@@ -222,11 +222,11 @@ export default class SettingsPublicTab extends Component {
           <img className='profile-pic' alt='profile-pic' src={this.state.profilePic} />
           <input id='file-select' type='file' accept='image/*' onChange={this.uploadPhoto} />
           <div id='bio'>
-            <h1 id='title' className='font-weight-normal'>Profile Picture</h1>
+            <h1 id='title' className='fontweight-normal'>Profile Picture</h1>
             <p>We're big on pictures around here.</p>
             <p>Add an updated picture so you don't look like a <span role='img' aria-label='robot'>🤖</span></p>
-            <button className='btn btn-round btn-primary font-weight-thin' onClick={this.openUploadDialog}>Upload new picture</button>
-            <button className='btn btn-round font-weight-thin' onClick={this.removePhoto}>Remove</button>
+            <button className='btn btn-round btn-primary fontweight-thin' onClick={this.openUploadDialog}>Upload new picture</button>
+            <button className='btn btn-round fontweight-thin' onClick={this.removePhoto}>Remove</button>
           </div>
         </div>
         <div>

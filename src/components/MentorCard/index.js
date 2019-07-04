@@ -12,12 +12,12 @@ export default class MentorCard extends Component {
   render() {
     const mentor = this.props.mentorInfo
     return (
-      <Link to={mentor.keycode} data-aos={this.props.animation} data-aos-offset='0' data-aos-delay={(this.props.index * 250) + 250}>
-        <div className='card hoverable mentor-card flex justify-center'>
+      <Link to={mentor.keycode} data-aos={this.props.animation} data-aos-offset='0' data-aos-delay={700}>
+        <div className='card hoverable mentor-card flex justifycontent-center'>
           <div>
             <img className='mentor-profilepic' src={mentor.profilePic} alt={mentor.name} />
             <div className='mentor-info'>
-              <h1 id='name' className='font-150 font-weight-normal'>{mentor.name}</h1>
+              <h1 id='name' className='fontweight-medium'>{mentor.name}</h1>
               <p id='role-company'>{mentor.role} at {mentor.company}</p>
               <p id='bio' style={{ WebkitBoxOrient: 'vertical'}}>{mentor.bio}</p>
               <ul id='tags' className='flex'>
@@ -55,7 +55,7 @@ const Tags = (props) => {
       })
     }
     let hello = tags.map((tag, i) =>
-      <li key={i} className='flex align-items-center mentor-tag'>{tag.text}</li>
+      <li key={i} className='flex alignitems-center mentor-tag'>{tag.text}</li>
     )
     return hello
   }
