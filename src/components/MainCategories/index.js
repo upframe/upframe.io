@@ -28,10 +28,10 @@ const MainCategories = props => {
           </li>
         </Link>
 
-        <Link to='/technology' data-aos='fade-up' data-aos-delay='500' data-aos-offset='0'>
+        <Link to='/software' data-aos='fade-up' data-aos-delay='500' data-aos-offset='0'>
           <li className='category-item'>
-            <div alt='Technology' title='Technology' id="category-image"></div>
-            <h1>Technology</h1>
+            <div alt='Software' title='Software' id="category-image"></div>
+            <h1>Software</h1>
           </li>
         </Link>
       </ul>
