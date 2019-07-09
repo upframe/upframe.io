@@ -34,8 +34,6 @@ body {
   color: var(--primary);
 }
 
-
-
 .warning {
   color: var(--primary);
 }
@@ -168,6 +166,12 @@ ul {
 .right {
   margin-left: auto;
 }
+
+/** SPACING **/
+.ma1 { margin: 0.5rem; }
+.mr1 { margin-right: 0.5rem; }
+.mb1 { margin-bottom: 0.5rem; }
+.ml1 { margin-left: 0.5rem; }
 
 /* INPUTS */
 label {
@@ -1238,12 +1242,7 @@ button::-moz-focus-inner {
   border: 0;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 4dc1af4e9eac983bf8009da9a8a5e5ff95ae2e03
 /* MEDIA QUERIES */
-
 
 /* LARGER SCREENS */
 @media (min-width: 1020px) {
@@ -1252,9 +1251,15 @@ button::-moz-focus-inner {
   }
 }
 
-@media (min-width: 1350px) {
+@media (max-width: 1350px) {
   #people .card.mentor-card .mentor-card-slots {
     grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 1170px) {
+  #people .card.mentor-card .mentor-card-slots {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -1268,9 +1273,9 @@ button::-moz-focus-inner {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   }
 
-  #home .card.mentor-card {
+  /* #home .card.mentor-card {
     width: 85vw;
-  }
+  } */
 
   #people .card.mentor-card .mentor-card-slots {
     grid-template-columns: repeat(4, 1fr);
