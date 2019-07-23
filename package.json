@@ -8,6 +8,7 @@
     "browserslist": "^4.6.3",
     "caniuse-lite": "^1.0.30000979",
     "core-js": "3",
+    "lodash": "^4.17.15",
     "mixpanel-browser": "^2.26.0",
     "moment": "^2.24.0",
     "react": "^16.7.0",
