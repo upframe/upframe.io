@@ -50,7 +50,7 @@ export default class Main extends Component {
     return (
       <React.Fragment>
         <Helmet>
-          <title>Home | Upframe</title>
+          <title>Upframe</title>
           <meta property="og:title" content="Home | Upframe"></meta>
           <meta property="og:description" content="Start making your projects a reality with experienced worldwide mentors"></meta>
           <meta property="og:image" content="/android-chrome-192x192.png"></meta>
