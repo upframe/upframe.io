@@ -95,13 +95,13 @@ export default class People extends Component {
             company: res.mentor.company,
             dribbble: res.mentor.dribbble,
             email: res.mentor.email,
-            facebook: res.mentor.facebook,
             github: res.mentor.github,
             linkedin: res.mentor.linkedin,
             location: res.mentor.location,
             name: res.mentor.name,
             profilePic: res.mentor.profilePic,
             role: res.mentor.role,
+            facebook: res.mentor.facebook,
             twitter: res.mentor.twitter,
             uid: res.mentor.uid,
             website: res.mentor.website,
@@ -231,40 +231,86 @@ export default class People extends Component {
           </Helmet>
           
           <Breadcrumbs name={this.state.mentor.name} />
-          <div className='card mentor-card flex justifycontent-center'>
-            <div>
-              <div className='flex justifycontent-center'>
+          <div className='card mentor-card flex'>
+            <div id="main-info">
+              <div className='flex flex-column'>
                 <img className="mentor-profilepic" src={this.state.mentor.profilePic} alt='Profile'/>
-              </div>
-              <div className='mentor-info'>
+
                 <h1 id='name' className="font-150 fontweight-medium">{this.state.mentor.name}</h1>
-                <p id='role-company'>{this.state.mentor.role} at {this.state.mentor.company}</p>
-                <p id='location' className='flex alignitems-center'><img src='/location.svg' alt='location' className="location-icon"></img>{this.state.mentor.location}</p>
+                <p id='company-role'>{this.state.mentor.role} at {this.state.mentor.company}</p>
+                <p id='location' className='flex alignitems-center'>
+                  <svg class="mr1" width="15px" height="22px" viewBox="0 0 15 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                    <title>Location</title>
+                    <desc>Created with Sketch.</desc>
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="currentColor" fill-rule="evenodd">
+                        <g id="Mentor-Profile" transform="translate(-569.000000, -342.000000)" fill="currentColor" fill-rule="nonzero">
+                            <g id="Location" transform="translate(569.000000, 342.000000)">
+                                <path d="M7.5021453,0 C3.3616354,0.00461630452 0.00592507486,3.32328179 8.94183898e-05,7.4192381 C-0.0168548072,12.223619 2.37439903,17.0782857 7.10607403,21.8428571 C7.20525026,21.9432866 7.34115844,21.9999351 7.48308305,22 C7.62500766,21.9999351 7.76091584,21.9432866 7.86009207,21.8428571 C12.6087113,17.0782857 15.0105553,12.2257143 14.9999651,7.4192381 C14.9941351,3.32491501 11.6410009,0.00692373357 7.5021453,0 Z M7.48520108,20.724 C3.20466609,16.288381 1.04215929,11.8150476 1.05910352,7.4192381 C1.12279233,3.94474998 3.98822844,1.16108051 7.50108629,1.16108051 C11.0139441,1.16108051 13.8793803,3.94474998 13.9430691,7.4192381 C13.9515412,11.8150476 11.7805623,16.288381 7.48520108,20.724 Z" id="Shape"></path>
+                                <circle id="Oval" transform="translate(7.500000, 7.500000) rotate(-13.280000) translate(-7.500000, -7.500000) " cx="7.5" cy="7.5" r="3.5"></circle>
+                            </g>
+                        </g>
+                    </g>
+                  </svg>
+
+                  {this.state.mentor.location}
+                </p>
+
+                <div class="mt2" id="social-networks">
+                  <div class="flex">
+                    { this.state.mentor.facebook ?
+                      <a href={this.state.mentor.facebook.includes('facebook.com') ?
+                        this.state.mentor.facebook :
+                        `https://facebook.com/${this.state.mentor.facebook}`} target="_blank"
+                        rel="noopener noreferrer">
+                        <img src="/media/facebook.jpg" alt="Facebook profile"></img>
+                      </a>
+                      : null
+                    }
+
+                    { this.state.mentor.twitter ?
+                      <a href={this.state.mentor.twitter.includes('twitter.com') ?
+                        this.state.mentor.twitter :
+                        `https://twitter.com/${this.state.mentor.twitter}`} target="_blank"
+                        rel="noopener noreferrer">
+                        <img src="/media/twitter.jpg" alt="Twitter profile"></img>
+                      </a>
+                      : null
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id='additional-info'>
+              <h2 class="color-black ma0">About me</h2>
+              {this.state.mentor.bio.split('\n').map((element) => {
+                return (
+                  <p id='bio'>{element}</p>
+                )
+              })}
+
+              <div id="tags">
+                <h2 class="color-black ma0">I can advise you on</h2>
+                
                 <ul id='tags' className='flex'>
                   {this.mentorTagsToElement(this.state.mentor.tags)}
                 </ul>
-                {this.state.mentor.bio.split('\n').map((element) => {
-                  return (
-                    <p id='bio'>{element}</p>
-                  )
-                })}
               </div>
             </div>
-            
-            <span className="hr"></span>
+          </div>
 
-            <div>
-              {/*<a href={'http://www.twitter.com/' + this.state.mentor.twitter}>Twitter</a><br />
-              <a href={'http://www.linkedin.com/' + this.state.mentor.linkedin}>LinkedIn</a><br />
-              <a href={'http://www.github.com/' + this.state.mentor.github}>Github</a><br />
-              <a href={'http://www.facebook.com/' + this.state.mentor.facebook}>Facebook</a><br />
-              <a href={'http://www.dribbble.com/' + this.state.mentor.dribbble}>Dribbble</a>*/}
+          <div class="card mt2" id="office-hours">
+            <h2 class="ma0">Office Hours</h2>
+            
+            <div class="mt2">
               <ul className='mentor-card-slots grid'>
                 {this.displayFreeSlots()}
                 <button id='request' className='btn btn-primary btn-fill' onClick={this.showRequestPopup}>Request</button>
               </ul>
             </div>
+
           </div>
+
           <div className='copy-url' onClick={this.copyUrlToClipboard}>
           </div>
         </main>
