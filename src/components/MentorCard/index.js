@@ -16,7 +16,7 @@ export default class MentorCard extends Component {
         <div className='card hoverable mentor-card flex justifycontent-center'>
           <div>
             <img className='mentor-profilepic' src={mentor.profilePic} alt={mentor.name} />
-            <div className='mentor-info'>
+            <div id='mentor-info'>
               <h1 id='name' className='fontweight-medium'>{mentor.name}</h1>
               <p id='role-company'>{mentor.role} at {mentor.company}</p>
               <p id='bio' style={{ WebkitBoxOrient: 'vertical'}}>{mentor.bio}</p>

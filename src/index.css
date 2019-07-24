@@ -38,6 +38,14 @@ body {
   color: var(--primary);
 }
 
+
+/* USEFUL TEXTCOLORS */
+.color-black { color: #000; }
+.bc-black { background-color: #000; }
+
+.color-slate--grey { color: var(--slate-grey); }
+.bc-slate--grey { background-color: var(--slate-grey); }
+
 /* FONT SIZES */
 .font-100 {
   font-size: 1rem;
@@ -167,16 +175,30 @@ ul {
   margin-left: auto;
 }
 
+.ma0 { margin: 0rem; }
+.mt0 { margin-top: 0rem; }
+.mr0 { margin-right: 0rem; }
+.mb0 { margin-bottom: 0rem; }
+.ml0 { margin-left: 0rem; }
+
 /** SPACING **/
 .ma1 { margin: 0.5rem; }
+.mt1 { margin-top: 0.5rem; }
 .mr1 { margin-right: 0.5rem; }
 .mb1 { margin-bottom: 0.5rem; }
 .ml1 { margin-left: 0.5rem; }
 
 .ma2 { margin: 1rem; }
+.mt2 { margin-top: 1rem; }
 .mr2 { margin-right: 1rem; }
 .mb2 { margin-bottom: 1rem; }
 .ml2 { margin-left: 1rem; }
+
+.ma3 { margin: 3em; }
+.mt3 { margin-top: 3rem; }
+.mr3 { margin-right: 3rem; }
+.mb3 { margin-bottom: 3rem; }
+.ml3 { margin-left: 3rem; }
 
 /* INPUTS */
 label {
@@ -533,6 +555,9 @@ nav .wrapper .dropdown ul a {
 }
 
 #home .card.mentor-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   padding: 0;
   margin: 0 auto;
 }
@@ -544,21 +569,22 @@ nav .wrapper .dropdown ul a {
   border-bottom-right-radius: unset;
 }
 
-#home .card.mentor-card .mentor-info {
+#home .card.mentor-card #mentor-info {
   /* margin: 1.3rem 0rem 2rem 2rem; */
   margin: 1.5rem 2rem 0rem 2.25rem;
 }
 
-#home .card.mentor-card .mentor-info h1 {
+#home .card.mentor-card #mentor-info h1 {
   font-size: 1.20rem;
+  margin-top: 0;
 }
 
-#home .card.mentor-card .mentor-info p#role-company {
+#home .card.mentor-card #mentor-info p#role-company {
   font-size: 0.95rem;
   margin: -0.25rem 0 0.6rem 0;
 }
 
-#home .card.mentor-card .mentor-info #bio {
+#home .card.mentor-card #mentor-info #bio {
   font-size: 0.95rem;
   -webkit-line-clamp: 2;
   overflow: hidden;
@@ -566,13 +592,21 @@ nav .wrapper .dropdown ul a {
   display: -webkit-box;
 }
 
-#home .card.mentor-card .mentor-info #tags {
+#home .card.mentor-card #mentor-info #tags {
   flex-wrap: wrap;
   margin: .65rem .75rem 0 0;
 }
 
-#home .card.mentor-card .mentor-info #tags .mentor-tag {
+#home .card.mentor-card #mentor-info #tags .mentor-tag {
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  text-align: center;
+  color: var(--brownish-grey);
   padding: 0.5rem 1rem;
+  border: 1px solid var(--border-lightgray);
+  border-radius: 10rem;
+  margin: 0 .5rem 0.5rem 0;
 }
 
 /* #home .mentor-list > a {
@@ -794,63 +828,68 @@ nav .wrapper .dropdown ul a {
 
 /* MENTOR CARD */
 .card.mentor-card {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 13rem 4fr;
+  grid-gap: 0 3.75rem;
   color: var(--slate-grey);
   padding: 3rem;
   margin-top: 1.5rem;
 }
 
-.card.mentor-card > div,
-.card.mentor-card > span {
-  flex-basis: 100%;
+.card.mentor-card #main-info {
+  flex-basis: 20%;
+}
+
+.card.mentor-card #additional-info {
+  flex-basis: 75%;
 }
 
 .card.mentor-card > div:first-of-type {
   display: flex;
 }
 
-.card.mentor-card .mentor-profilepic {
-  min-width: 12rem;
-  max-height: 12rem;
+.card.mentor-card #main-info .mentor-profilepic {
+  min-width: 13rem;
+  max-height: 13rem;
   border-radius: 0.18rem;
 }
 
-.card.mentor-card h1 {
+.card.mentor-card #main-info h1 {
   font-size: 1.375rem;
   letter-spacing: 0.03125rem;
+  color: #000;
+  margin: 0.875rem 0 0 0;
+}
+
+.card.mentor-card #main-info p#company-role {
+  font-size: 1.0625rem;
   color: #000;
   margin: 0;
 }
 
-.card.mentor-card p {
-  font-size: 1rem;
-  letter-spacing: 0.0125rem;
-  margin: 0;
+.card.mentor-card #main-info p#location {
+  color: var(--slate-grey);
+  margin: 0.625rem 0 0 0;
 }
 
-.card.mentor-card .mentor-info {
-  margin-left: 2rem;
-}
-
-.card.mentor-card .mentor-info p:not(:last-of-type) {
-  margin: 0.2rem 0;
-}
-
-.card.mentor-card .mentor-info #location i.icon {
+.card.mentor-card #main-info #social-networks img {
+  width: 1.75rem;
+  height: 1.75rem;
   margin-right: 0.5rem;
 }
 
-.card.mentor-card .mentor-info #location .location-icon {
-  margin-right: 0.3rem;
+.card.mentor-card #additional-info h2 {
+  font-weight: 500;
+  font-size: 1.25rem;
+  margin-bottom: 0.9rem;
 }
 
-.card.mentor-card .mentor-info #tags {
+.card.mentor-card #additional-info #tags {
   flex-wrap: wrap;
   margin: 0.9rem .75rem 0.9rem 0;
 }
 
-.card.mentor-card .mentor-info #tags .mentor-tag {
+.card.mentor-card #additional-info #tags .mentor-tag {
   cursor: pointer;
   font-size: 0.8rem;
   text-transform: capitalize;
@@ -862,24 +901,34 @@ nav .wrapper .dropdown ul a {
   margin: 0 .5rem 0.5rem 0;
 }
 
-.card.mentor-card .mentor-info #bio {
-  line-height: 1.5rem;
+.card.mentor-card #additional-info #bio {
+  line-height: 1.76rem;
+  letter-spacing: 0.21px;
 }
 
-.card.mentor-card .mentor-card-slots {
+.card#office-hours {
+  padding: 3rem;
+}
+
+.card#office-hours h2 {
+  font-weight: 500;
+  font-size: 1.25rem;
+}
+
+.card#office-hours .mentor-card-slots {
   display: grid;
   grid-auto-rows: 1fr;
-  grid-auto-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-gap: 1rem;
 }
 
-.card.mentor-card .mentor-card-slots > * {
-  box-sizing: border-box;
+.card#office-hours .mentor-card-slots > * {
+box-sizing: border-box;
   height: 100%;
   min-height: 52px;
 }
 
-.card.mentor-card .mentor-card-slot {
+.card#office-hours .mentor-card-slot {
   box-sizing: border-box;
   color: #000;
   font-size: 0.9rem;
@@ -891,32 +940,32 @@ nav .wrapper .dropdown ul a {
   transition: .25s ease-in-out all;
 }
 
-.card.mentor-card .mentor-card-slot.active {
+.card#office-hours .mentor-card-slot.active {
   border-color: var(--primary);
   box-shadow: 0 0 .25rem 0 var(--primary);
 }
 
-.card.mentor-card .mentor-card-slot > div {
+.card#office-hours .mentor-card-slot > div {
   display: flex;
 }
 
-.card.mentor-card .mentor-card-slot span#month {
+.card#office-hours .mentor-card-slot span#month {
   display: block;
   font-size: 0.75rem;
   color: var(--orange);
 }
 
-.card.mentor-card .mentor-card-slot span#day {
+.card#office-hours .mentor-card-slot span#day {
   display: block;
   font-size: 1.125rem;
   text-align: center;
 }
 
-.card.mentor-card .mentor-card-slot > div div:last-of-type {
+.card#office-hours .mentor-card-slot > div div:last-of-type {
   margin-left: 1rem;
 }
 
-.card.mentor-card button#request {
+.card#office-hours button#request {
   letter-spacing: 0.10625rem;
   width: 100%;
   height: 100%;
