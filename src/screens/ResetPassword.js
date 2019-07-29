@@ -47,9 +47,12 @@ export default class ResetPassword extends Component {
         </Helmet>
 
         <div className="screen">
-          Welcome to the password change!
-          <input type='password' onChange={this.handlePasswordChange}/>
-          <button className="btn btn-primary" onClick={this.changePassword}>Change Password</button>
+          <div>
+            <h1 className="font-150 fontweight-medium">Welcome to the password change!</h1>
+
+            <input type='password' placehodler="New password" onChange={this.handlePasswordChange}/>
+            <button className="btn btn-primary" onClick={this.changePassword}>Change Password</button>
+          </div>
         </div>
       </React.Fragment>
     );

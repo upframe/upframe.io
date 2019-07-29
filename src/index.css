@@ -1131,7 +1131,18 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 } 
 
 .screen {
-  margin-top: 100px;
+  padding-top: calc(4rem + 2rem);
+}
+
+.screen > div {
+  max-width: 25%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.screen > div button {
+  margin: 2rem auto;
 }
 
 /* LOADER */
