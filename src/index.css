@@ -1409,17 +1409,27 @@ button::-moz-focus-inner {
 
   #people .card.mentor-card {
     padding: 1rem;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem 0;
   }
 
   #people .card.mentor-card > div:first-of-type {
     flex-direction: column;
   }
 
-  #people .card.mentor-card .mentor-info #name {
+  #people .card.mentor-card #main-info #name {
     margin-top: 1rem;
   }
 
-  #people .card.mentor-card .mentor-info #location {
+  #people .card.mentor-card #main-info p#company-role {
+    text-align: center;
+  }
+
+  #people .card.mentor-card #main-info #location {
+    justify-content: center;
+  }
+
+  #people .card.mentor-card #main-info #social-networks .flex {
     justify-content: center;
   }
 
@@ -1428,8 +1438,7 @@ button::-moz-focus-inner {
     margin: 1rem auto;
   }
 
-  #people .card.mentor-card h1,
-  #people .card.mentor-card p:not(:last-of-type) {
+  #people .card.mentor-card h1 {
     text-align: center;
   }
 
@@ -1437,8 +1446,12 @@ button::-moz-focus-inner {
     margin: 0;
   }
 
-  #people .card.mentor-card .mentor-card-slots {
-    grid-template-columns: repeat(3, 1fr);
+  #people .card#office-hours {
+    padding: 1.5rem;
+  }
+
+  #people .card#office-hours .mentor-card-slots {
+    grid-template-columns: repeat(1, 1fr);
   }
 
   #people .mentor-meetup-popup {
