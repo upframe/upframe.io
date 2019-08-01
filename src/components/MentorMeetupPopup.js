@@ -33,11 +33,14 @@ export default class MentorMeetupPopup extends Component {
   handleNameChange = (event) => {this.setState({name: event.target.value})}
 
   createMeetup = () => {
+    let {
+      name,
+      email,
+      message,
+      location
+    } = this.state
     let slotId = this.props.sid
-    let location = this.state.location
-    let message = this.state.message
-    let email = this.state.email
-    let name = this.state.name
+
     if (this.state.currentTab === 3) {
       //Fazemos call, location is not important
       let talkRoom = 'https://talky.io/' + this.state.mentorName.split(' ').join('').toLowerCase()
