@@ -308,7 +308,11 @@ export default class People extends Component {
           </div>
 
           <div class="card mt2" id="office-hours">
-            <h2 class="ma0">Office Hours</h2>
+            <h2 class="ma0">Book a meetup with me</h2>
+
+            <p className="color-black mt1">
+              Upframe one-on-one mentoring sessions come in two flavours, video chats or in-person meetings. You can also send me a direct message.
+            </p>
             
             <div class="mt2">
               <ul className='mentor-card-slots grid'>
