@@ -311,8 +311,8 @@ export default class People extends Component {
 
           </div>
 
-          <div className='copy-url' onClick={this.copyUrlToClipboard}>
-          </div>
+          {/* <div className='copy-url' onClick={this.copyUrlToClipboard}>
+          </div> */}
         </main>
       )
     } else if (this.state.mentorExists === 2)  {
