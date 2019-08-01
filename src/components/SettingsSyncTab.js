@@ -80,8 +80,10 @@ export default class SettingsSyncTab extends Component {
           })
         })
 
-        let nowDate = new Date()
-        let limitDate = moment().add(30, 'days')
+        let nowDate = new Date(),
+          limitDate = moment().add(30, 'days'),
+          timeOffset = new Date().getTimezoneOffset()
+
         Api.getFreeSlots(nowDate, limitDate).then((res) => {
           if (res.ok === 1) {
             this.setState({
@@ -90,8 +92,8 @@ export default class SettingsSyncTab extends Component {
                   mentorUID: unconvertedSlot.mentorUID,
                   recurrency: unconvertedSlot.recurrency,
                   id: unconvertedSlot.sid,
-                  start: new Date(unconvertedSlot.start),
-                  end: new Date(unconvertedSlot.end),
+                  start: moment.utc(unconvertedSlot.start).utcOffset(-timeOffset).toDate(),
+                  end: moment.utc(unconvertedSlot.end).utcOffset(-timeOffset).toDate(),
                   isMine: true
                 }
               })
@@ -290,27 +292,36 @@ export default class SettingsSyncTab extends Component {
     //1. Delete toDelete + Save unsaved
     //2. clear to Delete
     //3. merge unsaved into saved
+    
+    // UI user feedback
     document.getElementById('save-button').disabled = true
     document.getElementById('save-button').innerHTML = 'Saving...'
+
+    // Magic trick (Saving new free slots)
     Api.addFreeSlots(this.state.freeSlotsUnsaved, this.state.freeSlotsToDelete).then((res) => {
-      if (res.ok === 1) { //We have added new slots and deleted the ones that were saved (not created in this session)
-        //Wrong! Because the new saved slots are in incorrect form
-        //We need to fetch slots again
+      if (res.ok === 1) {
+
         let nowDate = new Date()
         let limitDate = moment().add(30, 'days')
         this.context.showToast('Free slots saved')
+
+        let timeOffset = new Date().getTimezoneOffset()
+
         Api.getFreeSlots(nowDate, limitDate).then((res) => {
+          // UI user feedback 
           document.getElementById('save-button').disabled = false
           document.getElementById('save-button').innerHTML = 'Save changes'
+          
           if (res.ok === 1) {
+            console.log(moment.utc(res.slots[0].start).utcOffset(timeOffset).toDate())
             this.setState({
               freeSlotsSaved: res.slots.map((unconvertedSlot) => {
                 return {
                   mentorUID: unconvertedSlot.mentorUID,
                   recurrency: unconvertedSlot.recurrency,
                   id: unconvertedSlot.sid,
-                  start: moment(unconvertedSlot.start),
-                  end: moment(unconvertedSlot.end),
+                  start: moment.utc(unconvertedSlot.start).utcOffset(timeOffset).toDate(),
+                  end: moment.utc(unconvertedSlot.end).utcOffset(timeOffset).toDate(),
                   isMine: true,
                 }
               }),

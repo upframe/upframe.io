@@ -186,14 +186,16 @@ export class Api {
     return fetch(`${this.schema}://${this.host}:${this.port}/mentor/${keycode}`, fetchData).then((res) => res.json())
   }
 
-  createMeetup(sid, location, message, email, name) {
+  createMeetup(sid, location, message, email, name, timeoffset) {
     let fetchBody = {
       sid,
       location,
       message,
       email,
-      name
+      name,
+      timeoffset
     }
+
     let fetchData = {
       method: 'POST',
       mode: 'cors',
@@ -375,12 +377,13 @@ export class Api {
     return fetch(`${this.schema}://${this.host}:${this.port}/auth/oauthcode?code=` + code, fetchData).then((res) => res.json())
   }
 
-  requestTimeSlot(keycode, message, name, email) {
+  requestTimeSlot(keycode, email, name, message, timeoffset ) {
     let fetchBody = {
       keycode,
-      message,
+      email,
       name,
-      email
+      message,
+      timeoffset
     }
     let fetchData = {
       method: 'POST',
