@@ -196,7 +196,7 @@ export default class People extends Component {
               </div>
               <div>
                 <span id='time'>
-                  {`${days[startDate.day()]} ${startDate.format('H')}:${startDate.format('mm')} ${startDate.format('H') >= 12 ? "PM" : "AM"}`}
+                  {`${days[startDate.day()]} ${startDate.format('h:mm A')}`}
                 </span>
               </div>
             </div>
