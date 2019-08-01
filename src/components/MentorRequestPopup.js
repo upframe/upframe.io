@@ -13,6 +13,7 @@ export default class MentorRequestPopup extends Component {
       message: '',
       name: '',
       email: '',
+      timeoffset: new Date().getTimezoneOffset()
     }
   }
 
@@ -46,9 +47,10 @@ export default class MentorRequestPopup extends Component {
   requestTimeSlot = () => {
     Api.requestTimeSlot(
       window.location.pathname.substring(1),
-      this.state.message,
-      this.state.name,
       this.state.email,
+      this.state.name,
+      this.state.message,
+      this.state.timeoffset
     ).then((res) => {
       if (res.ok === 1) {
         mixpanel.track('[Meetup Request] ' + this.state.name + ' w/ ' + this.state.email)

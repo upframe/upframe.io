@@ -21,7 +21,9 @@ export default class MentorMeetupPopup extends Component {
       location: this.props.locations[0],
       
       email: '',
-      name: ''
+      name: '',
+
+      timeoffset: new Date().getTimezoneOffset()
     }
   }
 
@@ -34,17 +36,18 @@ export default class MentorMeetupPopup extends Component {
 
   createMeetup = () => {
     let {
-      name,
-      email,
+      location,
       message,
-      location
+      email,
+      name,
+      timeoffset
     } = this.state
     let slotId = this.props.sid
 
     if (this.state.currentTab === 3) {
       //Fazemos call, location is not important
       let talkRoom = 'https://talky.io/' + this.state.mentorName.split(' ').join('').toLowerCase()
-      Api.createMeetup(slotId, talkRoom, message, email, name).then((res) => {
+      Api.createMeetup(slotId, talkRoom, message, email, name, timeoffset).then((res) => {
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
           // window.location = '/'
@@ -58,7 +61,7 @@ export default class MentorMeetupPopup extends Component {
       })
     } else {
       //É um meetup
-      Api.createMeetup(slotId, location, message, email, name).then((res) => {
+      Api.createMeetup(slotId, location, message, email, name, timeoffset).then((res) => {
         if (res.ok === 1) {
           alert('Meetup created! Now wait for mentor confirmation')
           // window.location = '/'
