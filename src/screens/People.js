@@ -186,7 +186,6 @@ export default class People extends Component {
         // Transform dates from UTC to local time
         let utcOffset = new Date().getTimezoneOffset()
         let startDate = moment.utc(slot.start).utcOffset(-utcOffset)
-        console.log(startDate.format('MMMM'))
 
         return (
           <li className="mentor-card-slot flex justifycontent-center" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
@@ -314,7 +313,7 @@ export default class People extends Component {
             <div class="mt2">
               <ul className='mentor-card-slots grid'>
                 {this.displayFreeSlots()}
-                <button id='request' className='btn btn-primary btn-fill' onClick={this.showRequestPopup}>Request</button>
+                <button id='request' className='btn btn-primary btn-fill' onClick={this.showRequestPopup}>Message</button>
               </ul>
             </div>
 
