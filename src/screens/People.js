@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
+import * as moment from 'moment'
 
 import Api from '../utils/Api'
 
@@ -180,16 +181,24 @@ export default class People extends Component {
 
     if (this.state.mentor.freeSlots) {
       return this.state.mentor.freeSlots.map((slot, i) => {
-        let startDate = new Date(slot.start)
+        // let startDate = new Date(slot.start)
+        
+        // Transform dates from UTC to local time
+        let utcOffset = new Date().getTimezoneOffset()
+        let startDate = moment.utc(slot.start).utcOffset(-utcOffset)
+        console.log(startDate.format('MMMM'))
+
         return (
           <li className="mentor-card-slot flex justifycontent-center" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
             <div className='flex alignitems-center'>
               <div>
-                <span id='month' className='fontweight-bold text-uppercase'>{months[startDate.getMonth()]}</span>
-                <span id="day">{startDate.getDate()}</span>
+                <span id='month' className='fontweight-bold text-uppercase'>{months[startDate.month()]}</span>
+                <span id="day">{startDate.format('D')}</span>
               </div>
               <div>
-                <span id='time'>{days[startDate.getDay()]} {startDate.getHours() > 12 ? startDate.getHours() - 12: startDate.getHours()}:{startDate.getMinutes() < 10 ? `0${startDate.getMinutes()}` : startDate.getMinutes() } {startDate.getHours() >= 12 ? 'PM' : 'AM'}</span>
+                <span id='time'>
+                  {`${days[startDate.day()]} ${startDate.format('H')}:${startDate.format('mm')} ${startDate.format('H') >= 12 ? "PM" : "AM"}`}
+                </span>
               </div>
             </div>
           </li>
