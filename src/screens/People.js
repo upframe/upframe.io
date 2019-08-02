@@ -191,12 +191,12 @@ export default class People extends Component {
           <li className="mentor-card-slot flex justifycontent-center" data-id={slot.sid} key={slot.sid} onClick={this.selectSlot}>
             <div className='flex alignitems-center'>
               <div>
-                <span id='month' className='fontweight-bold text-uppercase'>{months[startDate.month()]}</span>
+                <span id='month' className='fontweight-bold text-uppercase'>{startDate.format('MMM')}</span>
                 <span id="day">{startDate.format('D')}</span>
               </div>
               <div>
                 <span id='time'>
-                  {`${days[startDate.day()]} ${startDate.format('h:mm A')}`}
+                  {startDate.format('ddd h:mm A')}
                 </span>
               </div>
             </div>
