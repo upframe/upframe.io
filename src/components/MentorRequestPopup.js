@@ -11,7 +11,7 @@ export default class MentorRequestPopup extends Component {
     super(props)
     this.state = {
       message: '',
-      name: props.name,
+      name: '',
       email: '',
       timeoffset: new Date().getTimezoneOffset()
     }
@@ -68,7 +68,7 @@ export default class MentorRequestPopup extends Component {
       <div className='dim-background' onClick={this.clickOutside}>
         <div className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
           <div className='flex justifycontent-center'>
-            <h1 className='fontweight-normal text-center'>Message {this.state.name.split(' ')[0]}</h1>
+            <h1 className='fontweight-normal text-center'>Message {this.props.name.split(' ')[0]}</h1>
             <span className='close' onClick={this.props.hideRequestPopup}>&#215;</span>
           </div>
           <span className='hr'></span>
