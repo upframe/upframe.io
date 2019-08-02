@@ -496,10 +496,16 @@ nav .wrapper .dropdown ul a {
 
 /* Typeform bot */
 
-body > div:nth-last-of-type(1),
+/* Icon */
 body > div:last-of-type {
   right: 2.5rem !important;
   bottom: 2rem !important;
+}
+
+/* Chat box */
+body > div:nth-last-of-type(2) {
+  right: 2.5rem !important;
+  
 }
 
 
