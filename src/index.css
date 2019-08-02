@@ -421,8 +421,6 @@ nav.active {
 }
 
 nav .wrapper {
-  width: 90rem;
-  max-width: 75%;
   height: 100%;
   margin: 0 auto;
 }
@@ -436,6 +434,7 @@ nav .wrapper #logo {
 
 nav .wrapper div {
   margin-left: auto;
+  margin-right: 15rem;
 }
 
 nav .wrapper .dropdown img {
@@ -494,6 +493,15 @@ nav .wrapper .dropdown ul li:hover {
 nav .wrapper .dropdown ul a {
   color: var(--blue-grey);
 }
+
+/* Typeform bot */
+
+body div:nth-last-of-type(1),
+body div:last-of-type {
+  right: 2.5rem !important;
+  bottom: 2rem !important;
+}
+
 
 /* POPULAR TAGS */
 .popular-tags h2 {
