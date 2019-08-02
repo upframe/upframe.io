@@ -176,9 +176,6 @@ export default class People extends Component {
   }
 
   displayFreeSlots = () => {
-    let days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-
     if (this.state.mentor.freeSlots) {
       return this.state.mentor.freeSlots.map((slot, i) => {
         // let startDate = new Date(slot.start)
