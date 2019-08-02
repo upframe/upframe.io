@@ -14,13 +14,7 @@ export default class Navbar extends Component {
   constructor(props) {
     super(props);
 
-    let firstVisit = docCookies.getItem('firstVisit')
-    if (firstVisit && Number(firstVisit) === 0) firstVisit = false;
-    else firstVisit = true;
-
     this.state = {
-      firstVisit,
-      cookieUpdated: false,
       scroll: false,
     }
   }
@@ -57,30 +51,10 @@ export default class Navbar extends Component {
     if (window.location.pathname === '/') this.context.setSearchQuery('', true)
   }
 
-  // Redefine cookie to hide notification and animate it
-  hideNotification = () => {
-    docCookies.setItem('firstVisit', 0, Infinity, '/', '', false)
-    
-    this.setState({ cookieUpdated: true })
-    setTimeout(() => {
-      document.querySelector('header').id = ''
-    }, 500)
-  }
-
   render() {
     return (
       <header id={ this.state.firstVisit ? 'with-notification' : null }
         className={this.state.cookieUpdated ? 'hide' : null}>
-        { this.state.firstVisit === true ?
-          <div id='first-visit-notification' className='flex alignitems-center justifycontent-center'>
-            <span className='emoji cupcake'></span>
-            <p>Ahoy! Upframe is currently invite-only. Drop us some lines at
-            team@upframe.io and we’ll keep you posted.</p>
-            <span className='arrow' onClick={this.hideNotification}></span>  
-          </div>
-          : null
-        }
-
         <nav className={window.scrollY > 0 ? 'active' : null}>
           <div className='wrapper flex justifycontent-center alignitems-center'>
             <Link to='/' id='logo' onClick={this.resetSearch}>
