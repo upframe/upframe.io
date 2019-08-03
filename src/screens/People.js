@@ -312,7 +312,7 @@ export default class People extends Component {
               Upframe one-on-one mentoring sessions come in two flavours, video chats or in-person meetings. You can also send me a direct message.
             </p>
 
-            <div class="mt2">
+            <div>
               <ul className='mentor-card-slots grid'>
                 {this.displayFreeSlots()}
                 <button id='request' className='btn btn-primary btn-fill' onClick={this.showRequestPopup}>Message</button>

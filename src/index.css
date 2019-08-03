@@ -931,6 +931,10 @@ body > div:nth-last-of-type(2) {
   font-size: 1.25rem;
 }
 
+.card#office-hours > div {
+  margin-top: 1.5rem;
+}
+
 .card#office-hours .mentor-card-slots {
   display: grid;
   grid-auto-rows: 1fr;
