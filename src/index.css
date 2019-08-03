@@ -46,6 +46,10 @@ body {
 .color-slate--grey { color: var(--slate-grey); }
 .bc-slate--grey { background-color: var(--slate-grey); }
 
+.color-blue--grey { color: var(--blue-grey); }
+.bc-blue--grey { background-color: var(--blue-grey); }
+
+
 /* FONT SIZES */
 .font-100 {
   font-size: 1rem;

@@ -218,7 +218,7 @@ export default class SettingsPublicTab extends Component {
     return (
       <React.Fragment>
       <div id='settings-publictab' className='tab center'>
-        <div className='flex'>
+        <div className='flex' id="profile-picture">
           <img className='profile-pic' alt='profile-pic' src={this.state.profilePic} />
           <input id='file-select' type='file' accept='image/*' onChange={this.uploadPhoto} />
           <div id='bio'>
@@ -229,65 +229,85 @@ export default class SettingsPublicTab extends Component {
             <button className='btn btn-round fontweight-thin' onClick={this.removePhoto}>Remove</button>
           </div>
         </div>
-        <div>
+
+        <div id="personal-info">
           <div className='input-group'>
-            <label htmlFor='name'>
+            <label className="fontweight-bold" htmlFor='name'>
               Your Name<span class="required-icon"></span>
             </label>
             <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
+
           <div className='input-group'>
-            <label htmlFor='location'>
+            <label className="fontweight-bold" htmlFor="username">Username</label>
+            <input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode} maxLength='50' onKeyUp={this.handleKeyUp} />
+
+            <p class="mt1">Your Upframe URL: <strong>{"https:upframe.io/" + this.state.keycode}</strong></p>
+          </div>
+          
+          <div className='input-group'>
+            <label className="fontweight-bold" htmlFor='location'>
               Location<span class="required-icon"></span>
             </label>
             <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
+          
           <div className='input-group'>
-            <label htmlFor='role'>
+            <label className="fontweight-bold" htmlFor='role'>
               Your Position<span class="required-icon"></span>
             </label>
             <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
+          
           <div className='input-group'>
-            <label htmlFor='company'>
+            <label className="fontweight-bold" htmlFor='company'>
               Company<span class="required-icon"></span>
             </label>
             <input type='text' onChange={this.handleCompanyChange} value={this.state.company} id='company' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
+
           <div className='input-group'>
-            <label htmlFor='website'>Website</label>
+            <label className="fontweight-bold" htmlFor='website'>
+              Website
+            </label>
             <input type='text' onChange={this.handleWebsiteChange} value={this.state.website} id='website' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
+
           <div className='input-group'>
-            <label htmlFor='twitter'>Twitter</label>
-            <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' maxLength='50' onKeyUp={this.handleKeyUp} />
-          </div>
-          <div className='input-group'>
-            <label htmlFor='linkedin'>LinkedIn</label>
-            <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' maxLength='50' onKeyUp={this.handleKeyUp} />
-          </div>
-          <div className='input-group'>
-            <label htmlFor='github'>Github</label>
-            <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' maxLength='50' onKeyUp={this.handleKeyUp} />
-          </div>
-          <div className='input-group'>
-            <label htmlFor='facebook'>Facebook</label>
-            <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' maxLength='50' onKeyUp={this.handleKeyUp} />
-          </div>
-          <div className='input-group'>
-            <label htmlFor='dribbble'>Dribbble</label>
-            <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' maxLength='50' onKeyUp={this.handleKeyUp} />
-          </div>
-          <div className='input-group'>
-            <label htmlFor='bio'>
+            <label className="fontweight-bold" htmlFor='bio'>
               Biography
               <span class="required-icon"></span>
             </label>
             <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio-text' maxLength='600' />
+
+            <p className="color-blue--grey">URLs are hyperlinked.</p>
           </div>
-          <div className='input-group'>
-            https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode} maxLength='50' onKeyUp={this.handleKeyUp} />
+
+          <div className="input-group">
+            <h2>Social Profiles</h2>
+
+            <div className='input-group'>
+              <label className="fontweight-bold" htmlFor='twitter'>Twitter</label>
+              <input type='text' placeholder="@upframed" onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' maxLength='50' onKeyUp={this.handleKeyUp} />
+            </div>
+            <div className='input-group'>
+              <label className="fontweight-bold" htmlFor='linkedin'>LinkedIn</label>
+              <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' maxLength='50' onKeyUp={this.handleKeyUp} />
+            </div>
+            <div className='input-group'>
+              <label className="fontweight-bold" htmlFor='github'>Github</label>
+              <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' maxLength='50' onKeyUp={this.handleKeyUp} />
+            </div>
+            <div className='input-group'>
+              <label className="fontweight-bold" htmlFor='facebook'>Facebook</label>
+              <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' maxLength='50' onKeyUp={this.handleKeyUp} />
+            </div>
+            <div className='input-group'>
+              <label className="fontweight-bold" htmlFor='dribbble'>Dribbble</label>
+              <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' maxLength='50' onKeyUp={this.handleKeyUp} />
+            </div>
           </div>
+
           <div className='input-group'>
             <h2>Your Skills</h2>
             <p>Add up to 7 skills to display in your profile.</p>
