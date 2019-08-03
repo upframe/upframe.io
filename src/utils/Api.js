@@ -146,7 +146,7 @@ export class Api {
     return fetch(`${this.schema}://${this.host}:${this.port}/mentor/verify?uniqueid=${uniqueid}`, fetchData).then((res) => res.json())
   }
 
-  async getAllMentors() {
+  async getAllMentors(slots) {
     if (this.cached && this.time > Date.now() - EXPIRY) {
       return this.cache
     }
@@ -157,7 +157,7 @@ export class Api {
         'Content-Type': 'application/json',
       }
     }
-    let req = fetch(`${this.schema}://${this.host}:${this.port}/mentor/all`, fetchData).then((res) => res.json())
+    let req = fetch(`${this.schema}://${this.host}:${this.port}/mentor/all${slots ? '?slots=true' : ''}`, fetchData).then((res) => res.json())
     this.time = Date.now()
     this.cached = true
     this.cache = req

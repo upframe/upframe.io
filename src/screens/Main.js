@@ -31,9 +31,14 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
-    Api.getAllMentors().then((res) => {
+    Api.getAllMentors(true).then((res) => {
+      let orderedMentors = res.mentors.filter(mentor => mentor.slots.length)
+      let mentorsWithNoSlots = res.mentors.filter(mentor => mentor.slots.length === 0)
+      
+      for(let mentor of mentorsWithNoSlots) orderedMentors.push(mentor)
+
       this.setState({
-        mentors: res.mentors
+        mentors: orderedMentors
       })
     })
   }
