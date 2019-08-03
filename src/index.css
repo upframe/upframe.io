@@ -381,6 +381,14 @@ header {
   width: 100%;
 }
 
+/* REQUIRED ICON */
+.required-icon::before {
+  content: "*";
+  display: inline-block;
+  color: var(--primary);
+  margin-left: 0.5rem;
+}
+
 /* FIRST VISIT NOTIFICATION */
 header #first-visit-notification {
   width: 100%;
