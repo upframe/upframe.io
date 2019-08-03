@@ -505,7 +505,7 @@ body > div:last-of-type {
 /* Chat box */
 body > div:nth-last-of-type(2) {
   right: 2.5rem !important;
-  
+
 }
 
 
@@ -590,7 +590,9 @@ body > div:nth-last-of-type(2) {
 
 #home .card.mentor-card #mentor-info h1 {
   font-size: 1.20rem;
-  margin-top: 0;
+  letter-spacing: .03125rem;
+  color: #000;
+  margin: 0;
 }
 
 #home .card.mentor-card #mentor-info p#role-company {
