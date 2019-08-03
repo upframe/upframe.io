@@ -128,7 +128,7 @@ export default class App extends Component {
     mixpanel.init("993a3d7a78434079b7a9bec245dbaec2");
 
     // hide typeform chat if the user is in settings
-    if (window.location.pathname.split('/')[1] == "settings") document.querySelector('body > div:last-of-type').style.display = "none";
+    if (window.location.pathname.split('/')[1] === "settings") document.querySelector('body > div:last-of-type').style.display = "none";
 
     return (
       <Router>

@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 
 import AppContext from './AppContext'
 
-import { docCookies } from '../utils/Cookies'
-
 // import emojis and icons
 import '../icons.css'
 
