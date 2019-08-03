@@ -231,51 +231,62 @@ export default class SettingsPublicTab extends Component {
         </div>
         <div>
           <div className='input-group'>
-            <label htmlFor='name'>Your Name</label>
-              <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' maxLength='50' onKeyUp={this.handleKeyUp} />
+            <label htmlFor='name'>
+              Your Name<span class="required-icon"></span>
+            </label>
+            <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
-            <label htmlFor='location'>Location</label>
-              <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' maxLength='50' onKeyUp={this.handleKeyUp} />
+            <label htmlFor='location'>
+              Location<span class="required-icon"></span>
+            </label>
+            <input type='text' onChange={this.handleLocationChange} value={this.state.location} id='location' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
-            <label htmlFor='role'>Your Position</label>
-              <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' maxLength='50' onKeyUp={this.handleKeyUp} />
+            <label htmlFor='role'>
+              Your Position<span class="required-icon"></span>
+            </label>
+            <input type='text' onChange={this.handleRoleChange} value={this.state.role} id='role' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
-            <label htmlFor='company'>Company</label>
-              <input type='text' onChange={this.handleCompanyChange} value={this.state.company} id='company' maxLength='50' onKeyUp={this.handleKeyUp} />
+            <label htmlFor='company'>
+              Company<span class="required-icon"></span>
+            </label>
+            <input type='text' onChange={this.handleCompanyChange} value={this.state.company} id='company' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
             <label htmlFor='website'>Website</label>
-              <input type='text' onChange={this.handleWebsiteChange} value={this.state.website} id='website' maxLength='50' onKeyUp={this.handleKeyUp} />
+            <input type='text' onChange={this.handleWebsiteChange} value={this.state.website} id='website' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
             <label htmlFor='twitter'>Twitter</label>
-              <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' maxLength='50' onKeyUp={this.handleKeyUp} />
+            <input type='text' onChange={this.handleTwitterChange} value={this.state.twitter} id='twitter' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
             <label htmlFor='linkedin'>LinkedIn</label>
-              <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' maxLength='50' onKeyUp={this.handleKeyUp} />
+            <input type='text' onChange={this.handleLinkedinChange} value={this.state.linkedin} id='linkedin' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
             <label htmlFor='github'>Github</label>
-              <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' maxLength='50' onKeyUp={this.handleKeyUp} />
+            <input type='text' onChange={this.handleGithubChange} value={this.state.github} id='github' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
             <label htmlFor='facebook'>Facebook</label>
-              <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' maxLength='50' onKeyUp={this.handleKeyUp} />
+            <input type='text' onChange={this.handleFacebookChange} value={this.state.facebook} id='facebook' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
             <label htmlFor='dribbble'>Dribbble</label>
-              <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' maxLength='50' onKeyUp={this.handleKeyUp} />
+            <input type='text' onChange={this.handleDribbbleChange} value={this.state.dribbble} id='dribbble' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
-            <label htmlFor='bio'>Biography</label>
-              <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio-text' maxLength='600' />
+            <label htmlFor='bio'>
+              Biography
+              <span class="required-icon"></span>
+            </label>
+            <textarea rows='5' type='text' onChange={this.handleBioChange} value={this.state.bio} id='bio-text' maxLength='600' />
           </div>
           <div className='input-group'>
-              https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode} maxLength='50' onKeyUp={this.handleKeyUp} />
+            https://connect.upframe.io/<input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode} maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
           <div className='input-group'>
             <h2>Your Skills</h2>
@@ -291,7 +302,10 @@ export default class SettingsPublicTab extends Component {
           <div className='input-group'>
             <h2>Favorite Locations</h2>
             
-            <label htmlFor='location-1'>First location</label>
+            <label htmlFor='location-1'>
+              First location
+              <span class="required-icon"></span>  
+            </label>
             <input type='text' onChange={this.handleFirstFavoriteLocationChange} value={this.state.favoriteLocations[0]} id='location-1' onKeyUp={this.handleKeyUp} />
             
             <label htmlFor='location-2'>Second location</label>
