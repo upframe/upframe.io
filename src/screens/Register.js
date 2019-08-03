@@ -53,7 +53,7 @@ const Register = () => {
               <label for='devpass'>Upframe Dev Mode Pass</label>
               <input id='devpass' type='password' placeholder='Nuclear code' onChange={e => setDevPass(e.target.value)} value={developerPass}/>
             </div>
-            <button type='submit' className='btn btn-primary center' onClick={handleLogin}>Register</button>
+            <button type='submit' className='btn btn-primary center' onClick={handleLogin}>Create Account</button>
           </div>
         </div>
       </main>

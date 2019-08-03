@@ -28,9 +28,9 @@ export default class Login extends Component {
       return (
         <React.Fragment>
           <Helmet>
-            <title>Settings | Upframe</title>
-            <meta property="og:title" content="Settings | Upframe"></meta>
-            <meta property="og:description" content="Change your profile information and settings"></meta>
+            <title>Login | Upframe</title>
+            <meta property="og:title" content="Login | Upframe"></meta>
+            <meta property="og:description" content="Login to your account and start helping people."></meta>
             <meta property="og:image" content="/android-chrome-192x192.png"></meta>
             <meta name="twitter:card" content="summary_large_image"></meta>
           </Helmet>
@@ -44,7 +44,7 @@ export default class Login extends Component {
                 </div>
                 <div className='field-group'>
                   <label for='password'>Password</label>
-                  <input id='password' type='password' placeholder='Nuclear code' onChange={this.handlePasswordChange} onKeyUp={this.handleKeyUp} />
+                  <input id='password' type='password' placeholder='Password' onChange={this.handlePasswordChange} onKeyUp={this.handleKeyUp} />
                 </div>
                 <button type='submit' className='btn btn-primary center' onClick={this.login}>Login</button>
               </div>
