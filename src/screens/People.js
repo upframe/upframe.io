@@ -7,7 +7,32 @@ import Api from '../utils/Api'
 import AppContext from '../components/AppContext'
 import Breadcrumbs from '../components/Breadcrumbs'
 import MentorMeetupPopup from '../components/MentorMeetupPopup'
-import MentorRequestPopup from '../components/MentorRequestPopup';
+import MentorRequestPopup from '../components/MentorRequestPopup'
+
+const BioWithLinks = ({ bio }) => {
+  let paragraphs = bio.split('\n')
+
+  /*
+  var urlRegex =/(\b(https?|ftp|file):[-A-Z0-9+&@#%?=~_|!:,.;]*[-A-Z0-9+&@#%=~_|])/ig;
+  let bio = this.state.mentor.bio.replace(urlRegex, url => {
+    return `<a href="${url}">${url}</a>`
+  })
+  */
+
+  return (
+   <React.Fragment>
+     {paragraphs.map((p, index) => {
+
+       return (
+        <p className={ (paragraphs[index + 1] == "" && paragraph[index] != "") ?
+          "line-break" : ''}>
+          {p}
+        </p>
+      )
+     })}
+   </React.Fragment> 
+  )
+}
 
 export default class People extends Component {
 
@@ -245,11 +270,11 @@ export default class People extends Component {
                 <h1 id='name' className="font-150 fontweight-medium">{this.state.mentor.name}</h1>
                 <p id='company-role'>{this.state.mentor.role} at {this.state.mentor.company}</p>
                 <p id='location' className='flex alignitems-center'>
-                  <svg class="mr1" width="15px" height="22px" viewBox="0 0 15 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                  <svg className="mr1" width="15px" height="22px" viewBox="0 0 15 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                     <title>Location</title>
                     <desc>Created with Sketch.</desc>
-                    <g id="Page-1" stroke="none" stroke-width="1" fill="currentColor" fill-rule="evenodd">
-                        <g id="Mentor-Profile" transform="translate(-569.000000, -342.000000)" fill="currentColor" fill-rule="nonzero">
+                    <g id="Page-1" stroke="none" strokeWidth="1" fill="currentColor" fillRule="evenodd">
+                        <g id="Mentor-Profile" transform="translate(-569.000000, -342.000000)" fill="currentColor" fillRule="nonzero">
                             <g id="Location" transform="translate(569.000000, 342.000000)">
                                 <path d="M7.5021453,0 C3.3616354,0.00461630452 0.00592507486,3.32328179 8.94183898e-05,7.4192381 C-0.0168548072,12.223619 2.37439903,17.0782857 7.10607403,21.8428571 C7.20525026,21.9432866 7.34115844,21.9999351 7.48308305,22 C7.62500766,21.9999351 7.76091584,21.9432866 7.86009207,21.8428571 C12.6087113,17.0782857 15.0105553,12.2257143 14.9999651,7.4192381 C14.9941351,3.32491501 11.6410009,0.00692373357 7.5021453,0 Z M7.48520108,20.724 C3.20466609,16.288381 1.04215929,11.8150476 1.05910352,7.4192381 C1.12279233,3.94474998 3.98822844,1.16108051 7.50108629,1.16108051 C11.0139441,1.16108051 13.8793803,3.94474998 13.9430691,7.4192381 C13.9515412,11.8150476 11.7805623,16.288381 7.48520108,20.724 Z" id="Shape"></path>
                                 <circle id="Oval" transform="translate(7.500000, 7.500000) rotate(-13.280000) translate(-7.500000, -7.500000) " cx="7.5" cy="7.5" r="3.5"></circle>
@@ -261,8 +286,8 @@ export default class People extends Component {
                   {this.state.mentor.location}
                 </p>
 
-                <div class="mt2" id="social-networks">
-                  <div class="flex">
+                <div className="mt2" id="social-networks">
+                  <div className="flex">
                     { this.state.mentor.facebook ?
                       <a href={this.state.mentor.facebook.includes('facebook.com') ?
                         this.state.mentor.facebook :
@@ -288,15 +313,14 @@ export default class People extends Component {
             </div>
 
             <div id='additional-info'>
-              <h2 class="color-black ma0">About me</h2>
-              {this.state.mentor.bio.split('\n').map((element) => {
-                return (
-                  <p id='bio'>{element}</p>
-                )
-              })}
+              <h2 className="color-black ma0">About me</h2>
+              <div id="bio">
+
+                <BioWithLinks bio={this.state.mentor.bio} />
+              </div>
 
               <div id="tags">
-                <h2 class="color-black ma0">I can advise you on</h2>
+                <h2 className="color-black ma0">I can advise you on</h2>
                 
                 <ul id='tags' className='flex'>
                   {this.mentorTagsToElement(this.state.mentor.tags)}
@@ -305,8 +329,8 @@ export default class People extends Component {
             </div>
           </div>
 
-          <div class="card mt2" id="office-hours">
-            <h2 class="ma0">Book a meetup with me</h2>
+          <div className="card mt2" id="office-hours">
+            <h2 className="ma0">Book a meetup with me</h2>
 
             <p className="color-black mt1">
               Upframe one-on-one mentoring sessions come in two flavours, video chats or in-person meetings. You can also send me a direct message.
