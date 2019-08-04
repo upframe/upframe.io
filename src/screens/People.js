@@ -24,7 +24,7 @@ const BioWithLinks = ({ bio }) => {
      {paragraphs.map((p, index) => {
 
        return (
-        <p className={ (paragraphs[index + 1] == "" && paragraphs[index] != "") ?
+        <p className={ (paragraphs[index + 1] === "" && paragraphs[index] !== "") ?
           "line-break" : ''}>
           {p}
         </p>
