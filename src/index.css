@@ -620,6 +620,10 @@ body > div:nth-last-of-type(2) {
   display: -webkit-box;
 }
 
+#home .card.mentor-card #mentor-info #bio p.line-break {
+  line-height: unset;
+}
+
 #home .card.mentor-card #mentor-info #tags {
   flex-wrap: wrap;
   margin: .65rem .75rem 0 0;
@@ -932,6 +936,10 @@ body > div:nth-last-of-type(2) {
 .card.mentor-card #additional-info #bio {
   line-height: 1.76rem;
   letter-spacing: 0.21px;
+}
+
+.card.mentor-card #additional-info #bio p.line-break {
+  margin-bottom: 1.76rem;
 }
 
 .card#office-hours {
