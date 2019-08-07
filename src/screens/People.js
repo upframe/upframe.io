@@ -125,6 +125,7 @@ export default class People extends Component {
             linkedin: res.mentor.linkedin,
             location: res.mentor.location,
             name: res.mentor.name,
+            keycode: res.mentor.keycode,
             profilePic: res.mentor.profilePic,
             role: res.mentor.role,
             facebook: res.mentor.facebook,
