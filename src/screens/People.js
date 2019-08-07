@@ -255,6 +255,7 @@ export default class People extends Component {
 
           <Helmet>
             <title>{this.state.mentor.name} | Upframe</title>
+            <meta property="og:url" content={`${window.location.origin}/${this.state.mentor.keycode}`}></meta>
             <meta property="og:title" content={`${this.state.mentor.name} | Upframe`}></meta>
             <meta property="og:description" content={`Set up a meetup with ${this.state.mentor.name}. ${this.state.mentor.bio.substr(0, 128)}...`}></meta>
             <meta property="og:image" content={this.state.mentor.profilePic}></meta>
