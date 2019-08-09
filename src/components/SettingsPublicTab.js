@@ -309,8 +309,12 @@ export default class SettingsPublicTab extends Component {
           </div>
 
           <div className='input-group'>
-            <h2>Your Skills</h2>
-            <p>Add up to 7 skills to display in your profile.</p>
+            <h2 className="mb1">Experience</h2>
+            <p className="mb2">
+              Add up to 6 skills to display in your profile. Other people will
+              see them under the section “I can advise you on”.
+            </p>
+            
             <ReactTags tags={this.state.tags}
               autofocus={false}
               handleDelete={this.handleDeleteTag}
@@ -320,7 +324,12 @@ export default class SettingsPublicTab extends Component {
           </div>
 
           <div className='input-group'>
-            <h2>Favorite Locations</h2>
+            <h2 className="mb1">Offline Meetings</h2>
+            <p className="mb2">
+              Upframe enables you to meet up in physical locations too.
+              Next time someone sends you a coffee request, the location
+              will be added automatically to the calendar invite.
+            </p>
             
             <label htmlFor='location-1'>
               First location
