@@ -1,9 +1,11 @@
-/*    /index.html   200
-
-
 # Redirect all pages on connect.upframe.io to primary
 # domain which is upframe.io
 https://connect.upframe.io/* https://upframe.io/:splat 301!
 
-# Optional: Redirect default Netlify subdomain to primary domain
+# Redirect default Netlify subdomain to primary domain
 https://serene-babbage-0e99d9.netlify.com/* https://upframe.io/:splat 301!
+
+
+# This would match every URL and therefore the rules above
+# would never actually be triggered
+/*    /index.html   200
