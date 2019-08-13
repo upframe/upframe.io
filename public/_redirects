@@ -4,3 +4,6 @@
 # Redirect all pages on connect.upframe.io to primary
 # domain which is upframe.io
 https://connect.upframe.io/* https://upframe.io/:splat 301!
+
+# Optional: Redirect default Netlify subdomain to primary domain
+https://serene-babbage-0e99d9.netlify.com/* https://upframe.io/:splat 301!
