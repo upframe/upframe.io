@@ -1,6 +1,6 @@
 /*    /index.html   200
 
 
-# Redirect all pages on upframe.io to primary
-# domain which is connect.upframe.io
-https://upframe.io/* https://connect.upframe.io/:splat 301!
+# Redirect all pages on connect.upframe.io to primary
+# domain which is upframe.io
+https://connect.upframe.io/* https://upframe.io/:splat 301!
