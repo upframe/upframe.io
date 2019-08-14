@@ -242,7 +242,7 @@ export default class SettingsPublicTab extends Component {
             <label className="fontweight-bold" htmlFor="username">Username</label>
             <input type='text' onChange={this.handleKeycodeChange} value={this.state.keycode} maxLength='50' onKeyUp={this.handleKeyUp} />
 
-            <p class="mt1">Your Upframe URL: <strong>{"https:upframe.io/" + this.state.keycode}</strong></p>
+            <p class="mt1">Your Upframe URL: <strong>{"https://upframe.io/" + this.state.keycode}</strong></p>
           </div>
           
           <div className='input-group'>
