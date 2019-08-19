@@ -510,14 +510,15 @@ nav .wrapper .dropdown ul a {
 
 /* Icon */
 body > div:last-of-type {
+  z-index: 3 !important;
   right: 2.5rem !important;
   bottom: 2rem !important;
 }
 
 /* Chat box */
 body > div:nth-last-of-type(2) {
+  z-index: 3 !important;
   right: 2.5rem !important;
-
 }
 
 
