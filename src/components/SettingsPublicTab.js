@@ -16,18 +16,6 @@ const delimiters = [KeyCodes.comma, KeyCodes.enter]
 export default class SettingsPublicTab extends Component {
 
   static contextType = AppContext
-  // tags: [
-  //   { id: "Thailand", text: "Thailand" },
-  //   { id: "India", text: "India" }
-  // ],
-  // suggestions: [
-  //   { id: 'USA', text: 'USA' },
-  //   { id: 'Germany', text: 'Germany' },
-  //   { id: 'Austria', text: 'Austria' },
-  //   { id: 'Costa Rica', text: 'Costa Rica' },
-  //   { id: 'Sri Lanka', text: 'Sri Lanka' },
-  //   { id: 'Thailand', text: 'Thailand' }
-  // ]
 
   constructor(props, context) {
     super(props, context)
@@ -200,8 +188,15 @@ export default class SettingsPublicTab extends Component {
     })
   }
 
-  handleAddTag = (tag) => {
+  handleAddTag = () => {
+    let tagInput = document.querySelector('.ReactTags__tagInputField')
+    let tag = {
+      "id": tagInput.value,
+      "text": tagInput.value
+    }
+
     this.setState((state) => ({ tags: [...state.tags, tag] }))
+    tagInput.value = ""
   }
 
   handleDragTag = (tag, currPos, newPos) => {
@@ -215,6 +210,25 @@ export default class SettingsPublicTab extends Component {
   }
 
   render() {
+    // const tagSuggestions = [
+    //   { id: "1", name: "UX" },
+    //   { id: "2", name: "UI"},
+    //   { id: "3", name: "Full-Stack Development" },
+    //   { id: "4", name: "Business" },
+    //   { id: "5", name: "Marketing" },
+    //   { id: "6", name: "CEO" },
+    //   { id: "7", name: "Golang" },
+    //   { id: "8", name: "Javascript" },
+    //   { id: "9", name: "Java" },
+    //   { id: "10", name: "C/C++" },
+    //   { id: "11", name: "DevOps" },
+    //   { id: "12", name: "PHP" },
+    //   { id: "13", name: "Node" },
+    //   { id: "14", name: "React" },
+    //   { id: "15", name: "Angular" },
+    // ]
+
+
     return (
       <React.Fragment>
       <div id='settings-publictab' className='tab center'>
@@ -233,7 +247,7 @@ export default class SettingsPublicTab extends Component {
         <div id="personal-info">
           <div className='input-group'>
             <label className="fontweight-bold" htmlFor='name'>
-              Your Name<span class="required-icon"></span>
+              Your Name<span className="required-icon"></span>
             </label>
             <input type='text' onChange={this.handleNameChange} value={this.state.name} id='name' maxLength='50' onKeyUp={this.handleKeyUp} />
           </div>
@@ -308,19 +322,23 @@ export default class SettingsPublicTab extends Component {
             </div>
           </div>
 
-          <div className='input-group'>
+          <div className="input-group" id="experience">
             <h2 className="mb1">Experience</h2>
             <p className="mb2">
               Add up to 6 skills to display in your profile. Other people will
               see them under the section “I can advise you on”.
             </p>
             
-            <ReactTags tags={this.state.tags}
-              autofocus={false}
-              handleDelete={this.handleDeleteTag}
-              handleAddition={this.handleAddTag}
-              handleDrag={this.handleDragTag}
-              delimiter={delimiters} />
+            <div className="flex alignitems-center">
+              <ReactTags tags={this.state.tags}
+                autofocus={false}
+                handleDelete={this.handleDeleteTag}
+                // handleAddition={this.handleAddTag}
+                handleDrag={this.handleDragTag}
+                delimiter={delimiters} />
+
+              <button class="btn btn-fill btn-primary block ml2" onClick={this.handleAddTag}>Add tag</button>
+            </div>
           </div>
 
           <div className='input-group'>
