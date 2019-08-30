@@ -71,7 +71,8 @@ export default class Navbar extends Component {
             :
               <div className='flex flex-column alignitems-center'>
                 <ul>
-                  {window.location.pathname === '/login' ? null : <li><Link to='/login'>Login</Link></li> }
+                  {/* {window.location.pathname === '/login' ? null : <li><Link to='/login'>Login</Link></li> } */}
+                  <li><a href='https://www.producthunt.com/upcoming/upframe'>Learn more</a></li>
                 </ul>
               </div>
             }
