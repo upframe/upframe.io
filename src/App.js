@@ -132,10 +132,14 @@ export default class App extends Component {
       <>
         <Helmet>
           <title>Upframe</title>
+          <meta property="description" content={'Upframe connects students with leaders in tech, design and product through 1-1 mentoring worldwide. Keep Pushing Forward.'}></meta>
+          <meta property="language" content="EN"></meta>
+          <meta property="copyright" content="Upframe"></meta>
           <meta property="og:url" content={`${window.location.origin}`}></meta>
           <meta property="og:title" content={'Upframe'}></meta>
           <meta property="og:description" content={'Upframe connects students with leaders in tech, design and product through 1-1 mentoring worldwide. Keep Pushing Forward.'}></meta>
           <meta property="og:image" content={`${window.location.origin}/keep-pushing-forward.jpg`}></meta>
+          <meta property="og:site_name" content={'Upframe'}></meta>
         </Helmet>
         <Router>
           <div className="App">
