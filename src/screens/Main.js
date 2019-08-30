@@ -23,10 +23,11 @@ export default class Main extends Component {
     }
 
     aos.init({
-      duration: 750,
+      duration: 350,
       delay: 0,
       offset: 0,
       throttleDelay: 0,
+      once: true,
     })
   }
 
