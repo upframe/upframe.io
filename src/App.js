@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import mixpanel from 'mixpanel-browser'
 
 import AppContext from './components/AppContext';
-import Navbar from './components/Navbar';
+import Navbar from './components/Navbar/';
 import Api from './utils/Api';
 
 const Main = React.lazy(() => import(/* webpackChunkName: "Main", webpackPrefetch: true */'./screens/Main'))
