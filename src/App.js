@@ -1,4 +1,5 @@
 import React, { Component, Suspense } from 'react';
+import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import mixpanel from 'mixpanel-browser'
 
@@ -128,38 +129,48 @@ export default class App extends Component {
     mixpanel.init("993a3d7a78434079b7a9bec245dbaec2");
 
     return (
-      <Router>
-        <div className="App">
-          <AppContext.Provider value={contextValue}>
-            <Navbar />
-            <Suspense fallback={<div>Loading...</div>}> 
-              <Switch>
-                <Route exact path='/' component={Main}/>
-                <Route exact path='/login' component={Login} />
-                <Route exact path='/register' component={Register} />
-                <Route exact path='/settings' component={Settings} />
-                <Route exact path='/settings/:page' component={Settings} />
-                <Route exact path='/404' component={ErrorPage} />
-                <Route exact path='/changemyemail/:token' component={ChangeEmail} />
-                <Route exact path='/resetmypassword/:token' component={ResetPassword} />
-                <Route exact path='/meetup/confirm/:meetupid' component={MeetupConfirm} />
-                <Route exact path='/meetup/refuse/:meetupid' component={MeetupRefuse} />
-                <Route exact path='/sync' component={GoogleSync} />
-                <Route exact path='/expertise/:expertise' component={Expertise} />
-                <Route exact path='/company/:company' component={Company} />
-                <Route exact path='/dev' component={DevPlayground} />
-                <Route exact path='/onboarding/:keycode' component={Onboarding} />
-                <Route exact path='/business' component={MentorGroup} />
-                <Route exact path='/design' component={MentorGroup} />
-                <Route exact path='/software' component={MentorGroup} />
-                <Route exact path='/:keycode' component={People} />
-                <Route component={ErrorPage} />
-              </Switch>
-            </Suspense>
-            <div id="snackbar">Information saved</div>
-          </AppContext.Provider>
-        </div>
-      </Router>
+      <>
+        <Helmet>
+          <title>Upframe</title>
+          <meta property="og:url" content={`${window.location.origin}`}></meta>
+          <meta property="og:title" content={'Upframe'}></meta>
+          <meta property="og:description" content={'Upframe connects students with leaders in tech, design and product through 1-1 mentoring worldwide. Keep Pushing Forward.'}></meta>
+          <meta property="og:image" content={`${window.location.origin}/keep-pushing-forward.jpg`}></meta>
+          <meta name="twitter:card" content="summary_large_image"></meta>
+        </Helmet>
+        <Router>
+          <div className="App">
+            <AppContext.Provider value={contextValue}>
+              <Navbar />
+              <Suspense fallback={<div>Loading...</div>}> 
+                <Switch>
+                  <Route exact path='/' component={Main}/>
+                  <Route exact path='/login' component={Login} />
+                  <Route exact path='/register' component={Register} />
+                  <Route exact path='/settings' component={Settings} />
+                  <Route exact path='/settings/:page' component={Settings} />
+                  <Route exact path='/404' component={ErrorPage} />
+                  <Route exact path='/changemyemail/:token' component={ChangeEmail} />
+                  <Route exact path='/resetmypassword/:token' component={ResetPassword} />
+                  <Route exact path='/meetup/confirm/:meetupid' component={MeetupConfirm} />
+                  <Route exact path='/meetup/refuse/:meetupid' component={MeetupRefuse} />
+                  <Route exact path='/sync' component={GoogleSync} />
+                  <Route exact path='/expertise/:expertise' component={Expertise} />
+                  <Route exact path='/company/:company' component={Company} />
+                  <Route exact path='/dev' component={DevPlayground} />
+                  <Route exact path='/onboarding/:keycode' component={Onboarding} />
+                  <Route exact path='/business' component={MentorGroup} />
+                  <Route exact path='/design' component={MentorGroup} />
+                  <Route exact path='/software' component={MentorGroup} />
+                  <Route exact path='/:keycode' component={People} />
+                  <Route component={ErrorPage} />
+                </Switch>
+              </Suspense>
+              <div id="snackbar">Information saved</div>
+            </AppContext.Provider>
+          </div>
+        </Router>
+      </>
     );
   }
 }
