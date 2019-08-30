@@ -136,7 +136,6 @@ export default class App extends Component {
           <meta property="og:title" content={'Upframe'}></meta>
           <meta property="og:description" content={'Upframe connects students with leaders in tech, design and product through 1-1 mentoring worldwide. Keep Pushing Forward.'}></meta>
           <meta property="og:image" content={`${window.location.origin}/keep-pushing-forward.jpg`}></meta>
-          <meta name="twitter:card" content="summary_large_image"></meta>
         </Helmet>
         <Router>
           <div className="App">
