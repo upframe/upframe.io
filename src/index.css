@@ -909,11 +909,6 @@ body > div:nth-last-of-type(2) {
   border-radius: 0.18rem;
   object-fit: contain;
   margin: none;
-    /* .mentor-profilepic {
-    width: 13rem;
-    margin: auto;
-    object-fit: cover;
-  } */
 }
 
 .card.mentor-card #main-info h1 {
