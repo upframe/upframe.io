@@ -907,6 +907,13 @@ body > div:nth-last-of-type(2) {
   min-width: 13rem;
   max-height: 13rem;
   border-radius: 0.18rem;
+  object-fit: contain;
+  margin: none;
+    /* .mentor-profilepic {
+    width: 13rem;
+    margin: auto;
+    object-fit: cover;
+  } */
 }
 
 .card.mentor-card #main-info h1 {
@@ -1471,6 +1478,12 @@ button::-moz-focus-inner {
   nav .wrapper {
     max-width: 95%;
     width: 95%;
+  }
+
+  .mentor-profilepic {
+    width: 13rem;
+    margin: auto;
+    object-fit: cover;
   }
 
   #people .card.mentor-card {
