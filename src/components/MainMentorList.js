@@ -1,23 +1,20 @@
 import React, { PureComponent } from 'react';
 import MentorCard from './MentorCard'
 
-export default class MainMentorList extends PureComponent {
-
-  render() {
-    if (this.props.mentors !== [] && this.props.mentors !== undefined) {
-      return (
-        <div className="mentor-list flex flex-column">
-          {this.props.mentors.map((mentor, index) => {
-            return (
-              <MentorCard key={index} mentorInfo={mentor} animation='fade-up' index={index} />
-            )
-          })}
-        </div>
-      )
-    } else {
-      return (
-        <p>No mentors found</p>
-      )
-    }
+const MainMentorList = (props) => {
+  if (Array.isArray(props.mentors) && props.mentors.length) {
+    return (
+      <div className="mentor-list flex flex-column">
+        {props.mentors.map((mentor, index) => {
+          return (
+            <MentorCard key={index} mentorInfo={mentor} animation='fade-up' index={index} />
+          )
+        })}
+      </div>
+    )
+  } else {
+    return null
   }
 }
+
+export default MainMentorList
