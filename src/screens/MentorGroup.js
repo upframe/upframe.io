@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Api from '../utils/Api';
 
-import MainMentorList from '../components/MainMentorList'
+import MainMentorList from '../components/MainMentorList/index'
 import MainSearchBar from '../components/MainSearchBar'
 
 const MentorGroup = (props) => {

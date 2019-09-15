@@ -5,7 +5,7 @@ import AppContext from '../components/AppContext'
 
 import Api from '../utils/Api';
 import MainCategories from '../components/MainCategories'
-import MainMentorList from '../components/MainMentorList'
+import MainMentorList from '../components/MainMentorList/index'
 import MainSearchBar from '../components/MainSearchBar'
 
 import aos from 'aos'
@@ -61,7 +61,7 @@ export default class Main extends Component {
               <MainCategories setMentors={this.setMentors} />
               <h1 className='font-150 fontweight-medium' data-aos='fade-up'
                 data-aos-delay='600' data-aos-offset='0'>
-                <i className="em em-hot_pepper mr1"></i>Featured Mentors
+                Featured Mentors
               </h1>
               <p data-aos='fade-up' data-aos-delay='700' data-aos-offset='0'>Our in-house curators work
                 alongside with startup founders, community shapers and domain experts across Europe to
