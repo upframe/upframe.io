@@ -9,7 +9,8 @@ const MainCategories = props => {
     <div id='categories-list'>
       <h1 className='font-150 fontweight-medium' data-aos='fade-up'
         data-aos-delay='0' data-aos-offset='0'>
-      <i className="em em-star2 mr1"></i>Top Categories</h1>
+        Top Categories
+      </h1>
       <p data-aos='fade-up' data-aos-delay='200' data-aos-offset='0'>
         How can we help? Start by picking one of our main categories.
       </p>

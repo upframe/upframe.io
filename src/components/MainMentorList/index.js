@@ -4,7 +4,6 @@ import MentorCard from '../MentorCard'
 import './index.css'
 
 export default class MainMentorList extends PureComponent {
-
   render() {
     if (this.props.mentors !== [] && this.props.mentors !== undefined) {
       return (
