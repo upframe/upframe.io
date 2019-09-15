@@ -163,7 +163,7 @@ export default class App extends Component {
                   <Route exact path='/company/:company' component={Company} />
                   <Route exact path='/dev' component={DevPlayground} />
                   <Route exact path='/onboarding/:keycode' component={Onboarding} />
-                  <Route exact path='/business' component={MentorGroup} />
+                  <Route exact path='/product' component={MentorGroup} />
                   <Route exact path='/design' component={MentorGroup} />
                   <Route exact path='/software' component={MentorGroup} />
                   <Route exact path='/:keycode' component={People} />

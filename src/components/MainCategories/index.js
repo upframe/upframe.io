@@ -15,10 +15,10 @@ const MainCategories = props => {
         How can we help? Start by picking one of our main categories.
       </p>
       <ul className='list-reset grid'>
-        <Link to='/business' data-aos='fade-up' data-aos-delay='300' data-aos-offset='0'>
+        <Link to='/product' data-aos='fade-up' data-aos-delay='300' data-aos-offset='0'>
           <li className='category-item'>
-            <div alt='Business' title='Business' id="category-image"></div>
-            <h1>Business</h1>
+            <div alt='Product' title='Product' id="category-image"></div>
+            <h1>Product</h1>
           </li>
         </Link>
         
