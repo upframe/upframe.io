@@ -341,6 +341,7 @@ export default class SettingsPublicTab extends Component {
             </div>
           </div>
 
+          {/*
           <div className='input-group'>
             <h2 className="mb1">Offline Meetings</h2>
             <p className="mb2">
@@ -360,7 +361,8 @@ export default class SettingsPublicTab extends Component {
             
             <label htmlFor='location-3'>Third location</label>
             <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} id='location-3' onKeyUp={this.handleKeyUp} />
-          </div>
+          </div> 
+          */}
 
           <div className='input-group'>
             <h2>Privacy</h2>
