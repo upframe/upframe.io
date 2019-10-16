@@ -18,6 +18,9 @@ const Register = () => {
         setPassword('')
         setDevPass('')
         alert('New mentor added')
+
+        // redirect to settings page after mentor register is done successfully 
+        window.location.pathname = "/settings"
       } else {
         alert('Error adding new mentor')
       }
