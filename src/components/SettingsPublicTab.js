@@ -325,7 +325,7 @@ export default class SettingsPublicTab extends Component {
               <ReactTags tags={this.state.tags}
                 autofocus={false}
                 handleDelete={this.handleDeleteTag}
-                // handleAddition={this.handleAddTag}
+                handleAddition={this.handleAddTag}
                 handleDrag={this.handleDragTag}
                 delimiter={delimiters} />
 
