@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
-import Api from '../../utils/Api';
-import './index.css';
+import React, { Component } from 'react'
 
-import AppContext from '../AppContext';
+import Api from '../../utils/Api'
+import { sortMentorsBySlots } from '../../utils/Array'
+
+import './index.css'
+
+import AppContext from '../AppContext'
 
 export default class MainSearchBar extends Component {
   static contextType = AppContext
@@ -20,7 +23,7 @@ export default class MainSearchBar extends Component {
 
     if (search === '') {
       Api.getAllMentors().then((res) => {
-        this.props.setMentors(res.mentors)
+        this.props.setMentors(sortMentorsBySlots(res.mentors))
       })
     } else {
       Api.searchFull(search).then((res) => {
@@ -34,7 +37,7 @@ export default class MainSearchBar extends Component {
       this.context.setSearchQuery('', false)
 
       Api.getAllMentors().then((res) => {
-        this.props.setMentors(res.mentors)
+        this.props.setMentors(sortMentorsBySlots(res.mentors))
       })
     }
 
