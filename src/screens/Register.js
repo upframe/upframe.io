@@ -51,7 +51,7 @@ const Register = () => {
             </div>
             <div className='field-group'>
               <label for='devpass'>Upframe Dev Mode Pass</label>
-              <input id='devpass' type='password' placeholder='Nuclear code' onChange={e => setDevPass(e.target.value)} value={developerPass}/>
+              <input id='devpass' type='text' placeholder='Nuclear code' onChange={e => setDevPass(e.target.value)} value={developerPass}/>
             </div>
             <button type='submit' className='btn btn-primary center' onClick={handleLogin}>Create Account</button>
           </div>
