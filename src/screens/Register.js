@@ -19,10 +19,17 @@ const Register = () => {
         setDevPass('')
         alert('New mentor added')
 
-        // redirect to settings page after mentor register is done successfully 
-        setTimeout(() => {
-          window.location.pathname = "/settings"
-        }, 500)
+
+        Api.login(email, password).then((res) => {
+          if (res.ok === 1) {
+            // redirect to settings page after mentor register is done successfully 
+            setTimeout(() => {
+              window.location.pathname = "/settings/public"
+            }, 500)
+          } else {
+            alert('Could not log you in')
+          }
+        })
       } else {
         alert('Error adding new mentor')
       }
