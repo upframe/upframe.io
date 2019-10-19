@@ -38,7 +38,7 @@ const Recommendation = (props) =>{
         })
     }
     useEffect(() => {
-        Object.entries(props).map((mentor,key) => {
+        Object.entries(props).forEach((mentor,key) => {
             apiCall(mentor[1],mentorList[key])
         })
     }
