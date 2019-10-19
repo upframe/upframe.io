@@ -21,8 +21,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
     "react-tag-input": "6.2.0",
-    "react-window": "^1.8.5",
-    "trim-right": "^1.0.1"
+    "react-window": "^1.8.5"
   },
   "scripts": {
     "start": "react-scripts start",
