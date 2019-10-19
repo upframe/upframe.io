@@ -9,3 +9,18 @@ export function shuffle(a) {
   }
   return a;
 }
+
+/**
+ * Sorts mentors by slots (those with slots are first and those with no slots come second)
+ * @param {Array} mentors 
+ */
+export function sortMentorsBySlots(mentors) {
+  let orderedMentors = mentors.filter(mentor => mentor.slots.length)
+  let mentorsWithNoSlots = mentors.filter(mentor => mentor.slots.length === 0)
+
+  // for(let mentor of mentorsWithNoSlots) orderedMentors.push(mentor)
+
+  orderedMentors = [...orderedMentors, ...mentorsWithNoSlots]
+
+  return orderedMentors
+}

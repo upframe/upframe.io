@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 
-import AppContext from './AppContext'
+import AppContext from '../AppContext'
 
 // import emojis and icons
-import '../icons.css'
+import '../../icons.css'
+import './style.css'
 
 export default class Navbar extends Component {
   static contextType = AppContext
@@ -71,7 +72,8 @@ export default class Navbar extends Component {
             :
               <div className='flex flex-column alignitems-center'>
                 <ul>
-                  {window.location.pathname === '/login' ? null : <li><Link to='/login'>Login</Link></li> }
+                  {/* {window.location.pathname === '/login' ? null : <li><Link to='/login'>Login</Link></li> } */}
+                  <li><a id='learn-more' href='https://www.producthunt.com/upcoming/upframe'>Learn more</a></li>
                 </ul>
               </div>
             }

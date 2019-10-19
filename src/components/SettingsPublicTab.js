@@ -127,10 +127,6 @@ export default class SettingsPublicTab extends Component {
     })
   }
 
-  noFavoriteLocation = () => {
-    return (this.state.favoriteLocations[0].replace(/\s/g, '') === '') && (this.state.favoriteLocations[1].replace(/\s/g, '') === '') && (this.state.favoriteLocations[2].replace(/\s/g, '') === '')
-  }
-
   informationChanged = () => {
     let old = this.context.user
     let actual = this.state
@@ -139,7 +135,6 @@ export default class SettingsPublicTab extends Component {
       old.company !== actual.company ||
       old.dribbble !== actual.dribbble ||
       old.facebook !== actual.facebook ||
-      old.favoriteLocations !== JSON.stringify(actual.favoriteLocations) ||
       old.github !== actual.github ||
       old.keycode !== actual.keycode ||
       old.linkedin !== actual.linkedin ||
@@ -156,12 +151,9 @@ export default class SettingsPublicTab extends Component {
     let numOfChars = JSON.stringify(this.state.tags).length
     if (numOfChars > 254) {
       this.context.showToast('Your expertise tags are too long! Delete some so we can save your info :D')
-    } else if (this.noFavoriteLocation()) {
-      this.context.showToast('You need at least one favorite location')
     } else if (this.informationChanged()) {
       this.context.saveUserInfo({
         tags: JSON.stringify(this.state.tags),
-        favoriteLocations: JSON.stringify(this.state.favoriteLocations),
         name: this.state.name,
         location: this.state.location,
         role: this.state.role,
@@ -333,7 +325,7 @@ export default class SettingsPublicTab extends Component {
               <ReactTags tags={this.state.tags}
                 autofocus={false}
                 handleDelete={this.handleDeleteTag}
-                // handleAddition={this.handleAddTag}
+                handleAddition={this.handleAddTag}
                 handleDrag={this.handleDragTag}
                 delimiter={delimiters} />
 
@@ -341,6 +333,7 @@ export default class SettingsPublicTab extends Component {
             </div>
           </div>
 
+          {/*
           <div className='input-group'>
             <h2 className="mb1">Offline Meetings</h2>
             <p className="mb2">
@@ -360,7 +353,8 @@ export default class SettingsPublicTab extends Component {
             
             <label htmlFor='location-3'>Third location</label>
             <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} id='location-3' onKeyUp={this.handleKeyUp} />
-          </div>
+          </div> 
+          */}
 
           <div className='input-group'>
             <h2>Privacy</h2>

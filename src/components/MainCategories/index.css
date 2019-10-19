@@ -36,7 +36,13 @@
 }
 
 @media (max-width: 720px) {
+
   #categories-list ul {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  #categories-list ul .category-item #category-image {
+    box-shadow: none;
+    background-repeat: no-repeat;
   }
 }

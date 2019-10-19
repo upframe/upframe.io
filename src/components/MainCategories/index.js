@@ -9,15 +9,16 @@ const MainCategories = props => {
     <div id='categories-list'>
       <h1 className='font-150 fontweight-medium' data-aos='fade-up'
         data-aos-delay='0' data-aos-offset='0'>
-      <i className="em em-star2 mr1"></i>Top Categories</h1>
+        Top Categories
+      </h1>
       <p data-aos='fade-up' data-aos-delay='200' data-aos-offset='0'>
         How can we help? Start by picking one of our main categories.
       </p>
       <ul className='list-reset grid'>
-        <Link to='/business' data-aos='fade-up' data-aos-delay='300' data-aos-offset='0'>
+        <Link to='/product' data-aos='fade-up' data-aos-delay='300' data-aos-offset='0'>
           <li className='category-item'>
-            <div alt='Business' title='Business' id="category-image"></div>
-            <h1>Business</h1>
+            <div alt='Product' title='Product' id="category-image"></div>
+            <h1>Product</h1>
           </li>
         </Link>
         
