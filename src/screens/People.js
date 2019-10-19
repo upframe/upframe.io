@@ -8,7 +8,7 @@ import AppContext from '../components/AppContext'
 import Breadcrumbs from '../components/Breadcrumbs'
 import MentorMeetupPopup from '../components/MentorMeetupPopup'
 import MentorRequestPopup from '../components/MentorRequestPopup'
-import Recommendation from './recommendation/recommendation'
+import Recommendation from './recommendation'
 import recommendationList from './common/recommendationList'
 
 const BioWithLinks = ({ bio }) => {

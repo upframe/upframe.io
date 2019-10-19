@@ -1,7 +1,7 @@
 import React,{useEffect,useState}  from 'react';
 import Api from '../../utils/Api'
 
-import styles from './recommendation.module.scss'
+import styles from './index.module.scss'
 
 
 const MENTOR_URL="https://upframe.io/"
