@@ -237,7 +237,7 @@ export default class People extends Component {
 
     if(recommendationList[`${mentorKeycode}`]){
       return(
-        <Recommendation {...recommendationList[`${mentorKeycode}`]}/>
+        <Recommendation recommendations={recommendationList[`${mentorKeycode}`]}/>
       )
     }
   }

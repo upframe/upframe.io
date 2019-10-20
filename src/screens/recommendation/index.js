@@ -8,16 +8,14 @@ const MENTOR_URL="https://upframe.io/"
 
 
 const MentorAvatar = (props) =>{
-
-    console.log(props[0], 'from mentor ')
-    if(props[0]){
+    if(props.mentor){
         return(
             <div className={styles.mentorWrapper}>
-                <a href={MENTOR_URL+props[0].keycode} className={styles.mentorContent}>
-                    <img src={props[0].profilePic} alt={props[0].name} />
+                <a href={MENTOR_URL+props.mentor.keycode} className={styles.mentorContent}>
+                    <img src={props.mentor.profilePic} alt={props.mentor.name} />
                     <div className={styles.mentorText}>
-                        <h2>{props[0].name}</h2>
-                        <h3>{props[0].role} at {props[0].company} </h3>
+                        <h2>{props.mentor.name}</h2>
+                        <h3>{props.mentor.role} at {props.mentor.company} </h3>
                     </div>
                 </a>
             </div>
@@ -26,29 +24,37 @@ const MentorAvatar = (props) =>{
 }
 
 const Recommendation = (props) =>{
-    
-    const [firstMentor,setFirstMentor] = useState()
-    const [secondMentor,setSecondMentor] = useState()
-    const mentorList = [setFirstMentor,setSecondMentor]
 
-    const apiCall = (mentorKeycode,mentorName) => {
-        Api.getMentorInfo(mentorKeycode).then((res) => {
-            let data = [res.mentor] 
-            mentorName(data)
+    const [mentorsList,setMentorsList] = useState([])
+  
+    const apiCall = (mentorKeycode) => {
+        return Api.getMentorInfo(mentorKeycode).then((res) => {
+            let data = [res.mentor]
+            return data
         })
     }
+      
     useEffect(() => {
-        Object.entries(props).forEach((mentor,key) => {
-            apiCall(mentor[1],mentorList[key])
-        })
+    const promises = props.recommendations.map((mentorPromise) => {
+        return apiCall(mentorPromise)
+    })
+
+     Promise.all(promises).then((result) => {
+        let list = result[0].concat(result[1])
+        setMentorsList(list)
+     })
     }
-        ,[]);
+        ,[props.recommendations]);
+    
+    const mentorComponent = mentorsList.map((mentor,key) => {
+        return <MentorAvatar mentor={mentor} key={key}/>
+    })
+    
     return(
         <section className={styles.cardWrapper}>
             <h2>Other mentors who can help</h2>
             <div className={styles.recommenderWrapper}> 
-                <MentorAvatar {...firstMentor}/>
-                <MentorAvatar {...secondMentor}/>
+                {mentorComponent}
             </div>
         </section>
     )

@@ -28,9 +28,16 @@ $h2_fontSize:1.25rem;
 
     img{
         border-radius: 4px;
-        width: 90px;
-        height: 90px;
+        max-width: 90px;
+        max-height: 90px;
+
     } 
+
+    .mentorText{
+        margin-left: 15px;
+        position: relative;
+        bottom: 5px;
+    }
     
     h2{
         font-size: $h2_fontSize;
@@ -43,10 +50,7 @@ $h2_fontSize:1.25rem;
         font-weight: normal;
         margin: 0;
     }
-
-    .mentorText{
-        margin-left: 15px;
-    }
+    
 }
 
 @media (max-width: 800px){
