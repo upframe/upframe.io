@@ -9,6 +9,9 @@ import Breadcrumbs from '../components/Breadcrumbs'
 import MentorMeetupPopup from '../components/MentorMeetupPopup'
 import MentorRequestPopup from '../components/MentorRequestPopup'
 
+import Recommendation from '../components/RecommendationCard'
+import recommendationList from './common/recommendationList'
+
 const BioWithLinks = ({ bio }) => {
   let paragraphs = bio.split('\n')
 
@@ -230,6 +233,15 @@ export default class People extends Component {
     }
   }
 
+ 
+  checkRecommender = () =>{
+    if(recommendationList[this.state.mentor.keycode]){
+      return(
+        <Recommendation recommendations={recommendationList[`${this.state.mentor.keycode}`]}/>
+      )
+    }
+  }
+
   render() {
     if (this.state.mentorExists === 1) {
       return (
@@ -347,8 +359,7 @@ export default class People extends Component {
 
           </div>
 
-          {/* <div className='copy-url' onClick={this.copyUrlToClipboard}>
-          </div> */}
+          {this.checkRecommender()}
         </main>
       )
     } else if (this.state.mentorExists === 2)  {
