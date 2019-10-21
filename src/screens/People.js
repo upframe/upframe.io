@@ -8,7 +8,8 @@ import AppContext from '../components/AppContext'
 import Breadcrumbs from '../components/Breadcrumbs'
 import MentorMeetupPopup from '../components/MentorMeetupPopup'
 import MentorRequestPopup from '../components/MentorRequestPopup'
-import Recommendation from './recommendation'
+
+import Recommendation from '../components/RecommendationCard'
 import recommendationList from './common/recommendationList'
 
 const BioWithLinks = ({ bio }) => {
@@ -202,6 +203,7 @@ export default class People extends Component {
       )
     })
   }
+
   displayFreeSlots = () => {
     if (this.state.mentor.freeSlots) {
       return this.state.mentor.freeSlots.map((slot, i) => {
@@ -233,11 +235,9 @@ export default class People extends Component {
 
  
   checkRecommender = () =>{
-    let mentorKeycode = this.state.mentor.keycode
-
-    if(recommendationList[`${mentorKeycode}`]){
+    if(recommendationList[this.state.mentor.keycode]){
       return(
-        <Recommendation recommendations={recommendationList[`${mentorKeycode}`]}/>
+        <Recommendation recommendations={recommendationList[`${this.state.mentor.keycode}`]}/>
       )
     }
   }
@@ -359,8 +359,6 @@ export default class People extends Component {
 
           </div>
 
-          {/* <div className='copy-url' onClick={this.copyUrlToClipboard}>
-          </div> */}
           {this.checkRecommender()}
         </main>
       )
