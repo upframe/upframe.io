@@ -1,4 +1,4 @@
-const EXPIRY = 60 * 1000;
+const EXPIRY = 60 * 1000
 
 export class Api {
   constructor() {
@@ -9,14 +9,18 @@ export class Api {
     this.port = process.env.REACT_APP_APIPORT
     this.schema = process.env.REACT_APP_APISCHEMA
     if (process.env.REACT_APP_ENV === 'dev') {
-      console.log(`Using API at ${this.host} on port ${this.port} via a${this.schema === 'https' ? ' secure' : 'n insecure'} connection.`)
+      console.log(
+        `Using API at ${this.host} on port ${this.port} via a${
+          this.schema === 'https' ? ' secure' : 'n insecure'
+        } connection.`
+      )
     }
   }
 
   login(email, password) {
     let fetchBody = {
       email,
-      password
+      password,
     }
     let fetchData = {
       method: 'POST',
@@ -24,10 +28,13 @@ export class Api {
       body: JSON.stringify(fetchBody),
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/auth/login`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/auth/login`,
+      fetchData
+    ).then(res => res.json())
   }
 
   logout() {
@@ -36,11 +43,14 @@ export class Api {
       mode: 'cors',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
 
-    return fetch(`${this.schema}://${this.host}:${this.port}/auth/logout`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/auth/logout`,
+      fetchData
+    ).then(res => res.json())
   }
 
   register(email, password, name, developerPass) {
@@ -49,79 +59,94 @@ export class Api {
       password,
       type: 'mentor',
       name,
-      developerPass
+      developerPass,
     }
     let fetchData = {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(fetchBody),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/auth/register`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/auth/register`,
+      fetchData
+    ).then(res => res.json())
   }
 
   resetPassword(email) {
     let resetInfo = {
-      email
+      email,
     }
     let fetchData = {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(resetInfo),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/auth/forgotmypassword`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/auth/forgotmypassword`,
+      fetchData
+    ).then(res => res.json())
   }
 
   changeEmail(email) {
     let resetInfo = {
-      email
+      email,
     }
     let fetchData = {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(resetInfo),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/auth/changemyemail`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/auth/changemyemail`,
+      fetchData
+    ).then(res => res.json())
   }
 
   resetPasswordWithToken(token, password) {
     let resetInfo = {
       token,
-      password
+      password,
     }
     let fetchData = {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(resetInfo),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/auth/forgotmypassword`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/auth/forgotmypassword`,
+      fetchData
+    ).then(res => res.json())
   }
 
   changeEmailWithToken(token, email) {
     let resetInfo = {
       email,
-      token
+      token,
     }
     let fetchData = {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(resetInfo),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/auth/changemyemail`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/auth/changemyemail`,
+      fetchData
+    ).then(res => res.json())
   }
 
   verifyKeycode(keycode) {
@@ -130,9 +155,12 @@ export class Api {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/mentor/verify?keycode=${keycode}`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/mentor/verify?keycode=${keycode}`,
+      fetchData
+    ).then(res => res.json())
   }
 
   verifyUniqueId(uniqueid) {
@@ -141,9 +169,12 @@ export class Api {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/mentor/verify?uniqueid=${uniqueid}`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/mentor/verify?uniqueid=${uniqueid}`,
+      fetchData
+    ).then(res => res.json())
   }
 
   async getAllMentors(slots) {
@@ -155,9 +186,14 @@ export class Api {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     }
-    let req = fetch(`${this.schema}://${this.host}:${this.port}/mentor/all${slots ? '?slots=true' : ''}`, fetchData).then((res) => res.json())
+    let req = fetch(
+      `${this.schema}://${this.host}:${this.port}/mentor/all${
+        slots ? '?slots=true' : ''
+      }`,
+      fetchData
+    ).then(res => res.json())
     this.time = Date.now()
     this.cached = true
     this.cache = req
@@ -170,9 +206,12 @@ export class Api {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/mentor/random`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/mentor/random`,
+      fetchData
+    ).then(res => res.json())
   }
 
   getMentorInfo(keycode) {
@@ -181,9 +220,12 @@ export class Api {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/mentor/${keycode}`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/mentor/${keycode}`,
+      fetchData
+    ).then(res => res.json())
   }
 
   createMeetup(sid, location, message, email, name, timeoffset) {
@@ -193,7 +235,7 @@ export class Api {
       message,
       email,
       name,
-      timeoffset
+      timeoffset,
     }
 
     let fetchData = {
@@ -201,10 +243,13 @@ export class Api {
       mode: 'cors',
       body: JSON.stringify(fetchBody),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/meetup/`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/meetup/`,
+      fetchData
+    ).then(res => res.json())
   }
 
   getMeetups() {
@@ -213,10 +258,13 @@ export class Api {
       mode: 'cors',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/meetup`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/meetup`,
+      fetchData
+    ).then(res => res.json())
   }
 
   confirmMeetup(meetupId) {
@@ -225,10 +273,13 @@ export class Api {
       mode: 'cors',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/meetup/confirm?meetup=${meetupId}`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/meetup/confirm?meetup=${meetupId}`,
+      fetchData
+    ).then(res => res.json())
   }
 
   refuseMeetup(meetupId) {
@@ -237,10 +288,13 @@ export class Api {
       mode: 'cors',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/meetup/refuse?meetup=${meetupId}`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/meetup/refuse?meetup=${meetupId}`,
+      fetchData
+    ).then(res => res.json())
   }
 
   getUserInfo() {
@@ -250,9 +304,12 @@ export class Api {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/profile/me`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/profile/me`,
+      fetchData
+    ).then(res => res.json())
   }
 
   updateUserInfo(updateInfo) {
@@ -262,10 +319,13 @@ export class Api {
       credentials: 'include',
       body: JSON.stringify(updateInfo),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/profile/me`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/profile/me`,
+      fetchData
+    ).then(res => res.json())
   }
 
   uploadPhoto() {
@@ -276,9 +336,12 @@ export class Api {
       method: 'POST',
       credentials: 'include',
       mode: 'cors',
-      body: data
+      body: data,
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/profile/image`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/profile/image`,
+      fetchData
+    ).then(res => res.json())
   }
 
   searchQuick(query) {
@@ -287,9 +350,12 @@ export class Api {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/search/quick?term=${query}`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/search/quick?term=${query}`,
+      fetchData
+    ).then(res => res.json())
   }
 
   searchFull(query) {
@@ -298,9 +364,12 @@ export class Api {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/search/full?term=${query}`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/search/full?term=${query}`,
+      fetchData
+    ).then(res => res.json())
   }
 
   getSearchTags() {
@@ -309,9 +378,12 @@ export class Api {
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/search/tags`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/search/tags`,
+      fetchData
+    ).then(res => res.json())
   }
 
   addFreeSlots(freeSlotsToSave, freeSlotsToDelete) {
@@ -321,17 +393,17 @@ export class Api {
     // end: slot.end,
     // title: 'Upframe Free Slot',
     // tag: 'upframe-free-slot'
-    let updatedSlots = freeSlotsToSave.map((slot) => {
+    let updatedSlots = freeSlotsToSave.map(slot => {
       return {
         start: slot.start,
         end: slot.end,
-        recurrency: 'UNIQUE'
+        recurrency: 'UNIQUE',
       }
     })
-    let deletedSlots = freeSlotsToDelete.map((slot) => slot.id)
+    let deletedSlots = freeSlotsToDelete.map(slot => slot.id)
     let body = {
-      'updated': updatedSlots,
-      'deleted': deletedSlots
+      updated: updatedSlots,
+      deleted: deletedSlots,
     }
     let fetchData = {
       method: 'POST',
@@ -339,10 +411,13 @@ export class Api {
       credentials: 'include',
       body: JSON.stringify(body),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/mentor/slots`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/mentor/slots`,
+      fetchData
+    ).then(res => res.json())
   }
 
   getFreeSlots(start, end) {
@@ -352,9 +427,12 @@ export class Api {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/mentor/slots?start=${start}&?end=${end}`, fetchData).then((res) => res.json()) //?start=${start}&?end=${end}
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/mentor/slots?start=${start}&?end=${end}`,
+      fetchData
+    ).then(res => res.json()) //?start=${start}&?end=${end}
   }
 
   getGoogleSyncUrl() {
@@ -364,7 +442,10 @@ export class Api {
         'Content-Type': 'application/json',
       },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/auth/google`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/auth/google`,
+      fetchData
+    ).then(res => res.json())
   }
 
   getTokens(code) {
@@ -374,28 +455,33 @@ export class Api {
         'Content-Type': 'application/json',
       },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/auth/oauthcode?code=` + code, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/auth/oauthcode?code=` + code,
+      fetchData
+    ).then(res => res.json())
   }
 
-  requestTimeSlot(keycode, email, name, message, timeoffset ) {
+  requestTimeSlot(keycode, email, name, message, timeoffset) {
     let fetchBody = {
       keycode,
       email,
       name,
       message,
-      timeoffset
+      timeoffset,
     }
     let fetchData = {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify(fetchBody),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     }
-    return fetch(`${this.schema}://${this.host}:${this.port}/mentor/request`, fetchData).then((res) => res.json())
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/mentor/request`,
+      fetchData
+    ).then(res => res.json())
   }
-
 }
 
-export default new Api();
+export default new Api()

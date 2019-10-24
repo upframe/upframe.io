@@ -10,11 +10,11 @@ import AppContext from '../AppContext'
 export default class MainSearchBar extends Component {
   static contextType = AppContext
 
-  handleChange = (event) => {
+  handleChange = event => {
     this.setSearch(event.target.value)
   }
 
-  setSearch = (search) => {
+  setSearch = search => {
     // update query in context
     this.context.setSearchQuery(search)
 
@@ -22,28 +22,37 @@ export default class MainSearchBar extends Component {
     this.props.setMentors([])
 
     if (search === '') {
-      Api.getAllMentors().then((res) => {
+      Api.getAllMentors().then(res => {
         this.props.setMentors(sortMentorsBySlots(res.mentors))
       })
     } else {
-      Api.searchFull(search).then((res) => {
+      Api.searchFull(search).then(res => {
         this.props.setMentors(res.search)
       })
     }
   }
 
   render() {
-    if (this.context.searchQuery.length === 0 && this.context.resetSearchQuery) {
+    if (
+      this.context.searchQuery.length === 0 &&
+      this.context.resetSearchQuery
+    ) {
       this.context.setSearchQuery('', false)
 
-      Api.getAllMentors().then((res) => {
+      Api.getAllMentors().then(res => {
         this.props.setMentors(sortMentorsBySlots(res.mentors))
       })
     }
 
     return (
-      <input type='text' id="search-input" className='icon' placeholder="Try looking for a person..."
-        onChange={this.handleChange} value={this.context.searchQuery} />
-    );
+      <input
+        type="text"
+        id="search-input"
+        className="icon"
+        placeholder="Try looking for a person..."
+        onChange={this.handleChange}
+        value={this.context.searchQuery}
+      />
+    )
   }
 }
