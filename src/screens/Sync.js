@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 import AppContext from '../components/AppContext'
 import Api from '../utils/Api'
 
 export default class Sync extends Component {
-
   static contextType = AppContext
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       code: window.location.search.split('?code=')[1],
@@ -15,16 +14,16 @@ export default class Sync extends Component {
   }
 
   componentDidMount() {
-    Api.getTokens(this.state.code).then((response1) => {
+    Api.getTokens(this.state.code).then(response1 => {
       if (response1.ok === 1) {
-        this.addUpframeCalendar(response1.token).then((response2) => {
+        this.addUpframeCalendar(response1.token).then(response2 => {
           //TODO - Check if add Upframe Calendar was successful
           //if it was save to state
           Api.updateUserInfo({
             googleAccessToken: response1.token,
             googleRefreshToken: response1.refreshToken,
-            upframeCalendarId: response2.id
-          }).then((res) => {
+            upframeCalendarId: response2.id,
+          }).then(res => {
             if (res.ok === 1) {
               let newUser = this.context.user
               newUser.googleAccessToken = response1.token
@@ -41,9 +40,10 @@ export default class Sync extends Component {
     })
   }
 
-  addUpframeCalendar = (token) => { //TODO - Move to API
+  addUpframeCalendar = token => {
+    //TODO - Move to API
     let body = {
-      'summary': 'Upframe Calendar'
+      summary: 'Upframe Calendar',
     }
     let fetchData = {
       method: 'POST',
@@ -51,10 +51,13 @@ export default class Sync extends Component {
       body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      }
+        Authorization: 'Bearer ' + token,
+      },
     }
-    return fetch('https://www.googleapis.com/calendar/v3/calendars', fetchData).then((res) => res.json())
+    return fetch(
+      'https://www.googleapis.com/calendar/v3/calendars',
+      fetchData
+    ).then(res => res.json())
   }
 
   render() {

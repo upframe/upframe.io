@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-import Api from '../utils/Api';
-import mixpanel from 'mixpanel-browser';
+import React, { Component } from 'react'
+import Api from '../utils/Api'
+import mixpanel from 'mixpanel-browser'
 
 import AppContext from '../components/AppContext'
 
 export default class MeetupConfirm extends Component {
-
   static contextType = AppContext
 
-  componentDidMount () {
-    Api.confirmMeetup(this.props.match.params.meetupid).then((res) => {
+  componentDidMount() {
+    Api.confirmMeetup(this.props.match.params.meetupid).then(res => {
       console.log(res)
       if (res.ok === 0) {
         alert('Could not confirm your meetup, make sure you are logged in')
@@ -30,6 +29,6 @@ export default class MeetupConfirm extends Component {
       <div>
         <h1>Confirming...</h1>
       </div>
-    );
+    )
   }
-} 
+}

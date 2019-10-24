@@ -1,46 +1,45 @@
-import React, { Component } from 'react';
-import Api from '../utils/Api';
-import mixpanel from 'mixpanel-browser';
+import React, { Component } from 'react'
+import Api from '../utils/Api'
+import mixpanel from 'mixpanel-browser'
 /* Neste popup vamos ter dois dialogos, um para escolher
  * um meetup, outro para escolher uma chamada, podemos
  * juntar tudo neste.
  */
 export default class MentorRequestPopup extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
       message: '',
       name: '',
       email: '',
-      timeoffset: new Date().getTimezoneOffset()
+      timeoffset: new Date().getTimezoneOffset(),
     }
   }
 
-  handleEmailChange = (e) => {
+  handleEmailChange = e => {
     this.setState({
-      email: e.target.value
+      email: e.target.value,
     })
   }
 
-  handleNameChange = (e) => {
+  handleNameChange = e => {
     this.setState({
-      name: e.target.value
+      name: e.target.value,
     })
   }
 
-  handleMessageChange = (event) => {
+  handleMessageChange = event => {
     this.setState({
-      message: event.target.value
+      message: event.target.value,
     })
   }
 
-  clickOutside = (e) => {
+  clickOutside = e => {
     e.stopPropagation()
     this.props.hideRequestPopup()
   }
-  
-  noPropagation = (e) => {
+
+  noPropagation = e => {
     e.stopPropagation()
   }
 
@@ -51,9 +50,11 @@ export default class MentorRequestPopup extends Component {
       this.state.name,
       this.state.message,
       this.state.timeoffset
-    ).then((res) => {
+    ).then(res => {
       if (res.ok === 1) {
-        mixpanel.track('[Meetup Request] ' + this.state.name + ' w/ ' + this.state.email)
+        mixpanel.track(
+          '[Meetup Request] ' + this.state.name + ' w/ ' + this.state.email
+        )
         alert('Time slots requested. Now wait for mentor confirmation.')
         this.props.hideRequestPopup()
       } else {
@@ -65,27 +66,58 @@ export default class MentorRequestPopup extends Component {
 
   render() {
     return (
-      <div className='dim-background' onClick={this.clickOutside}>
-        <div className='mentor-meetup-popup flex flex-column' onClick={this.noPropagation}>
-          <div className='flex justifycontent-center'>
-            <h1 className='fontweight-normal text-center'>Message {this.props.name.split(' ')[0]}</h1>
-            <span className='close' onClick={this.props.hideRequestPopup}>&#215;</span>
+      <div className="dim-background" onClick={this.clickOutside}>
+        <div
+          className="mentor-meetup-popup flex flex-column"
+          onClick={this.noPropagation}
+        >
+          <div className="flex justifycontent-center">
+            <h1 className="fontweight-normal text-center">
+              Message {this.props.name.split(' ')[0]}
+            </h1>
+            <span className="close" onClick={this.props.hideRequestPopup}>
+              &#215;
+            </span>
           </div>
-          <span className='hr'></span>
-          <div id='meetup-form' className='flex flex-column'>
-            <div className='input-group'>
-              <label for='message'>Message</label>
-              <textarea id='message' cols='40' rows='3' maxLength='256' placeholder='I have challenge x and I was hoping you could help with y.' value={this.state.message} onChange={this.handleMessageChange}></textarea>
+          <span className="hr"></span>
+          <div id="meetup-form" className="flex flex-column">
+            <div className="input-group">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                cols="40"
+                rows="3"
+                maxLength="256"
+                placeholder="I have challenge x and I was hoping you could help with y."
+                value={this.state.message}
+                onChange={this.handleMessageChange}
+              ></textarea>
             </div>
-            <div className='input-group'>
-              <label for='email'>Your email</label>
-              <input id='email' type='email' placeholder='Your email' onChange={this.handleEmailChange} />
+            <div className="input-group">
+              <label for="email">Your email</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Your email"
+                onChange={this.handleEmailChange}
+              />
             </div>
-            <div className='input-group'>
-              <label for='name'>Your name</label>
-              <input id='name' type='text' placeholder='Your name' onChange={this.handleNameChange} />
-            </div><br />
-            <button className='btn btn-fill btn-primary right' onClick={this.requestTimeSlot}>Message</button>
+            <div className="input-group">
+              <label for="name">Your name</label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Your name"
+                onChange={this.handleNameChange}
+              />
+            </div>
+            <br />
+            <button
+              className="btn btn-fill btn-primary right"
+              onClick={this.requestTimeSlot}
+            >
+              Message
+            </button>
           </div>
         </div>
       </div>
