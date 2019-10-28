@@ -45,7 +45,7 @@
   },
   "bundlesize": [
     {
-      "path": "./build/static/js/*.js.map",
+      "path": "./build/static/js/*.js",
       "maxSize": "1 MB"
     }
   ]
