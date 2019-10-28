@@ -25,6 +25,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "bundle":"bundlesize",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -37,8 +38,15 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "bundlesize": "^0.18.0",
     "eslint-plugin-prettier": "^3.1.1",
     "prettier": "^1.18.2",
     "stylelint": "^9.9.0"
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./build/static/js/*.js.map",
+      "maxSize": "1 MB"
+    }
+  ]
 }
