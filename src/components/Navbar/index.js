@@ -19,7 +19,7 @@ export default class Navbar extends Component {
   }
 
   componentDidMount() {
-    this.watchScroll()
+    // this.watchScroll()
   }
 
   watchScroll() {
@@ -62,6 +62,14 @@ export default class Navbar extends Component {
             <Link to="/" id="logo" onClick={this.resetSearch}>
               <img src="/logo.svg" alt="Upframe logo" className="logo"></img>
             </Link>
+            <input
+              type="text"
+              id="search-input"
+              className="icon"
+              placeholder="Try looking for a person..."
+              onChange={this.handleChange}
+              value={this.context.searchQuery}
+            />
 
             {this.context.loggedIn ? (
               <div className="flex flex-column alignitems-center dropdown">
@@ -93,7 +101,6 @@ export default class Navbar extends Component {
             ) : (
               <div className="flex flex-column alignitems-center">
                 <ul>
-                  {/* {window.location.pathname === '/login' ? null : <li><Link to='/login'>Login</Link></li> } */}
                   <li>
                     <a
                       id="learn-more"
