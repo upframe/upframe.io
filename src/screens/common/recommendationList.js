@@ -5,6 +5,7 @@ const Recommendation = {
   malik: ['pf', 'hugo.franca'],
   pf: ['hugo.franca', 'gui'],
   fbaiodias: ['miukimiu', 'sebastian.jespersen'],
+  tiagopedras: ['pf', 'hugo.franca'],
 }
 
 export default Recommendation
