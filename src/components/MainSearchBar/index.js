@@ -4,55 +4,56 @@ import Api from '../../utils/Api'
 import { sortMentorsBySlots } from '../../utils/Array'
 
 import './index.css'
+import { Redirect } from "react-router-dom";
+
 
 import AppContext from '../AppContext'
+import { runInThisContext } from 'vm';
 
 export default class MainSearchBar extends Component {
   static contextType = AppContext
+  
 
   handleChange = event => {
-    this.setSearch(event.target.value)
+    this.context.setSearchQuery(event.target.value)
+
   }
 
-  setSearch = search => {
-    // update query in context
-    this.context.setSearchQuery(search)
-
-    // remove all mentors from the mentors list
-    this.props.setMentors([])
-
-    if (search === '') {
-      Api.getAllMentors().then(res => {
-        this.props.setMentors(sortMentorsBySlots(res.mentors))
-      })
-    } else {
+  handleKeyPress = (event) => {
+    if(event.key === 'Enter'){
+      const search = this.context.searchQuery
       Api.searchFull(search).then(res => {
+        if(res.ok == 0){
+          return alert('user does not exist')
+        }
+        this.context.resetSearchQuery = true;
         this.props.setMentors(res.search)
-      })
+    })
+    }
+  }
+
+  RedirectToMain = () => {
+    if (this.context.resetSearchQuery) {
+      return <Redirect to='/' />
     }
   }
 
   render() {
-    if (
-      this.context.searchQuery.length === 0 &&
-      this.context.resetSearchQuery
-    ) {
-      this.context.setSearchQuery('', false)
-
-      Api.getAllMentors().then(res => {
-        this.props.setMentors(sortMentorsBySlots(res.mentors))
-      })
-    }
 
     return (
-      <input
-        type="text"
-        id="search-input"
-        className="icon"
-        placeholder="Try looking for a person..."
-        onChange={this.handleChange}
-        value={this.context.searchQuery}
-      />
+      <div>
+        <input
+          type="text"
+          id="search-input"
+          className="icon"
+          placeholder="Try looking for a person..."
+          onChange={this.handleChange}
+          value={this.context.searchQuery}
+          onKeyPress={this.handleKeyPress}
+        />
+         {this.RedirectToMain()}
+      </div>
+     
     )
   }
 }

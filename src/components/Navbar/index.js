@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
+import SearchBar from '../MainSearchBar';
 import AppContext from '../AppContext'
 
 // import emojis and icons
@@ -15,6 +16,7 @@ export default class Navbar extends Component {
 
     this.state = {
       scroll: false,
+      mentors: []
     }
   }
 
@@ -46,6 +48,12 @@ export default class Navbar extends Component {
     this.closeDropdown()
     this.context.logout()
   }
+  
+  setMentors = mentors => {
+    this.setState({
+      mentors: mentors,
+    })
+  }
 
   resetSearch = () => {
     if (window.location.pathname === '/') this.context.setSearchQuery('', true)
@@ -62,15 +70,7 @@ export default class Navbar extends Component {
             <Link to="/" id="logo" onClick={this.resetSearch}>
               <img src="/logo.svg" alt="Upframe logo" className="logo"></img>
             </Link>
-            <input
-              type="text"
-              id="search-input"
-              className="icon"
-              placeholder="Try looking for a person..."
-              onChange={this.handleChange}
-              value={this.context.searchQuery}
-            />
-
+            <SearchBar setMentors={this.setMentors}/>
             {this.context.loggedIn ? (
               <div className="flex flex-column alignitems-center dropdown">
                 <img

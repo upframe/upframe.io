@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
 
-// import app context
 import AppContext from '../components/AppContext'
 
 import Api from '../utils/Api'
 import MainCategories from '../components/MainCategories'
-import MainMentorList from '../components/MainMentorList/index'
-import MainSearchBar from '../components/MainSearchBar'
+import MainMentorList from '../components/MainMentorList'
 
 import aos from 'aos'
 import 'aos/dist/aos.css'
+import { throws } from 'assert'
 
 export default class Main extends Component {
   static contextType = AppContext
@@ -18,6 +17,7 @@ export default class Main extends Component {
     super(props)
     this.state = {
       mentors: [],
+      searchQuery: '',
       fetched: false,
     }
 
@@ -31,20 +31,37 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
-    Api.getAllMentors(true).then(res => {
-      let orderedMentors = res.mentors.filter(mentor => mentor.slots.length)
-      let mentorsWithNoSlots = res.mentors.filter(
-        mentor => mentor.slots.length === 0
-      )
-
-      for (let mentor of mentorsWithNoSlots) orderedMentors.push(mentor)
-
-      // orderedMentors = [orderedMentors, ...mentorsWithNoSlots]
-
-      this.setState({
-        mentors: orderedMentors,
+    if(this.context.resetSearchQuery){
+      Api.searchFull(this.context.searchQuery).then((res) => {
+        this.setMentors(res.search)
       })
-    })
+      this.context.resetSearchQuery = false;
+    }
+    else{
+      Api.getAllMentors(true).then(res => {
+        let orderedMentors = res.mentors.filter(mentor => mentor.slots.length)
+        let mentorsWithNoSlots = res.mentors.filter(
+          mentor => mentor.slots.length === 0
+        )
+  
+        for (let mentor of mentorsWithNoSlots) orderedMentors.push(mentor)
+        this.setState({
+          mentors: orderedMentors,
+        })
+      })
+      
+    }
+      
+  }
+
+  componentDidUpdate() {
+    if(this.context.resetSearchQuery){
+      Api.searchFull(this.context.searchQuery).then((res) => {
+        this.setMentors(res.search)
+      })
+      this.context.resetSearchQuery = false;
+
+    }
   }
 
   setMentors = mentors => {
@@ -53,14 +70,11 @@ export default class Main extends Component {
     })
   }
 
-  render() {
-    let emptyQuery = this.context.searchQuery.length === 0
-
+  render(){
+   
     return (
       <main id="home">
         <div className="container grid">
-          <MainSearchBar setMentors={this.setMentors} />
-          {emptyQuery ? (
             <React.Fragment>
               <MainCategories setMentors={this.setMentors} />
               <h1
@@ -78,7 +92,6 @@ export default class Main extends Component {
                 today and tomorrow.
               </p>
             </React.Fragment>
-          ) : null}
           <MainMentorList mentors={this.state.mentors} />
         </div>
       </main>
