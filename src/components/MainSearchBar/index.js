@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 
-import Api from '../../utils/Api'
-import { sortMentorsBySlots } from '../../utils/Array'
-
 import './index.css'
 import { Redirect } from 'react-router-dom'
 
 import AppContext from '../AppContext'
 import { runInThisContext } from 'vm'
 
+import styles from './index.module.scss'
 export default class MainSearchBar extends Component {
   static contextType = AppContext
 
@@ -29,11 +27,10 @@ export default class MainSearchBar extends Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.SearchWrapper}>
         <input
           type="text"
-          id="search-input"
-          className="icon"
+          className={styles.input}
           placeholder="Try looking for a person..."
           onChange={this.handleChange}
           value={this.context.searchQuery}

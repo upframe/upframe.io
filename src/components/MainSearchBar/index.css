@@ -1,9 +1,9 @@
-#search-input {
+/* #search-input {
   background-color: #f1f3f4;
   height: 3rem;
   outline: none;
   border: 1px solid transparent;
-  border-radius: .25rem;
+  border-radius: 100px;
   padding-left: 3rem;
 }
 
@@ -16,4 +16,4 @@
   background-repeat: no-repeat;
   background-position: 2.25% 50%;
   transition: .25s ease all;
-}
+} */

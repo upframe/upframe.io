@@ -5,95 +5,45 @@ nav {
   background: #fff;
   transition: 0.5s ease box-shadow;
   display: flex;
-  justify-content: flex-end;
-  
+  justify-content: center;
 }
 
-header {
-  position: fixed;
-  z-index: 10;
-  width: 100%;
-}
 
 .wrapper{
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  width: 55%;
+  width: 70%;
 }
 
-.login{
+.SearchWrapper{
   display: flex;
-  margin: 5px 100px 0px 50px;
-  
+  justify-content: flex-start;
+  width: 80%;
 }
 
-
-@media (max-width: 640px) {
-  .wrapper {
-    justify-content: center;
-  }
-}  
-
-
-
-nav {
-  z-index: 5;
-  width: 100%;
-  height: 4rem;
-  background: #fff;
-  transition: 0.5s ease box-shadow;
-}
-
-nav.active {
-  box-shadow:  0 0 5px rgba(0, 0, 0, .1);
-}
-
-nav .wrapper {
-  height: 100%;
-  margin: 0 auto;
-}
-
-nav .wrapper #logo {
-  display: flex;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-nav .wrapper div {
-  margin-left: auto;
-  margin-right: 10vw;
-}
-
-nav .wrapper .dropdown img {
+.profilepic {
   max-width: 2rem;
   max-height: 2rem;
   border-radius: 50%;
   cursor: pointer;
 }
 
-nav .wrapper .dropdown:not(.showMenu) ul {
+//dropdown would be hidden only if it would come before showmenu class
+.dropdown{
   margin-left: auto;
   display: none;
 }
 
-nav .wrapper .dropdown.active ul {
+
+.ShowMenu{
   display: block;
-  position: absolute;
-  top: 4rem;
-  background-color: #fff;
-  color: var(--blue-grey);
-  font-size: 1rem;
-  padding: 1rem 0;
-  border-radius: 0.25rem;
-  box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
-nav .wrapper .dropdown.active ul::before {
+.ShowMenu::before {
   content: '';
-  display: block;
-  position: absolute;
+  display: flex;
+  justify-content: center;
   z-index: 0;
   background-color: #fff;
   width: 1rem;
@@ -106,39 +56,3 @@ nav .wrapper .dropdown.active ul::before {
   transform: translate(-50%, -50%) rotate(45deg);
   box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.5);
 }
-
-nav .wrapper .dropdown ul li {
-  color: var(--blue-grey);
-  padding: 0.5rem;
-  transition: .25s ease-in-out all;
-  cursor: pointer;
-  padding: 0.5rem 5rem 0.5rem 1rem;
-}
-
-nav .wrapper .dropdown ul li:hover {
-  background-color: var(--light-grey);
-}
-
-nav .wrapper .dropdown ul a {
-  color: var(--blue-grey);
-}
-
-
-
-
-
-
-
-#learn-more {
-  padding: 0.4rem 0.8rem 0.4rem 0.8rem;
-  border-radius: 24px;
-  background-color: #ff004b;
-  color: white;
-}
-
-@media (max-width: 750px) {
-  #learn-more {
-    display: none;
-  }
-}
-

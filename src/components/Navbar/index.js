@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import classNames from 'classnames/bind';
+
 
 import SearchBar from '../MainSearchBar'
 import AppContext from '../AppContext'
 
 // import emojis and icons
 import '../../icons.css'
-import './style.css'
+// import './style.scss'
+import styles from './style.module.scss'
+
 
 export default class Navbar extends Component {
   static contextType = AppContext
@@ -17,11 +21,12 @@ export default class Navbar extends Component {
     this.state = {
       scroll: false,
       mentors: [],
+      showMenu: true
     }
   }
 
   componentDidMount() {
-    // this.watchScroll()
+    this.watchScroll()
   }
 
   watchScroll() {
@@ -31,18 +36,33 @@ export default class Navbar extends Component {
       else this.setState({ scroll: false })
     })
   }
+  
+
+  // openDropdown = () => {
+  //   let dropdown = document.querySelector('nav div.dropdown')
+  //   dropdown.classList.add('active')
+  //   document.addEventListener("click", this.closeDropdown)
+  // }
+
+  
 
   openDropdown = () => {
-    let dropdown = document.querySelector('nav div.dropdown')
-    dropdown.classList.add('active')
-    document.addEventListener('click', this.closeDropdown)
+    if(!this.state.showMenu){
+      return this.setState({
+        showMenu:true
+      })
+    }
+    return this.setState({
+      showMenu:false
+    })
+
   }
 
-  closeDropdown = () => {
-    let dropdown = document.querySelector('nav div.dropdown')
-    dropdown.classList.remove('active')
-    document.removeEventListener('click', this.closeDropdown)
-  }
+  // closeDropdown = () => {
+  //   let dropdown = document.querySelector('nav div.dropdown')
+  //   dropdown.classList.remove('active')
+  //   document.removeEventListener('click', this.closeDropdown)
+  // }
 
   logout = () => {
     this.closeDropdown()
@@ -54,21 +74,27 @@ export default class Navbar extends Component {
   }
 
   render() {
+    let cx = classNames.bind(styles)
+    const dropdown = cx('dropdown',{ShowMenu:this.state.showMenu})
+
     return (
       <header
         id={this.state.firstVisit ? 'with-notification' : null}
         className={this.state.cookieUpdated ? 'hide' : null}
       >
         <nav className={window.scrollY > 0 ? 'active' : null}>
-          <div className="wrapper flex justifycontent-center alignitems-center">
-            <Link to="/" id="logo" onClick={this.resetSearch}>
-              <img src="/logo.svg" alt="Upframe logo" className="logo"></img>
-            </Link>
-            <SearchBar />
+          <div className={styles.wrapper}>
+            <div className={styles.SearchWrapper}>
+              <Link to="/" id="logo" onClick={this.resetSearch}>
+                <img src="/logo.svg" alt="Upframe logo" className="logo"/>
+              </Link>
+              <SearchBar />
+            </div>
             {this.context.loggedIn ? (
-              <div className="flex flex-column alignitems-center dropdown">
+              <div className={styles.MenuWrapper}>
                 <img
                   id="profilepic"
+                  className={styles.profilepic}
                   src={
                     this.context.user.profilePic !== ''
                       ? this.context.user.profilePic
@@ -76,11 +102,11 @@ export default class Navbar extends Component {
                   }
                   alt="Profile pic"
                   onClick={this.openDropdown}
-                ></img>
-                <ul>
+                />
+                <ul className={dropdown}>
+                {/* <ul> */}
                   <Link
                     to={'/' + this.context.user.keycode}
-                    onClick={this.closeDropdown}
                   >
                     <li>My Profile</li>
                   </Link>

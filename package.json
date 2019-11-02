@@ -7,6 +7,7 @@
     "aos": "^2.3.4",
     "browserslist": "^4.6.3",
     "caniuse-lite": "^1.0.30000979",
+    "classnames": "^2.2.6",
     "core-js": "3",
     "lodash": "^4.17.15",
     "mixpanel-browser": "^2.26.0",
