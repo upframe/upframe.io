@@ -17,7 +17,6 @@ export default class Main extends Component {
     super(props)
     this.state = {
       mentors: [],
-      searchQuery: '',
       fetched: false,
     }
 
@@ -31,36 +30,24 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
-    if(this.context.resetSearchQuery){
-      Api.searchFull(this.context.searchQuery).then((res) => {
-        this.setMentors(res.search)
+    Api.getAllMentors(true).then(res => {
+      let orderedMentors = res.mentors.filter(mentor => mentor.slots.length)
+      let mentorsWithNoSlots = res.mentors.filter(
+        mentor => mentor.slots.length === 0
+      )
+      for (let mentor of mentorsWithNoSlots) orderedMentors.push(mentor)
+      this.setState({
+        mentors: orderedMentors,
       })
-      this.context.resetSearchQuery = false;
-    }
-    else{
-      Api.getAllMentors(true).then(res => {
-        let orderedMentors = res.mentors.filter(mentor => mentor.slots.length)
-        let mentorsWithNoSlots = res.mentors.filter(
-          mentor => mentor.slots.length === 0
-        )
-  
-        for (let mentor of mentorsWithNoSlots) orderedMentors.push(mentor)
-        this.setState({
-          mentors: orderedMentors,
-        })
-      })
-      
-    }
-      
+    })
   }
 
   componentDidUpdate() {
-    if(this.context.resetSearchQuery){
-      Api.searchFull(this.context.searchQuery).then((res) => {
+    if (this.context.resetSearchQuery) {
+      this.context.setSearchQuery('', false)
+      Api.searchFull(this.context.searchQuery).then(res => {
         this.setMentors(res.search)
       })
-      this.context.resetSearchQuery = false;
-
     }
   }
 
@@ -70,28 +57,27 @@ export default class Main extends Component {
     })
   }
 
-  render(){
-   
+  render() {
     return (
       <main id="home">
         <div className="container grid">
-            <React.Fragment>
-              <MainCategories setMentors={this.setMentors} />
-              <h1
-                className="font-150 fontweight-medium"
-                data-aos="fade-up"
-                data-aos-delay="600"
-                data-aos-offset="0"
-              >
-                Featured Mentors
-              </h1>
-              <p data-aos="fade-up" data-aos-delay="700" data-aos-offset="0">
-                Our in-house curators work alongside with startup founders,
-                community shapers and domain experts across Europe to make sure
-                you can find people who can help you tackle the challenges of
-                today and tomorrow.
-              </p>
-            </React.Fragment>
+          <React.Fragment>
+            <MainCategories setMentors={this.setMentors} />
+            <h1
+              className="font-150 fontweight-medium"
+              data-aos="fade-up"
+              data-aos-delay="600"
+              data-aos-offset="0"
+            >
+              Featured Mentors
+            </h1>
+            <p data-aos="fade-up" data-aos-delay="700" data-aos-offset="0">
+              Our in-house curators work alongside with startup founders,
+              community shapers and domain experts across Europe to make sure
+              you can find people who can help you tackle the challenges of
+              today and tomorrow.
+            </p>
+          </React.Fragment>
           <MainMentorList mentors={this.state.mentors} />
         </div>
       </main>

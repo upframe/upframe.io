@@ -89,11 +89,11 @@ export default class App extends Component {
   state = {
     loggedIn: false,
     searchQuery: '',
-    test:false,
+    test: false,
     resetSearchQuery: false,
-    mentors:[],
+    mentors: [],
     user: {},
-    test:false
+    test: false,
   }
 
   componentDidMount() {
@@ -190,7 +190,6 @@ export default class App extends Component {
 
       resetSearchQuery: this.state.resetSearchQuery,
     }
-
     mixpanel.init('993a3d7a78434079b7a9bec245dbaec2')
 
     return (
