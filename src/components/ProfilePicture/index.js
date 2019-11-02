@@ -1,7 +1,8 @@
 import React from 'react'
-import { useMatchMedia } from '../utils/Hooks'
+import { useMatchMedia } from '../../utils/Hooks'
+import './index.css'
 
-export default function ProfilePictures({ name, imgs }) {
+export default function ProfilePictures({ name, imgs, className }) {
   const isBig = useMatchMedia('(max-width: 720px)')
   if (isBig === null) return null
   let jpeg = imgs
@@ -26,10 +27,10 @@ export default function ProfilePictures({ name, imgs }) {
   }
 
   return (
-    <picture className="mentor-profilepic">
+    <picture>
       {webp && <source srcSet={webp} type={`image/webp`} key={webp} />}
       <source srcSet={jpeg} type={`image/jpeg`} key={jpeg} />
-      <img src={jpeg} alt={name} />
+      <img src={jpeg} alt={name} className={className || 'mentor-profilepic'} />
     </picture>
   )
 }
