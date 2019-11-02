@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import ProfilePicture from '../ProfilePicture'
 
 import AOS from 'aos'
 
@@ -10,6 +11,10 @@ export default class MentorCard extends Component {
 
   render() {
     const mentor = this.props.mentorInfo
+    const imgs =
+      mentor.pictures && Object.entries(mentor.pictures).length
+        ? mentor.pictures
+        : mentor.profilePic
     return (
       <Link
         to={mentor.keycode}
@@ -19,11 +24,7 @@ export default class MentorCard extends Component {
       >
         <div className="card hoverable mentor-card flex justifycontent-center">
           <div>
-            <img
-              className="mentor-profilepic"
-              src={mentor.profilePic}
-              alt={mentor.name}
-            />
+            <ProfilePicture imgs={imgs} name={mentor.name} />
             <div id="mentor-info">
               <h1 id="name" className="fontweight-medium">
                 {mentor.name}
