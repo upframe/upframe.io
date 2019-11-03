@@ -1,5 +1,4 @@
 import React from 'react'
-import { useMatchMedia } from '../../utils/Hooks'
 import './index.css'
 
 export default function ProfilePictures({
@@ -9,8 +8,6 @@ export default function ProfilePictures({
   size = '13rem',
   onClick,
 }) {
-  const isBig = useMatchMedia('(max-width: 720px)')
-  if (isBig === null) return null
   let pics = []
   if (typeof imgs === 'object' && Object.entries(imgs).length) {
     function getOptimal(pxSize) {
