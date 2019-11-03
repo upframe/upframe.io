@@ -30,20 +30,13 @@ export default class Navbar extends Component {
   }
 
   watchScroll() {
+    console.log(this.state.scroll)
     document.addEventListener('scroll', e => {
       if (window.scrollY > 0 && this.state.scroll === false)
         this.setState({ scroll: true })
       else this.setState({ scroll: false })
     })
   }
-  
-
-  // openDropdown = () => {
-  //   let dropdown = document.querySelector('nav div.dropdown')
-  //   dropdown.classList.add('active')
-  //   document.addEventListener("click", this.closeDropdown)
-  // }
-
   
 
   openDropdown = () => {
@@ -58,14 +51,10 @@ export default class Navbar extends Component {
 
   }
 
-  // closeDropdown = () => {
-  //   let dropdown = document.querySelector('nav div.dropdown')
-  //   dropdown.classList.remove('active')
-  //   document.removeEventListener('click', this.closeDropdown)
-  // }
+ 
 
   logout = () => {
-    this.closeDropdown()
+    this.state.ShowMenu = false;
     this.context.logout()
   }
 
@@ -76,13 +65,14 @@ export default class Navbar extends Component {
   render() {
     let cx = classNames.bind(styles)
     const dropdown = cx('dropdown',{ShowMenu:this.state.showMenu})
+    const hrline = cx({scroll:this.state.scroll})
 
     return (
       <header
         id={this.state.firstVisit ? 'with-notification' : null}
         className={this.state.cookieUpdated ? 'hide' : null}
       >
-        <nav className={window.scrollY > 0 ? 'active' : null}>
+        <nav className={hrline}>
           <div className={styles.wrapper}>
             <div className={styles.SearchWrapper}>
               <Link to="/" id="logo" onClick={this.resetSearch}>
@@ -104,7 +94,6 @@ export default class Navbar extends Component {
                   onClick={this.openDropdown}
                 />
                 <ul className={dropdown}>
-                {/* <ul> */}
                   <Link
                     to={'/' + this.context.user.keycode}
                   >
@@ -113,17 +102,17 @@ export default class Navbar extends Component {
                   <Link to="/settings/public" onClick={this.closeDropdown}>
                     <li>Settings</li>
                   </Link>
-                  <li onClick={this.logout}>
-                    <Link to="#0">Sign Out</Link>
-                  </li>
+                  <Link to="#0">
+                    <li onClick={this.logout}>Sign Out</li>
+                  </Link>  
                 </ul>
               </div>
             ) : (
-              <div className="flex flex-column alignitems-center">
+              <div className={styles.learnMoreWrapper}>
                 <ul>
                   <li>
                     <a
-                      id="learn-more"
+                      className={styles.learnMore}
                       href="https://www.producthunt.com/upcoming/upframe"
                     >
                       Learn more

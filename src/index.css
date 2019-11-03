@@ -323,7 +323,7 @@ input[type="file"] {
 }
 
 .App main {
-  padding: 6rem 0;
+  padding: 7rem 0;
   transition: 0.5s ease padding-top;
 }
 
@@ -363,8 +363,7 @@ input[type="file"] {
 /* LOGO AND IMAGES */
 img.logo {
   max-height: 5rem;
-  width: 6rem;
-  /* max-width: 10rem; */
+  width: 7rem;
 }
 
 img {
