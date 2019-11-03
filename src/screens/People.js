@@ -327,6 +327,7 @@ export default class People extends Component {
                   }
                   className="mentor-profilepic"
                   name={this.state.mentor.name}
+                  size="13rem"
                 />
 
                 <h1 id="name" className="font-150 fontweight-medium">

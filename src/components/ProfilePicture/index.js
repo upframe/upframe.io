@@ -2,35 +2,79 @@ import React from 'react'
 import { useMatchMedia } from '../../utils/Hooks'
 import './index.css'
 
-export default function ProfilePictures({ name, imgs, className }) {
+export default function ProfilePictures({
+  name,
+  imgs,
+  className,
+  size = '13rem',
+  onClick,
+}) {
   const isBig = useMatchMedia('(max-width: 720px)')
   if (isBig === null) return null
-  let jpeg = imgs
-  let webp
-
+  let pics = []
   if (typeof imgs === 'object' && Object.entries(imgs).length) {
-    const pxSize =
-      parseFloat(getComputedStyle(document.documentElement).fontSize) *
-      (isBig ? 18 : 13)
+    function getOptimal(pxSize) {
+      let available = Object.keys(imgs)
+        .map(n => parseInt(n, 10))
+        .map((v, i, a) => v || Infinity)
+      let size = Math.min(...available.filter(n => n >= pxSize))
+      if (size === Infinity)
+        size = Math.max(...available.filter(n => n < pxSize))
+      if (size < pxSize && available.includes(Infinity)) size = Infinity
+      const selected = Object.entries(imgs[size !== Infinity ? size : 'max'])
+      return [
+        selected.find(([type]) => type === 'jpeg').pop(),
+        selected.find(([type]) => type === 'webp').pop(),
+      ]
+    }
 
-    let sizes = Object.keys(imgs)
-      .map(n => parseInt(n, 10))
-      .map((v, i, a) => v || Infinity)
+    const sizes = typeof size === 'string' ? [{ size }] : size
+    pics = sizes.flatMap(({ size, min, max }) => {
+      const media = [
+        ...(min ? [['min', parseCSSSize(min)]] : []),
+        ...(max ? [['max', parseCSSSize(max)]] : []),
+      ]
+        .map(([t, s]) => `(${t}-width: ${s}px)`)
+        .join(' and ')
 
-    let size = Math.min(...sizes.filter(n => n >= pxSize))
-    if (size === Infinity) size = Math.max(...sizes.filter(n => n < pxSize))
-    if (size < pxSize && sizes.includes(Infinity)) size = Infinity
-
-    const pics = Object.entries(imgs[size !== Infinity ? size : 'max'])
-    jpeg = pics.find(([type]) => type === 'jpeg').pop()
-    webp = pics.find(([type]) => type === 'webp').pop()
-  }
+      return getOptimal(parseCSSSize(size)).map((url, i) => ({
+        url,
+        media,
+        type: i === 0 ? 'jpeg' : 'webp',
+      }))
+    })
+  } else pics.push({ url: imgs })
 
   return (
-    <picture>
-      {webp && <source srcSet={webp} type={`image/webp`} key={webp} />}
-      <source srcSet={jpeg} type={`image/jpeg`} key={jpeg} />
-      <img src={jpeg} alt={name} className={className || 'mentor-profilepic'} />
+    <picture onClick={onClick}>
+      {pics.map(({ url, type, media }) => (
+        <source
+          srcSet={url}
+          type={`image/${type}`}
+          media={media}
+          key={url + media}
+        />
+      ))}
+      <img
+        src={pics[0].url}
+        alt={name}
+        className={className || 'mentor-profilepic'}
+      />
     </picture>
   )
+}
+
+function parseCSSSize(size) {
+  const value = parseInt(size)
+  const unit = size.replace(/[0-9]/g, '')
+  switch (unit) {
+    case 'px':
+      return value
+    case 'rem':
+      return (
+        parseFloat(getComputedStyle(document.documentElement).fontSize) * value
+      )
+    default:
+      throw Error(`unknown unit ${unit}`)
+  }
 }

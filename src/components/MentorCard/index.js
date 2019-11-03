@@ -24,7 +24,14 @@ export default class MentorCard extends Component {
       >
         <div className="card hoverable mentor-card flex justifycontent-center">
           <div>
-            <ProfilePicture imgs={imgs} name={mentor.name} />
+            <ProfilePicture
+              imgs={imgs}
+              name={mentor.name}
+              size={[
+                { size: '18rem', max: '720px' },
+                { size: '13rem', min: '721px' },
+              ]}
+            />
             <div id="mentor-info">
               <h1 id="name" className="fontweight-medium">
                 {mentor.name}
