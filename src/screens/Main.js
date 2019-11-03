@@ -8,7 +8,6 @@ import MainMentorList from '../components/MainMentorList'
 
 import aos from 'aos'
 import 'aos/dist/aos.css'
-import { throws } from 'assert'
 
 export default class Main extends Component {
   static contextType = AppContext

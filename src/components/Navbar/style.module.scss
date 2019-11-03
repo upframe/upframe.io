@@ -1,22 +1,23 @@
 nav {
-  z-index: 50;
+  z-index: 5;
   width: 100%;
   height: 4rem;
   background: white;
   transition: 0.5s ease box-shadow;
   display: flex;
   justify-content: center;
-  box-shadow:  0 0 5px 0 rgba(0, 0, 0, .1);
-  .scroll{
-   background-color: red; 
-  }
+  padding-top: 10px;
 }
 
+.active{
+  box-shadow:  0 0 5px rgba(0, 0, 0, .1);
+
+}
 
 .wrapper{
   display: flex;
   justify-content: space-between;
-  padding: 10px 70px;
+  padding: 0px 150px;
   width: 100%;
   height: 90%;
   background-color: white ;

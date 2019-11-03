@@ -93,7 +93,6 @@ export default class App extends Component {
     resetSearchQuery: false,
     mentors: [],
     user: {},
-    test: false,
   }
 
   componentDidMount() {

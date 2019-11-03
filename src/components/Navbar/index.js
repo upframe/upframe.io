@@ -29,11 +29,15 @@ export default class Navbar extends Component {
     this.watchScroll()
   }
 
+  // componentDidUpdate(){
+
+  // }
+
   watchScroll() {
     console.log(this.state.scroll)
-    document.addEventListener('scroll', e => {
+    document.addEventListener('scroll', (e) => {
       if (window.scrollY > 0 && this.state.scroll === false)
-        this.setState({ scroll: true })
+       this.setState({ scroll: true })
       else this.setState({ scroll: false })
     })
   }
@@ -51,10 +55,10 @@ export default class Navbar extends Component {
 
   }
 
- 
-
   logout = () => {
-    this.state.ShowMenu = false;
+    this.setState({
+      showMenu:true
+    })
     this.context.logout()
   }
 
@@ -65,14 +69,14 @@ export default class Navbar extends Component {
   render() {
     let cx = classNames.bind(styles)
     const dropdown = cx('dropdown',{ShowMenu:this.state.showMenu})
-    const hrline = cx({scroll:this.state.scroll})
+    // const hrline = cx({scroll:this.state.scroll})
 
     return (
       <header
         id={this.state.firstVisit ? 'with-notification' : null}
         className={this.state.cookieUpdated ? 'hide' : null}
       >
-        <nav className={hrline}>
+        <nav className={window.scrollY > 0 ? styles.active : null}>
           <div className={styles.wrapper}>
             <div className={styles.SearchWrapper}>
               <Link to="/" id="logo" onClick={this.resetSearch}>
