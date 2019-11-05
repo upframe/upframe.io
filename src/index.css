@@ -363,7 +363,16 @@ input[type="file"] {
 /* LOGO AND IMAGES */
 img.logo {
   max-height: 5rem;
-  width: 7rem;
+  width: 6rem;
+  
+
+
+
+}
+
+.logo:hover{
+  color: black;
+  filter:  grayscale(30%);
 }
 
 img {

@@ -8,7 +8,6 @@ import AppContext from '../AppContext'
 
 // import emojis and icons
 import '../../icons.css'
-// import './style.scss'
 import styles from './style.module.scss'
 
 
@@ -21,7 +20,7 @@ export default class Navbar extends Component {
     this.state = {
       scroll: false,
       mentors: [],
-      showMenu: true
+      showMenu: false
     }
   }
 
@@ -29,12 +28,7 @@ export default class Navbar extends Component {
     this.watchScroll()
   }
 
-  // componentDidUpdate(){
-
-  // }
-
   watchScroll() {
-    console.log(this.state.scroll)
     document.addEventListener('scroll', (e) => {
       if (window.scrollY > 0 && this.state.scroll === false)
        this.setState({ scroll: true })
@@ -43,7 +37,7 @@ export default class Navbar extends Component {
   }
   
 
-  openDropdown = () => {
+  openDropdown = (e) => {
     if(!this.state.showMenu){
       return this.setState({
         showMenu:true
@@ -54,6 +48,15 @@ export default class Navbar extends Component {
     })
 
   }
+
+  handleClickOutside = () => {
+    if(this.state.showMenu){
+      return this.setState({
+        showMenu:false
+      })
+    }
+    
+  };
 
   logout = () => {
     this.setState({
@@ -68,15 +71,15 @@ export default class Navbar extends Component {
 
   render() {
     let cx = classNames.bind(styles)
-    const dropdown = cx('dropdown',{ShowMenu:this.state.showMenu})
-    // const hrline = cx({scroll:this.state.scroll})
+    const dropdown = cx('dropdown',{ShowMenu:this.state.showMenu})    
 
     return (
       <header
         id={this.state.firstVisit ? 'with-notification' : null}
         className={this.state.cookieUpdated ? 'hide' : null}
       >
-        <nav className={window.scrollY > 0 ? styles.active : null}>
+        <nav className={window.scrollY > 0 ? styles.active : null} 
+        >
           <div className={styles.wrapper}>
             <div className={styles.SearchWrapper}>
               <Link to="/" id="logo" onClick={this.resetSearch}>
@@ -85,7 +88,7 @@ export default class Navbar extends Component {
               <SearchBar />
             </div>
             {this.context.loggedIn ? (
-              <div className={styles.MenuWrapper}>
+              <div className={styles.MenuWrapper} onBlur={this.handleClickOutside} tabIndex="0">
                 <img
                   id="profilepic"
                   className={styles.profilepic}
@@ -96,6 +99,7 @@ export default class Navbar extends Component {
                   }
                   alt="Profile pic"
                   onClick={this.openDropdown}
+                  
                 />
                 <ul className={dropdown}>
                   <Link

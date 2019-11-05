@@ -11,7 +11,6 @@ nav {
 
 .active{
   box-shadow:  0 0 5px rgba(0, 0, 0, .1);
-
 }
 
 .wrapper{
@@ -28,13 +27,13 @@ nav {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 85%;
+  width: 60%;
 }
 
 .profilepic {
-  max-width: 2rem;
-  max-height: 2rem;
-  border-radius: 50%;
+  max-width: 2.2rem;
+  max-height: 2.2rem;
+  border-radius: 20%;
   cursor: pointer;
 }
 
@@ -42,6 +41,7 @@ nav {
   margin-top: 20px;
   position: relative;
   right:30px;
+  outline: none;
 }
 
 .dropdown{
@@ -106,5 +106,15 @@ nav {
 
 }
 
-.active {
+@media (max-width: 720px){
+  .wrapper{
+    justify-content: center;
+    .MenuWrapper{
+      display: none;
+    }
+    .SearchWrapper{
+      min-width: 300px;
+    }
+  }
+  
 }

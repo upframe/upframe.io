@@ -89,7 +89,6 @@ export default class App extends Component {
   state = {
     loggedIn: false,
     searchQuery: '',
-    test: false,
     resetSearchQuery: false,
     mentors: [],
     user: {},
@@ -185,8 +184,6 @@ export default class App extends Component {
       setProfilePic: this.setProfilePic,
       showToast: this.showToast,
       user: this.state.user,
-      test: this.state.test,
-
       resetSearchQuery: this.state.resetSearchQuery,
     }
     mixpanel.init('993a3d7a78434079b7a9bec245dbaec2')
