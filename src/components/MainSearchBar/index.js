@@ -28,7 +28,7 @@ export default class MainSearchBar extends Component {
         <input
           type="text"
           className={styles.input}
-          placeholder="Try looking for a person..."
+          placeholder="What are you looking for?"
           onChange={this.handleChange}
           value={this.context.searchQuery}
           onKeyPress={this.handleKeyPress}

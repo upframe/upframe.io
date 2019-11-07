@@ -35,7 +35,9 @@ export default class Navbar extends Component {
   }
 
   openDropdown = e => {
+    
     if (!this.state.showMenu) {
+      e.target.focus()
       return this.setState({
         showMenu: true,
       })
@@ -47,9 +49,9 @@ export default class Navbar extends Component {
 
   handleClickOutside = () => {
     if (this.state.showMenu) {
-      return this.setState({
-        showMenu: false,
-      })
+      setTimeout(() => {
+        this.setState({ showMenu: false });
+      }, 200);
     }
   }
 
@@ -85,6 +87,7 @@ export default class Navbar extends Component {
               <div
                 className={styles.MenuWrapper}
                 onBlur={this.handleClickOutside}
+                onClick={this.openDropdown}
                 tabIndex="0"
               >
                 <img
@@ -96,10 +99,10 @@ export default class Navbar extends Component {
                       : ''
                   }
                   alt="Profile pic"
-                  onClick={this.openDropdown}
+                  
                 />
-                <ul className={dropdown}>
-                  <Link to={'/' + this.context.user.keycode}>
+                <ul className={dropdown} tabIndex="1">
+                  <Link to={'/' + this.context.user.keycode} tabIndex="0">
                     <li>My Profile</li>
                   </Link>
                   <Link to="/settings/public" onClick={this.closeDropdown}>

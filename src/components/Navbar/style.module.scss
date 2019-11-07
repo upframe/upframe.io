@@ -1,11 +1,12 @@
 nav {
   z-index: 5;
   width: 100%;
+  margin: 0 auto;
   height: 4rem;
   background: white;
   transition: 0.5s ease box-shadow;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   padding-top: 10px;
 }
 
@@ -16,8 +17,7 @@ nav {
 .wrapper{
   display: flex;
   justify-content: space-between;
-  padding: 0px 150px;
-  width: 100%;
+  width: 75%;
   height: 90%;
   background-color: white ;
 
@@ -25,9 +25,8 @@ nav {
 
 .SearchWrapper{
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  width: 60%;
+  width: 100%;
 }
 
 .profilepic {
@@ -38,10 +37,10 @@ nav {
 }
 
 .MenuWrapper{
-  margin-top: 20px;
+  margin-top: 9px;
   position: relative;
-  right:30px;
   outline: none;
+  margin-right: 35px;
 }
 
 .dropdown{
@@ -105,6 +104,12 @@ nav {
   }
 
 }
+
+@media all and (max-width:1760px) and (min-width:1600px){
+.SearchWrapper{
+  padding: 0 10px;}
+}
+
 
 @media (max-width: 720px){
   .wrapper{

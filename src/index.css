@@ -1316,17 +1316,12 @@ button::-moz-focus-inner {
 
 /* MEDIUM AND SMALL SCREENS */
 @media (max-width: 1020px) {
-  .container {
-    max-width: 95%;
-  }
 
   .card {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   }
 
-  /* #home .card.mentor-card {
-    width: 85vw;
-  } */
+  
 
   #people .card.mentor-card .mentor-card-slots {
     grid-template-columns: repeat(4, 1fr);
@@ -1347,6 +1342,9 @@ button::-moz-focus-inner {
   #home #search-input {
     width: 95vw;
   }
+  #home .card.mentor-card {
+    
+  }
 
   #home .mentor-list > a {
     margin: 1rem auto;
@@ -1355,10 +1353,13 @@ button::-moz-focus-inner {
   #home .mentor-list a {
     display: block;
     max-width: 18rem;
+        
+
   }
 
   #home .card.mentor-card {
     max-width: 18rem;
+    width: 85vw;
   }
 
   #home .card.mentor-card > div {
