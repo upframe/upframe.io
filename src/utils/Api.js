@@ -485,7 +485,7 @@ export class Api {
 
   saveSearchQuery(search) {
     let fetchBody = {
-      search
+      search,
     }
     let fetchData = {
       method: 'POST',
@@ -493,7 +493,7 @@ export class Api {
       body: JSON.stringify(fetchBody),
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        Accept: 'application/json',
       },
     }
     return fetch(
@@ -501,13 +501,6 @@ export class Api {
       fetchData
     ).then(res => res.json())
   }
-  
 }
-
-
-
-
-
-
 
 export default new Api()
