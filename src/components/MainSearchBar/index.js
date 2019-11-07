@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
-
-import './index.css'
 import { Redirect } from 'react-router-dom'
 
 import AppContext from '../AppContext'
-import { runInThisContext } from 'vm'
 
 import styles from './index.module.scss'
 export default class MainSearchBar extends Component {

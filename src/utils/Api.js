@@ -432,7 +432,7 @@ export class Api {
     return fetch(
       `${this.schema}://${this.host}:${this.port}/mentor/slots?start=${start}&?end=${end}`,
       fetchData
-    ).then(res => res.json()) //?start=${start}&?end=${end}
+    ).then(res => res.json())
   }
 
   getGoogleSyncUrl() {
@@ -482,6 +482,32 @@ export class Api {
       fetchData
     ).then(res => res.json())
   }
+
+  saveSearchQuery(search) {
+    let fetchBody = {
+      search
+    }
+    let fetchData = {
+      method: 'POST',
+      mode: 'cors',
+      body: JSON.stringify(fetchBody),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+    }
+    return fetch(
+      `${this.schema}://${this.host}:${this.port}/search/query`,
+      fetchData
+    ).then(res => res.json())
+  }
+  
 }
+
+
+
+
+
+
 
 export default new Api()

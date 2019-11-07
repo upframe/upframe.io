@@ -43,10 +43,13 @@ export default class Main extends Component {
 
   componentDidUpdate() {
     if (this.context.resetSearchQuery) {
+      Api.saveSearchQuery(this.context.searchQuery).then(res => {
+      })
       this.context.setSearchQuery('', false)
       Api.searchFull(this.context.searchQuery).then(res => {
         this.setMentors(res.search)
       })
+
     }
   }
 
