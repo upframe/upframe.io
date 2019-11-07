@@ -323,7 +323,7 @@ input[type="file"] {
 }
 
 .App main {
-  padding: 7rem 0;
+  padding: 6rem 0;
   transition: 0.5s ease padding-top;
 }
 
@@ -364,10 +364,6 @@ input[type="file"] {
 img.logo {
   max-height: 5rem;
   width: 6rem;
-  
-
-
-
 }
 
 .logo:hover{

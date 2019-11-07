@@ -6,7 +6,6 @@ import mixpanel from 'mixpanel-browser'
 import AppContext from './components/AppContext'
 import Navbar from './components/Navbar/'
 import Api from './utils/Api'
-import { runInThisContext } from 'vm'
 
 const Main = React.lazy(() => import('./screens/Main'))
 const Login = React.lazy(() =>
@@ -90,7 +89,6 @@ export default class App extends Component {
     loggedIn: false,
     searchQuery: '',
     resetSearchQuery: false,
-    mentors: [],
     user: {},
   }
 
