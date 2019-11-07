@@ -35,7 +35,6 @@ export default class Navbar extends Component {
   }
 
   openDropdown = e => {
-    
     if (!this.state.showMenu) {
       e.target.focus()
       return this.setState({
@@ -99,7 +98,6 @@ export default class Navbar extends Component {
                       : ''
                   }
                   alt="Profile pic"
-                  
                 />
                 <ul className={dropdown} tabIndex="1">
                   <Link to={'/' + this.context.user.keycode} tabIndex="0">
