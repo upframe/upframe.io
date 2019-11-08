@@ -49,13 +49,13 @@ nav {
   &.ShowMenu{
     display: block;
     position: absolute;
-    right: -76px;
+    right: -65px;
     width: 160px;
-    top: 50px;
+    top: 52px;
     background-color:white;
     color: var(--blue-grey);
     font-size: 1rem;
-    padding: 16px;
+    padding: 10px;
     border-radius: 0.25rem;
     box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.5);
   }
@@ -80,16 +80,18 @@ nav {
     }
 
     li{
-    color: var(--blue-grey);
+    color: #898b8e;
     transition: .25s ease-in-out all;
     cursor: pointer;
     padding: 0.5rem  0.5rem;
     width: 100%;
+
+      &:hover{
+        background-color: #c8c5c5;
+      }
     }
 
-    :hover{
-      background-color: #c8c5c5;
-    }
+    
 }
 
 .learnMoreWrapper{
