@@ -97,6 +97,8 @@ nav {
 .learnMoreWrapper{
   display: flex;
   align-items: center;
+  white-space: nowrap;
+
 
   .learnMore{
     padding: .4rem .8rem;
@@ -122,6 +124,10 @@ nav {
     .SearchWrapper{
       min-width: 300px;
     }
+  }
+
+  .learnMore{
+    display: none;
   }
   
 }
