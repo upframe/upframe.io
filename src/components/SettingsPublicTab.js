@@ -322,7 +322,7 @@ export default class SettingsPublicTab extends Component {
                 onKeyUp={this.handleKeyUp}
               />
 
-              <p class="mt1">
+              <p className="mt1">
                 Your Upframe URL:{' '}
                 <strong>{'https://upframe.io/' + this.state.keycode}</strong>
               </p>
@@ -330,7 +330,7 @@ export default class SettingsPublicTab extends Component {
 
             <div className="input-group">
               <label className="fontweight-bold" htmlFor="location">
-                Location<span class="required-icon"></span>
+                Location<span className="required-icon"></span>
               </label>
               <input
                 type="text"
@@ -344,7 +344,7 @@ export default class SettingsPublicTab extends Component {
 
             <div className="input-group">
               <label className="fontweight-bold" htmlFor="role">
-                Your Position<span class="required-icon"></span>
+                Your Position<span className="required-icon"></span>
               </label>
               <input
                 type="text"
@@ -358,7 +358,7 @@ export default class SettingsPublicTab extends Component {
 
             <div className="input-group">
               <label className="fontweight-bold" htmlFor="company">
-                Company<span class="required-icon"></span>
+                Company<span className="required-icon"></span>
               </label>
               <input
                 type="text"
@@ -387,7 +387,7 @@ export default class SettingsPublicTab extends Component {
             <div className="input-group">
               <label className="fontweight-bold" htmlFor="bio">
                 Biography
-                <span class="required-icon"></span>
+                <span className="required-icon"></span>
               </label>
               <textarea
                 rows="5"
@@ -490,7 +490,7 @@ export default class SettingsPublicTab extends Component {
                 />
 
                 <button
-                  class="btn btn-fill btn-primary block ml2"
+                  className="btn btn-fill btn-primary block ml2"
                   onClick={this.handleAddTag}
                 >
                   Add tag
@@ -509,7 +509,7 @@ export default class SettingsPublicTab extends Component {
             
             <label htmlFor='location-1'>
               First location
-              <span class="required-icon"></span>  
+              <span className="required-icon"></span>  
             </label>
             <input type='text' onChange={this.handleFirstFavoriteLocationChange} value={this.state.favoriteLocations[0]} id='location-1' onKeyUp={this.handleKeyUp} />
             
