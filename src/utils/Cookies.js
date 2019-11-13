@@ -34,9 +34,6 @@ export var docCookies = {
           the end parameter might not work as expected. A possible solution might be to convert the the
           relative time to an absolute time. For instance, replacing the previous line with:
           */
-          /*
-          sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; expires=" + (new Date(vEnd * 1e3 + Date.now())).toUTCString();
-          */
           break
         case String:
           sExpires = '; expires=' + vEnd

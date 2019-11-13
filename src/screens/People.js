@@ -15,13 +15,6 @@ import recommendationList from './common/recommendationList'
 const BioWithLinks = ({ bio }) => {
   let paragraphs = bio.split('\n')
 
-  /*
-  var urlRegex =/(\b(https?|ftp|file):[-A-Z0-9+&@#%?=~_|!:,.;]*[-A-Z0-9+&@#%=~_|])/ig;
-  let bio = this.state.mentor.bio.replace(urlRegex, url => {
-    return `<a href="${url}">${url}</a>`
-  })
-  */
-
   return (
     <React.Fragment>
       {paragraphs.map((p, index) => {
@@ -228,8 +221,6 @@ export default class People extends Component {
   displayFreeSlots = () => {
     if (this.state.mentor.freeSlots) {
       return this.state.mentor.freeSlots.map((slot, i) => {
-        // let startDate = new Date(slot.start)
-
         // Transform dates from UTC to local time
         let utcOffset = new Date().getTimezoneOffset()
         let startDate = moment.utc(slot.start).utcOffset(-utcOffset)

@@ -114,12 +114,6 @@ export default class DevPLayground extends Component {
     })
   }
 
-  // postMeProfile = () => {
-  //   Api.confirmMeetup(this.state.input).then(res => {
-  //     console.log(res)
-  //   })
-  // }
-
   getQuickSeach = () => {
     Api.searchQuick(this.state.input).then(res => {
       console.log(res)

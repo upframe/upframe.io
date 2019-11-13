@@ -381,11 +381,6 @@ export class Api {
 
   addFreeSlots(freeSlotsToSave, freeSlotsToDelete) {
     //Free slots vêem na forma
-    // id: currentId,
-    // start: slot.start,
-    // end: slot.end,
-    // title: 'Upframe Free Slot',
-    // tag: 'upframe-free-slot'
     let updatedSlots = freeSlotsToSave.map(slot => {
       return {
         start: slot.start,

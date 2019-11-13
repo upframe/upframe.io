@@ -26,10 +26,6 @@ export function haveSameContent(arr1, arr2, comp = (a, b) => a === b) {
 export function sortMentorsBySlots(mentors) {
   let orderedMentors = mentors.filter(mentor => mentor.slots.length)
   let mentorsWithNoSlots = mentors.filter(mentor => mentor.slots.length === 0)
-
-  // for(let mentor of mentorsWithNoSlots) orderedMentors.push(mentor)
-
   orderedMentors = [...orderedMentors, ...mentorsWithNoSlots]
-
   return orderedMentors
 }

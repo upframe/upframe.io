@@ -9,8 +9,6 @@ const KeyCodes = {
   enter: 13,
 }
 
-// const { fetch, localStorage, alert, Headers } = window
-
 const delimiters = [KeyCodes.comma, KeyCodes.enter]
 
 export default class SettingsPublicTab extends Component {
@@ -236,24 +234,6 @@ export default class SettingsPublicTab extends Component {
   }
 
   render() {
-    // const tagSuggestions = [
-    //   { id: "1", name: "UX" },
-    //   { id: "2", name: "UI"},
-    //   { id: "3", name: "Full-Stack Development" },
-    //   { id: "4", name: "Business" },
-    //   { id: "5", name: "Marketing" },
-    //   { id: "6", name: "CEO" },
-    //   { id: "7", name: "Golang" },
-    //   { id: "8", name: "Javascript" },
-    //   { id: "9", name: "Java" },
-    //   { id: "10", name: "C/C++" },
-    //   { id: "11", name: "DevOps" },
-    //   { id: "12", name: "PHP" },
-    //   { id: "13", name: "Node" },
-    //   { id: "14", name: "React" },
-    //   { id: "15", name: "Angular" },
-    // ]
-
     return (
       <React.Fragment>
         <div id="settings-publictab" className="tab center">
@@ -498,29 +478,6 @@ export default class SettingsPublicTab extends Component {
               </div>
             </div>
 
-            {/*
-          <div className='input-group'>
-            <h2 className="mb1">Offline Meetings</h2>
-            <p className="mb2">
-              Upframe enables you to meet up in physical locations too.
-              Next time someone sends you a coffee request, the location
-              will be added automatically to the calendar invite.
-            </p>
-            
-            <label htmlFor='location-1'>
-              First location
-              <span className="required-icon"></span>  
-            </label>
-            <input type='text' onChange={this.handleFirstFavoriteLocationChange} value={this.state.favoriteLocations[0]} id='location-1' onKeyUp={this.handleKeyUp} />
-            
-            <label htmlFor='location-2'>Second location</label>
-            <input type='text' onChange={this.handleSecondFavoriteLocationChange} value={this.state.favoriteLocations[1]} id='location-2' onKeyUp={this.handleKeyUp} />
-            
-            <label htmlFor='location-3'>Third location</label>
-            <input type='text' onChange={this.handleThirdFavoriteLocationChange} value={this.state.favoriteLocations[2]} id='location-3' onKeyUp={this.handleKeyUp} />
-          </div> 
-          */}
-
             <div className="input-group">
               <h2>Privacy</h2>
               <label htmlFor="newsfeed">
@@ -533,10 +490,6 @@ export default class SettingsPublicTab extends Component {
                 Hide my profile from the homepage
               </label>
             </div>
-
-            {/* <div className='input-group'>
-            <button className='btn btn-fill btn-primary block center' onClick={this.saveChanges}>Save changes</button>
-          </div> */}
           </div>
         </div>
         <div className="fixed-save-changes">
