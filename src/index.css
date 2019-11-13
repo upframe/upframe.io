@@ -853,34 +853,6 @@ body > div:nth-last-of-type(2) {
   margin-bottom: .5rem;
 }
 
-/* SYNC TAB */
-#settings-synctab h1 {
-  color: var(--brownish-grey);  
-}
-
-#settings-synctab #calendar-list {
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-  color: var(--blue-grey);
-}
-
-#settings-synctab #calendar-list #calendar-item {
-  flex-basis: 33%;
-}
-
-#settings-synctab #controls {
-  margin-bottom: 1rem;
-}
-
-#settings-synctab #calendar {
-  grid-template-columns: 8fr 1fr;
-  grid-column-gap: 1rem;
-}
-
-
-/* MENTOR PAGE */
-
 /* MENTOR CARD */
 .card.mentor-card {
   display: grid;

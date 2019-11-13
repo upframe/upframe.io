@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 import SettingsPublicTab from '../components/SettingsPublicTab'
 import SettingsAccountTab from '../components/SettingsAccountTab'
-import SettingsSyncTab from '../components/SettingsSyncTab'
+import CalendarTab from './Settings/CalendarTab'
 
 import AppContext from '../components/AppContext'
 
@@ -18,7 +18,7 @@ export default class Settings extends Component {
     } else if (this.props.match.params.page === 'account') {
       return <SettingsAccountTab />
     } else {
-      return <SettingsSyncTab />
+      return <CalendarTab />
     }
   }
 
