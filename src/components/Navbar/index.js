@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import AppContext from '../AppContext'
+import ProfilePicture from '../ProfilePicture'
 
 // import emojis and icons
 import '../../icons.css'
@@ -65,16 +66,16 @@ export default class Navbar extends Component {
 
             {this.context.loggedIn ? (
               <div className="flex flex-column alignitems-center dropdown">
-                <img
-                  id="profilepic"
-                  src={
-                    this.context.user.profilePic !== ''
-                      ? this.context.user.profilePic
-                      : ''
+                <ProfilePicture
+                  imgs={
+                    this.context.user.pictures &&
+                    Object.entries(this.context.user.pictures).length
+                      ? this.context.user.pictures
+                      : this.context.user.profilePic
                   }
-                  alt="Profile pic"
                   onClick={this.openDropdown}
-                ></img>
+                  size="2rem"
+                />
                 <ul>
                   <Link
                     to={'/' + this.context.user.keycode}
