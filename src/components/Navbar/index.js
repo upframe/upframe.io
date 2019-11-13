@@ -90,15 +90,14 @@ export default class Navbar extends Component {
                 onClick={this.openDropdown}
                 tabIndex="0"
               >
-                <img
-                  id="profilepic"
-                  className={styles.profilepic}
-                  src={
-                    this.context.user.profilePic !== ''
-                      ? this.context.user.profilePic
-                      : ''
+                <ProfilePicture
+                  imgs={
+                    this.context.user.pictures &&
+                    Object.entries(this.context.user.pictures).length
+                      ? this.context.user.pictures
+                      : this.context.user.profilePic
                   }
-                  alt="Profile pic"
+                  size="2rem"
                 />
                 <ul className={dropdown} tabIndex="1">
                   <Link to={'/' + this.context.user.keycode} tabIndex="0">
