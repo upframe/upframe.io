@@ -97,7 +97,6 @@ export default class Navbar extends Component {
                       ? this.context.user.pictures
                       : this.context.user.profilePic
                   }
-                  onClick={this.openDropdown}
                   className={styles.profilepic}
                   size="2rem"
                 />
