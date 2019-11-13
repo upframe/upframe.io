@@ -9,9 +9,7 @@ const MentorGroup = props => {
 
   useEffect(() => {
     const listPage = props.location.pathname.substring(1)
-    console.log(listPage)
     Api.searchFull(listPage).then(res => {
-      console.log(res)
       if (res.ok === 1) {
         setMentors(res.search)
       }

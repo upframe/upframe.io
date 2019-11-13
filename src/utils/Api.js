@@ -8,13 +8,6 @@ export class Api {
     this.host = process.env.REACT_APP_APIHOST
     this.port = process.env.REACT_APP_APIPORT
     this.schema = process.env.REACT_APP_APISCHEMA
-    if (process.env.REACT_APP_ENV === 'dev') {
-      console.log(
-        `Using API at ${this.host} on port ${this.port} via a${
-          this.schema === 'https' ? ' secure' : 'n insecure'
-        } connection.`
-      )
-    }
   }
 
   login(email, password) {
@@ -479,6 +472,21 @@ export class Api {
     }
     return fetch(
       `${this.schema}://${this.host}:${this.port}/mentor/request`,
+      fetchData
+    ).then(res => res.json())
+  }
+
+  getCalendarList = token => {
+    let fetchData = {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+    }
+    return fetch(
+      'https://www.googleapis.com/calendar/v3/users/me/calendarList',
       fetchData
     ).then(res => res.json())
   }

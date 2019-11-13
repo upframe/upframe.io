@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useToast } from 'utils/Hooks'
-import { useUser } from 'utils/Hooks'
+import { useToast, useUser } from 'utils/Hooks'
 import Api from 'utils/Api'
 import { haveSameContent } from 'utils/Array'
 
