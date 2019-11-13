@@ -1,0 +1,132 @@
+nav {
+  z-index: 5;
+  width: 100%;
+  margin: 0 auto;
+  height: 4rem;
+  background: white;
+  transition: 0.5s ease box-shadow;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10px;
+}
+
+.active{
+  box-shadow:  0 0 5px rgba(0, 0, 0, .1);
+}
+
+.wrapper{
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  height: 90%;
+  background-color: white ;
+
+}
+
+.SearchWrapper{
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.profilepic {
+  max-width: 2.2rem;
+  max-height: 2.2rem;
+  border-radius: 20%;
+  cursor: pointer;
+}
+
+.MenuWrapper{
+  margin-top: 9px;
+  position: relative;
+  outline: none;
+  margin-right: 35px;
+}
+
+.dropdown{
+  margin-left: auto;
+  display: none;
+  &.ShowMenu{
+    display: block;
+    position: absolute;
+    right: -65px;
+    width: 160px;
+    top: 52px;
+    background-color:white;
+    color: var(--blue-grey);
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 0.25rem;
+    box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  ::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 98px;
+    z-index: 0;
+    background-color: white;
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #dadada;
+    border-bottom: 0;
+    border-right: 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    a{
+      color:#898b8e;
+    }
+
+    li{
+    color: #898b8e;
+    transition: .25s ease-in-out all;
+    cursor: pointer;
+    padding: 0.5rem  0.5rem;
+    width: 100%;
+
+      &:hover{
+        background-color: #c8c5c5;
+      }
+    }
+
+    
+}
+
+.learnMoreWrapper{
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+
+  .learnMore{
+    padding: .4rem .8rem;
+    border-radius: 24px;
+    background-color: #ff004b;
+    color: white;
+  }
+
+}
+
+@media all and (max-width:1760px) and (min-width:1600px){
+.SearchWrapper{
+  padding: 0 10px;}
+}
+
+
+@media (max-width: 720px){
+  .wrapper{
+    justify-content: center;
+    .MenuWrapper{
+      display: none;
+    }
+    .SearchWrapper{
+      min-width: 300px;
+    }
+  }
+
+  .learnMore{
+    display: none;
+  }
+  
+}

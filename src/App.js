@@ -182,10 +182,8 @@ export default class App extends Component {
       setProfilePic: this.setProfilePic,
       showToast: this.showToast,
       user: this.state.user,
-
       resetSearchQuery: this.state.resetSearchQuery,
     }
-
     mixpanel.init('993a3d7a78434079b7a9bec245dbaec2')
 
     return (

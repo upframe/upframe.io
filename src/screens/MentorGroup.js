@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Api from '../utils/Api'
 
 import MainMentorList from '../components/MainMentorList/index'
-import MainSearchBar from '../components/MainSearchBar'
 
 const MentorGroup = props => {
   const [mentors, setMentors] = useState([])
@@ -21,7 +20,6 @@ const MentorGroup = props => {
   return (
     <main id="home">
       <div className="container grid">
-        <MainSearchBar setMentors={setMentors} />
         <MainMentorList mentors={mentors} />
       </div>
     </main>
