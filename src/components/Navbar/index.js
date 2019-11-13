@@ -4,6 +4,7 @@ import classNames from 'classnames/bind'
 
 import SearchBar from '../MainSearchBar'
 import AppContext from '../AppContext'
+import ProfilePicture from '../ProfilePicture'
 
 // import emojis and icons
 import '../../icons.css'
