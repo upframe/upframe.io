@@ -22,7 +22,7 @@ export default class MainMentorList extends PureComponent {
         </React.Fragment>
       )
     } else {
-      return <p>No mentors found</p>
+      return <h3>No mentors found</h3>
     }
   }
 }

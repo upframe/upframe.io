@@ -11,6 +11,7 @@ import MentorRequestPopup from '../components/MentorRequestPopup'
 
 import Recommendation from '../components/RecommendationCard'
 import recommendationList from './common/recommendationList'
+import ProfilePicture from '../components/ProfilePicture'
 
 const BioWithLinks = ({ bio }) => {
   let paragraphs = bio.split('\n')
@@ -55,6 +56,7 @@ export default class People extends Component {
         location: 'Loading',
         name: 'Loading',
         profilePic: 'Loading',
+        pictures: {},
         role: 'Loading',
         twitter: 'Loading',
         uid: 'Loading',
@@ -92,6 +94,7 @@ export default class People extends Component {
                   location: res.mentor.location,
                   name: res.mentor.name,
                   profilePic: res.mentor.profilePic,
+                  pictures: res.mentor.pictures,
                   role: res.mentor.role,
                   twitter: res.mentor.twitter,
                   uid: res.mentor.uid,
@@ -131,6 +134,7 @@ export default class People extends Component {
             name: res.mentor.name,
             keycode: res.mentor.keycode,
             profilePic: res.mentor.profilePic,
+            pictures: res.mentor.pictures,
             role: res.mentor.role,
             facebook: res.mentor.facebook,
             twitter: res.mentor.twitter,
@@ -305,10 +309,16 @@ export default class People extends Component {
           <div className="card mentor-card flex">
             <div id="main-info">
               <div className="flex flex-column">
-                <img
+                <ProfilePicture
+                  imgs={
+                    this.state.mentor.pictures &&
+                    Object.entries(this.state.mentor.pictures).length
+                      ? this.state.mentor.pictures
+                      : this.state.mentor.profilePic
+                  }
                   className="mentor-profilepic"
-                  src={this.state.mentor.profilePic}
-                  alt="Profile"
+                  name={this.state.mentor.name}
+                  size="13rem"
                 />
 
                 <h1 id="name" className="font-150 fontweight-medium">
