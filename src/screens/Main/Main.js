@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-import AppContext from '../components/AppContext'
+import AppContext from '../../components/AppContext'
 
-import Api from '../utils/Api'
-import MainCategories from '../components/MainCategories'
-import MainMentorList from '../components/MainMentorList'
+import Api from '../../utils/Api'
+import MainCategories from './MainCategories'
+import MainMentorList from './MainMentorList'
 
 import aos from 'aos'
 import 'aos/dist/aos.css'

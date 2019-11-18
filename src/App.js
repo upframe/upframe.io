@@ -7,7 +7,7 @@ import AppContext from './components/AppContext'
 import Navbar from './components/Navbar/'
 import Api from './utils/Api'
 
-const Main = React.lazy(() => import('./screens/Main'))
+const Main = React.lazy(() => import('./screens/Main/Main'))
 const Login = React.lazy(() =>
   import(
     /* webpackChunkName: "Login", webpackPrefetch: true */ './screens/Login'
@@ -182,8 +182,10 @@ export default class App extends Component {
       setProfilePic: this.setProfilePic,
       showToast: this.showToast,
       user: this.state.user,
+
       resetSearchQuery: this.state.resetSearchQuery,
     }
+
     mixpanel.init('993a3d7a78434079b7a9bec245dbaec2')
 
     return (
