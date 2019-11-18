@@ -4,11 +4,11 @@ import classNames from 'classnames/bind'
 
 import SearchBar from '../MainSearchBar'
 import AppContext from '../AppContext'
-import ProfilePicture from '../ProfilePicture'
+import {ProfilePicture} from '../index'
 
 // import emojis and icons
 import '../../icons.css'
-import styles from './style.module.scss'
+import styles from './Navbar.module.scss'
 
 export default class Navbar extends Component {
   static contextType = AppContext
