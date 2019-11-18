@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import API from '../../utils/Api'
 
-import './index.scss'
+import './RecommendationCard.scss'
 
 const MENTOR_URL = 'https://upframe.io/'
 
