@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames/bind'
 
-import SearchBar from '../MainSearchBar'
+import SearchBar from '../MainSearchBar/MainSearchBar'
 import AppContext from '../AppContext'
 import {ProfilePicture} from '../index'
 
