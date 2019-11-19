@@ -3,7 +3,8 @@ import { Redirect } from 'react-router-dom'
 
 import AppContext from '../AppContext'
 
-import styles from './index.module.scss'
+import styles from './MainSearchBar.module.scss'
+
 export default class MainSearchBar extends Component {
   static contextType = AppContext
 

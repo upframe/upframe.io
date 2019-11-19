@@ -5,7 +5,7 @@ import * as moment from 'moment'
 import Api from '../../utils/Api'
 
 import AppContext from '../../components/AppContext'
-import Breadcrumbs from '../../components/Breadcrumbs'
+import {Breadcrumbs} from '../../components'
 import MentorMeetupPopup from './MentorMeetupPopup'
 import MentorRequestPopup from './MentorRequestPopup'
 
