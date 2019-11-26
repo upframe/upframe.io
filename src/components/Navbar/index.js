@@ -87,7 +87,7 @@ export default class Navbar extends Component {
             {this.context.loggedIn ? (
               <div
                 className={styles.MenuWrapper}
-                onBlur={this.handleClickOutside}
+                // onBlur={this.handleClickOutside}
                 onClick={this.openDropdown}
                 tabIndex="0"
               >

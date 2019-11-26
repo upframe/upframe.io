@@ -55,8 +55,8 @@ nav {
   &.ShowMenu{
     display: block;
     position: absolute;
-    right: -58px;
-    width: 160px;
+    right: -67px;
+    width: 171px;
     top: 52px;
     background-color:white;
     color: var(--blue-grey);
@@ -84,6 +84,7 @@ nav {
     a{
       color:#898b8e;
       transition: .25s ease-in-out all;
+      cursor: pointer;
       &:hover{
         background-color: #c8c5c5;
       }
@@ -91,9 +92,7 @@ nav {
 
     li{
     color: #898b8e;
-    cursor: pointer;
     padding: 0.5rem  1rem;
-    width: 100%;
     }
 
     
