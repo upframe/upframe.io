@@ -50,8 +50,8 @@ export default class Navbar extends Component {
   handleClickOutside = () => {
     if (this.state.showMenu) {
       setTimeout(() => {
-        this.setState({ showMenu: false });
-      }, 200);
+        this.setState({ showMenu: false })
+      }, 200)
     }
   }
 
@@ -63,7 +63,8 @@ export default class Navbar extends Component {
   }
 
   resetSearch = () => {
-    if (window.location.pathname === '/') this.context.setSearchQuery('', true)
+    if (window.location.pathname === '/')
+      this.context.setSearchQuery('', true) || window.location.reload()
   }
 
   render() {
