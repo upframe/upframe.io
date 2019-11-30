@@ -11,7 +11,8 @@ nav {
   transition: 0.5s ease box-shadow;
   display: flex;
   padding-top: 10px;
-  margin-right: 150px;
+  padding-right: 150px;
+  align-items: center;
 }
 
 .active{
@@ -101,14 +102,18 @@ nav {
 
 .learnMoreWrapper{
   display: flex;
+  position: absolute;
+  right: 200px;
   align-items: center;
   white-space: nowrap;
+  align-self: center;
 
   .learnMore{
     padding: .4rem .8rem;
     border-radius: 24px;
     background-color: #ff004b;
     color: white;
+
   }
 
 }
@@ -117,8 +122,19 @@ nav {
     padding: 0 10px;}
   }
     
+  @media (max-width:1400px){
+    .MenuWrapper{
+      right: 100px;
+    }
+    .learnMoreWrapper{
+      right: 20px;
+    }
+  }
 
 @media (max-width: 720px){
+  nav{
+    padding-right: 100px;
+  }
   .wrapper{
     justify-content: center;
     .MenuWrapper{
