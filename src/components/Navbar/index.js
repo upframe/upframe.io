@@ -72,7 +72,7 @@ export default class Navbar extends Component {
   render() {
     let cx = classNames.bind(styles)
     const dropdown = cx(styles.dropdown, { ShowMenu: this.state.showMenu })
-    const wrapper = cx(styles.wrapper,{ mentorPageNav: this.context.changeSearcBarhWidth})
+    const wrapper = cx(styles.wrapper,{ MentorPageNav: this.context.changeSearcBarhWidth})
 
     return (
       <header

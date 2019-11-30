@@ -44,7 +44,7 @@ export default class Main extends Component {
 
   componentDidUpdate() {
     if (this.context.resetSearchQuery) {
-      Api.saveSearchQuery(this.context.searchQuery).then(res => {})
+      Api.saveSearchQueryToDb(this.context.searchQuery).then(res => {})
       this.context.setSearchQuery(this.context.searchQuery, false)
       Api.searchFull(this.context.searchQuery).then(res => {
         this.setMentors(res.search)

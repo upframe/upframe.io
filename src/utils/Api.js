@@ -483,7 +483,7 @@ export class Api {
     ).then(res => res.json())
   }
 
-  saveSearchQuery(search) {
+  saveSearchQueryToDb(search) {
     let fetchBody = {
       search,
     }
