@@ -49,13 +49,13 @@ nav {
   &.ShowMenu{
     display: block;
     position: absolute;
-    right: -65px;
+    right: -58px;
     width: 160px;
     top: 52px;
     background-color:white;
     color: var(--blue-grey);
     font-size: 1rem;
-    padding: 10px;
+    padding: 15px 0;
     border-radius: 0.25rem;
     box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.5);
   }
@@ -64,7 +64,7 @@ nav {
     content: "";
     position: absolute;
     top: 0;
-    left: 98px;
+    left: 85px;
     z-index: 0;
     background-color: white;
     width: 1rem;
@@ -77,18 +77,17 @@ nav {
 
     a{
       color:#898b8e;
+      transition: .25s ease-in-out all;
+      &:hover{
+        background-color: #c8c5c5;
+      }
     }
 
     li{
     color: #898b8e;
-    transition: .25s ease-in-out all;
     cursor: pointer;
-    padding: 0.5rem  0.5rem;
+    padding: 0.5rem  1rem;
     width: 100%;
-
-      &:hover{
-        background-color: #c8c5c5;
-      }
     }
 
     
