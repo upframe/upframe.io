@@ -54,6 +54,12 @@ export default class Navbar extends Component {
       }, 200)
     }
   }
+  
+
+  resetSearch = () => {
+    if (window.location.pathname === '/')
+      this.context.setSearchQuery('', true) || window.location.reload()
+  }
 
   logout = () => {
     this.setState({
@@ -62,14 +68,11 @@ export default class Navbar extends Component {
     this.context.logout()
   }
 
-  resetSearch = () => {
-    if (window.location.pathname === '/')
-      this.context.setSearchQuery('', true) || window.location.reload()
-  }
 
   render() {
     let cx = classNames.bind(styles)
-    const dropdown = cx('dropdown', { ShowMenu: this.state.showMenu })
+    const dropdown = cx(styles.dropdown, { ShowMenu: this.state.showMenu })
+    const wrapper = cx(styles.wrapper,{ mentorPageNav: this.context.changeSearcBarhWidth})
 
     return (
       <header
@@ -77,7 +80,7 @@ export default class Navbar extends Component {
         className={this.state.cookieUpdated ? 'hide' : null}
       >
         <nav className={window.scrollY > 0 ? styles.active : null}>
-          <div className={styles.wrapper}>
+          <div className={wrapper}>
             <div className={styles.SearchWrapper}>
               <Link to="/" id="logo" onClick={this.resetSearch}>
                 <img src="/logo.svg" alt="Upframe logo" className="logo" />
@@ -87,7 +90,7 @@ export default class Navbar extends Component {
             {this.context.loggedIn ? (
               <div
                 className={styles.MenuWrapper}
-                // onBlur={this.handleClickOutside}
+                onBlur={this.handleClickOutside}
                 onClick={this.openDropdown}
                 tabIndex="0"
               >

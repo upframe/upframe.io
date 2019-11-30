@@ -90,6 +90,7 @@ export default class App extends Component {
     searchQuery: '',
     resetSearchQuery: false,
     user: {},
+    changeSearcBarhWidth: false
   }
 
   componentDidMount() {
@@ -155,6 +156,12 @@ export default class App extends Component {
     })
   }
 
+  setSearchBarWidth = change => {
+    this.setState({
+      changeSearcBarhWidth: change ? true : false,
+    })
+  }
+
   setSearchQuery = (query, didSearchReset) => {
     this.setState({
       searchQuery: query,
@@ -178,14 +185,15 @@ export default class App extends Component {
       loggedIn: this.state.loggedIn,
       searchQuery: this.state.searchQuery,
       setSearchQuery: this.setSearchQuery,
+      resetSearchQuery: this.state.resetSearchQuery,
+      setSearchBarWidth: this.setSearchBarWidth,
+      changeSearcBarhWidth: this.state.changeSearcBarhWidth,
       saveUserInfo: this.saveUserInfo,
       setProfilePic: this.setProfilePic,
       showToast: this.showToast,
       user: this.state.user,
-      resetSearchQuery: this.state.resetSearchQuery,
     }
     mixpanel.init('993a3d7a78434079b7a9bec245dbaec2')
-
     return (
       <>
         <Helmet>

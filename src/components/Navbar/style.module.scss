@@ -6,14 +6,12 @@ header {
 
 nav {
   z-index: 5;
-  width: 100%;
-  margin: 0 auto;
   height: 4rem;
   background: white;
   transition: 0.5s ease box-shadow;
   display: flex;
-  justify-content: space-around;
   padding-top: 10px;
+  margin-right: 150px;
 }
 
 .active{
@@ -22,11 +20,14 @@ nav {
 
 .wrapper{
   display: flex;
-  justify-content: space-between;
-  width: 75%;
+  justify-content: center;
+  margin: 0 auto;
   height: 90%;
-  background-color: white ;
-
+  background-color: white;
+  &.mentorPageNav{
+    width: 75%;
+    max-width: 68rem;
+  }
 }
 
 .SearchWrapper{
@@ -44,9 +45,9 @@ nav {
 
 .MenuWrapper{
   margin-top: 9px;
-  position: relative;
+  position: absolute;
+  right: 200px;
   outline: none;
-  margin-right: 35px;
 }
 
 .dropdown{
@@ -111,12 +112,11 @@ nav {
   }
 
 }
-
 @media all and (max-width:1760px) and (min-width:1600px){
-.SearchWrapper{
-  padding: 0 10px;}
-}
-
+  .SearchWrapper{
+    padding: 0 10px;}
+  }
+    
 
 @media (max-width: 720px){
   .wrapper{
