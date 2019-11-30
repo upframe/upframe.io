@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import ProfilePicture from '../ProfilePicture'
+import {ProfilePicture} from '../../../components'
 
 import AOS from 'aos'
 

@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import mixpanel from 'mixpanel-browser'
 
 import AppContext from './components/AppContext'
-import Navbar from './components/Navbar/'
+import {Navbar} from './components'
 import Api from './utils/Api'
 
-const Main = React.lazy(() => import('./screens/Main'))
+const Main = React.lazy(() => import('./screens/Main/Main'))
 const Login = React.lazy(() =>
   import(
     /* webpackChunkName: "Login", webpackPrefetch: true */ './screens/Login'
@@ -40,7 +40,7 @@ const ResetPassword = React.lazy(() =>
 )
 const People = React.lazy(() =>
   import(
-    /* webpackChunkName: "People", webpackPrefetch: true */ './screens/People'
+    /* webpackChunkName: "People", webpackPrefetch: true */ './screens/Mentor/People'
   )
 )
 const Expertise = React.lazy(() =>
@@ -193,6 +193,7 @@ export default class App extends Component {
       showToast: this.showToast,
       user: this.state.user,
     }
+
     mixpanel.init('993a3d7a78434079b7a9bec245dbaec2')
     return (
       <>

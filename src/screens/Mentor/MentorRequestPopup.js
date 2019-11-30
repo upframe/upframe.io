@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
-import Api from '../utils/Api'
+import Api from '../../utils/Api'
 import mixpanel from 'mixpanel-browser'
-/* Neste popup vamos ter dois dialogos, um para escolher
- * um meetup, outro para escolher uma chamada, podemos
- * juntar tudo neste.
- */
+
 export default class MentorRequestPopup extends Component {
   constructor(props) {
     super(props)
