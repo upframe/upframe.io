@@ -7,18 +7,29 @@ import styles from './MainSearchBar.module.scss'
 
 export default class MainSearchBar extends Component {
   static contextType = AppContext
+  constructor(props) {
+    super(props)
+    this.state = {
+      searchQuery: ""
+    }
+    }
 
+    
   handleChange = event => {
-    this.context.setSearchQuery(event.target.value)
+    this.setState({
+      searchQuery: event.target.value
+    })
   }
 
   handleKeyPress = event => {
     if (event.key === 'Enter') {
-      this.context.setSearchQuery(event.target.value, true)
+      this.context.setSearchQuery(this.state.searchQuery)
+      this.context.startSearchQuery(true)
     }
   }
+
   RedirectToMain = () => {
-    if (this.context.resetSearchQuery) {
+    if (this.context.isSearchQuery) {
       return <Redirect to="/" />
     }
   }
@@ -31,7 +42,7 @@ export default class MainSearchBar extends Component {
           className={styles.input}
           placeholder="What are you looking for?"
           onChange={this.handleChange}
-          value={this.context.searchQuery}
+          value={this.state.searchQuery}
           onKeyPress={this.handleKeyPress}
         />
         {this.RedirectToMain()}

@@ -58,7 +58,7 @@ export default class Navbar extends Component {
 
   resetSearch = () => {
     if (window.location.pathname === '/')
-      this.context.setSearchQuery('', true) || window.location.reload()
+    window.location.reload()  
   }
 
   logout = () => {

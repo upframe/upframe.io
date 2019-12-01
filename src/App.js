@@ -88,7 +88,7 @@ export default class App extends Component {
   state = {
     loggedIn: false,
     searchQuery: '',
-    resetSearchQuery: false,
+    isSearchQuery: false, 
     user: {},
     changeSearcBarhWidth: false
   }
@@ -162,10 +162,15 @@ export default class App extends Component {
     })
   }
 
-  setSearchQuery = (query, didSearchReset) => {
+  startSearchQuery = didSearchReset => {
+    this.setState({
+      isSearchQuery: didSearchReset ? true : false,
+    })
+  }
+
+  setSearchQuery = (query) => {
     this.setState({
       searchQuery: query,
-      resetSearchQuery: didSearchReset ? true : false,
     })
   }
 
@@ -185,7 +190,8 @@ export default class App extends Component {
       loggedIn: this.state.loggedIn,
       searchQuery: this.state.searchQuery,
       setSearchQuery: this.setSearchQuery,
-      resetSearchQuery: this.state.resetSearchQuery,
+      isSearchQuery: this.state.isSearchQuery,
+      startSearchQuery: this.startSearchQuery,
       setSearchBarWidth: this.setSearchBarWidth,
       changeSearcBarhWidth: this.state.changeSearcBarhWidth,
       saveUserInfo: this.saveUserInfo,

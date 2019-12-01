@@ -4,7 +4,7 @@ export default React.createContext({
   loggedIn: false,
   user: {},
   searchQuery: '',
-  resetSearchQuery: false,
+  isSearchQuery: false,
   changeSearcBarhWidth: false,
   login: () => {},
   logout: () => {},
@@ -13,4 +13,5 @@ export default React.createContext({
   setProfilePic: () => {},
   setSearchBarWidth: () => {},
   showToast: () => {},
+  startSearchQuery: () => {},
 })
