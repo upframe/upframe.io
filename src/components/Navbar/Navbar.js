@@ -17,22 +17,8 @@ export default class Navbar extends Component {
     super(props)
 
     this.state = {
-      scroll: false,
-      mentors: [],
       showMenu: false,
     }
-  }
-
-  componentDidMount() {
-    this.watchScroll()
-  }
-
-  watchScroll() {
-    document.addEventListener('scroll', e => {
-      if (window.scrollY > 0 && this.state.scroll === false)
-        this.setState({ scroll: true })
-      else this.setState({ scroll: false })
-    })
   }
 
   openDropdown = e => {
@@ -54,7 +40,6 @@ export default class Navbar extends Component {
       }, 200)
     }
   }
-  
 
   resetSearch = () => {
     if (window.location.pathname === '/')
@@ -62,12 +47,8 @@ export default class Navbar extends Component {
   }
 
   logout = () => {
-    this.setState({
-      showMenu: true,
-    })
     this.context.logout()
   }
-
 
   render() {
     let cx = classNames.bind(styles)
@@ -79,7 +60,7 @@ export default class Navbar extends Component {
         id={this.state.firstVisit ? 'with-notification' : null}
         className={this.state.cookieUpdated ? 'hide' : null}
       >
-        <nav className={window.scrollY > 0 ? styles.active : null}>
+        <nav className={window.scrollY > 0 ? styles.scolling : null}>
           <div className={wrapper}>
             <div className={styles.SearchWrapper}>
               <Link to="/" id="logo" onClick={this.resetSearch}>
