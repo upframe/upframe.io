@@ -2,26 +2,19 @@ import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import * as moment from 'moment'
 
-import Api from '../utils/Api'
+import Api from '../../utils/Api'
 
-import AppContext from '../components/AppContext'
-import Breadcrumbs from '../components/Breadcrumbs'
-import MentorMeetupPopup from '../components/MentorMeetupPopup'
-import MentorRequestPopup from '../components/MentorRequestPopup'
+import AppContext from '../../components/AppContext'
+import {Breadcrumbs} from '../../components'
+import MentorMeetupPopup from './MentorMeetupPopup'
+import MentorRequestPopup from './MentorRequestPopup'
 
-import Recommendation from '../components/RecommendationCard'
-import recommendationList from './common/recommendationList'
-import ProfilePicture from '../components/ProfilePicture'
+import {RecommendationCard} from '../../components'
+import recommendationList from '../common/recommendationList'
+import {ProfilePicture} from '../../components'
 
 const BioWithLinks = ({ bio }) => {
   let paragraphs = bio.split('\n')
-
-  /*
-  var urlRegex =/(\b(https?|ftp|file):[-A-Z0-9+&@#%?=~_|!:,.;]*[-A-Z0-9+&@#%=~_|])/ig;
-  let bio = this.state.mentor.bio.replace(urlRegex, url => {
-    return `<a href="${url}">${url}</a>`
-  })
-  */
 
   return (
     <React.Fragment>
@@ -265,7 +258,7 @@ export default class People extends Component {
   checkRecommender = () => {
     if (recommendationList[this.state.mentor.keycode]) {
       return (
-        <Recommendation
+        <RecommendationCard
           recommendations={recommendationList[`${this.state.mentor.keycode}`]}
         />
       )
