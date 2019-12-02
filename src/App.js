@@ -88,7 +88,7 @@ export default class App extends Component {
   state = {
     loggedIn: false,
     searchQuery: '',
-    isSearchQuery: false, 
+    isSearchQuery: false,
     user: {},
     changeSearcBarhWidth: false
   }
