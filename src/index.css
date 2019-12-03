@@ -349,7 +349,6 @@ input[type="file"] {
 .card {
   padding: 1rem;
   border-radius: 0.25rem;
-  /* box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.5); */
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.1);
   transition: .2s ease box-shadow;
@@ -357,7 +356,6 @@ input[type="file"] {
 
 .card.hoverable:hover {
   box-shadow: 0 0.6px 2px rgba(0, 0, 0, 0.1);
-  /* box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1); */
 }
 
 /* LOGO AND IMAGES */
@@ -382,12 +380,6 @@ img {
   margin: 2rem 0 2rem 0;
 }
 
-/* HEADER AND NAVBAR */
-header {
-  position: fixed;
-  z-index: 10;
-  width: 100%;
-}
 
 /* REQUIRED ICON */
 .required-icon::before {
@@ -561,66 +553,6 @@ body > div:nth-last-of-type(2) {
   margin: 0 .5rem 0.5rem 0;
 }
 
-/* #home .mentor-list > a {
-  display: block;
-  border: 1px solid var(--border-lightgray);
-  border-radius: 0.25rem;
-  margin-bottom: 2rem;
-}
-
-#home .mentor-list img {
-  object-fit: contain;
-  max-width: 12.5rem;
-  max-height: 12.5rem;
-}
-
-.mentor-card-info {
-  margin-left: 2rem;
-  padding: 1.5rem 1.5rem 1.5rem 0;
-  flex-basis: 100%;
-}
-
-.mentor-card-info h1,
-.mentor-card-info p {
-  margin: 0;
-}
-
-.mentor-card-info p {
-  color: #606060;
-}
-
-.mentor-card-info a {
-  display: unset;
-}
-
-.mentor-card-info p:nth-of-type(2) {
-  margin-top: 1rem;
-}
-
-.mentor-card-tags {
-  display: block;
-  list-style-type: none;
-}
-
-.mentor-card-tag {
-  border: 1px solid var(--border-lightgray);
-}
-
-.mentor-card-info #tags {
-  flex-wrap: wrap;
-  margin: 0.9rem .75rem 0.9rem 0;
-}
-
-.mentor-card-info #tags .mentor-tag {
-  cursor: pointer;
-  font-size: 0.8rem;
-  text-align: center;
-  color: var(--brownish-grey);
-  padding: 0.8rem 1rem;
-  border: 1px solid var(--border-lightgray);
-  border-radius: 10rem;
-  margin: 0 .5rem 0.5rem 0;
-} */
 
 /* SETTINGS PAGE */
 
@@ -1051,14 +983,6 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 
 /* Tags */
 
-/*
-.mentor-tags-list {
-  list-style: none;
-  margin: 10px 0 0 0;
-  overflow: hidden;
-  padding: 0;
-}
-*/
 
 .dim-background {
   position: fixed;

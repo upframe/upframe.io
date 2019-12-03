@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import mixpanel from 'mixpanel-browser'
 
 import AppContext from './components/AppContext'
-import {Navbar} from './components'
+import { Navbar } from './components'
 import Api from './utils/Api'
 
 const Main = React.lazy(() => import('./screens/Main/Main'))
@@ -88,8 +88,9 @@ export default class App extends Component {
   state = {
     loggedIn: false,
     searchQuery: '',
-    resetSearchQuery: false,
+    isSearchQuery: false,
     user: {},
+    changeSearcBarhWidth: false,
   }
 
   componentDidMount() {
@@ -155,10 +156,21 @@ export default class App extends Component {
     })
   }
 
-  setSearchQuery = (query, didSearchReset) => {
+  setSearchBarWidth = change => {
+    this.setState({
+      changeSearcBarhWidth: change ? true : false,
+    })
+  }
+
+  startSearchQuery = didSearchReset => {
+    this.setState({
+      isSearchQuery: didSearchReset ? true : false,
+    })
+  }
+
+  setSearchQuery = query => {
     this.setState({
       searchQuery: query,
-      resetSearchQuery: didSearchReset ? true : false,
     })
   }
 
@@ -178,16 +190,17 @@ export default class App extends Component {
       loggedIn: this.state.loggedIn,
       searchQuery: this.state.searchQuery,
       setSearchQuery: this.setSearchQuery,
+      isSearchQuery: this.state.isSearchQuery,
+      startSearchQuery: this.startSearchQuery,
+      setSearchBarWidth: this.setSearchBarWidth,
+      changeSearcBarhWidth: this.state.changeSearcBarhWidth,
       saveUserInfo: this.saveUserInfo,
       setProfilePic: this.setProfilePic,
       showToast: this.showToast,
       user: this.state.user,
-
-      resetSearchQuery: this.state.resetSearchQuery,
     }
 
     mixpanel.init('993a3d7a78434079b7a9bec245dbaec2')
-
     return (
       <>
         <Helmet>

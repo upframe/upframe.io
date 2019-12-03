@@ -5,13 +5,13 @@ import * as moment from 'moment'
 import Api from '../../utils/Api'
 
 import AppContext from '../../components/AppContext'
-import {Breadcrumbs} from '../../components'
+import { Breadcrumbs } from '../../components'
 import MentorMeetupPopup from './MentorMeetupPopup'
 import MentorRequestPopup from './MentorRequestPopup'
 
-import {RecommendationCard} from '../../components'
+import { RecommendationCard } from '../../components'
 import recommendationList from '../common/recommendationList'
-import {ProfilePicture} from '../../components'
+import { ProfilePicture } from '../../components'
 
 const BioWithLinks = ({ bio }) => {
   let paragraphs = bio.split('\n')
@@ -114,6 +114,7 @@ export default class People extends Component {
   }
 
   componentDidMount() {
+    this.context.setSearchBarWidth(true)
     let keycode = window.location.pathname.split('/')[1]
     Api.getMentorInfo(keycode).then(res => {
       if (res.ok === 0) {
@@ -263,6 +264,10 @@ export default class People extends Component {
         />
       )
     }
+  }
+
+  componentWillUnmount() {
+    this.context.setSearchBarWidth(false)
   }
 
   render() {
