@@ -33,10 +33,14 @@ export default function Profile() {
 
   function addSkill(e) {
     e.preventDefault()
-    setUser({
-      ...user,
-      tags: JSON.stringify([...JSON.parse(user.tags), skill]),
-    })
+    if (skill.length === 0) return
+    const skills = JSON.parse(user.tags)
+    if (skills.length < 6)
+      setUser({
+        ...user,
+        tags: JSON.stringify(Array.from(new Set([...skills, skill]))),
+      })
+    else showToast('You already added 6 skills')
     setSkill('')
   }
 
@@ -66,8 +70,8 @@ export default function Profile() {
   const item = ({ label, field, type = 'input', hint, social }) => {
     field = field || label.toLowerCase()
     hint =
-      hint || (social && ctx.user[field])
-        ? `https://${field}/${user[field]}`
+      hint || (social && user[field])
+        ? `https://${field}.com/${user[field]}`
         : undefined
     return (
       <Item
