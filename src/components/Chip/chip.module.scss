@@ -1,0 +1,13 @@
+.chip {
+  display: flex;
+  align-content: center;
+  border: 1px solid var(--cl-text-light);
+  padding: 0 1rem;
+  height: 2rem;
+  border-radius: 1rem;
+  cursor: pointer;
+
+  p {
+    line-height: 2rem;
+  }
+}

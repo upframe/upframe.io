@@ -1,6 +1,7 @@
 .button {
   -moz-appearance: none;
   -webkit-appearance: none;
+  cursor: pointer;
   height: 2.8rem;
   padding: 0 1.5rem;
   margin-right: 1rem;
@@ -12,9 +13,19 @@
   font-weight: bold;
   color: var(--cl-text-medium);
   font-size: 0.8rem;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--cl-text-medium);
+    color: var(--cl-background);
+  }
 }
 
 .accent {
   color: var(--cl-accent);
   border-color: var(--cl-accent);
+
+  &:hover {
+    background-color: var(--cl-accent);
+  }
 }

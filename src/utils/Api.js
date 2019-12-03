@@ -321,10 +321,12 @@ export class Api {
     ).then(res => res.json())
   }
 
-  uploadPhoto() {
-    let input = document.querySelector('input[type="file"]')
+  uploadPhoto(file) {
     let data = new FormData()
-    data.append('file', input.files[0])
+    data.append(
+      'file',
+      file || document.querySelector('input[type="file"]').files[0]
+    )
     let fetchData = {
       method: 'POST',
       credentials: 'include',
