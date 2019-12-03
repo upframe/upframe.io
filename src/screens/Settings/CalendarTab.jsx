@@ -15,7 +15,11 @@ export default function SettingsSyncTab() {
 
   useEffect(() => {
     async function getSlots() {
-      let { slots } = await Api.getFreeSlots()
+      const now = new Date()
+      let { slots } = await Api.getFreeSlots(
+        now.toDateString(),
+        new Date(now.setMonth(now.getMonth() + 1)).toDateString()
+      )
       slots = (slots || []).map(({ start, end, sid: id }) => ({
         id,
         start: new Date(start),

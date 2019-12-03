@@ -1,0 +1,34 @@
+@import 'styles/layout.scss';
+@import 'styles/utils.scss';
+
+.navigation {
+  box-sizing: border-box;
+
+  display: block;
+  position: fixed;
+  top: 7rem;
+  left: 0;
+  height: initial;
+  padding-left: 1rem;
+
+  width: $settings-nav-min-width;
+  margin-left: calc(
+    (#{$settings-left-column-width} - #{$settings-nav-min-width}) / 2
+  );
+
+  @media (max-width: calc(#{$settings-nav-min-width} / #{strip-unit($settings-left-column-width)})) {
+    width: $settings-nav-min-width;
+  }
+}
+
+.item {
+  display: block;
+  margin: 1rem 0;
+  color: var(--cl-text-light) !important;
+  font-size: 1.1rem;
+}
+
+.active {
+  font-weight: bold;
+  color: var(--cl-text-strong) !important;
+}

@@ -492,14 +492,14 @@ export default class SettingsPublicTab extends Component {
             </div>
           </div>
         </div>
-        <div className="fixed-save-changes">
+        {/* <div className="fixed-save-changes">
           <button
             className="btn btn-fill btn-primary block save-changes"
             onClick={this.saveChanges}
           >
             Save changes
           </button>
-        </div>
+        </div> */}
       </React.Fragment>
     )
   }

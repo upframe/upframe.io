@@ -6,28 +6,9 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  font-display: swap; 
+  font-display: swap;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* COLOR */
-:root {
-  --primary: #ff004b;  
-  --primarytext: #fff;
-  --secondary: #182064;
-
-  --border-lightgray: #d0d2d6;
-
-  --slate: #708090;
-  --darkgray: #303030;
-
-  --orange: #fe2813;
-  --pink: #ff004b;
-  --brownish-grey: #646464;
-  --slate-grey: #5f6163;
-  --blue-grey: #898b8e;
-  --light-grey: #c8c5c5;
 }
 
 .color-primary {
@@ -38,17 +19,27 @@ body {
   color: var(--primary);
 }
 
-
 /* USEFUL TEXTCOLORS */
-.color-black { color: #000; }
-.bc-black { background-color: #000; }
+.color-black {
+  color: #000;
+}
+.bc-black {
+  background-color: #000;
+}
 
-.color-slate--grey { color: var(--slate-grey); }
-.bc-slate--grey { background-color: var(--slate-grey); }
+.color-slate--grey {
+  color: var(--slate-grey);
+}
+.bc-slate--grey {
+  background-color: var(--slate-grey);
+}
 
-.color-blue--grey { color: var(--blue-grey); }
-.bc-blue--grey { background-color: var(--blue-grey); }
-
+.color-blue--grey {
+  color: var(--blue-grey);
+}
+.bc-blue--grey {
+  background-color: var(--blue-grey);
+}
 
 /* FONT SIZES */
 .font-100 {
@@ -113,7 +104,7 @@ label.light-grey {
 }
 
 .text-uppercase {
-  text-transform: uppercase; 
+  text-transform: uppercase;
 }
 
 .text-lowercase {
@@ -179,30 +170,70 @@ ul {
   margin-left: auto;
 }
 
-.ma0 { margin: 0rem; }
-.mt0 { margin-top: 0rem; }
-.mr0 { margin-right: 0rem; }
-.mb0 { margin-bottom: 0rem; }
-.ml0 { margin-left: 0rem; }
+.ma0 {
+  margin: 0rem;
+}
+.mt0 {
+  margin-top: 0rem;
+}
+.mr0 {
+  margin-right: 0rem;
+}
+.mb0 {
+  margin-bottom: 0rem;
+}
+.ml0 {
+  margin-left: 0rem;
+}
 
 /** SPACING **/
-.ma1 { margin: 0.5rem; }
-.mt1 { margin-top: 0.5rem; }
-.mr1 { margin-right: 0.5rem; }
-.mb1 { margin-bottom: 0.5rem; }
-.ml1 { margin-left: 0.5rem; }
+.ma1 {
+  margin: 0.5rem;
+}
+.mt1 {
+  margin-top: 0.5rem;
+}
+.mr1 {
+  margin-right: 0.5rem;
+}
+.mb1 {
+  margin-bottom: 0.5rem;
+}
+.ml1 {
+  margin-left: 0.5rem;
+}
 
-.ma2 { margin: 1rem; }
-.mt2 { margin-top: 1rem; }
-.mr2 { margin-right: 1rem; }
-.mb2 { margin-bottom: 1rem; }
-.ml2 { margin-left: 1rem; }
+.ma2 {
+  margin: 1rem;
+}
+.mt2 {
+  margin-top: 1rem;
+}
+.mr2 {
+  margin-right: 1rem;
+}
+.mb2 {
+  margin-bottom: 1rem;
+}
+.ml2 {
+  margin-left: 1rem;
+}
 
-.ma3 { margin: 3em; }
-.mt3 { margin-top: 3rem; }
-.mr3 { margin-right: 3rem; }
-.mb3 { margin-bottom: 3rem; }
-.ml3 { margin-left: 3rem; }
+.ma3 {
+  margin: 3em;
+}
+.mt3 {
+  margin-top: 3rem;
+}
+.mr3 {
+  margin-right: 3rem;
+}
+.mb3 {
+  margin-bottom: 3rem;
+}
+.ml3 {
+  margin-left: 3rem;
+}
 
 /* INPUTS */
 label {
@@ -219,9 +250,9 @@ input {
   color: black;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+input[type='text'],
+input[type='email'],
+input[type='password'] {
   font-size: 1rem;
   padding: 0.5rem;
   border: 1px solid var(--light-grey);
@@ -270,7 +301,7 @@ select {
 }
 
 /* FILE INPUT */
-input[type="file"] {
+input[type='file'] {
   display: none;
 }
 
@@ -299,7 +330,7 @@ input[type="file"] {
 .btn:not(.btn-fill):hover {
   background-color: var(--bc);
   color: var(--primarytext);
-  transition: .25s ease-in-out all;
+  transition: 0.25s ease-in-out all;
 }
 
 .btn.btn-round {
@@ -352,7 +383,7 @@ input[type="file"] {
   /* box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.5); */
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: .2s ease box-shadow;
+  transition: 0.2s ease box-shadow;
 }
 
 .card.hoverable:hover {
@@ -366,9 +397,9 @@ img.logo {
   width: 6rem;
 }
 
-.logo:hover{
+.logo:hover {
   color: black;
-  filter:  grayscale(30%);
+  filter: grayscale(30%);
 }
 
 img {
@@ -391,7 +422,7 @@ header {
 
 /* REQUIRED ICON */
 .required-icon::before {
-  content: "*";
+  content: '*';
   display: inline-block;
   color: var(--primary);
   margin-left: 0.5rem;
@@ -439,7 +470,6 @@ body > div:nth-last-of-type(2) {
   right: 2.5rem !important;
 }
 
-
 /* POPULAR TAGS */
 .popular-tags h2 {
   color: var(--darkgray);
@@ -456,7 +486,7 @@ body > div:nth-last-of-type(2) {
   color: var(--darkgray);
   padding: 1rem;
   border: 1px solid var(--border-lightgray);
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
 .popular-tags .tag-item:not(:last-of-type) {
@@ -521,8 +551,8 @@ body > div:nth-last-of-type(2) {
 }
 
 #home .card.mentor-card #mentor-info h1 {
-  font-size: 1.20rem;
-  letter-spacing: .03125rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.03125rem;
   color: #000;
   margin: 0;
 }
@@ -546,7 +576,7 @@ body > div:nth-last-of-type(2) {
 
 #home .card.mentor-card #mentor-info #tags {
   flex-wrap: wrap;
-  margin: .65rem .75rem 0 0;
+  margin: 0.65rem 0.75rem 0 0;
 }
 
 #home .card.mentor-card #mentor-info #tags .mentor-tag {
@@ -558,7 +588,7 @@ body > div:nth-last-of-type(2) {
   padding: 0.5rem 1rem;
   border: 1px solid var(--border-lightgray);
   border-radius: 10rem;
-  margin: 0 .5rem 0.5rem 0;
+  margin: 0 0.5rem 0.5rem 0;
 }
 
 /* #home .mentor-list > a {
@@ -630,13 +660,13 @@ body > div:nth-last-of-type(2) {
   margin: unset auto 0 2rem;
 }
 
-#settings input[type="text"],
-#settings input[type="email"],
-#settings input[type="password"] {
+#settings input[type='text'],
+#settings input[type='email'],
+#settings input[type='password'] {
   font-size: 1.5rem;
 }
 
-#settings input[type="text"] {
+#settings input[type='text'] {
   height: 60px;
 }
 
@@ -646,7 +676,7 @@ body > div:nth-last-of-type(2) {
 
 #settings #tablist label {
   color: var(--light-grey);
-  transition: .25s ease-in-out color;
+  transition: 0.25s ease-in-out color;
   cursor: pointer;
   position: fixed;
 }
@@ -662,10 +692,6 @@ body > div:nth-last-of-type(2) {
 #settings #tablist label.active {
   color: var(--primary);
   position: fixed;
-}
-
-#settings .tab {
-  width: 75%;
 }
 
 /* PUBLIC TAB */
@@ -691,7 +717,7 @@ body > div:nth-last-of-type(2) {
 }
 
 #settings-publictab div:first-of-type #bio p:last-of-type {
-  margin: .25rem 0 1rem 0;
+  margin: 0.25rem 0 1rem 0;
 }
 
 #settings-publictab div:first-of-type #bio .btn:first-of-type {
@@ -731,7 +757,7 @@ body > div:nth-last-of-type(2) {
   padding: 0.6125rem 0.75rem;
   border: solid 1px rgba(19, 23, 26, 0.5);
   border-radius: 10rem;
-  margin: 0 .5rem 0.5rem 0;
+  margin: 0 0.5rem 0.5rem 0;
 }
 
 #settings-publictab #experience .ReactTags__tagInputField {
@@ -739,7 +765,7 @@ body > div:nth-last-of-type(2) {
 }
 
 .fixed-save-changes {
-  box-shadow: 5px 0 5px rgba(0, 0, 0, .1);
+  box-shadow: 5px 0 5px rgba(0, 0, 0, 0.1);
   position: fixed;
   z-index: 4;
   width: 100%;
@@ -757,18 +783,18 @@ body > div:nth-last-of-type(2) {
 }
 
 #newsfeed {
-  margin: 0
+  margin: 0;
 }
 
 /* ACCOUNT TAB */
 #settings-accounttab h1 {
   color: var(--brownish-grey);
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 #settings-accounttab p {
   color: var(--blue-grey);
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 /* MENTOR CARD */
@@ -833,7 +859,7 @@ body > div:nth-last-of-type(2) {
 
 .card.mentor-card #additional-info #tags {
   flex-wrap: wrap;
-  margin: 0.9rem .75rem 0.9rem 0;
+  margin: 0.9rem 0.75rem 0.9rem 0;
 }
 
 .card.mentor-card #additional-info #tags .mentor-tag {
@@ -845,7 +871,7 @@ body > div:nth-last-of-type(2) {
   padding: 0.6125rem 0.75rem;
   border: solid 1px rgba(19, 23, 26, 0.5);
   border-radius: 10rem;
-  margin: 0 .5rem 0.5rem 0;
+  margin: 0 0.5rem 0.5rem 0;
 }
 
 .card.mentor-card #additional-info #bio {
@@ -888,11 +914,11 @@ body > div:nth-last-of-type(2) {
   color: #000;
   font-size: 0.9rem;
   letter-spacing: 0.0125rem;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   border: 0.06125rem solid #000;
   border-radius: 0.25rem;
   cursor: pointer;
-  transition: .25s ease-in-out all;
+  transition: 0.25s ease-in-out all;
 }
 
 .card#office-hours .mentor-card-slot:hover {
@@ -901,7 +927,7 @@ body > div:nth-last-of-type(2) {
 
 .card#office-hours .mentor-card-slot.active {
   border-color: var(--primary);
-  box-shadow: 0 0 .25rem 0 var(--primary);
+  box-shadow: 0 0 0.25rem 0 var(--primary);
 }
 
 .card#office-hours .mentor-card-slot > div {
@@ -949,7 +975,7 @@ body > div:nth-last-of-type(2) {
   background-image: url('img/chainWhite.png');
 }
 
-/* LOGIN */ 
+/* LOGIN */
 #login .container input {
   padding: 1rem;
 }
@@ -999,7 +1025,7 @@ div.ReactTags__suggestions {
 
 div.ReactTags__suggestions ul {
   list-style-type: none;
-  box-shadow: .05em .01em .5em rgba(0, 0, 0, .2);
+  box-shadow: 0.05em 0.01em 0.5em rgba(0, 0, 0, 0.2);
   background: white;
   width: 200px;
 }
@@ -1063,7 +1089,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   right: 1rem;
   font-size: 2rem;
   cursor: pointer;
-  transition: .25s ease-in-out all;
+  transition: 0.25s ease-in-out all;
 }
 
 .mentor-meetup-popup .close:hover {
@@ -1095,7 +1121,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   cursor: pointer;
   padding: 1rem;
   margin-bottom: 1.5rem;
-  transition: .25s ease-in-out background-color;
+  transition: 0.25s ease-in-out background-color;
 }
 
 .mentor-meetup-popup .meetup-option:hover {
@@ -1126,7 +1152,6 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
   width: 100%;
 }
 
-
 /* MEETUP OPTION SPECIFIC */
 .mentor-meetup-popup#coffee span.hr {
   width: 100%;
@@ -1135,7 +1160,7 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 
 .mentor-meetup-popup #meetup-form > * {
   margin-bottom: 1rem;
-} 
+}
 
 .screen {
   padding-top: calc(4rem + 2rem);
@@ -1172,13 +1197,21 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 
 /* Safari */
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Toast */
@@ -1209,53 +1242,97 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 
 /* Animations */
 @-webkit-keyframes slideUpHeight {
-  to { height: 0; }
+  to {
+    height: 0;
+  }
 }
 
 @keyframes slideUpHeight {
-  to { height: 0; }
+  to {
+    height: 0;
+  }
 }
 
 /* Generic Fade Animations */
 @-webkit-keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; } 
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 /* Toast Fade Animations */
 @-webkit-keyframes toastFadeIn {
-  from {bottom: 0; opacity: 0;} 
-  to {bottom: 30px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
 @keyframes toastFadeIn {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 30px; opacity: 1;}
+  from {
+    bottom: 0;
+    opacity: 0;
+  }
+  to {
+    bottom: 30px;
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes toastFadeOut {
-  from {bottom: 30px; opacity: 1;} 
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
 
 @keyframes toastFadeOut {
-  from {bottom: 30px; opacity: 1;}
-  to {bottom: 0; opacity: 0;}
+  from {
+    bottom: 30px;
+    opacity: 1;
+  }
+  to {
+    bottom: 0;
+    opacity: 0;
+  }
 }
 
 /* BROWSER BUGFIXING/ISSUE FIXING */
@@ -1288,12 +1365,9 @@ button::-moz-focus-inner {
 
 /* MEDIUM AND SMALL SCREENS */
 @media (max-width: 1020px) {
-
   .card {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   }
-
-  
 
   #people .card.mentor-card .mentor-card-slots {
     grid-template-columns: repeat(4, 1fr);
@@ -1315,18 +1389,15 @@ button::-moz-focus-inner {
     width: 95vw;
   }
   #home .card.mentor-card {
-    
   }
 
   #home .mentor-list > a {
     margin: 1rem auto;
   }
-  
+
   #home .mentor-list a {
     display: block;
     max-width: 18rem;
-        
-
   }
 
   #home .card.mentor-card {
@@ -1356,7 +1427,7 @@ button::-moz-focus-inner {
   }
 
   #home .card.mentor-card .mentor-info #tags {
-    margin: .65rem 0 0 0;
+    margin: 0.65rem 0 0 0;
   }
 }
 

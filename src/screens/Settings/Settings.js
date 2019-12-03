@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
-
-import { Link } from 'react-router-dom'
-
-import SettingsPublicTab from '../components/SettingsPublicTab'
-import SettingsAccountTab from '../components/SettingsAccountTab'
-import CalendarTab from './Settings/CalendarTab'
-
-import AppContext from '../components/AppContext'
+import AppContext from '../../components/AppContext'
+import SettingsPublicTab from '../../components/SettingsPublicTab'
+import SettingsAccountTab from '../../components/SettingsAccountTab'
+import CalendarTab from './CalendarTab'
+import Navigation from './Navigation'
+import styles from './Settings.module.scss'
 
 export default class Settings extends Component {
   static contextType = AppContext
@@ -42,8 +40,9 @@ export default class Settings extends Component {
             <meta name="twitter:card" content="summary_large_image"></meta>
           </Helmet>
 
-          <main id="settings" className="grid">
-            <div id="tablist">
+          <main id="settings" className={styles.settings}>
+            <Navigation />
+            {/* <div id="tablist">
               <Link to="/settings/public">
                 <label
                   className={
@@ -73,8 +72,8 @@ export default class Settings extends Component {
                   Calendar Sync
                 </label>
               </Link>
-            </div>
-            {this.renderCurrentTab()}
+            </div> */}
+            <div className={styles.rightColumn}>{this.renderCurrentTab()}</div>
           </main>
         </React.Fragment>
       )

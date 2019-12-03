@@ -1,0 +1,27 @@
+@import 'styles/layout.scss';
+@import 'styles/utils.scss';
+
+.settings {
+  padding-top: 7rem !important;
+  box-sizing: border-box;
+}
+
+.rightColumn {
+  box-sizing: border-box;
+  display: block;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  margin-left: $settings-left-column-width;
+
+  width: $settings-content-width;
+  margin-left: calc(
+    $settings-left-column-width +
+      ((100vw - $settings-left-column-width) - #{$settings-content-width}) / 2
+  );
+
+  @media (max-width: calc(#{$settings-content-width} / ((100 - #{strip-unit($settings-left-column-width)}) / 100))) {
+    width: calc(100vw - #{$settings-left-column-width});
+    margin-left: $settings-left-column-width;
+  }
+}

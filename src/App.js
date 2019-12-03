@@ -25,7 +25,7 @@ const Onboarding = React.lazy(() =>
 )
 const Settings = React.lazy(() =>
   import(
-    /* webpackChunkName: "Settings", webpackPrefetch: true */ './screens/Settings'
+    /* webpackChunkName: "Settings", webpackPrefetch: true */ './screens/Settings/Settings'
   )
 )
 const ChangeEmail = React.lazy(() =>
