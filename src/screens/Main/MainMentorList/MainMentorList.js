@@ -9,8 +9,8 @@ export default class MainMentorList extends PureComponent {
       return (
         <React.Fragment>
           <div className="mentor-list flex flex-column" data-testid="container">
-          {console.log(this.props.mentors)}
             {this.props.mentors.map((mentor, index) => {
+              console.log(mentor)
               return (
                 <MentorCard
                   key={index}

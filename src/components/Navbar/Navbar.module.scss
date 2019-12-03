@@ -4,7 +4,7 @@ header {
   width: 100%;
 }
 
-nav {
+.nav {
   z-index: 5;
   height: 4rem;
   background: white;
@@ -15,7 +15,7 @@ nav {
   align-items: center;
 }
 
-.active{
+.scroll{
   box-shadow:  0 0 5px rgba(0, 0, 0, .1);
 }
 
@@ -26,7 +26,7 @@ nav {
   height: 90%;
   background-color: white;
   &.MentorPageNav{
-    width: 75%;
+    width: 70%;
     max-width: 68rem;
   }
 }
@@ -123,6 +123,7 @@ nav {
   }
     
   @media (max-width:1400px){
+    
     .MenuWrapper{
       right: 100px;
     }
@@ -149,4 +150,10 @@ nav {
     display: none;
   }
   
+}
+
+@media (max-width: 450px){
+  nav{
+    padding-right: 0px;
+  }
 }

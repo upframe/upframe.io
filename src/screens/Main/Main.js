@@ -12,13 +12,13 @@ import 'aos/dist/aos.css'
 export default class Main extends Component {
   static contextType = AppContext
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      mentors: [],
-      fetched: false,
-      search: false,
-    }
+    constructor(props) {
+      super(props)
+      this.state = {
+        mentors: [],
+        fetched: false,
+        search: false,
+      }
 
     aos.init({
       duration: 350,
@@ -31,6 +31,7 @@ export default class Main extends Component {
 
   componentDidMount() {
     Api.getAllMentors(true).then(res => {
+      this.context.startSearchQuery(false)
       let orderedMentors = res.mentors.filter(mentor => mentor.slots.length)
       let mentorsWithNoSlots = res.mentors.filter(
         mentor => mentor.slots.length === 0
@@ -43,9 +44,9 @@ export default class Main extends Component {
   }
 
   componentDidUpdate() {
-    if (this.context.resetSearchQuery) {
+    if (this.context.isSearchQuery) {
       Api.saveSearchQueryToDb(this.context.searchQuery).then(res => {})
-      this.context.setSearchQuery(this.context.searchQuery, false)
+      this.context.startSearchQuery(false)
       Api.searchFull(this.context.searchQuery).then(res => {
         this.setMentors(res.search)
       })
@@ -60,9 +61,11 @@ export default class Main extends Component {
 
   
   render() {
+    let emptyQuery = this.context.searchQuery.length === 0
     return (
       <main id="home">
         <div className="container grid">
+          {emptyQuery ?
           <React.Fragment>
             <MainCategories setMentors={this.setMentors} />
             <h1
@@ -80,6 +83,8 @@ export default class Main extends Component {
               today and tomorrow.
             </p>
           </React.Fragment>
+        :null
+        }
           <MainMentorList mentors={this.state.mentors} />
         </div>
       </main>
