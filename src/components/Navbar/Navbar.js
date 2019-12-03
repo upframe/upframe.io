@@ -126,7 +126,7 @@ export default class Navbar extends Component {
                       className={styles.learnMore}
                       href="https://www.producthunt.com/upcoming/upframe"
                     >
-                      Learn more
+                      Get Early Access
                     </a>
                   </li>
                 </ul>
