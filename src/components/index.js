@@ -8,6 +8,7 @@ import ProfilePicture from './ProfilePicture/ProfilePicture'
 import Navbar from './Navbar/Navbar'
 import MainSearchBar from './MainSearchBar/MainSearchBar'
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs'
+import Button from './Button/Button'
 
 export {
   MainPopularTags,
@@ -20,4 +21,5 @@ export {
   Navbar,
   Breadcrumbs,
   MainSearchBar,
+  Button,
 }

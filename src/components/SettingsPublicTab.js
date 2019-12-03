@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { WithContext as ReactTags } from 'react-tag-input'
 import AppContext from './AppContext'
 import Api from '../utils/Api'
+import { Button } from 'components'
 
 const KeyCodes = {
   comma: 188,
@@ -260,18 +261,10 @@ export default class SettingsPublicTab extends Component {
                   🤖
                 </span>
               </p>
-              <button
-                className="btn btn-round btn-primary fontweight-thin"
-                onClick={this.openUploadDialog}
-              >
-                Upload new picture
-              </button>
-              <button
-                className="btn btn-round fontweight-thin"
-                onClick={this.removePhoto}
-              >
-                Remove
-              </button>
+              <Button accent onClick={this.openUploadDialog}>
+                Upload photo
+              </Button>
+              <Button onClick={this.removePhoto}>Remove</Button>
             </div>
           </div>
 

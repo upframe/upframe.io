@@ -16,5 +16,8 @@
   --light-grey: #c8c5c5;
 
   --cl-text-light: #bdbdbd;
+  --cl-text-medium: #898b8e;
   --cl-text-strong: #4f4f4f;
+  --cl-background: #fff;
+  --cl-accent: #ff205c;
 }
