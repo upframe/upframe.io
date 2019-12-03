@@ -23,7 +23,7 @@ const users = [
 ]
 
 
-describe( "renders", () => {
+describe( "component is rendered correctly", () => {
 
     it("render component with props", () => {
         const {getByTestId} = render(<Router><MainMentorList mentors={users} /></Router>)
