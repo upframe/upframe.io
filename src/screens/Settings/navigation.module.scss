@@ -10,6 +10,7 @@
   left: 0;
   height: initial;
   padding-left: 1rem;
+  padding-top: 0;
 
   width: $settings-nav-min-width;
   margin-left: calc(
@@ -26,6 +27,10 @@
   margin: 1rem 0;
   color: var(--cl-text-light) !important;
   font-size: 1.1rem;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .active {
