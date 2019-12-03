@@ -4,7 +4,7 @@ import AppContext from '../../components/AppContext'
 
 import Api from '../../utils/Api'
 import MainCategories from './MainCategories'
-import MainMentorList from './MainMentorList'
+import MainMentorList from './MainMentorList/MainMentorList'
 
 import aos from 'aos'
 import 'aos/dist/aos.css'

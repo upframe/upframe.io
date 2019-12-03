@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react'
 import MentorCard from '../MentorCard'
 
-import './index.css'
+import './MainMentorList.css'
 
 export default class MainMentorList extends PureComponent {
   render() {
     if (this.props.mentors !== [] && this.props.mentors !== undefined) {
       return (
         <React.Fragment>
-          <div className="mentor-list flex flex-column">
+          <div className="mentor-list flex flex-column" data-testid="container">
+          {console.log(this.props.mentors)}
             {this.props.mentors.map((mentor, index) => {
               return (
                 <MentorCard
@@ -22,7 +23,7 @@ export default class MainMentorList extends PureComponent {
         </React.Fragment>
       )
     } else {
-      return <p>No mentors found</p>
+      return <p data-testid="noMentors">No mentors found</p>
     }
   }
 }
