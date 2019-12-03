@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import AppContext from '../../components/AppContext'
 
 import Api from '../../utils/Api'
+import LandingComponent from './LandingComponent'
 import MainCategories from './MainCategories'
 import MainMentorList from './MainMentorList'
 
@@ -63,10 +64,19 @@ export default class Main extends Component {
     let emptyQuery = this.context.searchQuery.length === 0
     return (
       <main id="home">
+        {this.context.loggedIn ? (
+          null
+        ) : (
+          <LandingComponent />
+        )}
         <div className="container grid">
           {emptyQuery ? (
             <React.Fragment>
-              <MainCategories setMentors={this.setMentors} />
+              {this.context.loggedIn ? (
+                <MainCategories setMentors={this.setMentors} />
+              ) : (
+                null
+              )}
               <h1
                 className="font-150 fontweight-medium"
                 data-aos="fade-up"
