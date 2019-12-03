@@ -109,13 +109,17 @@ header {
   align-self: center;
 
   .learnMore{
-    padding: .4rem .8rem;
-    border-radius: 24px;
-    background-color: #ff004b;
+    background-color: #FF205C;
     color: white;
-
+    border-radius: 4px;
+    border: none;
+    padding: 15px 40px 15px 40px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
+    cursor: pointer;
+    outline: none;
   }
-
 }
 @media all and (max-width:1760px) and (min-width:1600px){
   .SearchWrapper{
