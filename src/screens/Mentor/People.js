@@ -2,16 +2,17 @@ import React, { Component } from 'react'
 import { Helmet } from 'react-helmet'
 import * as moment from 'moment'
 
-import Api from '../utils/Api'
+import Api from '../../utils/Api'
 
-import AppContext from '../components/AppContext'
-import Breadcrumbs from '../components/Breadcrumbs'
-import MentorMeetupPopup from '../components/MentorMeetupPopup'
-import MentorRequestPopup from '../components/MentorRequestPopup'
-
-import Recommendation from '../components/RecommendationCard'
-import recommendationList from './common/recommendationList'
-import ProfilePicture from '../components/ProfilePicture'
+import AppContext from '../../components/AppContext'
+import MentorMeetupPopup from './MentorMeetupPopup'
+import MentorRequestPopup from './MentorRequestPopup'
+import {
+  Breadcrumbs,
+  RecommendationCard,
+  ProfilePicture,
+} from '../../components'
+import recommendationList from '../common/recommendationList'
 
 const BioWithLinks = ({ bio }) => {
   let paragraphs = bio.split('\n')
@@ -256,7 +257,7 @@ export default class People extends Component {
   checkRecommender = () => {
     if (recommendationList[this.state.mentor.keycode]) {
       return (
-        <Recommendation
+        <RecommendationCard
           recommendations={recommendationList[`${this.state.mentor.keycode}`]}
         />
       )
