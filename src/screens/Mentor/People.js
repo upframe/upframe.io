@@ -5,13 +5,13 @@ import * as moment from 'moment'
 import Api from '../../utils/Api'
 
 import AppContext from '../../components/AppContext'
-import {Breadcrumbs} from '../../components'
+import { Breadcrumbs } from '../../components'
 import MentorMeetupPopup from './MentorMeetupPopup'
 import MentorRequestPopup from './MentorRequestPopup'
 
-import {RecommendationCard} from '../../components'
+import { RecommendationCard } from '../../components'
 import recommendationList from '../common/recommendationList'
-import {ProfilePicture} from '../../components'
+import { ProfilePicture } from '../../components'
 
 const BioWithLinks = ({ bio }) => {
   let paragraphs = bio.split('\n')

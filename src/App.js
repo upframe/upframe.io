@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import mixpanel from 'mixpanel-browser'
 
 import AppContext from './components/AppContext'
-import {Navbar} from './components'
+import { Navbar } from './components'
 import Api from './utils/Api'
 
 const Main = React.lazy(() => import('./screens/Main/Main'))
@@ -90,7 +90,7 @@ export default class App extends Component {
     searchQuery: '',
     isSearchQuery: false,
     user: {},
-    changeSearcBarhWidth: false
+    changeSearcBarhWidth: false,
   }
 
   componentDidMount() {
@@ -168,7 +168,7 @@ export default class App extends Component {
     })
   }
 
-  setSearchQuery = (query) => {
+  setSearchQuery = query => {
     this.setState({
       searchQuery: query,
     })

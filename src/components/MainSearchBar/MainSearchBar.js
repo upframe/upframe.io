@@ -10,14 +10,13 @@ export default class MainSearchBar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchQuery: ""
+      searchQuery: '',
     }
-    }
+  }
 
-    
   handleChange = event => {
     this.setState({
-      searchQuery: event.target.value
+      searchQuery: event.target.value,
     })
   }
 
