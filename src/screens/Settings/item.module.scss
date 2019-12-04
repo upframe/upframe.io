@@ -18,3 +18,15 @@
   color: var(--cl-text-medium);
   margin-top: 0.5rem;
 }
+
+.btWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+
+  button {
+    margin-left: 1rem;
+    flex-shrink: 0;
+    width: 10.5rem;
+  }
+}

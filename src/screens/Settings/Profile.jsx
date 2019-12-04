@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef } from 'react'
 import AppContext from 'components/AppContext'
 import { Text, Title, Button, Input, Chip, ProfilePicture } from 'components'
-import Item from './Profile/Item'
+import Item from './Item'
 import ChangeBanner from './ChangeBanner'
 import { useToast } from 'utils/Hooks'
 import Api from 'utils/Api'

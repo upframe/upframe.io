@@ -1,8 +1,16 @@
 import React, { useState } from 'react'
-import { Input, Textbox } from 'components'
+import { Input, Textbox, Text, Button } from 'components'
 import style from './item.module.scss'
 
-export default function Item({ label, input, text, hint, onChange }) {
+export default function Item({
+  label,
+  input,
+  text,
+  button,
+  children,
+  hint,
+  onChange,
+}) {
   const [value, setValue] = useState(input || text)
 
   function handleChange(v) {
@@ -17,7 +25,15 @@ export default function Item({ label, input, text, hint, onChange }) {
   return (
     <div className={style.item}>
       <label htmlFor={id}>{label}</label>
-      {Action && <Action id={id} value={value} onChange={handleChange} />}
+      {Action && !button && (
+        <Action id={id} value={value} onChange={handleChange} />
+      )}
+      {button && (
+        <div className={style.btWrap}>
+          <Text>{children}</Text>
+          <Button onClick={onChange}>{button}</Button>
+        </div>
+      )}
       {hint && <p className={style.hint}>{hint}</p>}
     </div>
   )

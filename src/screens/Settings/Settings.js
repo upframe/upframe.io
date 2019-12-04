@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
 import AppContext from '../../components/AppContext'
 import Profile from './Profile'
-import SettingsAccountTab from '../../components/SettingsAccountTab'
+import Account from './Account'
 import CalendarTab from './CalendarTab'
 import Navigation from './Navigation'
 import { Route, Switch } from 'react-router-dom'
@@ -29,7 +29,7 @@ export default function Settings() {
         <div className={styles.rightColumn}>
           <Switch>
             <Route path="/settings/public" component={Profile} />
-            <Route path="/settings/account" component={SettingsAccountTab} />
+            <Route path="/settings/account" component={Account} />
             <Route path="/settings/sync" component={CalendarTab} />
           </Switch>
         </div>
