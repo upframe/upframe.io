@@ -14,7 +14,7 @@ export default class MainSearchBar extends Component {
       }
     }
 
-    
+  
   handleChange = event => {
     this.setState({
       searchQuery: event.target.value
@@ -22,6 +22,7 @@ export default class MainSearchBar extends Component {
   }
 
   handleKeyPress = event => {
+    console.log('test!!!!!!!!!!!!!!!!!!!!!!!!!1')
     if (event.key === 'Enter') {
       this.context.setSearchQuery(this.state.searchQuery)
       this.context.startSearchQuery(true)
@@ -43,7 +44,7 @@ export default class MainSearchBar extends Component {
           placeholder="What are you looking for?"
           onChange={this.handleChange}
           value={this.state.searchQuery}
-          onKeyPress={this.handleKeyPress}
+          onKeyDown={this.handleKeyPress}
         />
         {/* {this.RedirectToMain()} */}
       </div>

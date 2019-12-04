@@ -10,10 +10,10 @@ import AppContext from '../../AppContext';
 afterEach(cleanup)
 
 const renderContext = () => { 
-
+    
     return render(
         <Router>
-            <AppContext.Provider >
+            <AppContext.Provider value={{isSearchQuery:false}} >
             {/* {console.log(AppContext.Provider)} */}
                 <MainSearchBar />
             </AppContext.Provider>
@@ -21,31 +21,41 @@ const renderContext = () => {
     )
 }
 
-// describe( "component is rendered correctly", () => {
-//     it("rendered the input", () => {
-//         const {getByPlaceholderText} = render(<Router><MainSearchBar /></Router>)
-//         const input = getByPlaceholderText('What are you looking for?')
-//         expect(input).toBeTruthy()     
-//     })
-    
-//     it("setting the value of input", () => {
-//         const {getByPlaceholderText} = render(<Router><MainSearchBar /></Router>)
-//         const input = getByPlaceholderText('What are you looking for?')
-//         fireEvent.change(input, {target: {value: 'test'}})
-//         expect(input.value).toBe('test')     
-//     })
 
-// })
+describe( "component is rendered correctly", () => {
+    it("rendered the input", () => {
+        const {getByPlaceholderText} = render(<Router><MainSearchBar /></Router>)
+        const input = getByPlaceholderText('What are you looking for?')
+        expect(input).toBeTruthy()     
+    })
+    
+    it("setting the value of input", () => {
+        const {getByPlaceholderText} = render(<Router><MainSearchBar /></Router>)
+        const input = getByPlaceholderText('What are you looking for?')
+        fireEvent.change(input, {target: {value: 'test'}})
+        expect(input.value).toBe('test')     
+    })
+
+})
 
 
 describe( "check search query context", () => {
-    // const isSearchQuery = false; 
 
     it("check if search query context", () => {
-        const {getByPlaceholderText} = renderContext()
+        const mockSearchQuery = jest.fn(searchQuery => true)
+        const mockSetSearchQuery = jest.fn()
+        const {getByPlaceholderText} = 
+        render(<Router>
+            <AppContext.Provider value={{isSearchQuery:false, startSearchQuery:mockSearchQuery,setSearchQuery:mockSetSearchQuery}} >
+                <MainSearchBar />
+            </AppContext.Provider>
+        </Router>)
+        
         const input = getByPlaceholderText('What are you looking for?')
         fireEvent.change(input, {target: {value: 'test'}})
-        fireEvent.keyDown(input, {key: 'Enter', code: 13})
+        fireEvent.keyDown(input, { key: 'Enter', code: 13 })
+        expect(mockSearchQuery.mock.calls.length).toBe(1)
+        expect(mockSetSearchQuery.mock.calls[0][0]).toBe('test')
     })
 
 })

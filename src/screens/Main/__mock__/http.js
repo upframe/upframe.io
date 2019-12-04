@@ -1,3 +1,6 @@
+import Api from '../../../utils/Api'
+
+
 const users = [
     {
         bio: "Product person with a lot to learn.  I'm not going to pretend I have answers but I'm happy to guide you and connect you with people who can help you.",
@@ -27,6 +30,20 @@ const users = [
 ]
 
 
-const fetchData = () => {
+// searchFull(query) {
+//     let fetchData = {
+//       method: 'GET',
+//       mode: 'cors',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     }
+//     return fetch(
+//       `${this.schema}://${this.host}:${this.port}/search/full?term=${query}`,
+//       fetchData
+//     ).then(res => res.json())
+//   }
+
+api.fetchData = () => {
     return Promise.resolve({ mentors: users })
 }
