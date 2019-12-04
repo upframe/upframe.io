@@ -5,6 +5,7 @@ import Profile from './Profile'
 import Account from './Account'
 import CalendarTab from './CalendarTab'
 import Navigation from './Navigation'
+import Notifications from './Notifications'
 import { Route, Switch } from 'react-router-dom'
 import styles from './Settings.module.scss'
 
@@ -30,6 +31,7 @@ export default function Settings() {
           <Switch>
             <Route path="/settings/public" component={Profile} />
             <Route path="/settings/account" component={Account} />
+            <Route path="/settings/notifications" component={Notifications} />
             <Route path="/settings/sync" component={CalendarTab} />
           </Switch>
         </div>

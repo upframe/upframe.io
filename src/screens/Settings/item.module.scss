@@ -24,9 +24,12 @@
   justify-content: space-between;
   align-items: baseline;
 
-  button {
-    margin-left: 1rem;
+  & > *:not(p):last-child {
+    margin-left: 6vw;
     flex-shrink: 0;
+  }
+
+  button {
     width: 10.5rem;
   }
 }

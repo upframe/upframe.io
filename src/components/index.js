@@ -12,6 +12,7 @@ import Text from './Text/Text'
 import Input from './Input/Input'
 import Textbox from './Textbox/Textbox'
 import Chip from './Chip/Chip'
+import Checkbox from './Checkbox/Checkbox'
 
 export {
   MainPopularTags,
@@ -28,4 +29,5 @@ export {
   Input,
   Textbox,
   Chip,
+  Checkbox,
 }

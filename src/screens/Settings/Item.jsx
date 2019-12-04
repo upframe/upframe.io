@@ -7,6 +7,7 @@ export default function Item({
   input,
   text,
   button,
+  custom,
   children,
   hint,
   onChange,
@@ -28,10 +29,11 @@ export default function Item({
       {Action && !button && (
         <Action id={id} value={value} onChange={handleChange} />
       )}
-      {button && (
+      {(button || custom) && (
         <div className={style.btWrap}>
           <Text>{children}</Text>
-          <Button onClick={onChange}>{button}</Button>
+          {button && <Button onClick={onChange}>{button}</Button>}
+          {custom}
         </div>
       )}
       {hint && <p className={style.hint}>{hint}</p>}
