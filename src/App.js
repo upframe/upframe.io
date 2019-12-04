@@ -96,7 +96,10 @@ export default class App extends Component {
     Api.getUserInfo().then(res => {
       if (res.ok === 1 && res.code === 200) {
         this.setState({
-          user: res.user,
+          user: {
+            ...res.user,
+            tags: res.user.tags !== '' ? res.user.tags : '[]',
+          },
           loggedIn: true,
         })
       }
