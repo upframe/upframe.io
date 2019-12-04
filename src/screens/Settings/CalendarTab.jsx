@@ -1,15 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { useToast, useUser } from 'utils/Hooks'
+import React, { useState, useEffect, useContext } from 'react'
+import AppContext from 'components/AppContext'
+import { useToast, useGoogleCalendars } from 'utils/Hooks'
 import Api from 'utils/Api'
 import { haveSameContent } from 'utils/Array'
-
+import { Title, Text } from 'components'
+import Item from './Item'
+import ChangeBanner from './ChangeBanner'
 import Calendar from './Calendar'
 import GoogleSync from './GoogleSync'
+import CalendarList from './CalendarList'
+import styles from './calendarTab.module.scss'
 
-export default function SettingsSyncTab() {
-  const user = useUser()
+export default function CalendarTab() {
   const [oldSlots, setOldSlots] = useState([])
   const [slots, setSlots] = useState(oldSlots)
+  const ctx = useContext(AppContext)
+  const gCals = useGoogleCalendars(
+    ctx && ctx.user && ctx.user.googleAccessToken
+  )
+  const [showCals, setShowCals] = useState([])
   const slotsChanged = !haveSameContent(oldSlots, slots, slotComp)
   const showToast = useToast()
 
@@ -41,26 +50,27 @@ export default function SettingsSyncTab() {
   }
 
   return (
-    <div>
-      <GoogleSync user={user} />
+    <div className={styles.calendarTab}>
+      <CalendarList gCals={gCals} onChange={setShowCals} />
       <Calendar
         slots={slots}
         onAddSlot={slot => setSlots([...slots, slot])}
         onDeleteSlot={deleted =>
           setSlots(slots.filter(slot => slot !== deleted))
         }
+        gCals={gCals.filter(({ summary }) => showCals.includes(summary))}
+        gToken={ctx && ctx.user && ctx.user.googleAccessToken}
       />
-      {slotsChanged && (
-        <div className="fixed-save-changes">
-          <button
-            id="save-button"
-            className="btn btn-fill btn-primary block save-changes"
-            onClick={saveChanges}
-          >
-            Save changes
-          </button>
-        </div>
-      )}
+      <Title s2>Calendar Connections</Title>
+      <Text>
+        Spend less time here and focus on what really matters by syncing your
+        calendar with Upframe.
+      </Text>
+      <Item label="Google Calendar" custom={<GoogleSync />}>
+        Connect your calendar to check your availability before adding free
+        slots and see new events directly in your google calendar.
+      </Item>
+      {slotsChanged && <ChangeBanner onSave={saveChanges} />}
     </div>
   )
 }

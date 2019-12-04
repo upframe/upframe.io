@@ -1,15 +1,22 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
-import { useToast } from 'utils/Hooks'
+import { useToast, useGCalEvents } from 'utils/Hooks'
 
 import styles from './calendar.module.scss'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 
 const localizer = BigCalendar.momentLocalizer(moment)
 
-export default function Calendar({ slots, onAddSlot, onDeleteSlot }) {
+export default function Calendar({
+  slots,
+  onAddSlot,
+  onDeleteSlot,
+  gCals,
+  gToken,
+}) {
   const showToast = useToast()
+  const gCalEvents = useGCalEvents(gCals.map(({ id }) => id), gToken)
 
   function addSlot(newSlot) {
     if (
@@ -41,9 +48,17 @@ export default function Calendar({ slots, onAddSlot, onDeleteSlot }) {
         localizer={localizer}
         selectable
         defaultView="week"
-        events={slots}
+        events={[...slots, ...gCalEvents]}
         onSelectSlot={addSlot}
         onSelectEvent={deleteSlot}
+        views={{ month: true, week: true, day: true }}
+        eventPropGetter={event => {
+          return {
+            className: event.external
+              ? styles.externalEvent
+              : styles.internalEvent,
+          }
+        }}
       />
     </div>
   )

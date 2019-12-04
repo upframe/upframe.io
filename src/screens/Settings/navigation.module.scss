@@ -3,7 +3,6 @@
 
 .navigation {
   box-sizing: border-box;
-
   display: block;
   position: fixed;
   top: 7rem;
@@ -11,6 +10,8 @@
   height: initial;
   padding-left: 1rem;
   padding-top: 0;
+  background-color: var(--cl-background);
+  z-index: 1001;
 
   width: $settings-nav-min-width;
   margin-left: calc(
@@ -19,6 +20,27 @@
 
   @media (max-width: calc(#{$settings-nav-min-width} / #{strip-unit($settings-left-column-width)})) {
     width: $settings-nav-min-width;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    left: 0;
+    width: 100%;
+  }
+
+  &::before {
+    background: var(--cl-background);
+    height: 5rem;
+    top: -5rem;
+  }
+
+  &::after {
+    top: 100%;
+    height: 1.5rem;
+    background: linear-gradient(#fff, transparent);
   }
 }
 

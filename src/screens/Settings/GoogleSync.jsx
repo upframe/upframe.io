@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import AppContext from 'components/AppContext'
 import Api from 'utils/Api'
-import styles from './GoogleSync.module.css'
+import { Button } from 'components'
 
-export default function GoogleSync({ user }) {
-  const isSynced = user && user.googleAccessToken
+export default function GoogleSync() {
+  const ctx = useContext(AppContext)
+  const isSynced = ctx.user && ctx.user.googleAccessToken
 
   async function link() {
     const { url } = await Api.getGoogleSyncUrl()
@@ -20,10 +22,8 @@ export default function GoogleSync({ user }) {
   }
 
   return (
-    <div className={styles.controls}>
-      <button className="btn btn-secondary" onClick={isSynced ? unlink : link}>
-        {isSynced ? 'Unlink Google' : 'Synchronize Google Account'}
-      </button>
-    </div>
+    <Button onClick={isSynced ? unlink : link} accent>
+      {isSynced ? 'Unlink' : 'Connect Account'}
+    </Button>
   )
 }

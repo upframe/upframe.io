@@ -1,4 +1,18 @@
 .text {
   font-size: 1rem;
   color: var(--cl-text-medium);
+  margin-bottom: 1rem;
+
+  mark {
+    background-color: var(--cl-accent-light);
+    color: inherit;
+  }
+}
+
+.strong {
+  color: var(--cl-text-strong);
+}
+
+.small {
+  font-size: 14px;
 }

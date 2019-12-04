@@ -10,20 +10,23 @@ nav {
   padding-top: 10px;
 }
 
-.active{
-  box-shadow:  0 0 5px rgba(0, 0, 0, .1);
+.header {
+  z-index: 1100;
 }
 
-.wrapper{
+.active {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper {
   display: flex;
   justify-content: space-between;
   width: 75%;
   height: 90%;
-  background-color: white ;
-
+  background-color: white;
 }
 
-.SearchWrapper{
+.SearchWrapper {
   display: flex;
   align-items: center;
   width: 100%;
@@ -36,23 +39,23 @@ nav {
   cursor: pointer;
 }
 
-.MenuWrapper{
+.MenuWrapper {
   margin-top: 9px;
   position: relative;
   outline: none;
   margin-right: 35px;
 }
 
-.dropdown{
+.dropdown {
   margin-left: auto;
   display: none;
-  &.ShowMenu{
+  &.ShowMenu {
     display: block;
     position: absolute;
     right: -58px;
     width: 160px;
     top: 52px;
-    background-color:white;
+    background-color: white;
     color: var(--blue-grey);
     font-size: 1rem;
     padding: 15px 0;
@@ -61,7 +64,7 @@ nav {
   }
 
   ::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 85px;
@@ -73,59 +76,55 @@ nav {
     border-bottom: 0;
     border-right: 0;
     transform: translate(-50%, -50%) rotate(45deg);
-    }
+  }
 
-    a{
-      color:#898b8e;
-      transition: .25s ease-in-out all;
-      &:hover{
-        background-color: #c8c5c5;
-      }
+  a {
+    color: #898b8e;
+    transition: 0.25s ease-in-out all;
+    &:hover {
+      background-color: #c8c5c5;
     }
+  }
 
-    li{
+  li {
     color: #898b8e;
     cursor: pointer;
-    padding: 0.5rem  1rem;
+    padding: 0.5rem 1rem;
     width: 100%;
-    }
-
-    
+  }
 }
 
-.learnMoreWrapper{
+.learnMoreWrapper {
   display: flex;
   align-items: center;
   white-space: nowrap;
 
-  .learnMore{
-    padding: .4rem .8rem;
+  .learnMore {
+    padding: 0.4rem 0.8rem;
     border-radius: 24px;
     background-color: #ff004b;
     color: white;
   }
-
 }
 
-@media all and (max-width:1760px) and (min-width:1600px){
-.SearchWrapper{
-  padding: 0 10px;}
+@media all and (max-width: 1760px) and (min-width: 1600px) {
+  .SearchWrapper {
+    padding: 0 10px;
+  }
 }
 
-
-@media (max-width: 720px){
-  .wrapper{
+@media (max-width: 720px) {
+  .wrapper {
     justify-content: center;
-    .MenuWrapper{
+    .MenuWrapper {
       display: none;
     }
-    .SearchWrapper{
+    .SearchWrapper {
       min-width: 300px;
     }
   }
 
-  .learnMore{
+  .learnMore {
     display: none;
   }
-  
 }

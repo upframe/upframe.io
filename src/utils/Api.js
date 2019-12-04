@@ -473,19 +473,35 @@ export class Api {
     ).then(res => res.json())
   }
 
-  getCalendarList = token => {
-    let fetchData = {
+  getCalendarList = token =>
+    fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', {
       method: 'GET',
       mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
       },
-    }
+    }).then(res => res.json())
+
+  getCalendarEvents(calendarId, token) {
+    let headers = new Headers()
+    const now = new Date()
+    let end = new Date(new Date().setMonth(now.getMonth() + 1))
+    headers.append('Authorization', 'Bearer ' + token)
     return fetch(
-      'https://www.googleapis.com/calendar/v3/users/me/calendarList',
-      fetchData
-    ).then(res => res.json())
+      'https://www.googleapis.com/calendar/v3/calendars/' +
+        calendarId +
+        '/events?maxResults=2500&timeMin=' +
+        now.toISOString() +
+        '&timeMax=' +
+        end.toISOString() +
+        '&singleEvents=true',
+      {
+        method: 'GET',
+        mode: 'cors',
+        headers,
+      }
+    ).then(response => response.json())
   }
 
   saveSearchQuery(search) {

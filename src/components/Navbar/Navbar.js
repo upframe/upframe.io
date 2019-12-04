@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames/bind'
+import { classes } from 'utils/css'
 
 import SearchBar from '../MainSearchBar/MainSearchBar'
 import AppContext from '../AppContext'
@@ -73,7 +74,7 @@ export default class Navbar extends Component {
     return (
       <header
         id={this.state.firstVisit ? 'with-notification' : null}
-        className={this.state.cookieUpdated ? 'hide' : null}
+        className={classes(styles.header, { hide: this.state.cookieUpdated })}
       >
         <nav className={window.scrollY > 0 ? styles.active : null}>
           <div className={styles.wrapper}>

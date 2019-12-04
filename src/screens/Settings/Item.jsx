@@ -7,6 +7,7 @@ export default function Item({
   input,
   text,
   button,
+  accent = false,
   custom,
   children,
   hint,
@@ -32,7 +33,11 @@ export default function Item({
       {(button || custom) && (
         <div className={style.btWrap}>
           <Text>{children}</Text>
-          {button && <Button onClick={onChange}>{button}</Button>}
+          {button && (
+            <Button onClick={onChange} accent={accent}>
+              {button}
+            </Button>
+          )}
           {custom}
         </div>
       )}

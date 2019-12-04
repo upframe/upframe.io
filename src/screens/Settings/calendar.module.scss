@@ -1,17 +1,21 @@
+@import 'styles/layout.scss';
+
 .calendar {
-  display: grid;
-  grid-template-columns: 8fr 1fr;
-  grid-column-gap: 1rem;
-
   :global {
-    .rbc-event {
-      background-color: #ff004b !important;
-      border-color: #ff004b !important;
-      color: #fff;
-    }
-
-    .rbc-month-view {
-      height: 100vh;
+    .rbc-calendar {
+      height: $calendar-height;
     }
   }
+}
+
+.internalEvent {
+  background-color: #ff004b !important;
+  border-color: #ff004b !important;
+  color: #fff;
+}
+
+.externalEvent {
+  background-color: '#2b3778' !important;
+  border-color: '#2b3778' !important;
+  color: 'white' !important;
 }
