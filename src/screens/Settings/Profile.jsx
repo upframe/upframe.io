@@ -5,13 +5,14 @@ import Item from './Item'
 import ChangeBanner from './ChangeBanner'
 import { useToast } from 'utils/Hooks'
 import Api from 'utils/Api'
+import { haveSameContent } from 'utils/Array'
 import styles from './profile.module.scss'
 
 export default function Profile() {
   const ctx = useContext(AppContext)
   const ctxUser = {
     ...ctx.user,
-    tags: ctx.user.tags !== '' ? ctx.user.tags : '[]',
+    tags: JSON.parse(ctx.user.tags || '[]'),
   }
   const [user, setUser] = useState(ctxUser)
   const [skill, setSkill] = useState('')
@@ -38,32 +39,50 @@ export default function Profile() {
   function addSkill(e) {
     e.preventDefault()
     if (skill.length === 0) return
-    const skills = JSON.parse(user.tags)
-    if (skills.length < 6)
-      setUser({
-        ...user,
-        tags: JSON.stringify(Array.from(new Set([...skills, skill]))),
-      })
-    else showToast('You already added 6 skills')
+    let tags = user.tags
+    if (tags.length < 6) {
+      tags = Array.from(new Set([...tags.map(({ text }) => text), skill])).map(
+        skill => ({ id: skill, text: skill })
+      )
+      if (JSON.stringify(tags).length > 255)
+        showToast('Please pick shorter tags')
+      else setUser({ ...user, tags })
+    } else showToast('You already added 6 skills')
     setSkill('')
   }
 
   function removeSkill(name) {
     setUser({
       ...user,
-      tags: JSON.stringify(JSON.parse(user.tags).filter(tag => tag !== name)),
+      tags: user.tags.filter(({ text }) => text !== name),
     })
   }
 
   const diff = Object.fromEntries(
-    Object.entries(user).flatMap(([k, v]) => (ctxUser[k] !== v ? [[k, v]] : []))
+    Object.entries(user).flatMap(([k, v]) =>
+      (Array.isArray(v)
+      ? !haveSameContent(
+          ctxUser[k],
+          v,
+          ({ text: t1 }, { text: t2 }) => t1 === t2
+        )
+      : ctxUser[k] !== v)
+        ? [[k, v]]
+        : []
+    )
   )
 
   function saveChanges() {
     Api.updateUserInfo(diff)
       .then(({ ok }) => {
         if (ok !== 1) throw Error()
-        ctx.saveUserInfo({ ...user, ...diff })
+        ctx.saveUserInfo(
+          Object.fromEntries(
+            Object.entries(diff).map(([k, v]) =>
+              k !== 'tags' ? [k, v] : [k, JSON.stringify(v)]
+            )
+          )
+        )
       })
       .catch(() => showToast('something went wrong'))
   }
@@ -84,6 +103,7 @@ export default function Profile() {
       />
     )
   }
+
   return (
     <div>
       <div className={styles.head}>
@@ -147,9 +167,9 @@ export default function Profile() {
         </Button>
       </form>
       <div className={styles.skillList}>
-        {JSON.parse(user.tags).map(tag => (
-          <Chip key={tag} onClick={removeSkill}>
-            {tag}
+        {user.tags.map(({ id, text }) => (
+          <Chip key={id} onClick={removeSkill}>
+            {text}
           </Chip>
         ))}
       </div>
