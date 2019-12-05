@@ -3,6 +3,7 @@
 
 .navigation {
   box-sizing: border-box;
+  margin: auto;
   display: block;
   position: fixed;
   top: 7rem;
@@ -18,8 +19,8 @@
     (#{$settings-left-column-width} - #{$settings-nav-min-width}) / 2
   );
 
-  @media (max-width: calc(#{$settings-nav-min-width} / #{strip-unit($settings-left-column-width)})) {
-    width: $settings-nav-min-width;
+  @media (max-width: calc(#{$settings-nav-min-width} / #{(strip-unit($settings-left-column-width) / 100)})) {
+    margin-left: 0;
   }
 
   &::before,

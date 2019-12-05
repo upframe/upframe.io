@@ -16,8 +16,9 @@
     (#{$settings-left-column-width} - #{$settings-nav-min-width}) / 2
   );
 
-  @media (max-width: calc(#{$settings-nav-min-width} / #{strip-unit($settings-left-column-width)})) {
+  @media (max-width: calc(#{$settings-nav-min-width} / #{(strip-unit($settings-left-column-width) / 100)})) {
     width: $settings-nav-min-width;
+    margin-left: 0;
   }
 }
 
