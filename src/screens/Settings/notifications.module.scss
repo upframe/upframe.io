@@ -1,0 +1,19 @@
+.notifications {
+  & > h2:first-child {
+    margin-top: 0;
+  }
+
+  & > h2 {
+    margin-top: 4rem;
+  }
+}
+
+.emailCheck {
+  display: flex;
+  margin-top: 2rem;
+  align-items: baseline;
+
+  p {
+    margin-left: 1rem;
+  }
+}

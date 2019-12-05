@@ -21,7 +21,7 @@ export default class MainCategories extends Component {
   render() {
     if (this.state.tags !== []) {
       return (
-        <div class="popular-tags">
+        <div className="popular-tags">
           <h2 className="font-weight-normal">Popular Tags</h2>
           <div>
             {this.state.tags.map(tag => {

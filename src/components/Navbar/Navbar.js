@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames/bind'
+import { classes } from 'utils/css'
 import throttle from 'lodash/throttle'
-
 import SearchBar from '../MainSearchBar/MainSearchBar'
 import AppContext from '../AppContext'
 import { ProfilePicture } from '../index'
@@ -79,7 +79,7 @@ export default class Navbar extends Component {
     return (
       <header
         id={this.state.firstVisit ? 'with-notification' : null}
-        className={this.state.cookieUpdated ? 'hide' : null}
+        className={classes(styles.header, { hide: this.state.cookieUpdated })}
       >
         <nav className={nav}>
           <div className={wrapper}>

@@ -1,0 +1,35 @@
+.item {
+  margin: 2rem 0;
+
+  label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--cl-text-strong);
+  }
+
+  input,
+  textarea {
+    width: 100%;
+  }
+}
+
+.hint {
+  font-size: 0.875rem;
+  color: var(--cl-text-medium);
+  margin-top: 0.5rem;
+}
+
+.btWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+
+  & > *:not(p):last-child {
+    margin-left: 6vw;
+    flex-shrink: 0;
+  }
+
+  button {
+    width: 10.5rem;
+  }
+}

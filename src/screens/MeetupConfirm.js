@@ -9,7 +9,6 @@ export default class MeetupConfirm extends Component {
 
   componentDidMount() {
     Api.confirmMeetup(this.props.match.params.meetupid).then(res => {
-      console.log(res)
       if (res.ok === 0) {
         alert('Could not confirm your meetup, make sure you are logged in')
       } else {

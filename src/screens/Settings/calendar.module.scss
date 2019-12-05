@@ -1,0 +1,21 @@
+@import 'styles/layout.scss';
+
+.calendar {
+  :global {
+    .rbc-calendar {
+      height: $calendar-height;
+    }
+  }
+}
+
+.internalEvent {
+  background-color: #ff004b !important;
+  border-color: #ff004b !important;
+  color: #fff;
+}
+
+.externalEvent {
+  background-color: '#2b3778' !important;
+  border-color: '#2b3778' !important;
+  color: 'white' !important;
+}

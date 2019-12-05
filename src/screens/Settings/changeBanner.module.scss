@@ -1,0 +1,19 @@
+@import 'styles/layout.scss';
+
+.changeBanner {
+  position: fixed;
+  display: block;
+  bottom: 0;
+  width: 100vw;
+  height: $settings-banner-height;
+  transform: translateX(calc(-#{$settings-left-column-width} - 1rem));
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  background-color: var(--cl-background);
+
+  button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
+}

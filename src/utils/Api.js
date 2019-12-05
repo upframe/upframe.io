@@ -8,13 +8,6 @@ export class Api {
     this.host = process.env.REACT_APP_APIHOST
     this.port = process.env.REACT_APP_APIPORT
     this.schema = process.env.REACT_APP_APISCHEMA
-    if (process.env.REACT_APP_ENV === 'dev') {
-      console.log(
-        `Using API at ${this.host} on port ${this.port} via a${
-          this.schema === 'https' ? ' secure' : 'n insecure'
-        } connection.`
-      )
-    }
   }
 
   login(email, password) {
@@ -328,10 +321,12 @@ export class Api {
     ).then(res => res.json())
   }
 
-  uploadPhoto() {
-    let input = document.querySelector('input[type="file"]')
+  uploadPhoto(file) {
     let data = new FormData()
-    data.append('file', input.files[0])
+    data.append(
+      'file',
+      file || document.querySelector('input[type="file"]').files[0]
+    )
     let fetchData = {
       method: 'POST',
       credentials: 'include',
@@ -388,11 +383,6 @@ export class Api {
 
   addFreeSlots(freeSlotsToSave, freeSlotsToDelete) {
     //Free slots vêem na forma
-    // id: currentId,
-    // start: slot.start,
-    // end: slot.end,
-    // title: 'Upframe Free Slot',
-    // tag: 'upframe-free-slot'
     let updatedSlots = freeSlotsToSave.map(slot => {
       return {
         start: slot.start,
@@ -483,6 +473,37 @@ export class Api {
     ).then(res => res.json())
   }
 
+  getCalendarList = token =>
+    fetch('https://www.googleapis.com/calendar/v3/users/me/calendarList', {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+    }).then(res => res.json())
+
+  getCalendarEvents(calendarId, token) {
+    let headers = new Headers()
+    const now = new Date()
+    let end = new Date(new Date().setMonth(now.getMonth() + 1))
+    headers.append('Authorization', 'Bearer ' + token)
+    return fetch(
+      'https://www.googleapis.com/calendar/v3/calendars/' +
+        calendarId +
+        '/events?maxResults=2500&timeMin=' +
+        now.toISOString() +
+        '&timeMax=' +
+        end.toISOString() +
+        '&singleEvents=true',
+      {
+        method: 'GET',
+        mode: 'cors',
+        headers,
+      }
+    ).then(response => response.json())
+  }
+
   saveSearchQueryToDb(search) {
     let fetchBody = {
       search,
@@ -498,6 +519,7 @@ export class Api {
     }
     return fetch(
       `${this.schema}://${this.host}:${this.port}/search/query`,
+
       fetchData
     ).then(res => res.json())
   }

@@ -1,0 +1,78 @@
+@import 'styles/layout.scss';
+@import 'styles/utils.scss';
+
+.wrap {
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  width: $settings-nav-min-width;
+  height: calc(7rem + #{$calendar-height});
+  margin-left: calc(
+    (#{$settings-left-column-width} - #{$settings-nav-min-width}) / 2
+  );
+
+  @media (max-width: calc(#{$settings-nav-min-width} / #{(strip-unit($settings-left-column-width) / 100)})) {
+    width: $settings-nav-min-width;
+    margin-left: 0;
+  }
+}
+
+.calendarList {
+  display: block;
+  box-sizing: border-box;
+  width: calc(100% - 2px);
+  border-radius: 0.3rem;
+  position: sticky;
+  top: 50vh;
+  padding: 1.5rem 1rem;
+  border: 1px solid var(--cl-text-light);
+  background-color: var(--cl-background);
+  z-index: 1000;
+
+  h3 {
+    text-align: center;
+    margin-top: 0;
+  }
+
+  & > *:not(button) {
+    color: black;
+    margin: 0;
+    margin-bottom: 1.2rem;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+.synced {
+  border: none;
+  overflow-x: hidden;
+
+  & > * {
+    text-align: left !important;
+  }
+}
+
+.calendarToggle {
+  display: flex;
+  margin-bottom: 0 !important;
+  align-items: baseline;
+  width: 100%;
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  input {
+    margin: 0;
+    margin-right: 1rem;
+    cursor: pointer;
+  }
+}

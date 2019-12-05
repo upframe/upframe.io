@@ -38,6 +38,7 @@ export default class Main extends Component {
         mentor => mentor.slots.length === 0
       )
       for (let mentor of mentorsWithNoSlots) orderedMentors.push(mentor)
+
       this.setState({
         mentors: orderedMentors,
       })

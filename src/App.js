@@ -11,7 +11,7 @@ const Main = React.lazy(() => import('./screens/Main/Main'))
 const Login = React.lazy(() => import('./screens/Login'))
 const Register = React.lazy(() => import('./screens/Register'))
 const Onboarding = React.lazy(() => import('./screens/Onboarding'))
-const Settings = React.lazy(() => import('./screens/Settings'))
+const Settings = React.lazy(() => import('./screens/Settings/Settings'))
 const ChangeEmail = React.lazy(() => import('./screens/ChangeEmail'))
 const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
 const People = React.lazy(() => import('./screens/Mentor/People'))
@@ -37,7 +37,10 @@ export default class App extends Component {
     Api.getUserInfo().then(res => {
       if (res.ok === 1 && res.code === 200) {
         this.setState({
-          user: res.user,
+          user: {
+            ...res.user,
+            tags: res.user.tags !== '' ? res.user.tags : '[]',
+          },
           loggedIn: true,
         })
       }
