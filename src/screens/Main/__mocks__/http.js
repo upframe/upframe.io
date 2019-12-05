@@ -30,20 +30,18 @@ const users = [
 ]
 
 
-// searchFull(query) {
-//     let fetchData = {
-//       method: 'GET',
-//       mode: 'cors',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//     }
-//     return fetch(
-//       `${this.schema}://${this.host}:${this.port}/search/full?term=${query}`,
-//       fetchData
-//     ).then(res => res.json())
-//   }
 
-api.fetchData = () => {
-    return Promise.resolve({ mentors: users })
+
+
+// fetchData = () => {
+//     return Promise.resolve({ mentors: users })
+// }
+
+// const test = jest.fn().mockResolvedValue({data:users})
+
+
+
+export default{
+    // get:jest.fn().mockResolvedValue({data:users})
+    get: jest.fn(() => Promise.resolve({ data: {} }))
 }

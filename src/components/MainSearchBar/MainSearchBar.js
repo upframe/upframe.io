@@ -22,7 +22,6 @@ export default class MainSearchBar extends Component {
   }
 
   handleKeyPress = event => {
-    console.log('test!!!!!!!!!!!!!!!!!!!!!!!!!1')
     if (event.key === 'Enter') {
       this.context.setSearchQuery(this.state.searchQuery)
       this.context.startSearchQuery(true)
