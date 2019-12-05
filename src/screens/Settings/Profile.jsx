@@ -9,7 +9,11 @@ import styles from './profile.module.scss'
 
 export default function Profile() {
   const ctx = useContext(AppContext)
-  const [user, setUser] = useState(Object.assign({}, ctx.user))
+  const ctxUser = {
+    ...ctx.user,
+    tags: ctx.user.tags !== '' ? ctx.user.tags : '[]',
+  }
+  const [user, setUser] = useState(ctxUser)
   const [skill, setSkill] = useState('')
   const fileInput = useRef(null)
   const showToast = useToast()
@@ -52,9 +56,7 @@ export default function Profile() {
   }
 
   const diff = Object.fromEntries(
-    Object.entries(user).flatMap(([k, v]) =>
-      ctx.user[k] !== v ? [[k, v]] : []
-    )
+    Object.entries(user).flatMap(([k, v]) => (ctxUser[k] !== v ? [[k, v]] : []))
   )
 
   function saveChanges() {
