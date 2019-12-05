@@ -411,7 +411,6 @@ img {
   margin: 2rem 0 2rem 0;
 }
 
-
 /* REQUIRED ICON */
 .required-icon::before {
   content: '*';
@@ -581,152 +580,6 @@ body > div:nth-last-of-type(2) {
   border: 1px solid var(--border-lightgray);
   border-radius: 10rem;
   margin: 0 0.5rem 0.5rem 0;
-}
-
-
-/* SETTINGS PAGE */
-
-#settings.grid {
-  grid-template-columns: 20% 80%;
-  max-width: 90%;
-  margin: unset auto 0 2rem;
-}
-
-#settings input[type='text'],
-#settings input[type='email'],
-#settings input[type='password'] {
-  font-size: 1.5rem;
-}
-
-#settings input[type='text'] {
-  height: 60px;
-}
-
-#settings #tablist {
-  padding: 12.5rem 0 0 1rem;
-}
-
-#settings #tablist label {
-  color: var(--light-grey);
-  transition: 0.25s ease-in-out color;
-  cursor: pointer;
-  position: fixed;
-}
-
-#account-label {
-  margin-top: 35px;
-}
-
-#sync-label {
-  margin-top: 67px;
-}
-
-#settings #tablist label.active {
-  color: var(--primary);
-  position: fixed;
-}
-
-/* PUBLIC TAB */
-#settings-publictab div:first-of-type .profile-pic {
-  min-width: 12rem;
-  max-width: 12rem;
-  min-height: 12rem;
-  max-height: 12rem;
-  margin-right: 3rem;
-}
-
-#settings-publictab #bio {
-  margin-bottom: 3rem;
-}
-
-#settings-publictab div:first-of-type #bio h1 {
-  color: var(--brownish-grey);
-  margin-bottom: 0.25rem;
-}
-
-#settings-publictab div:first-of-type #bio p {
-  color: var(--blue-grey);
-}
-
-#settings-publictab div:first-of-type #bio p:last-of-type {
-  margin: 0.25rem 0 1rem 0;
-}
-
-#settings-publictab div:first-of-type #bio .btn:first-of-type {
-  margin-right: 1rem;
-}
-
-#settings-publictab div:nth-of-type(2) label,
-#settings-publictab div:nth-of-type(2) input {
-  color: var(--blue-grey);
-}
-
-#settings-publictab div:nth-of-type(2) input:not([type='checkbox']) {
-  width: 100%;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 18px;
-  padding-bottom: 18px;
-}
-
-#settings-publictab #bio-text {
-  width: 100%;
-  height: 12rem;
-  font-size: 18px;
-}
-
-#settings-publictab #experience .ReactTags__tags.react-tags-wrapper {
-  margin-top: 0;
-}
-
-#settings-publictab #experience .ReactTags__tag {
-  cursor: pointer;
-  background-color: transparent;
-  font-size: 0.8rem;
-  text-transform: capitalize;
-  text-align: center;
-  color: #13171a;
-  padding: 0.6125rem 0.75rem;
-  border: solid 1px rgba(19, 23, 26, 0.5);
-  border-radius: 10rem;
-  margin: 0 0.5rem 0.5rem 0;
-}
-
-#settings-publictab #experience .ReactTags__tagInputField {
-  padding: 0.5rem;
-}
-
-.fixed-save-changes {
-  box-shadow: 5px 0 5px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  z-index: 4;
-  width: 100%;
-  height: 110px;
-  bottom: 0;
-  background-color: white;
-}
-
-.save-changes {
-  margin: 30px 69.2%;
-}
-
-#settings-accounttab p a {
-  display: inline;
-}
-
-#newsfeed {
-  margin: 0;
-}
-
-/* ACCOUNT TAB */
-#settings-accounttab h1 {
-  color: var(--brownish-grey);
-  margin-bottom: 0.5rem;
-}
-
-#settings-accounttab p {
-  color: var(--blue-grey);
-  margin-bottom: 0.5rem;
 }
 
 /* MENTOR CARD */
@@ -980,7 +833,6 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 }
 
 /* Tags */
-
 
 .dim-background {
   position: fixed;
