@@ -504,7 +504,7 @@ export class Api {
     ).then(response => response.json())
   }
 
-  saveSearchQuery(search) {
+  saveSearchQueryToDb(search) {
     let fetchBody = {
       search,
     }

@@ -115,6 +115,7 @@ export default class People extends Component {
   }
 
   componentDidMount() {
+    this.context.setSearchBarWidth(true)
     let keycode = window.location.pathname.split('/')[1]
     Api.getMentorInfo(keycode).then(res => {
       if (res.ok === 0) {
@@ -262,6 +263,10 @@ export default class People extends Component {
         />
       )
     }
+  }
+
+  componentWillUnmount() {
+    this.context.setSearchBarWidth(false)
   }
 
   render() {

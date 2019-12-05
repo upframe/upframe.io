@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames/bind'
 import { classes } from 'utils/css'
-
+import throttle from 'lodash/throttle'
 import SearchBar from '../MainSearchBar/MainSearchBar'
 import AppContext from '../AppContext'
 import { ProfilePicture } from '../index'
@@ -17,23 +17,27 @@ export default class Navbar extends Component {
   constructor(props) {
     super(props)
 
+    this.scrollThrottled = throttle(this.onScroll, 100).bind(this)
     this.state = {
-      scroll: false,
-      mentors: [],
       showMenu: false,
+      scroll: false,
     }
   }
 
   componentDidMount() {
-    this.watchScroll()
+    document.addEventListener('scroll', this.scrollThrottled)
   }
 
-  watchScroll() {
-    document.addEventListener('scroll', e => {
-      if (window.scrollY > 0 && this.state.scroll === false)
-        this.setState({ scroll: true })
-      else this.setState({ scroll: false })
-    })
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.scrollThrottled)
+  }
+
+  onScroll() {
+    if (window.scrollY > 0) {
+      this.setState({ scroll: true })
+    } else {
+      this.setState({ scroll: false })
+    }
   }
 
   openDropdown = e => {
@@ -56,28 +60,29 @@ export default class Navbar extends Component {
     }
   }
 
-  logout = () => {
-    this.setState({
-      showMenu: true,
-    })
-    this.context.logout()
+  resetSearch = () => {
+    if (window.location.pathname === '/') window.location.reload()
   }
 
-  resetSearch = () => {
-    if (window.location.pathname === '/') this.context.setSearchQuery('', true)
+  logout = () => {
+    this.context.logout()
   }
 
   render() {
     let cx = classNames.bind(styles)
-    const dropdown = cx('dropdown', { ShowMenu: this.state.showMenu })
+    const dropdown = cx(styles.dropdown, { ShowMenu: this.state.showMenu })
+    const wrapper = cx(styles.wrapper, {
+      MentorPageNav: this.context.changeSearcBarhWidth,
+    })
+    const nav = cx(styles.nav, { scroll: this.state.scroll })
 
     return (
       <header
         id={this.state.firstVisit ? 'with-notification' : null}
         className={classes(styles.header, { hide: this.state.cookieUpdated })}
       >
-        <nav className={window.scrollY > 0 ? styles.active : null}>
-          <div className={styles.wrapper}>
+        <nav className={nav}>
+          <div className={wrapper}>
             <div className={styles.SearchWrapper}>
               <Link to="/" id="logo" onClick={this.resetSearch}>
                 <img src="/logo.svg" alt="Upframe logo" className="logo" />
@@ -121,7 +126,7 @@ export default class Navbar extends Component {
                       className={styles.learnMore}
                       href="https://www.producthunt.com/upcoming/upframe"
                     >
-                      Learn more
+                      Get Early Access
                     </a>
                   </li>
                 </ul>

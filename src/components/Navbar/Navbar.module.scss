@@ -1,17 +1,26 @@
-nav {
-  z-index: 5;
+header {
+  position: fixed;
+  z-index: 10;
   width: 100%;
-  margin: 0 auto;
+}
+
+.nav {
+  z-index: 5;
   height: 4rem;
   background: white;
   transition: 0.5s ease box-shadow;
   display: flex;
-  justify-content: space-around;
   padding-top: 10px;
+  padding-right: 150px;
+  align-items: center;
 }
 
 .header {
   z-index: 1100;
+}
+
+.scroll {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .active {
@@ -20,10 +29,15 @@ nav {
 
 .wrapper {
   display: flex;
-  justify-content: space-between;
-  width: 75%;
+  justify-content: center;
+  margin: 0 auto;
   height: 90%;
   background-color: white;
+
+  &.MentorPageNav {
+    width: 70%;
+    max-width: 68rem;
+  }
 }
 
 .SearchWrapper {
@@ -41,9 +55,9 @@ nav {
 
 .MenuWrapper {
   margin-top: 9px;
-  position: relative;
+  position: absolute;
+  right: 200px;
   outline: none;
-  margin-right: 35px;
 }
 
 .dropdown {
@@ -52,8 +66,8 @@ nav {
   &.ShowMenu {
     display: block;
     position: absolute;
-    right: -58px;
-    width: 160px;
+    right: -67px;
+    width: 171px;
     top: 52px;
     background-color: white;
     color: var(--blue-grey);
@@ -81,6 +95,7 @@ nav {
   a {
     color: #898b8e;
     transition: 0.25s ease-in-out all;
+    cursor: pointer;
     &:hover {
       background-color: #c8c5c5;
     }
@@ -88,32 +103,50 @@ nav {
 
   li {
     color: #898b8e;
-    cursor: pointer;
     padding: 0.5rem 1rem;
-    width: 100%;
   }
 }
 
 .learnMoreWrapper {
   display: flex;
+  position: absolute;
+  right: 200px;
   align-items: center;
   white-space: nowrap;
+  align-self: center;
 
   .learnMore {
-    padding: 0.4rem 0.8rem;
-    border-radius: 24px;
-    background-color: #ff004b;
+    background-color: #ff205c;
     color: white;
+    border-radius: 4px;
+    border: none;
+    padding: 15px 40px 15px 40px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
+    cursor: pointer;
+    outline: none;
   }
 }
-
 @media all and (max-width: 1760px) and (min-width: 1600px) {
   .SearchWrapper {
     padding: 0 10px;
   }
 }
 
+@media (max-width: 1400px) {
+  .MenuWrapper {
+    right: 100px;
+  }
+  .learnMoreWrapper {
+    right: 20px;
+  }
+}
+
 @media (max-width: 720px) {
+  nav {
+    padding-right: 100px;
+  }
   .wrapper {
     justify-content: center;
     .MenuWrapper {
@@ -126,5 +159,11 @@ nav {
 
   .learnMore {
     display: none;
+  }
+}
+
+@media (max-width: 450px) {
+  nav {
+    padding-right: 0px;
   }
 }

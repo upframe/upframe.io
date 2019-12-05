@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import AppContext from '../../components/AppContext'
 
 import Api from '../../utils/Api'
+import LandingComponent from './LandingComponent'
 import MainCategories from './MainCategories'
 import MainMentorList from './MainMentorList'
 
@@ -17,6 +18,7 @@ export default class Main extends Component {
     this.state = {
       mentors: [],
       fetched: false,
+      search: false,
     }
 
     aos.init({
@@ -30,6 +32,7 @@ export default class Main extends Component {
 
   componentDidMount() {
     Api.getAllMentors(true).then(res => {
+      this.context.startSearchQuery(false)
       let orderedMentors = res.mentors.filter(mentor => mentor.slots.length)
       let mentorsWithNoSlots = res.mentors.filter(
         mentor => mentor.slots.length === 0
@@ -43,9 +46,9 @@ export default class Main extends Component {
   }
 
   componentDidUpdate() {
-    if (this.context.resetSearchQuery) {
-      Api.saveSearchQuery(this.context.searchQuery).then(res => {})
-      this.context.setSearchQuery('', false)
+    if (this.context.isSearchQuery) {
+      Api.saveSearchQueryToDb(this.context.searchQuery).then(res => {})
+      this.context.startSearchQuery(false)
       Api.searchFull(this.context.searchQuery).then(res => {
         this.setMentors(res.search)
       })
@@ -59,26 +62,38 @@ export default class Main extends Component {
   }
 
   render() {
+    let emptyQuery = this.context.searchQuery.length === 0
     return (
       <main id="home">
+        {this.context.loggedIn ? (
+          null
+        ) : (
+          <LandingComponent />
+        )}
         <div className="container grid">
-          <React.Fragment>
-            <MainCategories setMentors={this.setMentors} />
-            <h1
-              className="font-150 fontweight-medium"
-              data-aos="fade-up"
-              data-aos-delay="600"
-              data-aos-offset="0"
-            >
-              Featured Mentors
-            </h1>
-            <p data-aos="fade-up" data-aos-delay="700" data-aos-offset="0">
-              Our in-house curators work alongside with startup founders,
-              community shapers and domain experts across Europe to make sure
-              you can find people who can help you tackle the challenges of
-              today and tomorrow.
-            </p>
-          </React.Fragment>
+          {emptyQuery ? (
+            <React.Fragment>
+              {this.context.loggedIn ? (
+                <MainCategories setMentors={this.setMentors} />
+              ) : (
+                null
+              )}
+              <h1
+                className="font-150 fontweight-medium"
+                data-aos="fade-up"
+                data-aos-delay="600"
+                data-aos-offset="0"
+              >
+                Featured Mentors
+              </h1>
+              <p data-aos="fade-up" data-aos-delay="700" data-aos-offset="0">
+                Our in-house curators work alongside with startup founders,
+                community shapers and domain experts across Europe to make sure
+                you can find people who can help you tackle the challenges of
+                today and tomorrow.
+              </p>
+            </React.Fragment>
+          ) : null}
           <MainMentorList mentors={this.state.mentors} />
         </div>
       </main>
