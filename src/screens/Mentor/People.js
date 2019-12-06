@@ -312,7 +312,7 @@ export default class People extends Component {
 
           <Breadcrumbs name={this.state.mentor.name} />
           <div className="card mentor-card flex">
-              {/* TODO:devide into saprate component */}
+            {/* TODO:devide into saprate component */}
             <div id="main-info">
               <div className="flex flex-column">
                 <ProfilePicture
@@ -380,7 +380,7 @@ export default class People extends Component {
 
                   {this.state.mentor.location}
                 </p>
-                  {/* TODO: create function that would generate the links once the database data would be consistent */}
+                {/* TODO: create function that would generate the links once the database data would be consistent */}
                 <div className="mt2" id="social-networks">
                   <div className="flex">
                     {this.state.mentor.facebook ? (
@@ -452,7 +452,7 @@ export default class People extends Component {
 
                     {this.state.mentor.dribbble ? (
                       <a
-                        href={ 
+                        href={
                           this.state.mentor.twitter.includes('dribbble.com')
                             ? this.state.mentor.dribbble
                             : `https://twitter.com/${this.state.mentor.dribbble}`
@@ -470,7 +470,7 @@ export default class People extends Component {
                 </div>
               </div>
             </div>
-                  {/* TODO: create function that would generate the links once the database data would be consistent */}
+            {/* TODO: create function that would generate the links once the database data would be consistent */}
             <div id="additional-info">
               <h2 className="color-black ma0">About me</h2>
               <div id="bio">

@@ -61,24 +61,17 @@ export default class Main extends Component {
     })
   }
 
-  
   render() {
     let emptyQuery = this.context.searchQuery.length === 0
     return (
       <main id="home">
-        {this.context.loggedIn ? (
-          null
-        ) : (
-          <LandingComponent />
-        )}
+        {this.context.loggedIn ? null : <LandingComponent />}
         <div className="container grid">
           {emptyQuery ? (
             <React.Fragment>
               {this.context.loggedIn ? (
                 <MainCategories setMentors={this.setMentors} />
-              ) : (
-                null
-              )}
+              ) : null}
               <h1
                 className="font-150 fontweight-medium"
                 data-aos="fade-up"

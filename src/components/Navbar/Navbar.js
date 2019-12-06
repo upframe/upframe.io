@@ -40,7 +40,6 @@ export default class Navbar extends Component {
     }
   }
 
-
   openDropdown = e => {
     if (!this.state.showMenu) {
       e.target.focus()
