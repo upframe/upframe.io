@@ -411,10 +411,6 @@ img {
   margin: 2rem 0 2rem 0;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> d938ddfa38029c7b53667208be978cad23e14252
 /* REQUIRED ICON */
 .required-icon::before {
   content: '*';
@@ -584,7 +580,7 @@ body > div:nth-last-of-type(2) {
   border: 1px solid var(--border-lightgray);
   border-radius: 10rem;
   margin: 0 0.5rem 0.5rem 0;
-}
+} 
 
 /* MENTOR CARD */
 .card.mentor-card {
@@ -838,10 +834,6 @@ div.ReactTags__suggestions ul li.ReactTags__activeSuggestion {
 
 /* Tags */
 
-<<<<<<< HEAD
-
-=======
->>>>>>> d938ddfa38029c7b53667208be978cad23e14252
 .dim-background {
   position: fixed;
   top: 0;

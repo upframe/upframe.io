@@ -13,7 +13,6 @@ export default class MainSearchBar extends Component {
       searchQuery: '',
     }
   }
-  S
 
   handleChange = event => {
     this.setState({
