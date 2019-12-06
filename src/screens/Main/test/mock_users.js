@@ -1,17 +1,8 @@
-import React from 'react'
-import {render, cleanup} from '@testing-library/react'
-import "@testing-library/jest-dom";
-import { BrowserRouter as Router } from 'react-router-dom'
-import Main from '../Main'
-import AppContext from '../../../components/AppContext'
-import mocks from 'http'
+import Api from '../../../utils/Api'
 
 
 
-afterEach(cleanup)
-
-
-const users = [
+const res = [
     {
         bio: "Product person with a lot to learn.  I'm not going to pretend I have answers but I'm happy to guide you and connect you with people who can help you.",
         company: "Upframe",
@@ -39,28 +30,22 @@ const users = [
 
 ]
 
-const renderContext = (values) => { 
-    
-    return render(
-        <Router>
-            <AppContext.Provider value={values} >
-                <Main emptyQuery={true}/>
-            </AppContext.Provider>
-        </Router>
-    )
+
+
+
+
+// fetchData = () => {
+//     return Promise.resolve({ mentors: users })
+// }
+
+// const test = jest.fn().mockResolvedValue({data:users})
+
+
+
+export default{
+    // get:jest.fn().mockResolvedValue({data:users})
+    // get: jest.fn(() => Promise.resolve({ data: {} }))
+    res
 }
 
 
-it("renders", async () =>{
-    const values = {isSearchQuery:true}
-    renderContext(values)
-    console.log(mocks)
-    
-    mocks.get.mockImplementationOnce(() =>
-    Promise.resolve(data)
-  );
-    expect(mocks.get.calls.length).toBe(1)
-})
-
-
-// test if context is true, make an api call
