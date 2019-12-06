@@ -62,12 +62,7 @@ export default class Navbar extends Component {
   }
 
   resetSearch = () => {
-<<<<<<< HEAD
-    if (window.location.pathname === '/')
-    window.location.reload()  
-=======
     if (window.location.pathname === '/') window.location.reload()
->>>>>>> d938ddfa38029c7b53667208be978cad23e14252
   }
 
   logout = () => {
@@ -77,27 +72,17 @@ export default class Navbar extends Component {
   render() {
     let cx = classNames.bind(styles)
     const dropdown = cx(styles.dropdown, { ShowMenu: this.state.showMenu })
-<<<<<<< HEAD
-    const wrapper = cx(styles.wrapper,{ MentorPageNav: this.context.changeSearcBarhWidth})
-    const nav = cx(styles.nav,{scroll: this.state.scroll})
-
-=======
     const wrapper = cx(styles.wrapper, {
       MentorPageNav: this.context.changeSearcBarhWidth,
     })
     const nav = cx(styles.nav, { scroll: this.state.scroll })
->>>>>>> d938ddfa38029c7b53667208be978cad23e14252
 
     return (
       <header
         id={this.state.firstVisit ? 'with-notification' : null}
         className={classes(styles.header, { hide: this.state.cookieUpdated })}
       >
-<<<<<<< HEAD
-        <nav className={nav} >
-=======
         <nav className={nav}>
->>>>>>> d938ddfa38029c7b53667208be978cad23e14252
           <div className={wrapper}>
             <div className={styles.SearchWrapper}>
               <Link to="/" id="logo" onClick={this.resetSearch}>
