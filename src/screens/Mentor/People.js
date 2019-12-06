@@ -5,14 +5,14 @@ import * as moment from 'moment'
 import Api from '../../utils/Api'
 
 import AppContext from '../../components/AppContext'
-import {Breadcrumbs} from '../../components'
 import MentorMeetupPopup from './MentorMeetupPopup'
 import MentorRequestPopup from './MentorRequestPopup'
-
-import {RecommendationCard} from '../../components'
+import {
+  Breadcrumbs,
+  RecommendationCard,
+  ProfilePicture,
+} from '../../components'
 import recommendationList from '../common/recommendationList'
-import {ProfilePicture} from '../../components'
- 
 
 const BioWithLinks = ({ bio }) => {
   let paragraphs = bio.split('\n')
@@ -227,7 +227,6 @@ export default class People extends Component {
   displayFreeSlots = () => {
     if (this.state.mentor.freeSlots) {
       return this.state.mentor.freeSlots.map((slot, i) => {
-
         // Transform dates from UTC to local time
         let utcOffset = new Date().getTimezoneOffset()
         let startDate = moment.utc(slot.start).utcOffset(-utcOffset)

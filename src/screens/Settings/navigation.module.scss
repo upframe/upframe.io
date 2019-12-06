@@ -1,0 +1,62 @@
+@import 'styles/layout.scss';
+@import 'styles/utils.scss';
+
+.navigation {
+  box-sizing: border-box;
+  margin: auto;
+  display: block;
+  position: fixed;
+  top: 7rem;
+  left: 0;
+  height: initial;
+  padding-left: 1rem;
+  padding-top: 0;
+  background-color: var(--cl-background);
+  z-index: 1001;
+
+  width: $settings-nav-min-width;
+  margin-left: calc(
+    (#{$settings-left-column-width} - #{$settings-nav-min-width}) / 2
+  );
+
+  @media (max-width: calc(#{$settings-nav-min-width} / #{(strip-unit($settings-left-column-width) / 100)})) {
+    margin-left: 0;
+  }
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    left: 0;
+    width: 100%;
+  }
+
+  &::before {
+    background: var(--cl-background);
+    height: 5rem;
+    top: -5rem;
+  }
+
+  &::after {
+    top: 100%;
+    height: 1.5rem;
+    background: linear-gradient(#fff, transparent);
+  }
+}
+
+.item {
+  display: block;
+  margin: 1rem 0;
+  color: var(--cl-text-light) !important;
+  font-size: 1.1rem;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.active {
+  font-weight: bold;
+  color: var(--cl-text-strong) !important;
+}

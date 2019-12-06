@@ -8,23 +8,21 @@ export default function ProfilePictures({
   size = '13rem',
   onClick,
 }) {
+  function getOptimal(pxSize) {
+    let available = Object.keys(imgs)
+      .map(n => parseInt(n, 10))
+      .map((v, i, a) => v || Infinity)
+    let size = Math.min(...available.filter(n => n >= pxSize))
+    if (size === Infinity) size = Math.max(...available.filter(n => n < pxSize))
+    if (size < pxSize && available.includes(Infinity)) size = Infinity
+    const selected = Object.entries(imgs[size !== Infinity ? size : 'max'])
+    return [
+      selected.find(([type]) => type === 'webp').pop(),
+      selected.find(([type]) => type !== 'jpeg').pop(),
+    ]
+  }
   let pics = []
   if (typeof imgs === 'object' && Object.entries(imgs).length) {
-    function getOptimal(pxSize) {
-      let available = Object.keys(imgs)
-        .map(n => parseInt(n, 10))
-        .map((v, i, a) => v || Infinity)
-      let size = Math.min(...available.filter(n => n >= pxSize))
-      if (size === Infinity)
-        size = Math.max(...available.filter(n => n < pxSize))
-      if (size < pxSize && available.includes(Infinity)) size = Infinity
-      const selected = Object.entries(imgs[size !== Infinity ? size : 'max'])
-      return [
-        selected.find(([type]) => type === 'jpeg').pop(),
-        selected.find(([type]) => type === 'webp').pop(),
-      ]
-    }
-
     const sizes = typeof size === 'string' ? [{ size }] : size
     pics = sizes.flatMap(({ size, min, max }) => {
       const media = [

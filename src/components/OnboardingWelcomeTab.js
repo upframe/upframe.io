@@ -28,7 +28,6 @@ export default class OnboardingWelcomeTab extends Component {
   submitUniqueId = () => {
     Api.verifyUniqueId(this.state.uniqueid).then(res => {
       if (res.ok === 1) {
-        console.log(res)
         this.props.next(res)
       } else {
         alert('That unique id is incorrect')

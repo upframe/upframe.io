@@ -20,10 +20,6 @@ export default class OnboardingPasswordTab extends Component {
 
   finishOnboarding = () => {
     if (this.state.newPassword === this.state.confirmPassword) {
-      console.log('Finishing onboard')
-      console.log(this.props.email)
-      console.log(this.state.confirmPassword)
-      console.log(this.props.name)
       Api.register(
         this.props.data.email,
         this.state.confirmPassword,
@@ -31,8 +27,6 @@ export default class OnboardingPasswordTab extends Component {
       ).then(res => {
         if (res.ok === 1) {
           this.props.next()
-        } else {
-          console.log(res)
         }
       })
     } else {
