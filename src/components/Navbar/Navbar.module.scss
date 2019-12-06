@@ -25,7 +25,7 @@ header {
   margin: 0 auto;
   height: 90%;
   background-color: white;
-  &.MentorPageNav{
+  &.mentorPageNav{
     width: 70%;
     max-width: 68rem;
   }
@@ -54,7 +54,7 @@ header {
 .dropdown{
   margin-left: auto;
   display: none;
-  &.ShowMenu{
+  &.showMenu{
     display: block;
     position: absolute;
     right: -67px;

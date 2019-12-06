@@ -24,8 +24,13 @@ describe( "component is rendered correctly", () => {
     it("rendered the input", () => {
         const {getByPlaceholderText} = render(<Router><MainSearchBar /></Router>)
         const input = getByPlaceholderText('What are you looking for?')
-        expect(input).toBeTruthy()     
+        expect(input).toBeTruthy()
     })
+
+    it('renders the component', () => {
+        const {container} = render(<Router><MainSearchBar /></Router>)
+        expect(container).toMatchSnapshot()
+       })
 })
 
 describe( "check search query context", () => {
