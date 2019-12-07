@@ -31,13 +31,7 @@ export function useGCalEvents(calendarIds, token) {
   const [calendars, setCalendars] = useState([])
   const [lock, setLock] = useState(false)
   useEffect(() => {
-    if (
-      lock ||
-      calendarIds.length === 0 ||
-      calendars.length === calendarIds.length ||
-      !token
-    )
-      return
+    if (lock || calendars.length === calendarIds.length || !token) return
 
     setLock(true)
     Promise.all(calendarIds.map(id => Api.getCalendarEvents(id, token))).then(
