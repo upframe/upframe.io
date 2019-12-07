@@ -13,6 +13,7 @@ import Input from './Input/Input'
 import Textbox from './Textbox/Textbox'
 import Chip from './Chip/Chip'
 import Checkbox from './Checkbox/Checkbox'
+import SocialIcon from './SocialIcon/SocialIcon'
 
 export {
   MainPopularTags,
@@ -30,4 +31,5 @@ export {
   Textbox,
   Chip,
   Checkbox,
+  SocialIcon,
 }

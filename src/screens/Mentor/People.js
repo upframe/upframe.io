@@ -13,6 +13,7 @@ import {
   ProfilePicture,
 } from '../../components'
 import recommendationList from '../common/recommendationList'
+import { SocialIcon } from 'components'
 
 const BioWithLinks = ({ bio }) => {
   let paragraphs = bio.split('\n')
@@ -380,97 +381,17 @@ export default class People extends Component {
 
                   {this.state.mentor.location}
                 </p>
-                {/* TODO: create function that would generate the links once the database data would be consistent */}
                 <div className="mt2" id="social-networks">
                   <div className="flex">
-                    {this.state.mentor.facebook ? (
-                      <a
-                        href={
-                          this.state.mentor.facebook.includes('facebook.com')
-                            ? this.state.mentor.facebook
-                            : `https://facebook.com/${this.state.mentor.facebook}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src="/media/fb_icon.svg"
-                          alt="Facebook profile"
-                        ></img>
-                      </a>
-                    ) : null}
-
-                    {this.state.mentor.twitter ? (
-                      <a
-                        href={
-                          this.state.mentor.twitter.includes('twitter.com')
-                            ? this.state.mentor.twitter
-                            : `https://twitter.com/${this.state.mentor.twitter}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src="/media/twitter_icon.svg"
-                          alt="Twitter profile"
-                        ></img>
-                      </a>
-                    ) : null}
-
-                    {this.state.mentor.linkedin ? (
-                      <a
-                        href={
-                          this.state.mentor.linkedin.includes('linkedin.com')
-                            ? this.state.mentor.linkedin
-                            : `https://twitter.com/${this.state.mentor.linkedin}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src="/media/linkedin_icon.svg"
-                          alt="linkedin profile"
-                        ></img>
-                      </a>
-                    ) : null}
-                    {this.state.mentor.github ? (
-                      <a
-                        href={
-                          this.state.mentor.twitter.includes('github.com')
-                            ? this.state.mentor.twitter
-                            : `https://twitter.com/${this.state.mentor.github}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src="/media/github_icon.svg"
-                          alt="github profile"
-                        ></img>
-                      </a>
-                    ) : null}
-
-                    {this.state.mentor.dribbble ? (
-                      <a
-                        href={
-                          this.state.mentor.twitter.includes('dribbble.com')
-                            ? this.state.mentor.dribbble
-                            : `https://twitter.com/${this.state.mentor.dribbble}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src="/media/dribbble_icon.svg"
-                          alt="dribbble profile"
-                        ></img>
-                      </a>
-                    ) : null}
+                    <SocialIcon facebook link={this.state.mentor.facebook} />
+                    <SocialIcon twitter link={this.state.mentor.twitter} />
+                    <SocialIcon linkedin link={this.state.mentor.linkedin} />
+                    <SocialIcon github link={this.state.mentor.github} />
+                    <SocialIcon dribbble link={this.state.mentor.dribbble} />
                   </div>
                 </div>
               </div>
             </div>
-            {/* TODO: create function that would generate the links once the database data would be consistent */}
             <div id="additional-info">
               <h2 className="color-black ma0">About me</h2>
               <div id="bio">
