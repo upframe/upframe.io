@@ -88,12 +88,21 @@ export default function Profile() {
   }
 
   const setField = field => v => setUser({ ...user, ...{ [field]: v } })
-  const item = ({ label, field, type = 'input', hint, social }) => {
+  const item = ({ label, field, type = 'input', hint, social = false }) => {
     field = field || label.toLowerCase()
-    hint =
-      hint || (social && user[field])
-        ? `https://${field}.com/${user[field]}`
-        : undefined
+    if (!hint && social && user[field]) {
+      let urlPredict = user[field]
+        .replace(/^http(s?):\/\//, '')
+        .replace(/\/$/, '')
+        .split('/')
+        .slice(0, -1)
+        .join('/')
+      if (urlPredict.length < 3) urlPredict = false
+      if (social.startsWith(urlPredict))
+        hint = `https://${user[field].replace(/^http(s?):\/\//, '')}`
+      else hint = `https://${social}${user[field]}`
+      hint = <a href={hint}>{hint}</a>
+    }
     return (
       <Item
         label={label}
@@ -139,7 +148,10 @@ export default function Profile() {
         field: 'keycode',
         hint: (
           <span>
-            Your personal URL is upframe.io/<b>{user.keycode}</b>
+            Your personal URL is{' '}
+            <a href={`https://upframe.io/${user.keycode}`}>
+              upframe.io/<b>{user.keycode}</b>
+            </a>
           </span>
         ),
       })}
@@ -149,11 +161,11 @@ export default function Profile() {
       {item({ label: 'Website' })}
       {item({ label: 'Biography', field: 'bio', type: 'text' })}
       <Title s2>Social Profiles</Title>
-      {item({ label: 'Dribbble', social: true })}
-      {item({ label: 'Facebook', social: true })}
-      {item({ label: 'Github', social: true })}
-      {item({ label: 'LinkedIn', social: true })}
-      {item({ label: 'Twitter', social: true })}
+      {item({ label: 'Dribbble', social: 'dribbble.com/' })}
+      {item({ label: 'Facebook', social: 'facebook.com/' })}
+      {item({ label: 'Github', social: 'github.com/' })}
+      {item({ label: 'LinkedIn', social: 'linkedin.com/in/' })}
+      {item({ label: 'Twitter', social: 'twitter.com/' })}
       {Object.keys(diff).length > 0 && <ChangeBanner onSave={saveChanges} />}
       <Title s2>Experience</Title>
       <Text>
