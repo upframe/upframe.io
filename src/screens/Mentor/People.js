@@ -13,6 +13,7 @@ import {
   ProfilePicture,
 } from '../../components'
 import recommendationList from '../common/recommendationList'
+import { SocialIcon } from 'components'
 
 const BioWithLinks = ({ bio }) => {
   let paragraphs = bio.split('\n')
@@ -287,7 +288,6 @@ export default class People extends Component {
               name={this.state.mentor.name.split(' ')[0]}
             />
           ) : null}
-
           <Helmet>
             <title>{this.state.mentor.name} | Upframe</title>
             <meta
@@ -313,6 +313,7 @@ export default class People extends Component {
 
           <Breadcrumbs name={this.state.mentor.name} />
           <div className="card mentor-card flex">
+            {/* TODO:devide into saprate component */}
             <div id="main-info">
               <div className="flex flex-column">
                 <ProfilePicture
@@ -380,47 +381,17 @@ export default class People extends Component {
 
                   {this.state.mentor.location}
                 </p>
-
                 <div className="mt2" id="social-networks">
                   <div className="flex">
-                    {this.state.mentor.facebook ? (
-                      <a
-                        href={
-                          this.state.mentor.facebook.includes('facebook.com')
-                            ? this.state.mentor.facebook
-                            : `https://facebook.com/${this.state.mentor.facebook}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src="/media/facebook.jpg"
-                          alt="Facebook profile"
-                        ></img>
-                      </a>
-                    ) : null}
-
-                    {this.state.mentor.twitter ? (
-                      <a
-                        href={
-                          this.state.mentor.twitter.includes('twitter.com')
-                            ? this.state.mentor.twitter
-                            : `https://twitter.com/${this.state.mentor.twitter}`
-                        }
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <img
-                          src="/media/twitter.jpg"
-                          alt="Twitter profile"
-                        ></img>
-                      </a>
-                    ) : null}
+                    <SocialIcon facebook link={this.state.mentor.facebook} />
+                    <SocialIcon twitter link={this.state.mentor.twitter} />
+                    <SocialIcon linkedin link={this.state.mentor.linkedin} />
+                    <SocialIcon github link={this.state.mentor.github} />
+                    <SocialIcon dribbble link={this.state.mentor.dribbble} />
                   </div>
                 </div>
               </div>
             </div>
-
             <div id="additional-info">
               <h2 className="color-black ma0">About me</h2>
               <div id="bio">
