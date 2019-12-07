@@ -6,7 +6,7 @@ import Account from './Account'
 import CalendarTab from './CalendarTab'
 import Navigation from './Navigation'
 import Notifications from './Notifications'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import styles from './Settings.module.scss'
 
 export default function Settings() {
@@ -32,7 +32,8 @@ export default function Settings() {
             <Route path="/settings/public" component={Profile} />
             <Route path="/settings/account" component={Account} />
             <Route path="/settings/notifications" component={Notifications} />
-            <Route path="/settings/sync" component={CalendarTab} />
+            <Route path="/settings/mycalendar" component={CalendarTab} />
+            <Redirect from="/settings/sync" to="/settings/mycalendar" />
           </Switch>
         </div>
       </main>
