@@ -7,12 +7,14 @@ export default function Text({
   strong = false,
   small = false,
   mark,
+  underlined = false,
 }) {
   return (
     <p
       className={classes(styles.text, {
         [styles.strong]: strong,
         [styles.small]: small,
+        [styles.underlined]: underlined,
       })}
     >
       {mark && <mark>{children}</mark>}
