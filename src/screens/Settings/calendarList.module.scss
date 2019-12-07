@@ -75,11 +75,20 @@
   p {
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   input {
     margin: 0;
     margin-right: 1rem;
     cursor: pointer;
+    flex-shrink: 0;
   }
+}
+
+.list {
+  display: block;
+  height: 15rem;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

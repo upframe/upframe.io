@@ -25,18 +25,28 @@ export default function CalendarList({ onChange, gCals }) {
         {isSynced && (
           <>
             <Title s3>Calendars</Title>
-            {gCals.map(({ summary }) => (
-              <div className={styles.calendarToggle} key={summary}>
-                <Checkbox
-                  onChange={({ currentTarget }) =>
-                    toggleCalendar(summary, currentTarget.checked)
+            <div className={styles.list}>
+              {gCals.map(({ summary }, i) => (
+                <div
+                  className={styles.calendarToggle}
+                  key={
+                    summary +
+                    (gCals.findIndex(({ summary: v }) => v === summary) !== i
+                      ? i
+                      : '')
                   }
-                />
-                <Text small strong>
-                  {summary}
-                </Text>
-              </div>
-            ))}
+                >
+                  <Checkbox
+                    onChange={({ currentTarget }) =>
+                      toggleCalendar(summary, currentTarget.checked)
+                    }
+                  />
+                  <Text small strong>
+                    {summary}
+                  </Text>
+                </div>
+              ))}
+            </div>
           </>
         )}
         {!isSynced && (
