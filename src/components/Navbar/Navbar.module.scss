@@ -1,4 +1,5 @@
-header {
+.header {
+  z-index: 1100;
   position: fixed;
   z-index: 10;
   width: 100%;
@@ -15,15 +16,7 @@ header {
   align-items: center;
 }
 
-.header {
-  z-index: 1100;
-}
-
 .scroll {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.active {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -92,14 +85,16 @@ header {
     transform: translate(-50%, -50%) rotate(45deg);
   }
 
-  a {
-    color: #898b8e;
-    transition: 0.25s ease-in-out all;
-    cursor: pointer;
-    &:hover {
-      background-color: #c8c5c5;
+    a{
+      color:#898b8e;
+      transition: .25s ease-in-out all;
+      padding: 0.5rem  1rem;
+
+      cursor: pointer;
+      &:hover{
+        background-color: #c8c5c5;
+      }
     }
-  }
 
   li {
     color: #898b8e;

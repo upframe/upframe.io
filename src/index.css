@@ -580,7 +580,7 @@ body > div:nth-last-of-type(2) {
   border: 1px solid var(--border-lightgray);
   border-radius: 10rem;
   margin: 0 0.5rem 0.5rem 0;
-}
+} 
 
 /* MENTOR CARD */
 .card.mentor-card {

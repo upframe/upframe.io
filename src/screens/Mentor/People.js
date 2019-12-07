@@ -287,7 +287,6 @@ export default class People extends Component {
               name={this.state.mentor.name.split(' ')[0]}
             />
           ) : null}
-
           <Helmet>
             <title>{this.state.mentor.name} | Upframe</title>
             <meta
@@ -313,6 +312,7 @@ export default class People extends Component {
 
           <Breadcrumbs name={this.state.mentor.name} />
           <div className="card mentor-card flex">
+            {/* TODO:devide into saprate component */}
             <div id="main-info">
               <div className="flex flex-column">
                 <ProfilePicture
@@ -380,7 +380,7 @@ export default class People extends Component {
 
                   {this.state.mentor.location}
                 </p>
-
+                {/* TODO: create function that would generate the links once the database data would be consistent */}
                 <div className="mt2" id="social-networks">
                   <div className="flex">
                     {this.state.mentor.facebook ? (
@@ -394,7 +394,7 @@ export default class People extends Component {
                         rel="noopener noreferrer"
                       >
                         <img
-                          src="/media/facebook.jpg"
+                          src="/media/fb_icon.svg"
                           alt="Facebook profile"
                         ></img>
                       </a>
@@ -411,8 +411,58 @@ export default class People extends Component {
                         rel="noopener noreferrer"
                       >
                         <img
-                          src="/media/twitter.jpg"
+                          src="/media/twitter_icon.svg"
                           alt="Twitter profile"
+                        ></img>
+                      </a>
+                    ) : null}
+
+                    {this.state.mentor.linkedin ? (
+                      <a
+                        href={
+                          this.state.mentor.linkedin.includes('linkedin.com')
+                            ? this.state.mentor.linkedin
+                            : `https://twitter.com/${this.state.mentor.linkedin}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img
+                          src="/media/linkedin_icon.svg"
+                          alt="linkedin profile"
+                        ></img>
+                      </a>
+                    ) : null}
+                    {this.state.mentor.github ? (
+                      <a
+                        href={
+                          this.state.mentor.twitter.includes('github.com')
+                            ? this.state.mentor.twitter
+                            : `https://twitter.com/${this.state.mentor.github}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img
+                          src="/media/github_icon.svg"
+                          alt="github profile"
+                        ></img>
+                      </a>
+                    ) : null}
+
+                    {this.state.mentor.dribbble ? (
+                      <a
+                        href={
+                          this.state.mentor.twitter.includes('dribbble.com')
+                            ? this.state.mentor.dribbble
+                            : `https://twitter.com/${this.state.mentor.dribbble}`
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img
+                          src="/media/dribbble_icon.svg"
+                          alt="dribbble profile"
                         ></img>
                       </a>
                     ) : null}
@@ -420,7 +470,7 @@ export default class People extends Component {
                 </div>
               </div>
             </div>
-
+            {/* TODO: create function that would generate the links once the database data would be consistent */}
             <div id="additional-info">
               <h2 className="color-black ma0">About me</h2>
               <div id="bio">
