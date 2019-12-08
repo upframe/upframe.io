@@ -313,7 +313,7 @@ export default class People extends Component {
 
           <Breadcrumbs name={this.state.mentor.name} />
           <div className="card mentor-card flex">
-            {/* TODO:devide into saprate component */}
+            {/* TODO:devide into separate component */}
             <div id="main-info">
               <div className="flex flex-column">
                 <ProfilePicture
