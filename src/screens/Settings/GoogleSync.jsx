@@ -22,8 +22,8 @@ export default function GoogleSync() {
   }
 
   return (
-    <Button onClick={isSynced ? unlink : link} accent>
-      {isSynced ? 'Unlink' : 'Connect Account'}
+    <Button onClick={isSynced ? unlink : link} accent={!isSynced}>
+      {isSynced ? 'Disconnect' : 'Connect Account'}
     </Button>
   )
 }
