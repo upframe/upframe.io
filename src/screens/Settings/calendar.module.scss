@@ -5,17 +5,18 @@
     .rbc-calendar {
       height: $calendar-height;
     }
+
+    .rbc-event {
+      border: none !important;
+      color: white !important;
+    }
   }
 }
 
 .internalEvent {
-  background-color: #ff004b !important;
-  border-color: #ff004b !important;
-  color: #fff;
+  background-color: var(--cl-primary) !important;
 }
 
 .externalEvent {
-  background-color: '#2b3778' !important;
-  border-color: '#2b3778' !important;
-  color: 'white' !important;
+  background-color: var(--cl-secondary) !important;
 }
