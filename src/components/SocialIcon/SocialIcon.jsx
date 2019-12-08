@@ -36,9 +36,14 @@ export default function SocialIcon({ link, ...props }) {
         .split('/')
         .pop()
     : link
-  ).replace(/`\//, '')}`
+  ).replace(/^\//, '')}`
   return (
-    <a href={url} target="_blank" rel="noopener" className={styles.socialIcon}>
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={styles.socialIcon}
+    >
       <img src={platforms[name].icon} alt={name} />
     </a>
   )

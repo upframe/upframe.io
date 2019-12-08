@@ -1,3 +1,5 @@
+@import 'styles/layout.scss';
+
 .head {
   display: flex;
   justify-content: flex-start;
@@ -46,4 +48,10 @@
   & > * {
     margin: 0.5rem 0.5rem;
   }
+}
+
+.btViewProfile {
+  @include sidenav-layout;
+  max-width: 10rem;
+  transform: translateX(1rem) translateY(12rem);
 }

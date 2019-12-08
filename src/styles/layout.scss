@@ -3,3 +3,19 @@ $settings-nav-min-width: 15rem;
 $settings-content-width: 52rem;
 $settings-banner-height: 5rem;
 $calendar-height: 80vh;
+
+@mixin sidenav-layout {
+  position: fixed;
+  display: block;
+  box-sizing: border-box;
+  top: 7rem;
+  left: 0;
+  width: $settings-nav-min-width;
+  margin-left: calc(
+    (#{$settings-left-column-width} - #{$settings-nav-min-width}) / 2
+  );
+  @media (max-width: calc(#{$settings-nav-min-width} / #{(strip-unit($settings-left-column-width) / 100)})) {
+    width: $settings-nav-min-width;
+    margin-left: 0;
+  }
+}

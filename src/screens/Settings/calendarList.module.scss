@@ -2,24 +2,14 @@
 @import 'styles/utils.scss';
 
 .wrap {
+  @include sidenav-layout;
   position: absolute;
-  left: 0;
   top: 0;
+  height: calc(7rem + #{$calendar-height});
 
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-
-  width: $settings-nav-min-width;
-  height: calc(7rem + #{$calendar-height});
-  margin-left: calc(
-    (#{$settings-left-column-width} - #{$settings-nav-min-width}) / 2
-  );
-
-  @media (max-width: calc(#{$settings-nav-min-width} / #{(strip-unit($settings-left-column-width) / 100)})) {
-    width: $settings-nav-min-width;
-    margin-left: 0;
-  }
 }
 
 .calendarList {

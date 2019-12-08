@@ -185,6 +185,9 @@ export default function Profile() {
           </Chip>
         ))}
       </div>
+      <Button linkTo={`/${user.keycode}`} className={styles.btViewProfile}>
+        View Profile
+      </Button>
     </div>
   )
 }
