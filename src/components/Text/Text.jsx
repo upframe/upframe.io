@@ -8,9 +8,18 @@ export default function Text({
   small = false,
   mark,
   underlined = false,
+  inline = false,
 }) {
+  if (children)
+    children = (Array.isArray(children) ? children : [children]).map(child =>
+      child.type === Text
+        ? { ...child, props: { ...child.props, inline: true } }
+        : child
+    )
+
+  const Tag = inline ? 'span' : 'p'
   return (
-    <p
+    <Tag
       className={classes(styles.text, {
         [styles.strong]: strong,
         [styles.small]: small,
@@ -19,6 +28,6 @@ export default function Text({
     >
       {mark && <mark>{children}</mark>}
       {!mark && children}
-    </p>
+    </Tag>
   )
 }
