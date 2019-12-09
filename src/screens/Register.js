@@ -43,7 +43,7 @@ const Register = () => {
           property="og:description"
           content="Register for Connect by Upframe"
         ></meta>
-        <meta property="og:image" content="/android-chrome-192x192.png"></meta>
+        <meta property="og:image" content="/media/logo-app-192.png"></meta>
         <meta name="twitter:card" content="summary_large_image"></meta>
       </Helmet>
 
