@@ -7,6 +7,10 @@
     background-color: var(--cl-accent-light);
     color: inherit;
   }
+
+  p {
+    display: inline;
+  }
 }
 
 .strong {
@@ -15,4 +19,8 @@
 
 .small {
   font-size: 14px;
+}
+
+.underlined {
+  text-decoration: underline;
 }

@@ -59,6 +59,7 @@ export default function Calendar({
               : styles.internalEvent,
           }
         }}
+        scrollToTime={new Date(new Date().setHours(7))}
       />
     </div>
   )

@@ -33,8 +33,8 @@ export default function Account() {
         button="Change Email"
         onChange={change(Api.changeEmail)}
       >
-        {ctx.user.email} is your current email address connected to your Upframe
-        account.
+        <Text underlined>{ctx.user.email}</Text> is your current email address
+        connected to your Upframe account.
       </Item>
       <Item
         label="Password"

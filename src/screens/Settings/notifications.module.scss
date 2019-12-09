@@ -4,14 +4,19 @@
   }
 
   & > h2 {
-    margin-top: 4rem;
+    margin-top: 2rem;
   }
 }
 
 .emailCheck {
   display: flex;
   margin-top: 2rem;
-  align-items: baseline;
+  align-items: center;
+
+  * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 
   p {
     margin-left: 1rem;

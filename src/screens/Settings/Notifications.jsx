@@ -15,7 +15,7 @@ export default function Notifications() {
       </Item>
       <Title s2>Emails from Upframe</Title>
       <div className={styles.emailCheck}>
-        <Checkbox />
+        <Checkbox checked />
         <Text>Updates about our new product features and releases.</Text>
       </div>
     </div>

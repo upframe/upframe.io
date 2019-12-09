@@ -6,7 +6,7 @@ const tabs = [
   { title: 'Public Profile', url: 'public' },
   { title: 'Account Settings', url: 'account' },
   { title: 'Notifications', url: 'notifications' },
-  { title: 'Calendar', url: 'sync' },
+  { title: 'My Calendar', url: 'mycalendar' },
 ]
 
 export default function Navigation() {

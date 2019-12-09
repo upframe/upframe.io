@@ -67,8 +67,14 @@ export default function CalendarTab() {
         calendar with Upframe.
       </Text>
       <Item label="Google Calendar" custom={<GoogleSync />}>
-        Connect your calendar to check your availability before adding free
-        slots and see new events directly in your google calendar.
+        {ctx.user.googleAccessToken ? (
+          <Text>
+            <Text underlined>{ctx.user.email}</Text> is connected to your
+            Upframe account
+          </Text>
+        ) : (
+          'Connect your calendar to check your availability before adding free slots and see new events directly in your google calendar.'
+        )}
       </Item>
       {slotsChanged && <ChangeBanner onSave={saveChanges} />}
     </div>

@@ -48,6 +48,7 @@ export default class App extends Component {
   }
 
   login = (email, password) => {
+    localStorage.clear()
     Api.login(email, password).then(res => {
       if (res.ok === 1) {
         Api.getUserInfo().then(res => {
@@ -65,6 +66,7 @@ export default class App extends Component {
   }
 
   logout = () => {
+    localStorage.clear()
     Api.logout().then(res => {
       if (res.ok === 1) {
         this.setState({

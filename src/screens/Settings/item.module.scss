@@ -17,6 +17,12 @@
   font-size: 0.875rem;
   color: var(--cl-text-medium);
   margin-top: 0.5rem;
+
+  p,
+  span,
+  a {
+    display: inline;
+  }
 }
 
 .btWrap {

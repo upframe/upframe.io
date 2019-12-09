@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import AppContext from 'components/AppContext'
 import { Title, Text, Checkbox } from 'components'
 import GoogleSync from './GoogleSync'
@@ -10,9 +10,19 @@ export default function CalendarList({ onChange, gCals }) {
   const isSynced = ctx.user && ctx.user.googleAccessToken
   const [selection, setSelection] = useState([])
 
+  useEffect(() => {
+    let saved = localStorage.getItem('calendars')
+    saved = saved ? JSON.parse(saved) : []
+    if (saved.length) {
+      setSelection(saved)
+      onChange(saved)
+    }
+  }, [onChange])
+
   function toggleCalendar(name, v) {
     if (v === undefined) v = !selection.includes(name)
     const select = v ? [...selection, name] : selection.filter(n => n !== name)
+    localStorage.setItem('calendars', JSON.stringify(select))
     setSelection(select)
     onChange(select)
   }
@@ -25,18 +35,29 @@ export default function CalendarList({ onChange, gCals }) {
         {isSynced && (
           <>
             <Title s3>Calendars</Title>
-            {gCals.map(({ summary }) => (
-              <div className={styles.calendarToggle} key={summary}>
-                <Checkbox
-                  onChange={({ currentTarget }) =>
-                    toggleCalendar(summary, currentTarget.checked)
+            <div className={styles.list}>
+              {gCals.map(({ summary }, i) => (
+                <div
+                  className={styles.calendarToggle}
+                  key={
+                    summary +
+                    (gCals.findIndex(({ summary: v }) => v === summary) !== i
+                      ? i
+                      : '')
                   }
-                />
-                <Text small strong>
-                  {summary}
-                </Text>
-              </div>
-            ))}
+                >
+                  <Checkbox
+                    onChange={({ currentTarget }) =>
+                      toggleCalendar(summary, currentTarget.checked)
+                    }
+                    checked={selection.includes(summary)}
+                  />
+                  <Text small strong>
+                    {summary}
+                  </Text>
+                </div>
+              ))}
+            </div>
           </>
         )}
         {!isSynced && (

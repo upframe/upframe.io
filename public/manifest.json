@@ -1,6 +1,6 @@
 {
-  "short_name": "Connect",
-  "name": "Connect",
+  "short_name": "Upframe",
+  "name": "Upframe",
   "scope": "/",
   "start_url": "/",
   "display": "standalone",
@@ -10,12 +10,12 @@
   "description": "Connecting young entrepreneurs with mentors.",
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
+      "src": "/media/logo-app-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/android-chrome-512x512.png",
+      "src": "/media/logo-app-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

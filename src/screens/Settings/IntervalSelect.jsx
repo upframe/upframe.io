@@ -5,7 +5,7 @@ export default function IntervalSelect({
   options = ['Monthly', 'Weekly', 'Off'],
   onChange = () => {},
 }) {
-  const [active, setActive] = useState(options.slice(-1)[0])
+  const [active, setActive] = useState(options[0])
 
   return (
     <div className={styles.select}>
