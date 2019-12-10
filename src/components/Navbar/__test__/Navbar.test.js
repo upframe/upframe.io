@@ -76,7 +76,6 @@ describe('testing user logged state', () => {
 })
 
 describe('testing drop down', () => {
-
   it('test if user can see profile picture when he is logged in', () => {
     const { getByAltText } = renderContext(
       mockChangeSearchWidth,

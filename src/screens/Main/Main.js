@@ -61,7 +61,7 @@ export default class Main extends Component {
 
   render() {
     let emptyQuery = this.context.searchQuery.length === 0
-    
+
     return (
       <main id="home">
         <div className="container grid">
