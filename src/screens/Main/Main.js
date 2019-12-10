@@ -30,7 +30,7 @@ export default class Main extends Component {
   }
 
   componentDidMount() {
-    Api.getAllMentors().then(res => {
+    Api.getAllMentors(true).then(res => {
       this.context.startSearchQuery(false)
       let orderedMentors = res.mentors.filter(mentor => mentor.slots.length)
       let mentorsWithNoSlots = res.mentors.filter(

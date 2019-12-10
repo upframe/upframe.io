@@ -170,7 +170,7 @@ export class Api {
     ).then(res => res.json())
   }
 
-  async getAllMentors() {
+  async getAllMentors(slots) {
     if (this.cached && this.time > Date.now() - EXPIRY) {
       return this.cache
     }
@@ -182,7 +182,9 @@ export class Api {
       },
     }
     let req = fetch(
-      `${this.schema}://${this.host}:${this.port}/mentor/all?slots=true`,
+      `${this.schema}://${this.host}:${this.port}/mentor/all${
+        slots ? '?slots=true' : ''
+      }`,
       fetchData
     ).then(res => res.json())
     this.time = Date.now()
