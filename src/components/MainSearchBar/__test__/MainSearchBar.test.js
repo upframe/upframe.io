@@ -34,7 +34,7 @@ describe('component is rendered correctly', () => {
     expect(input).toBeTruthy()
   })
 
-  it('renders the component', () => {
+  it('take a snapshot', () => {
     const { container } = render(
       <Router>
         <MainSearchBar />

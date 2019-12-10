@@ -41,22 +41,24 @@ const mentors = [
   },
 ]
 
-const renderMainPage = () => {
-  const mockSearchQuery = jest.fn(searchQuery => true)
-  const mockSetSearchQuery = jest.fn()
+const renderMainPage = (mockIsSearchQuery,mockSetSearchQuery,mockSearchQuery) => {
+
+ 
+
 
   return render(
     <Router>
       <AppContext.Provider
         value={{
-          startSearchQuery: mockSearchQuery,
+          startSearchQuery: mockIsSearchQuery,
           setSearchQuery: mockSetSearchQuery,
+          searchQuery:mockSearchQuery
         }}
       >
-        <Main>
+        <Main >
           <MainCategories />
-          <MainMentorList mentors={mentors}>
-            <MentorCard mentorInfo={mentors[0]} />
+          <MainMentorList >
+            <MentorCard />
           </MainMentorList>
         </Main>
       </AppContext.Provider>
@@ -64,13 +66,21 @@ const renderMainPage = () => {
   )
 }
 
+describe('when page render', () => {
+
+const mockIsSearchQuery = jest.fn().mockReturnValue(true)
+const mockSetSearchQuery = jest.fn()
+const mockSearchQuery = jest.fn().mockReturnValue('')
+
+
 it('renders', () => {
-  const { getByText } = renderMainPage()
+  const { getByText } = renderMainPage(mockIsSearchQuery,mockSetSearchQuery,mockSearchQuery)
   const mentors = getByText('Featured Mentors')
   expect(mentors).toBeTruthy()
 })
 
 it('test if a call to API is been made', async () => {
-  const { getByText } = renderMainPage()
+renderMainPage(mockIsSearchQuery,mockSetSearchQuery,mockSearchQuery)
   expect(Api.getAllMentors).toHaveBeenCalled()
+})
 })

@@ -38,13 +38,13 @@ const mockLoggedIn = jest.fn(loggedIn => true)
 const mockLoggedOut = jest.fn(loggedIn => false)
 
 describe('testing if component renderd', () => {
-  it('testing if component is renderd', () => {
+  it('renders the component ', () => {
     const { getByText } = render(
       <Router>
-        <Navbar />{' '}
+        <Navbar />
       </Router>
     )
-    const btnText = getByText('Learn more')
+    const btnText = getByText('Get Early Access')
     expect(btnText).toBeTruthy()
   })
 })
@@ -76,15 +76,6 @@ describe('testing user logged state', () => {
 })
 
 describe('testing drop down', () => {
-  it('component is renderd', () => {
-    const { getByText } = render(
-      <Router>
-        <Navbar />{' '}
-      </Router>
-    )
-    const btnText = getByText('Learn more')
-    expect(btnText).toBeTruthy()
-  })
 
   it('test if user can see profile picture when he is logged in', () => {
     const { getByAltText } = renderContext(
@@ -104,12 +95,12 @@ describe('testing drop down', () => {
     )
     const picAltText = getByAltText('profile picture')
     fireEvent.click(picAltText)
-    const getDropDown = document.getElementsByClassName(styles.showMenu)[0]
+    const getDropDown = document.getElementsByClassName(styles.ShowMenu)[0]
     expect(getDropDown).toBeTruthy()
   })
 
   it('dropdown is closing ', () => {
-    const { getByAltText, getByPlaceholderText } = renderContext(
+    const { getByAltText } = renderContext(
       mockChangeSearchWidth,
       mockLoggedIn,
       mockSetProfilePic
@@ -117,7 +108,7 @@ describe('testing drop down', () => {
     const picAltText = getByAltText('profile picture')
     fireEvent.click(picAltText)
     fireEvent.click(picAltText)
-    const getDropDown = document.getElementsByClassName(styles.showMenu)[0]
+    const getDropDown = document.getElementsByClassName(styles.ShowMenu)[0]
     expect(getDropDown).toBeFalsy()
   })
 })
