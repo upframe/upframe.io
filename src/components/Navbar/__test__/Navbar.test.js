@@ -51,25 +51,25 @@ describe('testing if component renderd', () => {
 
 describe('testing user logged state', () => {
   it('test if user can see profile picture when he is logged in', () => {
-    const { getByAltText } = renderContext(
+    const { getByText } = renderContext(
       mockChangeSearchWidth,
       mockLoggedIn,
       mockSetProfilePic
     )
-    const picAltText = getByAltText('profile picture')
-    expect(picAltText).toBeTruthy()
+    const dropDownText = getByText('My Profile')
+    expect(dropDownText).toBeTruthy()
   })
 
   it('test if user can log out', () => {
-    const { getByAltText, getByText } = renderContext(
+    const { getByText } = renderContext(
       mockChangeSearchWidth,
       mockLoggedIn,
       mockSetProfilePic,
       mockLoggedOut
     )
-    const picAltText = getByAltText('profile picture')
+    const dropDownText = getByText('My Profile')
     const loggedOutText = getByText('Sign Out')
-    fireEvent.click(picAltText)
+    fireEvent.click(dropDownText)
     fireEvent.click(loggedOutText)
     expect(mockLoggedOut.mock.calls.length).toBe(1)
   })
@@ -77,36 +77,36 @@ describe('testing user logged state', () => {
 
 describe('testing drop down', () => {
   it('test if user can see profile picture when he is logged in', () => {
-    const { getByAltText } = renderContext(
+    const { getByText } = renderContext(
       mockChangeSearchWidth,
       mockLoggedIn,
       mockSetProfilePic
     )
-    const picAltText = getByAltText('profile picture')
-    expect(picAltText).toBeTruthy()
+    const dropDownText = getByText('My Profile')
+    expect(dropDownText).toBeTruthy()
   })
 
   it('dropdown menu is opening when clicking', () => {
-    const { getByAltText } = renderContext(
+    const { getByText } = renderContext(
       mockChangeSearchWidth,
       mockLoggedIn,
       mockSetProfilePic
     )
-    const picAltText = getByAltText('profile picture')
-    fireEvent.click(picAltText)
+    const dropDownText = getByText('My Profile')
+    fireEvent.click(dropDownText)
     const getDropDown = document.getElementsByClassName(styles.ShowMenu)[0]
     expect(getDropDown).toBeTruthy()
   })
 
   it('dropdown is closing ', () => {
-    const { getByAltText } = renderContext(
+    const { getByText } = renderContext(
       mockChangeSearchWidth,
       mockLoggedIn,
       mockSetProfilePic
     )
-    const picAltText = getByAltText('profile picture')
-    fireEvent.click(picAltText)
-    fireEvent.click(picAltText)
+    const dropDownText = getByText('My Profile')
+    fireEvent.click(dropDownText)
+    fireEvent.click(dropDownText)
     const getDropDown = document.getElementsByClassName(styles.ShowMenu)[0]
     expect(getDropDown).toBeFalsy()
   })

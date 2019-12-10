@@ -54,7 +54,6 @@ export default function ProfilePictures({
         src={pics[0].url}
         alt={name}
         className={className || 'mentor-profilepic'}
-        alt="profile picture"
       />
     </picture>
   )

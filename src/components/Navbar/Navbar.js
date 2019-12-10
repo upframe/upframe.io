@@ -105,6 +105,7 @@ export default class Navbar extends Component {
                   }
                   className={styles.profilepic}
                   size="2rem"
+                  alt="profile picture"
                 />
                 <ul className={dropdown} tabIndex="1">
                   <Link to={'/' + this.context.user.keycode} tabIndex="0">

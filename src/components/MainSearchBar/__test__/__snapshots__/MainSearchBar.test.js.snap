@@ -14,3 +14,18 @@ exports[`component is rendered correctly renders the component 1`] = `
   </div>
 </div>
 `;
+
+exports[`component is rendered correctly take a snapshot 1`] = `
+<div>
+  <div
+    class="SearchWrapper"
+  >
+    <input
+      class="input"
+      placeholder="What are you looking for?"
+      type="text"
+      value=""
+    />
+  </div>
+</div>
+`;
