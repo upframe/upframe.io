@@ -61,11 +61,7 @@ export default class Main extends Component {
 
   render() {
     let emptyQuery = this.context.searchQuery.length === 0
-    console.log(this.context.searchQuery.length,'from main!!!!')
-    console.log(emptyQuery,'the empty query bool!')
-    // console.log(this.context.isSearchQuery)
     
-
     return (
       <main id="home">
         <div className="container grid">
