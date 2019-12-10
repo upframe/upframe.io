@@ -5,6 +5,7 @@ import AppContext from '../../components/AppContext'
 import Api from '../../utils/Api'
 import MainCategories from './MainCategories'
 import MainMentorList from './MainMentorList/MainMentorList'
+import LandingComponent from './LandingComponent'
 
 import aos from 'aos'
 import 'aos/dist/aos.css'
@@ -64,10 +65,13 @@ export default class Main extends Component {
 
     return (
       <main id="home">
+        {this.context.loggedIn ? null : <LandingComponent />}
         <div className="container grid">
           {emptyQuery ? (
             <React.Fragment>
-              <MainCategories setMentors={this.setMentors} />
+              {this.context.loggedIn ? (
+                <MainCategories setMentors={this.setMentors} />
+              ) : null}
               <h1
                 className="font-150 fontweight-medium"
                 data-aos="fade-up"
