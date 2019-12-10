@@ -1,0 +1,9 @@
+.account {
+  & > h2:first-child {
+    margin-top: 0;
+  }
+
+  & > div:first-of-type {
+    margin-bottom: -1.5rem;
+  }
+}

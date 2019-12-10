@@ -12,6 +12,7 @@ export default class DevPLayground extends Component {
     }
   }
 
+  /* eslint-disable */
   login = () => {
     Api.login(this.state.input, this.state.input2).then(res => {
       console.log(res)
@@ -113,12 +114,6 @@ export default class DevPLayground extends Component {
     })
   }
 
-  // postMeProfile = () => {
-  //   Api.confirmMeetup(this.state.input).then(res => {
-  //     console.log(res)
-  //   })
-  // }
-
   getQuickSeach = () => {
     Api.searchQuick(this.state.input).then(res => {
       console.log(res)
@@ -136,6 +131,7 @@ export default class DevPLayground extends Component {
       console.log(res)
     })
   }
+  /* eslint-enable */
 
   handleInputChange = event => {
     this.setState({

@@ -10,14 +10,13 @@ export default class MainSearchBar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchQuery: ""
-      }
+      searchQuery: '',
     }
+  }
 
-  
   handleChange = event => {
     this.setState({
-      searchQuery: event.target.value
+      searchQuery: event.target.value,
     })
   }
 
@@ -45,7 +44,7 @@ export default class MainSearchBar extends Component {
           value={this.state.searchQuery}
           onKeyDown={this.handleKeyPress}
         />
-        {/* {this.RedirectToMain()} */}
+        {this.RedirectToMain()}
       </div>
     )
   }

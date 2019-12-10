@@ -4,85 +4,25 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import mixpanel from 'mixpanel-browser'
 
 import AppContext from './components/AppContext'
-import {Navbar} from './components'
+import { Navbar } from './components'
 import Api from './utils/Api'
 
 const Main = React.lazy(() => import('./screens/Main/Main'))
-const Login = React.lazy(() =>
-  import(
-    /* webpackChunkName: "Login", webpackPrefetch: true */ './screens/Login'
-  )
-)
-const Register = React.lazy(() =>
-  import(
-    /* webpackChunkName: "Register", webpackPrefetch: true */ './screens/Register'
-  )
-)
-const Onboarding = React.lazy(() =>
-  import(
-    /* webpackChunkName: "Onboarding", webpackPrefetch: true */ './screens/Onboarding'
-  )
-)
-const Settings = React.lazy(() =>
-  import(
-    /* webpackChunkName: "Settings", webpackPrefetch: true */ './screens/Settings'
-  )
-)
-const ChangeEmail = React.lazy(() =>
-  import(
-    /* webpackChunkName: "ChangeEmail", webpackPrefetch: true */ './screens/ChangeEmail'
-  )
-)
-const ResetPassword = React.lazy(() =>
-  import(
-    /* webpackChunkName: "ResetPassword", webpackPrefetch: true */ './screens/ResetPassword'
-  )
-)
-const People = React.lazy(() =>
-  import(
-    /* webpackChunkName: "People", webpackPrefetch: true */ './screens/Mentor/People'
-  )
-)
-const Expertise = React.lazy(() =>
-  import(
-    /* webpackChunkName: "Expertise", webpackPrefetch: true */ './screens/Expertise'
-  )
-)
-const MeetupConfirm = React.lazy(() =>
-  import(
-    /* webpackChunkName: "MeetupConfirm", webpackPrefetch: true */ './screens/MeetupConfirm'
-  )
-)
-const MeetupRefuse = React.lazy(() =>
-  import(
-    /* webpackChunkName: "MeetupRefuse", webpackPrefetch: true */ './screens/MeetupRefuse'
-  )
-)
-const Company = React.lazy(() =>
-  import(
-    /* webpackChunkName: "Company", webpackPrefetch: true */ './screens/Company'
-  )
-)
-const ErrorPage = React.lazy(() =>
-  import(
-    /* webpackChunkName: "ErrorPage", webpackPrefetch: true */ './screens/404'
-  )
-)
-const DevPlayground = React.lazy(() =>
-  import(
-    /* webpackChunkName: "DevPlayground", webpackPrefetch: true */ './screens/DevPlayground'
-  )
-)
-const GoogleSync = React.lazy(() =>
-  import(
-    /* webpackChunkName: "GoogleSync", webpackPrefetch: true */ './screens/Sync'
-  )
-)
-const MentorGroup = React.lazy(() =>
-  import(
-    /* webpackChunkName: "MentorGroup", webpackPrefetch: true */ './screens/MentorGroup'
-  )
-)
+const Login = React.lazy(() => import('./screens/Login'))
+const Register = React.lazy(() => import('./screens/Register'))
+const Onboarding = React.lazy(() => import('./screens/Onboarding'))
+const Settings = React.lazy(() => import('./screens/Settings/Settings'))
+const ChangeEmail = React.lazy(() => import('./screens/ChangeEmail'))
+const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
+const People = React.lazy(() => import('./screens/Mentor/People'))
+const Expertise = React.lazy(() => import('./screens/Expertise'))
+const MeetupConfirm = React.lazy(() => import('./screens/MeetupConfirm'))
+const MeetupRefuse = React.lazy(() => import('./screens/MeetupRefuse'))
+const Company = React.lazy(() => import('./screens/Company'))
+const ErrorPage = React.lazy(() => import('./screens/404'))
+const DevPlayground = React.lazy(() => import('./screens/DevPlayground'))
+const GoogleSync = React.lazy(() => import('./screens/Sync'))
+const MentorGroup = React.lazy(() => import('./screens/MentorGroup'))
 
 export default class App extends Component {
   state = {
@@ -90,14 +30,17 @@ export default class App extends Component {
     searchQuery: '',
     isSearchQuery: false,
     user: {},
-    changeSearcBarhWidth: false
+    changeSearcBarhWidth: false,
   }
 
   componentDidMount() {
     Api.getUserInfo().then(res => {
       if (res.ok === 1 && res.code === 200) {
         this.setState({
-          user: res.user,
+          user: {
+            ...res.user,
+            tags: res.user.tags !== '' ? res.user.tags : '[]',
+          },
           loggedIn: true,
         })
       }
@@ -105,6 +48,7 @@ export default class App extends Component {
   }
 
   login = (email, password) => {
+    localStorage.clear()
     Api.login(email, password).then(res => {
       if (res.ok === 1) {
         Api.getUserInfo().then(res => {
@@ -122,6 +66,7 @@ export default class App extends Component {
   }
 
   logout = () => {
+    localStorage.clear()
     Api.logout().then(res => {
       if (res.ok === 1) {
         this.setState({
@@ -168,7 +113,7 @@ export default class App extends Component {
     })
   }
 
-  setSearchQuery = (query) => {
+  setSearchQuery = query => {
     this.setState({
       searchQuery: query,
     })

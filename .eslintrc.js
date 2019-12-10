@@ -1,7 +1,9 @@
 module.exports = {
-  extends: ['react-app'],
+  extends: ['react-app', 'eslint:recommended'],
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': 'error',
+    'no-duplicate-imports': 'error',
+    'no-console': 'warn',
   },
 }

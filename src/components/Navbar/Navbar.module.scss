@@ -1,6 +1,6 @@
-header {
+.header {
+  z-index: 1100;
   position: fixed;
-  z-index: 10;
   width: 100%;
 }
 
@@ -15,23 +15,24 @@ header {
   align-items: center;
 }
 
-.scroll{
-  box-shadow:  0 0 5px rgba(0, 0, 0, .1);
+.scroll {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.wrapper{
+.wrapper {
   display: flex;
   justify-content: center;
   margin: 0 auto;
   height: 90%;
   background-color: white;
-  &.mentorPageNav{
+
+  &.MentorPageNav {
     width: 70%;
     max-width: 68rem;
   }
 }
 
-.SearchWrapper{
+.SearchWrapper {
   display: flex;
   align-items: center;
   width: 100%;
@@ -44,23 +45,23 @@ header {
   cursor: pointer;
 }
 
-.MenuWrapper{
+.MenuWrapper {
   margin-top: 9px;
   position: absolute;
   right: 200px;
   outline: none;
 }
 
-.dropdown{
+.dropdown {
   margin-left: auto;
   display: none;
-  &.showMenu{
+  &.ShowMenu {
     display: block;
     position: absolute;
     right: -67px;
     width: 171px;
     top: 52px;
-    background-color:white;
+    background-color: white;
     color: var(--blue-grey);
     font-size: 1rem;
     padding: 15px 0;
@@ -69,7 +70,7 @@ header {
   }
 
   ::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 85px;
@@ -81,26 +82,26 @@ header {
     border-bottom: 0;
     border-right: 0;
     transform: translate(-50%, -50%) rotate(45deg);
-    }
+  }
 
     a{
       color:#898b8e;
       transition: .25s ease-in-out all;
+      padding: 0.5rem  1rem;
+
       cursor: pointer;
       &:hover{
         background-color: #c8c5c5;
       }
     }
 
-    li{
+  li {
     color: #898b8e;
-    padding: 0.5rem  1rem;
-    }
-
-    
+    padding: 0.5rem 1rem;
+  }
 }
 
-.learnMoreWrapper{
+.learnMoreWrapper {
   display: flex;
   position: absolute;
   right: 200px;
@@ -108,52 +109,55 @@ header {
   white-space: nowrap;
   align-self: center;
 
-  .learnMore{
-    padding: .4rem .8rem;
-    border-radius: 24px;
-    background-color: #ff004b;
+  .learnMore {
+    background-color: #ff205c;
     color: white;
-
+    border-radius: 4px;
+    border: none;
+    padding: 15px 40px 15px 40px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
+    cursor: pointer;
+    outline: none;
   }
-
 }
-@media all and (max-width:1760px) and (min-width:1600px){
-  .SearchWrapper{
-    padding: 0 10px;}
+@media all and (max-width: 1760px) and (min-width: 1600px) {
+  .SearchWrapper {
+    padding: 0 10px;
   }
-    
-  @media (max-width:1400px){
-    
-    .MenuWrapper{
-      right: 100px;
-    }
-    .learnMoreWrapper{
-      right: 20px;
-    }
-  }
+}
 
-@media (max-width: 720px){
-  nav{
+@media (max-width: 1400px) {
+  .MenuWrapper {
+    right: 100px;
+  }
+  .learnMoreWrapper {
+    right: 20px;
+  }
+}
+
+@media (max-width: 720px) {
+  nav {
     padding-right: 100px;
   }
-  .wrapper{
+  .wrapper {
     justify-content: center;
-    .MenuWrapper{
+    .MenuWrapper {
       display: none;
     }
-    .SearchWrapper{
+    .SearchWrapper {
       min-width: 300px;
     }
   }
 
-  .learnMore{
+  .learnMore {
     display: none;
   }
-  
 }
 
-@media (max-width: 450px){
-  nav{
+@media (max-width: 450px) {
+  nav {
     padding-right: 0px;
   }
 }

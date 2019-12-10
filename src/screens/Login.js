@@ -41,10 +41,7 @@ export default class Login extends Component {
               property="og:description"
               content="Login to your account and start helping people."
             ></meta>
-            <meta
-              property="og:image"
-              content="/android-chrome-192x192.png"
-            ></meta>
+            <meta property="og:image" content="/media/logo-app-192.png"></meta>
             <meta name="twitter:card" content="summary_large_image"></meta>
           </Helmet>
 
