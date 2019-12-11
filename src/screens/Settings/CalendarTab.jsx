@@ -86,9 +86,9 @@ const slotComp = ({ start: s1, end: e1 }, { start: s2, end: e2 }) =>
   s1.getTime() === s2.getTime() && e1.getTime() === e2.getTime()
 const slotCompTo = slot1 => slot2 => slotComp(slot1, slot2)
 
-const addTimezone = (slots) =>{
+const addTimezone = slots => {
   let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-  if (slots){
-    slots.map(slot => slot.timeZone = timeZone)
+  if (slots) {
+    slots.map(slot => (slot.timeZone = timeZone))
   }
 }
