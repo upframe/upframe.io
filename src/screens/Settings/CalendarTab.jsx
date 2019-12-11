@@ -44,6 +44,7 @@ export default function CalendarTab() {
     if (haveSameContent(oldSlots, slots)) return
     const added = slots.filter(slot => !oldSlots.find(slotCompTo(slot)))
     const deleted = oldSlots.filter(slot => !slots.find(slotCompTo(slot)))
+    addTimezone(added)
     const { ok } = await Api.addFreeSlots(added, deleted)
     if (ok) setOldSlots(slots)
     else showToast('something went wrong')
@@ -84,3 +85,10 @@ export default function CalendarTab() {
 const slotComp = ({ start: s1, end: e1 }, { start: s2, end: e2 }) =>
   s1.getTime() === s2.getTime() && e1.getTime() === e2.getTime()
 const slotCompTo = slot1 => slot2 => slotComp(slot1, slot2)
+
+const addTimezone = (slots) =>{
+  let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  if (slots){
+    slots.map(slot => slot.timeZone = timeZone)
+  }
+}

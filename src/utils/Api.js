@@ -387,6 +387,7 @@ export class Api {
       return {
         start: slot.start,
         end: slot.end,
+        timezone: slot.timeZone,
         recurrency: 'UNIQUE',
       }
     })
