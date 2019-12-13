@@ -5,6 +5,10 @@
     font-size: 1rem;
     font-weight: bold;
     color: var(--cl-text-strong);
+
+    span {
+      color: var(--cl-primary);
+    }
   }
 
   input,

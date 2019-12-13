@@ -12,6 +12,8 @@ export default function Item({
   children,
   hint,
   onChange,
+  required = false,
+  error = false,
 }) {
   const [value, setValue] = useState(input || text)
 
@@ -26,9 +28,12 @@ export default function Item({
   const id = label.replace(/\s/g, '')
   return (
     <div className={style.item}>
-      <label htmlFor={id}>{label}</label>
+      <label htmlFor={id}>
+        {label}
+        {!required ? '' : <span> *</span>}
+      </label>
       {Action && !button && (
-        <Action id={id} value={value} onChange={handleChange} />
+        <Action id={id} value={value} onChange={handleChange} error={error} />
       )}
       {(button || custom) && (
         <div className={style.btWrap}>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import style from './input.module.scss'
+import styles from './input.module.scss'
+import { classes } from 'utils/css'
 
 export default function Input(props) {
   const [value, setValue] = useState('')
@@ -12,7 +13,7 @@ export default function Input(props) {
 
   return (
     <input
-      className={style.input}
+      className={classes(styles.input, { [styles.error]: props.error })}
       id={props.id}
       value={value}
       onChange={handleChange}

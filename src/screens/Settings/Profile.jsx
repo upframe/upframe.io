@@ -18,6 +18,7 @@ export default function Profile() {
   const [skill, setSkill] = useState('')
   const fileInput = useRef(null)
   const showToast = useToast()
+  const [triedSubmit, setTriedSubmit] = useState(false)
 
   function uploadPhoto(e) {
     const file = e.currentTarget.files[0]
@@ -72,17 +73,26 @@ export default function Profile() {
     )
   )
 
+  const required = ['name', 'keycode', 'role', 'bio']
+  const requiredMet = required.every(field => user[field])
+
   function saveChanges() {
+    setTriedSubmit(true)
+    if (!requiredMet) {
+      showToast('please fill in all required fields')
+      return
+    }
     Api.updateUserInfo(diff)
       .then(({ ok }) => {
         if (ok !== 1) throw Error()
-        ctx.saveUserInfo(
-          Object.fromEntries(
+        ctx.saveUserInfo({
+          ...ctx.user,
+          ...Object.fromEntries(
             Object.entries(diff).map(([k, v]) =>
               k !== 'tags' ? [k, v] : [k, JSON.stringify(v)]
             )
-          )
-        )
+          ),
+        })
       })
       .catch(() => showToast('something went wrong'))
   }
@@ -110,9 +120,16 @@ export default function Profile() {
     return (
       <Item
         label={label}
+        required={required.includes(field)}
         {...{ [type]: ctx.user[field] || '' }}
         onChange={setField(field)}
         hint={hint}
+        error={
+          required.includes(field) &&
+          !user[field] &&
+          Object.keys(diff).length &&
+          triedSubmit
+        }
       />
     )
   }
@@ -174,7 +191,9 @@ export default function Profile() {
       {item({ label: 'Github', social: 'github.com/' })}
       {item({ label: 'LinkedIn', social: 'linkedin.com/in/' })}
       {item({ label: 'Twitter', social: 'twitter.com/' })}
-      {Object.keys(diff).length > 0 && <ChangeBanner onSave={saveChanges} />}
+      {Object.keys(diff).length > 0 && (
+        <ChangeBanner onSave={saveChanges} accent={requiredMet} />
+      )}
       <Title s2>Experience</Title>
       <Text>
         Add up to 6 skills to display in your profile. Other people will see
