@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { useToast } from 'utils/Hooks'
-import { Text, Title } from 'components'
+import { Text, Title, Checkbox } from 'components'
 import Item from './Item'
+import ChangeBanner from './ChangeBanner'
 import AppContext from 'components/AppContext'
 import Api from 'utils/Api'
 import styles from './account.module.scss'
@@ -9,6 +10,12 @@ import styles from './account.module.scss'
 export default function Account() {
   const ctx = useContext(AppContext)
   const showToast = useToast()
+  const [hidden, setHidden] = useState(null)
+
+  useEffect(() => {
+    if (hidden !== null || !ctx.user) return
+    setHidden(ctx.user.newsfeed !== 'Y')
+  }, [ctx, hidden])
 
   const change = request => () =>
     request
@@ -20,6 +27,16 @@ export default function Account() {
       .catch(() =>
         showToast('Could not complete request. Please contact support.')
       )
+
+  function savePrivacy() {
+    const newsfeed = hidden ? 'N' : 'Y'
+    Api.updateUserInfo({ newsfeed })
+      .then(({ ok }) => {
+        if (ok !== 1) throw Error()
+        ctx.saveUserInfo({ newsfeed })
+      })
+      .catch(() => showToast('something went wrong'))
+  }
 
   return (
     <div className={styles.account}>
@@ -54,6 +71,14 @@ export default function Account() {
         profile will no longer be available at upframe.io. This action is
         irreversible, please proceed with caution.
       </Item>
+      <Title s2>Privacy</Title>
+      <div className={styles.privacyCheck}>
+        <Checkbox checked={hidden} onChange={setHidden} />
+        <Text>Hide my profile from the homepage.</Text>
+      </div>
+      {ctx.user && hidden !== (ctx.user.newsfeed !== 'Y') && (
+        <ChangeBanner onSave={savePrivacy} />
+      )}
     </div>
   )
 }
