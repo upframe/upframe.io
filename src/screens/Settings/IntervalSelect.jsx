@@ -1,22 +1,25 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './intervalSelect.module.scss'
 
 export default function IntervalSelect({
   options = ['Monthly', 'Weekly', 'Off'],
   onChange = () => {},
+  selected,
 }) {
-  const [active, setActive] = useState(options[0])
-
   return (
     <div className={styles.select}>
       {options.map(v => (
         <button
           key={v}
-          {...(v === active && { className: styles.active })}
-          onClick={() => {
-            setActive(v)
-            onChange(v)
-          }}
+          {...(v ===
+            options[
+              selected
+                ? options
+                    .map(v => v.toLowerCase())
+                    .indexOf(selected.toLowerCase())
+                : 0
+            ] && { className: styles.active })}
+          onClick={() => onChange(v.toLowerCase())}
         >
           {v}
         </button>
