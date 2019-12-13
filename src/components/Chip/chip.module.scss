@@ -6,9 +6,19 @@
   height: 2rem;
   border-radius: 1rem;
   cursor: pointer;
+  position: relative;
 
   p {
     line-height: 2rem;
     white-space: nowrap;
+    margin-right: 0.5rem;
+  }
+
+  span {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cl-text-medium);
   }
 }
