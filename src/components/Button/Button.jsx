@@ -22,7 +22,7 @@ export default function Button({
   if (!linkTo) return Button
   return (
     <Link
-      className={styles.linKWrap}
+      className={styles.linkWrap}
       to={linkTo}
       {...(newTab && { target: '_blank', rel: 'noopener noreferrer' })}
     >

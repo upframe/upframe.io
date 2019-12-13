@@ -33,7 +33,7 @@ export default function Account() {
     Api.updateUserInfo({ newsfeed })
       .then(({ ok }) => {
         if (ok !== 1) throw Error()
-        ctx.saveUserInfo({ newsfeed })
+        ctx.saveUserInfo({ ...ctx.user, newsfeed })
       })
       .catch(() => showToast('something went wrong'))
   }
