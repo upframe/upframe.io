@@ -45,7 +45,7 @@ export default function Notifications() {
       <Title s2>Email Notifications</Title>
       <Text>Get emails to find out about what’s new on Upframe.</Text>
       <Item
-        label="⚡️ Availability Reminder"
+        label="⚡️ Remind me to add free slots"
         custom={<IntervalSelect selected={avail} onChange={setAvail} />}
       >
         We’ll remind you to add new free slots to your calendar, so people can
