@@ -9,6 +9,7 @@ export default function Button({
   accent = false,
   className,
   linkTo,
+  newTab = false,
 }) {
   const Button = (
     <button
@@ -20,7 +21,11 @@ export default function Button({
   )
   if (!linkTo) return Button
   return (
-    <Link className={styles.linKWrap} to={linkTo}>
+    <Link
+      className={styles.linKWrap}
+      to={linkTo}
+      {...(newTab && { target: '_blank', rel: 'noopener noreferrer' })}
+    >
       {Button}
     </Link>
   )

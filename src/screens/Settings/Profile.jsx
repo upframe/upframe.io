@@ -101,7 +101,11 @@ export default function Profile() {
       if (social.startsWith(urlPredict))
         hint = `https://${user[field].replace(/^http(s?):\/\//, '')}`
       else hint = `https://${social}${user[field]}`
-      hint = <a href={hint}>{hint}</a>
+      hint = (
+        <a href={hint} target="_blank" rel="noopener noreferrer">
+          {hint}
+        </a>
+      )
     }
     return (
       <Item
@@ -149,7 +153,11 @@ export default function Profile() {
         hint: (
           <span>
             Your personal URL is{' '}
-            <a href={`https://upframe.io/${user.keycode}`}>
+            <a
+              href={`https://upframe.io/${user.keycode}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               upframe.io/<b>{user.keycode}</b>
             </a>
           </span>
@@ -185,7 +193,11 @@ export default function Profile() {
           </Chip>
         ))}
       </div>
-      <Button linkTo={`/${user.keycode}`} className={styles.btViewProfile}>
+      <Button
+        linkTo={`/${user.keycode}`}
+        newTab
+        className={styles.btViewProfile}
+      >
         View Profile
       </Button>
     </div>
