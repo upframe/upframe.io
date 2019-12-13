@@ -47,9 +47,7 @@ export default function CalendarList({ onChange, gCals }) {
                   }
                 >
                   <Checkbox
-                    onChange={({ currentTarget }) =>
-                      toggleCalendar(summary, currentTarget.checked)
-                    }
+                    onChange={v => toggleCalendar(summary, v)}
                     checked={selection.includes(summary)}
                   />
                   <Text small strong>
