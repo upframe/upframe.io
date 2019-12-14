@@ -21,6 +21,7 @@ export default class Navbar extends Component {
     this.state = {
       showMenu: false,
       scroll: false,
+      searchQuery: '',
     }
   }
 
@@ -61,7 +62,11 @@ export default class Navbar extends Component {
   }
 
   resetSearch = () => {
-    if (window.location.pathname === '/') window.location.reload()
+    this.context.searchQuery = ''
+    this.context.isSearchQuery = false
+    this.setState({
+      searchQuery: '',
+    })
   }
 
   logout = () => {
@@ -87,7 +92,14 @@ export default class Navbar extends Component {
               <Link to="/" id="logo" onClick={this.resetSearch}>
                 <img src="/logo.svg" alt="Upframe logo" className="logo" />
               </Link>
-              <SearchBar />
+              <SearchBar
+                searchQuery={this.state.searchQuery}
+                onChange={searchQuery => this.setState({ searchQuery })}
+                onSubmit={() => {
+                  this.context.setSearchQuery(this.state.searchQuery)
+                  this.context.startSearchQuery(true)
+                }}
+              />
             </div>
             {this.context.loggedIn ? (
               <div

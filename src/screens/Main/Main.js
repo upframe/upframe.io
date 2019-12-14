@@ -17,6 +17,7 @@ export default class Main extends Component {
     super(props)
     this.state = {
       mentors: [],
+      mentorsFilter: [],
       fetched: false,
       search: false,
     }
@@ -50,7 +51,9 @@ export default class Main extends Component {
       Api.saveSearchQueryToDb(this.context.searchQuery).then(res => {})
       this.context.startSearchQuery(false)
       Api.searchFull(this.context.searchQuery).then(res => {
-        this.setMentors(res.search)
+        this.setState({
+          mentorsFilter: res.search,
+        })
       })
     }
   }
@@ -88,7 +91,13 @@ export default class Main extends Component {
               </p>
             </React.Fragment>
           ) : null}
-          <MainMentorList mentors={this.state.mentors} />
+          <MainMentorList
+            mentors={
+              this.context.searchQuery
+                ? this.state.mentorsFilter
+                : this.state.mentors
+            }
+          />
         </div>
       </main>
     )
