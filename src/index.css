@@ -479,7 +479,15 @@ body > div:nth-last-of-type(2) {
 
 /* HOME PAGE */
 #home > .container.grid {
-  width: 49rem;
+  width: 55rem;
+  margin: initial;
+  margin-left: 15vw;
+}
+
+@media (max-width: 1020px) {
+  #home > .container.grid {
+    margin: auto;
+  }
 }
 
 @media only screen and (max-width: 720px) {
