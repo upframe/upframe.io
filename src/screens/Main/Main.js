@@ -68,7 +68,9 @@ export default class Main extends Component {
     let emptyQuery = this.context.searchQuery.length === 0
     return (
       <main id="home">
-        {this.context.loggedIn ? null : <LandingComponent />}
+        {this.context.loggedIn || this.context.searchQuery ? null : (
+          <LandingComponent />
+        )}
         <div className="container grid">
           {emptyQuery ? (
             <React.Fragment>
