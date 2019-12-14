@@ -8,10 +8,9 @@ export default function SearchBar({ onChange, onSubmit, searchQuery }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.search}>
       <input
         type="text"
-        className={styles.search}
         placeholder="What are you looking for?"
         onChange={({ target }) => onChange(target.value)}
         value={searchQuery}

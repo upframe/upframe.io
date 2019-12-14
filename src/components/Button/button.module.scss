@@ -30,6 +30,33 @@
   }
 }
 
+.filled {
+  background-color: var(--cl-accent);
+  color: var(--cl-background);
+  border: none;
+
+  &:hover {
+    background-color: var(--cl-accent);
+    color: var(--cl-background);
+  }
+}
+
+.text {
+  background-color: transparent;
+  color: var(--cl-accent);
+  border: none;
+
+  &:hover {
+    background-color: transparent;
+    color: var(--cl-accent);
+    border: none;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
 .linkWrap {
-  display: contents;
+  display: contents !important;
 }
