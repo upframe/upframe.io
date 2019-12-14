@@ -358,6 +358,12 @@ input[type='file'] {
   transition: 0.5s ease padding-top;
 }
 
+@media (max-width: 1020px) {
+  .App main {
+    max-width: 95%;
+  }
+}
+
 .App header#with-notification nav .wrapper .dropdown.active ul {
   top: 7rem;
 }
@@ -586,7 +592,7 @@ body > div:nth-last-of-type(2) {
   border: 1px solid var(--border-lightgray);
   border-radius: 10rem;
   margin: 0 0.5rem 0.5rem 0;
-} 
+}
 
 /* MENTOR CARD */
 .card.mentor-card {
