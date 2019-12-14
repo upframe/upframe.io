@@ -354,22 +354,14 @@ input[type='file'] {
 }
 
 .App main {
-  padding: 6rem 0;
+  padding: 5rem 0;
   transition: 0.5s ease padding-top;
 }
 
 @media (max-width: 1020px) {
-  .App main {
+  .App main:not(#home) {
     max-width: 95%;
   }
-}
-
-.App header#with-notification nav .wrapper .dropdown.active ul {
-  top: 7rem;
-}
-
-.App header#with-notification + main {
-  padding-top: 8rem;
 }
 
 .container {
@@ -425,35 +417,6 @@ img {
   margin-left: 0.5rem;
 }
 
-/* FIRST VISIT NOTIFICATION */
-header #first-visit-notification {
-  width: 100%;
-  background-color: var(--secondary);
-  height: 3rem;
-}
-
-header #first-visit-notification p {
-  color: #fff;
-  margin-left: 0.5rem;
-}
-
-header.hide #first-visit-notification {
-  animation: slideUpHeight 0.5s 0.5s both;
-}
-
-header.hide #first-visit-notification .emoji.cupcake,
-header.hide #first-visit-notification p,
-header.hide #first-visit-notification .arrow {
-  animation: fadeOut 0.5s both;
-}
-
-header #first-visit-notification .arrow {
-  position: absolute;
-  right: 2.5vw;
-}
-
-/* Typeform bot */
-
 /* Icon */
 body > div:last-of-type {
   z-index: 3 !important;
@@ -497,6 +460,7 @@ body > div:nth-last-of-type(2) {
   text-transform: uppercase;
   color: var(--greyish-brown);
   font-size: 12px;
+  margin-top: 1rem;
 }
 
 .breadcrumbs a {
@@ -1220,11 +1184,6 @@ button::-moz-focus-inner {
 }
 
 @media (max-width: 640px) {
-  nav .wrapper {
-    max-width: 95%;
-    width: 95%;
-  }
-
   .mentor-profilepic {
     width: 13rem;
     margin: auto;

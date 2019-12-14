@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import Api from 'utils/Api'
 import context from 'components/AppContext'
+import debounce from 'lodash/debounce'
 
 export function useUser() {
   const [user, setUser] = useState()
@@ -56,4 +57,41 @@ export function useGCalEvents(calendarIds, token) {
     )
   }, [calendarIds, calendars, events, lock, token])
   return events
+}
+
+export function useScrollAtTop() {
+  const [atTop, setAtTop] = useState(window.scrollY === 0)
+
+  useEffect(() => {
+    function handleScrollStart() {
+      setAtTop(false)
+      window.addEventListener('scroll', handleScrollStop, { passive: true })
+    }
+
+    const handleScrollStop = debounce(
+      () => {
+        if (window.scrollY !== 0) return
+        setAtTop(true)
+        window.removeEventListener('scroll', handleScrollStop)
+        window.addEventListener('scroll', handleScrollStart, {
+          passive: true,
+          once: true,
+        })
+      },
+      100,
+      { leading: false, trailing: true }
+    )
+
+    window.addEventListener('scroll', handleScrollStart, {
+      passive: true,
+      once: true,
+    })
+    return () =>
+      window.removeEventListener(
+        'scroll',
+        window.scrollY === 0 ? handleScrollStart : handleScrollStop
+      )
+  }, [])
+
+  return atTop
 }
