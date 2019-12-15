@@ -6,6 +6,12 @@ import { useToast, useGCalEvents } from 'utils/Hooks'
 import styles from './calendar.module.scss'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 
+moment.locale('en', {
+  week: {
+    dow: new Date().getDay(),
+  },
+})
+
 const localizer = BigCalendar.momentLocalizer(moment)
 
 export default function Calendar({
