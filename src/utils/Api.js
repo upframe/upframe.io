@@ -68,6 +68,18 @@ export class Api {
     ).then(res => res.json())
   }
 
+  deleteAccount(password) {
+    return fetch(`${this.schema}://${this.host}:${this.port}/auth/delete`, {
+      method: 'DELETE',
+      mode: 'cors',
+      body: JSON.stringify({ password }),
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
+
   resetPassword(email) {
     let resetInfo = {
       email,
