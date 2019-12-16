@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from './input.module.scss'
 import { classes } from 'utils/css'
 
-export default function Input(props) {
+export default function Input({ password = false, ...props }) {
   const [value, setValue] = useState('')
   if (props.value !== undefined && props.value !== value) setValue(props.value)
 
@@ -18,6 +18,7 @@ export default function Input(props) {
       value={value}
       onChange={handleChange}
       placeholder={props.placeholder}
+      {...(password && { type: 'password' })}
     />
   )
 }

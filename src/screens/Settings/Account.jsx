@@ -5,12 +5,14 @@ import Item from './Item'
 import ChangeBanner from './ChangeBanner'
 import AppContext from 'components/AppContext'
 import Api from 'utils/Api'
+import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
 
 export default function Account() {
   const ctx = useContext(AppContext)
   const showToast = useToast()
   const [hidden, setHidden] = useState(null)
+  const [deleteRequested, setDeleteRequested] = useState(false)
 
   useEffect(() => {
     if (hidden !== null || !ctx.user) return
@@ -66,7 +68,11 @@ export default function Account() {
         to give you back control and ownership of your data. Just like how it
         should be.
       </Text>
-      <Item label="Delete Account" button="Delete Account">
+      <Item
+        label="Delete Account"
+        button="Delete Account"
+        onChange={() => setDeleteRequested(true)}
+      >
         Your account will be removed from our database. Your username and public
         profile will no longer be available at upframe.io. This action is
         irreversible, please proceed with caution.
@@ -76,6 +82,9 @@ export default function Account() {
         <Checkbox checked={hidden} onChange={setHidden} />
         <Text>Hide my profile from the homepage.</Text>
       </div>
+      {deleteRequested && (
+        <ConfirmDelete onCancel={() => setDeleteRequested(false)} />
+      )}
       {ctx.user && hidden !== (ctx.user.newsfeed !== 'Y') && (
         <ChangeBanner onSave={savePrivacy} />
       )}
