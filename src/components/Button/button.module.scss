@@ -30,6 +30,16 @@
   }
 }
 
+.warn {
+  color: var(--cl-error);
+  border-color: var(--cl-error);
+
+  &:hover {
+    color: var(--cl-background);
+    background-color: var(--cl-error);
+  }
+}
+
 .filled {
   background-color: var(--cl-accent);
   color: var(--cl-background);

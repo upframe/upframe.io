@@ -6,6 +6,7 @@ export default function Text({
   children,
   strong = false,
   small = false,
+  bold = false,
   mark,
   underlined = false,
   inline = false,
@@ -13,7 +14,22 @@ export default function Text({
   if (children)
     children = (Array.isArray(children) ? children : [children]).map(child =>
       child.type === Text
-        ? { ...child, props: { ...child.props, inline: true } }
+        ? {
+            ...child,
+            props: {
+              ...Object.fromEntries(
+                Object.entries({
+                  strong,
+                  small,
+                  bold,
+                  mark,
+                  underlined,
+                }).flatMap(([k, v]) => (v ? [[k, true]] : []))
+              ),
+              ...child.props,
+              inline: true,
+            },
+          }
         : child
     )
 
@@ -24,6 +40,7 @@ export default function Text({
         [styles.strong]: strong,
         [styles.small]: small,
         [styles.underlined]: underlined,
+        [styles.bold]: bold,
       })}
     >
       {mark && <mark>{children}</mark>}

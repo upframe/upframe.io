@@ -7,20 +7,24 @@ export default function Button({
   children,
   onClick,
   accent = false,
+  warn = false,
   className,
   linkTo,
   newTab = false,
   filled = false,
   text = false,
+  type,
 }) {
   const Button = (
     <button
       className={classes(styles.button, className, {
         [styles.accent]: accent,
+        [styles.warn]: warn,
         [styles.filled]: filled,
         [styles.text]: text,
       })}
       onClick={onClick}
+      {...(type && { type })}
     >
       {children}
     </button>
