@@ -61,7 +61,7 @@ export default function ProfilePictures({
 
 function parseCSSSize(size) {
   const value = parseInt(size)
-  const unit = size.replace(/[0-9]/g, '')
+  const unit = size.replace(/[0-9.]/g, '')
   switch (unit) {
     case 'px':
       return value
