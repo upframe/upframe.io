@@ -8,12 +8,13 @@ export default function SearchBar({ onChange, onSubmit, searchQuery }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={styles.search}>
+    <form onSubmit={handleSubmit} className={styles.search} autoComplete="off">
       <input
         type="text"
         placeholder="What are you looking for?"
         onChange={({ target }) => onChange(target.value)}
         value={searchQuery}
+        data-lpignore="true"
       />
     </form>
   )
