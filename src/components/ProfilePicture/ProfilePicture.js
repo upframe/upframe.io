@@ -11,15 +11,12 @@ export default function ProfilePictures({
   function getOptimal(pxSize) {
     let available = Object.keys(imgs)
       .map(n => parseInt(n, 10))
-      .map((v, i, a) => v || Infinity)
+      .map(v => v || Infinity)
     let size = Math.min(...available.filter(n => n >= pxSize))
     if (size === Infinity) size = Math.max(...available.filter(n => n < pxSize))
     if (size < pxSize && available.includes(Infinity)) size = Infinity
-    const selected = Object.entries(imgs[size !== Infinity ? size : 'max'])
-    return [
-      selected.find(([type]) => type === 'webp').pop(),
-      selected.find(([type]) => type !== 'jpeg').pop(),
-    ]
+    const selected = imgs[size !== Infinity ? size : 'max']
+    return [selected.webp, selected.jpeg]
   }
   let pics = []
   if (typeof imgs === 'object' && Object.entries(imgs).length) {
@@ -35,7 +32,7 @@ export default function ProfilePictures({
       return getOptimal(parseCSSSize(size)).map((url, i) => ({
         url,
         media,
-        type: i === 0 ? 'jpeg' : 'webp',
+        type: i === 0 ? 'webp' : 'jpeg',
       }))
     })
   } else pics.push({ url: imgs })
@@ -51,7 +48,7 @@ export default function ProfilePictures({
         />
       ))}
       <img
-        src={pics[0].url}
+        src={pics.find(({ type }) => type !== 'webp').url}
         alt={name}
         className={className || 'mentor-profilepic'}
       />
