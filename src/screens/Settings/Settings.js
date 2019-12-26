@@ -33,7 +33,11 @@ export default function Settings() {
             <Route path="/settings/account" component={Account} />
             <Route path="/settings/notifications" component={Notifications} />
             <Route path="/settings/mycalendar" component={CalendarTab} />
-            <Redirect from="/settings/sync" to="/settings/mycalendar" />
+            <Redirect exact from="/settings/sync" to="/settings/mycalendar" />
+            <Redirect exact from="/settings" to="/settings/public" />
+            <Route>
+              <Redirect to="/404" />
+            </Route>
           </Switch>
         </div>
       </main>

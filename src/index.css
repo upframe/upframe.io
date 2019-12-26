@@ -353,6 +353,18 @@ input[type='file'] {
   margin-bottom: 1rem;
 }
 
+.App > div:first-of-type:not([class]):not([id]) {
+  padding-top: 5rem;
+  margin-left: 15vw;
+}
+
+@media (max-width: 1020px) {
+  .App > div:first-of-type:not([class]):not([id]) {
+    margin: initial;
+    padding-left: 2rem;
+  }
+}
+
 .App main {
   padding: 5rem 0;
   transition: 0.5s ease padding-top;
