@@ -1,0 +1,56 @@
+@import 'styles/layout.scss';
+
+.head {
+  display: flex;
+  justify-content: flex-start;
+
+  img {
+    height: 11.125rem;
+    border-radius: 0.3rem;
+  }
+
+  & > div {
+    margin-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    * {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    p {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.skillInput {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  margin: 2rem 0;
+
+  input {
+    flex-grow: 1;
+    margin-right: 1rem;
+  }
+}
+
+.skillList {
+  display: flex;
+  margin: 0 -0.5rem;
+  width: 100%;
+  flex-wrap: wrap;
+
+  & > * {
+    margin: 0.5rem 0.5rem;
+  }
+}
+
+.btViewProfile {
+  @include sidenav-layout;
+  max-width: 10rem;
+  transform: translateX(1rem) translateY(11.2rem);
+}

@@ -1,0 +1,15 @@
+.input {
+  border: 1px solid var(--cl-text-light);
+  border-radius: 0.3rem;
+  padding: 0.7rem 1rem;
+  font-size: 1.2rem;
+  color: var(--cl-text-medium);
+
+  &::placeholder {
+    color: var(--cl-text-light);
+  }
+}
+
+.error {
+  border-color: var(--cl-error);
+}

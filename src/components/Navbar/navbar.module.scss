@@ -1,0 +1,50 @@
+.navbar {
+  position: fixed;
+  z-index: 1100;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 5rem !important;
+
+  display: flex;
+  align-items: center;
+  padding: 0 2.5vw;
+
+  background: var(--cl-background);
+  transition: box-shadow 0.25s ease;
+
+  @media (min-width: 1021px) {
+    padding: 0 15vw;
+  }
+
+  img:first-child {
+    margin-left: -0.8rem;
+    margin-right: 1rem;
+  }
+}
+
+.shadow {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.right {
+  margin-left: auto;
+  flex-shrink: 0;
+
+  button {
+    margin-right: 0;
+    margin-left: 1rem;
+  }
+
+  @media (max-width: 650px) {
+    a:last-of-type {
+      display: none !important;
+    }
+    margin-left: 0;
+  }
+
+  @media (max-width: 500px) {
+    a {
+      display: none !important;
+    }
+  }
+}

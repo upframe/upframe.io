@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import Api from '../utils/Api';
+import React, { useState, useEffect } from 'react'
+import Api from '../utils/Api'
 
-import MainMentorList from '../components/MainMentorList/index'
-import MainSearchBar from '../components/MainSearchBar'
+import MainMentorList from './Main/MainMentorList'
 
-const MentorGroup = (props) => {
-
+const MentorGroup = props => {
   const [mentors, setMentors] = useState([])
 
   useEffect(() => {
     const listPage = props.location.pathname.substring(1)
-    console.log(listPage)
-    Api.searchFull(listPage).then((res) => {
-      console.log(res)
+    Api.searchFull(listPage).then(res => {
       if (res.ok === 1) {
         setMentors(res.search)
       }
@@ -20,13 +16,12 @@ const MentorGroup = (props) => {
   }, [props.location.pathname])
 
   return (
-    <main id='home'>
-      <div className="container grid" >
-        <MainSearchBar setMentors={setMentors} />
+    <main id="home">
+      <div className="container grid">
         <MainMentorList mentors={mentors} />
       </div>
     </main>
   )
 }
 
-export default MentorGroup;
+export default MentorGroup

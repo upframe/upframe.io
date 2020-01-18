@@ -1,0 +1,48 @@
+@import 'styles/layout.scss';
+@import 'styles/utils.scss';
+
+.navigation {
+  @include sidenav-layout;
+  padding-left: 1rem;
+  padding-top: 0;
+  background-color: var(--cl-background);
+  z-index: 1001;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    display: block;
+    left: 0;
+    width: 100%;
+  }
+
+  &::before {
+    background: var(--cl-background);
+    height: 5rem;
+    top: -5rem;
+  }
+
+  &::after {
+    top: 100%;
+    height: 1.5rem;
+    background: linear-gradient(#fff, transparent);
+  }
+}
+
+.item {
+  display: block;
+  margin: 0.8rem 0;
+  color: var(--cl-text-light) !important;
+  font-size: 1.1rem;
+  white-space: nowrap;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.active {
+  font-weight: bold;
+  color: var(--cl-text-strong) !important;
+}
