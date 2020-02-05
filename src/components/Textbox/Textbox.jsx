@@ -17,6 +17,7 @@ export default function Textbox(props) {
       rows="5"
       onChange={handleChange}
       value={props.value}
+      placeholder={props.placeholder}
     ></textarea>
   )
 }

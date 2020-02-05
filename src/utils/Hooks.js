@@ -24,7 +24,9 @@ export function useGoogleCalendars(token) {
     if (!token) return
     Api.getCalendarList(token).then(({ items }) => setCalendars(items))
   }, [token])
-  return calendars.filter(({ id }) => !blacklist.some(v => id.includes(v)))
+  return (calendars || []).filter(
+    ({ id }) => !blacklist.some(v => id.includes(v))
+  )
 }
 
 export function useGCalEvents(calendarIds, token) {

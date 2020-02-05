@@ -15,9 +15,13 @@
   font-size: 0.8rem;
   transition: background-color 0.2s ease;
 
-  &:hover {
+  &:hover:not([disabled]) {
     background-color: var(--cl-text-medium);
     color: var(--cl-background);
+  }
+
+  &:disabled {
+    cursor: default;
   }
 }
 
@@ -25,7 +29,7 @@
   color: var(--cl-accent);
   border-color: var(--cl-accent);
 
-  &:hover {
+  &:hover:not([disabled]) {
     background-color: var(--cl-accent);
   }
 }
@@ -34,7 +38,7 @@
   color: var(--cl-error);
   border-color: var(--cl-error);
 
-  &:hover {
+  &:hover:not([disabled]) {
     color: var(--cl-background);
     background-color: var(--cl-error);
   }
@@ -45,7 +49,7 @@
   color: var(--cl-background);
   border: none;
 
-  &:hover {
+  &:hover:not([disabled]) {
     background-color: var(--cl-accent);
     color: var(--cl-background);
   }
@@ -56,7 +60,7 @@
   color: var(--cl-accent);
   border: none;
 
-  &:hover {
+  &:hover:not([disabled]) {
     background-color: transparent;
     color: var(--cl-accent);
     border: none;

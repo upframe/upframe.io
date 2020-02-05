@@ -394,7 +394,6 @@ export class Api {
   }
 
   addFreeSlots(freeSlotsToSave, freeSlotsToDelete) {
-    //Free slots vêem na forma
     let updatedSlots = freeSlotsToSave.map(slot => {
       return {
         start: slot.start,

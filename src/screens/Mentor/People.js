@@ -5,8 +5,7 @@ import * as moment from 'moment'
 import Api from '../../utils/Api'
 
 import AppContext from '../../components/AppContext'
-import MentorMeetupPopup from './MentorMeetupPopup'
-import MentorRequestPopup from './MentorRequestPopup'
+import Request from './Request'
 import {
   Breadcrumbs,
   RecommendationCard,
@@ -274,20 +273,16 @@ export default class People extends Component {
     if (this.state.mentorExists === 1) {
       return (
         <main id="people" className="container">
-          {this.state.showPopup === 1 ? (
-            <MentorMeetupPopup
-              hidePopup={this.hidePopup}
-              sid={this.state.selectedSlot}
-              locations={this.state.mentor.favoriteLocations}
-              name={this.state.mentor.name}
+          {(this.state.showPopup || this.state.showRequestPopup) === 1 && (
+            <Request
+              mentorName={this.state.mentor.name.split(' ')[0]}
+              mentor={this.state.mentor}
+              onClose={this.hideRequestPopup}
+              {...(this.state.showRequestPopup && {
+                slot: this.state.selectedSlot,
+              })}
             />
-          ) : null}
-          {this.state.showRequestPopup === 1 ? (
-            <MentorRequestPopup
-              hideRequestPopup={this.hideRequestPopup}
-              name={this.state.mentor.name.split(' ')[0]}
-            />
-          ) : null}
+          )}
           <Helmet>
             <title>{this.state.mentor.name} | Upframe</title>
             <meta

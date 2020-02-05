@@ -1,0 +1,51 @@
+.request {
+  position: absolute;
+  left: 50vw;
+  top: 50vh;
+  transform: translateX(-50%) translateY(-50%);
+  background-color: #fff;
+  padding: 1rem 2rem;
+  border-radius: 0.25rem;
+  width: 28rem;
+  box-sizing: border-box;
+  color: var(--cl-text-medium);
+
+  input,
+  textarea {
+    width: 100%;
+  }
+
+  h1 {
+    text-align: center;
+    font-weight: normal;
+    margin-top: 0;
+  }
+
+  hr {
+    margin-bottom: 2rem;
+  }
+
+  label {
+    margin-top: 1rem;
+  }
+
+  button {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    position: relative;
+    left: 100%;
+    transform: translateX(-100%);
+  }
+
+  svg {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+
+    &:hover {
+      path {
+        fill: var(--cl-accent);
+      }
+    }
+  }
+}

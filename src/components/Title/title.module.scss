@@ -1,6 +1,9 @@
 .title {
   color: var(--cl-text-strong);
 
+  &[data-size='1'] {
+    font-size: 2rem;
+  }
   &[data-size='2'] {
     font-size: 1.5rem;
   }
