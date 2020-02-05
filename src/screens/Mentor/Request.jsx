@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './request.module.scss'
 import Api from '../../utils/Api'
+import { isEmail } from '../../utils/validate'
 import {
   Shade,
   Title,
@@ -19,6 +20,10 @@ export default function Request({ mentor, onClose, slot }) {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [valid, setValid] = useState(true)
+
+  useEffect(() => {
+    setValid(isEmail(email) && msg.length && name.length)
+  }, [email, msg, name])
 
   async function submit() {
     const { ok } = await (slot
