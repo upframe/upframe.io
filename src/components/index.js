@@ -15,6 +15,10 @@ import Chip from './Chip/Chip'
 import Checkbox from './Checkbox/Checkbox'
 import SocialIcon from './SocialIcon/SocialIcon'
 import Logo from './Logo/Logo'
+import Shade from './Shade/Shade'
+import Labeled from './Labeled/Labeled'
+import Divider from './Divider/Divider'
+import Icon from './Icon/Icon'
 
 export {
   MainPopularTags,
@@ -34,4 +38,8 @@ export {
   Checkbox,
   SocialIcon,
   Logo,
+  Shade,
+  Labeled,
+  Divider,
+  Icon,
 }
