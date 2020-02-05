@@ -1,0 +1,19 @@
+.crumbs {
+  z-index: 5;
+  display: flex;
+  flex-direction: row;
+  text-transform: uppercase;
+  color: var(--greyish-brown);
+  font-size: 12px;
+  margin-top: 1rem;
+
+  li {
+    line-height: 1rem;
+  }
+
+  li:not(:last-of-type)::after {
+    content: '>';
+    margin-right: 0.8rem;
+    margin-left: 0.8rem;
+  }
+}
