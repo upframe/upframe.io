@@ -42,7 +42,7 @@ export default function ConfirmDelete({ onCancel }) {
           <Text underlined>{ctx.user.email}</Text> will be permanently deleted.
         </Text>
         <Text strong>Please enter your password to confirm.</Text>
-        <Input password onChange={setPassword} value={password} />
+        <Input type="password" onChange={setPassword} value={password} />
         <div className={styles.btWrap}>
           <Button onClick={onCancel} type="cancel">
             Cancel

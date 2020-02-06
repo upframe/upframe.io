@@ -97,3 +97,5 @@ export function useScrollAtTop() {
 
   return atTop
 }
+
+export const useCtx = () => useContext(context)

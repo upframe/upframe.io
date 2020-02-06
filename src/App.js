@@ -8,7 +8,7 @@ import { Navbar } from './components'
 import Api from './utils/Api'
 
 const Main = React.lazy(() => import('./screens/Main/Main'))
-const Login = React.lazy(() => import('./screens/Login'))
+const Login = React.lazy(() => import('./screens/Login/Login'))
 const Register = React.lazy(() => import('./screens/Register'))
 const Onboarding = React.lazy(() => import('./screens/Onboarding'))
 const Settings = React.lazy(() => import('./screens/Settings/Settings'))
