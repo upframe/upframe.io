@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './main.module.scss'
 import Landing from './Landing'
 import MentorList from './MentorList'
 import Api from '../../utils/Api'
-import context from '../../context'
 import { Title, Text } from '../../components'
 import Categories from './Categories'
+import { useCtx } from '../../utils/Hooks'
 import aos from 'aos'
 import 'aos/dist/aos.css'
 
 export default function Main({ match }) {
   const [mentors, setMentors] = useState([])
   const [filtered, setFiltered] = useState([])
-  const { searchQuery: search, loggedIn } = useContext(context)
+  const { searchQuery: search, loggedIn } = useCtx()
 
   const category = match.url.split('/').pop()
 

@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
-import AppContext from 'context'
+import React from 'react'
 import Api from 'utils/Api'
+import { useCtx } from '../../utils/Hooks'
 import { Button } from 'components'
 
 export default function GoogleSync() {
-  const ctx = useContext(AppContext)
+  const ctx = useCtx()
   const isSynced = ctx.user && ctx.user.googleAccessToken
 
   async function link() {

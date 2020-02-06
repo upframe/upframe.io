@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import Api from '../../utils/Api'
 import mixpanel from 'mixpanel-browser'
-import AppContext from '../../context'
+import { useCtx } from '../../utils/Hooks'
 
 export default class MeetupConfirm extends Component {
-  static contextType = AppContext
+  static contextType = useCtx()
 
   componentDidMount() {
     Api.confirmMeetup(this.props.match.params.meetupid).then(res => {

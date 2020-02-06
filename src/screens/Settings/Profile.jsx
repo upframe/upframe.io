@@ -1,15 +1,14 @@
-import React, { useState, useContext, useRef } from 'react'
-import AppContext from 'context'
+import React, { useState, useRef } from 'react'
 import { Text, Title, Button, Input, Chip, ProfilePicture } from 'components'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
-import { useToast } from 'utils/Hooks'
+import { useToast, useCtx } from 'utils/Hooks'
 import Api from 'utils/Api'
 import { haveSameContent } from 'utils/Array'
 import styles from './profile.module.scss'
 
 export default function Profile() {
-  const ctx = useContext(AppContext)
+  const ctx = useCtx()
   const ctxUser = {
     ...ctx.user,
     tags: JSON.parse(ctx.user.tags || '[]'),

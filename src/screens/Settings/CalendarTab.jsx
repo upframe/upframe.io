@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from 'react'
-import AppContext from 'context'
-import { useToast, useGoogleCalendars } from 'utils/Hooks'
+import React, { useState, useEffect } from 'react'
+import { useToast, useGoogleCalendars, useCtx } from 'utils/Hooks'
 import Api from 'utils/Api'
 import { haveSameContent } from 'utils/Array'
 import { Title, Text } from 'components'
@@ -14,7 +13,7 @@ import styles from './calendarTab.module.scss'
 export default function CalendarTab() {
   const [oldSlots, setOldSlots] = useState([])
   const [slots, setSlots] = useState(oldSlots)
-  const ctx = useContext(AppContext)
+  const ctx = useCtx()
   const gCals = useGoogleCalendars(
     ctx && ctx.user && ctx.user.googleAccessToken
   )

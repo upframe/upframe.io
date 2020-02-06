@@ -1,15 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useToast } from 'utils/Hooks'
 import { Text, Title, Checkbox } from 'components'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
-import AppContext from 'context'
 import Api from 'utils/Api'
 import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
+import { useCtx } from '../../utils/Hooks'
 
 export default function Account() {
-  const ctx = useContext(AppContext)
+  const ctx = useCtx()
   const showToast = useToast()
   const [hidden, setHidden] = useState(null)
   const [deleteRequested, setDeleteRequested] = useState(false)

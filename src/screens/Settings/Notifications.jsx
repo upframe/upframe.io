@@ -1,15 +1,14 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Title, Text, Checkbox } from 'components'
 import Item from './Item'
 import IntervalSelect from './IntervalSelect'
 import styles from './notifications.module.scss'
-import AppContext from 'context'
 import ChangeBanner from './ChangeBanner'
 import Api from 'utils/Api'
-import { useToast } from 'utils/Hooks'
+import { useToast, useCtx } from 'utils/Hooks'
 
 export default function Notifications() {
-  const ctx = useContext(AppContext)
+  const ctx = useCtx()
   const [email, setEmail] = useState(null)
   const [avail, setAvail] = useState(null)
   const showToast = useToast()

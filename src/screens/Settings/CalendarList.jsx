@@ -1,12 +1,12 @@
-import React, { useContext, useState, useEffect } from 'react'
-import AppContext from 'context'
+import React, { useState, useEffect } from 'react'
 import { Title, Text, Checkbox } from 'components'
 import GoogleSync from './GoogleSync'
+import { useCtx } from '../../utils/Hooks'
 import { classes } from 'utils/css'
 import styles from './calendarList.module.scss'
 
 export default function CalendarList({ onChange, gCals }) {
-  const ctx = useContext(AppContext)
+  const ctx = useCtx()
   const isSynced = ctx.user && ctx.user.googleAccessToken
   const [selection, setSelection] = useState([])
 

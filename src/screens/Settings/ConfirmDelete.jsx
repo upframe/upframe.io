@@ -1,12 +1,11 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { Title, Text, Input, Button } from 'components'
-import context from 'context'
 import Api from 'utils/Api'
-import { useToast } from 'utils/Hooks'
+import { useToast, useCtx } from 'utils/Hooks'
 import styles from './confirmDelete.module.scss'
 
 export default function ConfirmDelete({ onCancel }) {
-  const ctx = useContext(context)
+  const ctx = useCtx()
   const [password, setPassword] = useState('')
   const showToast = useToast()
 

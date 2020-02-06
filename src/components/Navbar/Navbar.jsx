@@ -1,15 +1,14 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Logo, SearchBar, Button } from 'components'
-import Context from '../../context'
 import UserIcon from './UserIcon'
 import Dropdown from './Dropdown'
 import { classes } from 'utils/css'
-import { useScrollAtTop } from 'utils/Hooks'
+import { useScrollAtTop, useCtx } from 'utils/Hooks'
 import styles from './navbar.module.scss'
 
 export default function Navbar() {
-  const ctx = useContext(Context)
+  const ctx = useCtx()
   const [searchQuery, setSearchQuery] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
   const atTop = useScrollAtTop()

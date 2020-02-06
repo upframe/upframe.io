@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import Api from 'utils/Api'
-import context from 'context'
+import context from '../context'
 import debounce from 'lodash/debounce'
 
 export function useUser() {

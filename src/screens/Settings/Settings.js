@@ -1,6 +1,5 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Helmet } from 'react-helmet'
-import AppContext from '../../context'
 import Profile from './Profile'
 import Account from './Account'
 import CalendarTab from './CalendarTab'
@@ -8,9 +7,10 @@ import Navigation from './Navigation'
 import Notifications from './Notifications'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import styles from './Settings.module.scss'
+import { useCtx } from '../../utils/Hooks'
 
 export default function Settings() {
-  const ctx = useContext(AppContext)
+  const ctx = useCtx()
   if (!ctx.loggedIn) return null
 
   return (
