@@ -6,7 +6,13 @@ import styles from './profile.module.scss'
 import Showcase from './Showcase'
 import Meetup from './Meetup'
 import Request from './Request'
-import recommend from '../common/recommendationList'
+
+const recommend = {
+  malik: ['pf', 'hugo.franca'],
+  pf: ['hugo.franca', 'gui'],
+  fbaiodias: ['miukimiu', 'sebastian.jespersen'],
+  tiagopedras: ['pf', 'hugo.franca'],
+}
 
 export default function Profile({ match }) {
   const [mentor, setMentor] = useState()

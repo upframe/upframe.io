@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import AppContext from 'components/AppContext'
+import AppContext from 'context'
 import { useToast, useGoogleCalendars } from 'utils/Hooks'
 import Api from 'utils/Api'
 import { haveSameContent } from 'utils/Array'

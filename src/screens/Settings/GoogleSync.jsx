@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import AppContext from 'components/AppContext'
+import AppContext from 'context'
 import Api from 'utils/Api'
 import { Button } from 'components'
 

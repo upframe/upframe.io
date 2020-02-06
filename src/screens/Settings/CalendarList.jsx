@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import AppContext from 'components/AppContext'
+import AppContext from 'context'
 import { Title, Text, Checkbox } from 'components'
 import GoogleSync from './GoogleSync'
 import { classes } from 'utils/css'

@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router } from 'react-router-dom'
 import mixpanel from 'mixpanel-browser'
 
-import AppContext from './components/AppContext'
+import AppContext from './context'
 import { Navbar } from './components'
 import Api from './utils/Api'
 import Routes from './Routes'

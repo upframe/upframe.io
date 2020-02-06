@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import Api from '../utils/Api'
+import Api from '../../utils/Api'
 import mixpanel from 'mixpanel-browser'
-
-import AppContext from '../components/AppContext'
+import AppContext from '../../context'
 
 export default class MeetupConfirm extends Component {
   static contextType = AppContext

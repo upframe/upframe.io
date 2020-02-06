@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Helmet } from 'react-helmet'
-import AppContext from '../../components/AppContext'
+import AppContext from '../../context'
 import Profile from './Profile'
 import Account from './Account'
 import CalendarTab from './CalendarTab'

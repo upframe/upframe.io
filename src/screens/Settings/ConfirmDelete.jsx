@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Title, Text, Input, Button } from 'components'
-import context from 'components/AppContext'
+import context from 'context'
 import Api from 'utils/Api'
 import { useToast } from 'utils/Hooks'
 import styles from './confirmDelete.module.scss'

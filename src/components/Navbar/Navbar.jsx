@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Logo, SearchBar, Button } from 'components'
-import Context from '../AppContext'
+import Context from '../../context'
 import UserIcon from './UserIcon'
 import Dropdown from './Dropdown'
 import { classes } from 'utils/css'

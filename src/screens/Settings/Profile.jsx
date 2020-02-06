@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react'
-import AppContext from 'components/AppContext'
+import AppContext from 'context'
 import { Text, Title, Button, Input, Chip, ProfilePicture } from 'components'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
