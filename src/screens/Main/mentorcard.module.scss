@@ -1,0 +1,58 @@
+.mentorCard {
+  display: flex;
+  padding: 0;
+  height: 13rem;
+
+  picture,
+  img {
+    width: 13rem;
+    height: 13rem;
+  }
+}
+
+.info {
+  flex-grow: 1;
+  padding: 1rem 2rem;
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  p,
+  h3 {
+    color: #000;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+
+  h3:first-of-type {
+    margin: 0;
+  }
+}
+
+.role {
+  margin-top: -0.25rem;
+}
+
+.bio {
+  margin-top: 0.6rem;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: auto;
+
+  & > * {
+    margin-right: 0.5rem;
+  }
+}

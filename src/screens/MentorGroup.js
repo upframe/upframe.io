@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Api from '../utils/Api'
 
-import MainMentorList from './Main/MainMentorList'
+import MainMentorList from './Main/MentorList'
 
 const MentorGroup = props => {
   const [mentors, setMentors] = useState([])

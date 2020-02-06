@@ -5,7 +5,7 @@ import AppContext from '../../components/AppContext'
 import Api from '../../utils/Api'
 import LandingComponent from './LandingComponent'
 import MainCategories from './MainCategories'
-import MainMentorList from './MainMentorList'
+import MentorList from './MentorList'
 
 import aos from 'aos'
 import 'aos/dist/aos.css'
@@ -93,7 +93,7 @@ export default class Main extends Component {
               </p>
             </React.Fragment>
           ) : null}
-          <MainMentorList
+          <MentorList
             mentors={
               this.context.searchQuery
                 ? this.state.mentorsFilter
