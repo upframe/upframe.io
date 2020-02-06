@@ -19,6 +19,7 @@ import Shade from './Shade/Shade'
 import Labeled from './Labeled/Labeled'
 import Divider from './Divider/Divider'
 import Icon from './Icon/Icon'
+import Card from './Card/Card'
 
 export {
   MainPopularTags,
@@ -42,4 +43,5 @@ export {
   Labeled,
   Divider,
   Icon,
+  Card,
 }

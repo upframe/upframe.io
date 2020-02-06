@@ -1,10 +1,10 @@
 .cardWrapper {
   border-radius: 0.25rem;
   box-shadow: 0 1px 3px 0 rgba(101, 119, 134, 0.7);
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   padding: 1.75rem 3rem 4.125rem;
-    
-  h2{
+
+  h2 {
     font-size: 1.25rem;
     font-weight: 500;
     margin-bottom: 2.5rem;
@@ -12,7 +12,7 @@
 
   .center-container {
     width: 100%;
-    
+
     .loader {
       margin-top: 0;
     }
@@ -44,7 +44,7 @@
     position: relative;
     bottom: 5px;
   }
-    
+
   h2 {
     font-size: 1.25rem;
     margin: 0;
@@ -55,10 +55,10 @@
     font-size: 1rem;
     font-weight: normal;
     margin: 0;
-  }  
+  }
 }
 
-@media (max-width: 800px)   {
+@media (max-width: 800px) {
   .cardWrapper {
     display: none;
   }

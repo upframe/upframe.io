@@ -24,6 +24,10 @@
     cursor: default;
     opacity: 0.5;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .accent {
@@ -65,10 +69,6 @@
     background-color: transparent;
     color: var(--cl-accent);
     border: none;
-  }
-
-  &:focus {
-    outline: none;
   }
 }
 

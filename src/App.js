@@ -14,7 +14,7 @@ const Onboarding = React.lazy(() => import('./screens/Onboarding'))
 const Settings = React.lazy(() => import('./screens/Settings/Settings'))
 const ChangeEmail = React.lazy(() => import('./screens/ChangeEmail'))
 const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
-const People = React.lazy(() => import('./screens/Mentor/People'))
+const Profile = React.lazy(() => import('./screens/Mentor/Profile'))
 const Expertise = React.lazy(() => import('./screens/Expertise'))
 const MeetupConfirm = React.lazy(() => import('./screens/MeetupConfirm'))
 const MeetupRefuse = React.lazy(() => import('./screens/MeetupRefuse'))
@@ -221,7 +221,7 @@ export default class App extends Component {
                   <Route exact path="/product" component={MentorGroup} />
                   <Route exact path="/design" component={MentorGroup} />
                   <Route exact path="/software" component={MentorGroup} />
-                  <Route exact path="/:keycode" component={People} />
+                  <Route exact path="/:keycode" component={Profile} />
                   <Route component={ErrorPage} />
                 </Switch>
               </Suspense>

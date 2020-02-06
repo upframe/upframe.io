@@ -65,7 +65,6 @@ a:hover,
 a:visited {
   color: black;
   text-decoration: none;
-  display: block;
 }
 
 a.link {
@@ -463,30 +462,6 @@ body > div:nth-last-of-type(2) {
 
 .popular-tags .tag-item:not(:last-of-type) {
   margin-right: 1.5rem;
-}
-
-/* BREADCRUMBS */
-.breadcrumbs {
-  z-index: 5;
-  display: flex;
-  text-transform: uppercase;
-  color: var(--greyish-brown);
-  font-size: 12px;
-  margin-top: 1rem;
-}
-
-.breadcrumbs a {
-  display: flex;
-}
-
-.breadcrumbs li {
-  display: flex;
-}
-
-.breadcrumbs li:not(:last-of-type)::after {
-  content: '>';
-  margin-right: 0.8rem;
-  margin-left: 0.8rem;
 }
 
 /* HOME PAGE */
@@ -1168,7 +1143,6 @@ button::-moz-focus-inner {
   }
 
   #home .mentor-list a {
-    display: block;
     max-width: 18rem;
   }
 
