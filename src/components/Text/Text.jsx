@@ -10,6 +10,7 @@ export default function Text({
   mark,
   underlined = false,
   inline = false,
+  ...props
 }) {
   if (children)
     children = (Array.isArray(children) ? children : [children]).map(child =>
@@ -42,6 +43,7 @@ export default function Text({
         [styles.underlined]: underlined,
         [styles.bold]: bold,
       })}
+      {...props}
     >
       {mark && <mark>{children}</mark>}
       {!mark && children}

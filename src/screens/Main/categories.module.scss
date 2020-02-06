@@ -1,0 +1,37 @@
+.categories {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+
+  a {
+    display: block;
+    box-sizing: border-box;
+    width: 33%;
+    max-width: 13rem;
+    height: 5.5rem;
+    background-image: url('/media/category.jpg');
+    background-position: 50% 40%;
+    border-radius: 0.5rem;
+    margin-right: 1.25rem;
+    margin-bottom: 1.25rem;
+
+    font-size: 1.125rem;
+    font-weight: bold;
+    color: #fff;
+    text-transform: capitalize;
+    line-height: 5.5rem;
+    text-align: center;
+  }
+
+  @media (max-width: 500px) {
+    flex-wrap: wrap;
+
+    a {
+      width: calc(50% - 1.25rem);
+
+      &:nth-child(2n) {
+        margin-right: 0;
+      }
+    }
+  }
+}

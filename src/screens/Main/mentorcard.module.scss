@@ -7,6 +7,20 @@
   img {
     width: 13rem;
     height: 13rem;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    height: auto;
+    width: 18rem;
+    margin: 1.5rem auto;
+
+    picture,
+    img {
+      width: 18rem;
+      height: 18rem;
+    }
   }
 }
 
@@ -54,5 +68,15 @@
 
   & > * {
     margin-right: 0.5rem;
+  }
+
+  @media (max-width: 700px) {
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+
+    & > div {
+      margin-bottom: 0.5rem;
+    }
   }
 }

@@ -1,12 +1,12 @@
 import React from 'react'
-import './index.scss'
+import styles from './landing.module.scss'
 
 const LandingComponent = () => {
   const goProductHunt = () => {
     window.open('https://www.producthunt.com/upcoming/upframe')
   }
   return (
-    <div className="landing-component">
+    <div className={styles['landing-component']}>
       <h1>The home for</h1>
       <h1>first-time founders.</h1>
       <p>

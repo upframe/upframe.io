@@ -9,6 +9,10 @@
   h3 {
     color: #000;
   }
+
+  @media (max-width: 720px) {
+    max-width: 98%;
+  }
 }
 
 .showcase {
