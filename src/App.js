@@ -10,15 +10,12 @@ import Api from './utils/Api'
 const Main = React.lazy(() => import('./screens/Main/Main'))
 const Login = React.lazy(() => import('./screens/Login/Login'))
 const Register = React.lazy(() => import('./screens/Register'))
-const Onboarding = React.lazy(() => import('./screens/Onboarding'))
 const Settings = React.lazy(() => import('./screens/Settings/Settings'))
 const ChangeEmail = React.lazy(() => import('./screens/ChangeEmail'))
 const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
 const Profile = React.lazy(() => import('./screens/Mentor/Profile'))
-const Expertise = React.lazy(() => import('./screens/Expertise'))
 const MeetupConfirm = React.lazy(() => import('./screens/MeetupConfirm'))
 const MeetupRefuse = React.lazy(() => import('./screens/MeetupRefuse'))
-const Company = React.lazy(() => import('./screens/Company'))
 const ErrorPage = React.lazy(() => import('./screens/404'))
 const DevPlayground = React.lazy(() => import('./screens/DevPlayground'))
 const GoogleSync = React.lazy(() => import('./screens/Sync'))
@@ -205,18 +202,7 @@ export default class App extends Component {
                     component={MeetupRefuse}
                   />
                   <Route exact path="/sync" component={GoogleSync} />
-                  <Route
-                    exact
-                    path="/expertise/:expertise"
-                    component={Expertise}
-                  />
-                  <Route exact path="/company/:company" component={Company} />
                   <Route exact path="/dev" component={DevPlayground} />
-                  <Route
-                    exact
-                    path="/onboarding/:keycode"
-                    component={Onboarding}
-                  />
                   <Route exact path="/product" component={Main} />
                   <Route exact path="/design" component={Main} />
                   <Route exact path="/software" component={Main} />

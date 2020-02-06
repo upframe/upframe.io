@@ -1,6 +1,3 @@
-import MainPopularTags from './MainPopularTags'
-import OnboardingAllDoneTab from './OnboardingAllDoneTab'
-import OnboardingWelcomeTab from './OnboardingWelcomeTab'
 import RecommendationCard from './RecommendationCard/RecommendationCard'
 import ProfilePicture from './ProfilePicture/ProfilePicture'
 import Navbar from './Navbar/Navbar'
@@ -22,9 +19,6 @@ import Icon from './Icon/Icon'
 import Card from './Card/Card'
 
 export {
-  MainPopularTags,
-  OnboardingAllDoneTab,
-  OnboardingWelcomeTab,
   RecommendationCard,
   ProfilePicture,
   Navbar,
