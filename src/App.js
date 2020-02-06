@@ -1,24 +1,12 @@
 import React, { Component, Suspense } from 'react'
 import { Helmet } from 'react-helmet'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import mixpanel from 'mixpanel-browser'
 
 import AppContext from './components/AppContext'
 import { Navbar } from './components'
 import Api from './utils/Api'
-
-const Main = React.lazy(() => import('./screens/Main/Main'))
-const Login = React.lazy(() => import('./screens/Login/Login'))
-const Register = React.lazy(() => import('./screens/Register'))
-const Settings = React.lazy(() => import('./screens/Settings/Settings'))
-const ChangeEmail = React.lazy(() => import('./screens/ChangeEmail'))
-const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
-const Profile = React.lazy(() => import('./screens/Mentor/Profile'))
-const MeetupConfirm = React.lazy(() => import('./screens/MeetupConfirm'))
-const MeetupRefuse = React.lazy(() => import('./screens/MeetupRefuse'))
-const ErrorPage = React.lazy(() => import('./screens/404'))
-const DevPlayground = React.lazy(() => import('./screens/DevPlayground'))
-const GoogleSync = React.lazy(() => import('./screens/Sync'))
+import Routes from './Routes'
 
 export default class App extends Component {
   state = {
@@ -148,25 +136,21 @@ export default class App extends Component {
           <title>Upframe</title>
           <meta
             property="description"
-            content={
-              'Upframe connects students with leaders in tech, design and product through 1-1 mentoring worldwide. Keep Pushing Forward.'
-            }
+            content="Upframe connects students with leaders in tech, design and product through 1-1 mentoring worldwide. Keep Pushing Forward."
           ></meta>
           <meta property="language" content="EN"></meta>
           <meta property="copyright" content="Upframe"></meta>
           <meta property="og:url" content={`${window.location.origin}`}></meta>
-          <meta property="og:title" content={'Upframe'}></meta>
+          <meta property="og:title" content="Upframe"></meta>
           <meta
             property="og:description"
-            content={
-              'Upframe connects students with leaders in tech, design and product through 1-1 mentoring worldwide. Keep Pushing Forward.'
-            }
+            content="Upframe connects students with leaders in tech, design and product through 1-1 mentoring worldwide. Keep Pushing Forward."
           ></meta>
           <meta
             property="og:image"
             content={`${window.location.origin}/keep-pushing-forward.jpg`}
           ></meta>
-          <meta property="og:site_name" content={'Upframe'}></meta>
+          <meta property="og:site_name" content="Upframe"></meta>
           <meta name="twitter:card" content="summary_large_image"></meta>
         </Helmet>
         <Router>
@@ -174,41 +158,7 @@ export default class App extends Component {
             <AppContext.Provider value={contextValue}>
               <Navbar />
               <Suspense fallback={<div>Loading...</div>}>
-                <Switch>
-                  <Route exact path="/" component={Main} />
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/register" component={Register} />
-                  <Route exact path="/settings" component={Settings} />
-                  <Route exact path="/settings/:page" component={Settings} />
-                  <Route exact path="/404" component={ErrorPage} />
-                  <Route
-                    exact
-                    path="/changemyemail/:token"
-                    component={ChangeEmail}
-                  />
-                  <Route
-                    exact
-                    path="/resetmypassword/:token"
-                    component={ResetPassword}
-                  />
-                  <Route
-                    exact
-                    path="/meetup/confirm/:meetupid"
-                    component={MeetupConfirm}
-                  />
-                  <Route
-                    exact
-                    path="/meetup/refuse/:meetupid"
-                    component={MeetupRefuse}
-                  />
-                  <Route exact path="/sync" component={GoogleSync} />
-                  <Route exact path="/dev" component={DevPlayground} />
-                  <Route exact path="/product" component={Main} />
-                  <Route exact path="/design" component={Main} />
-                  <Route exact path="/software" component={Main} />
-                  <Route exact path="/:keycode" component={Profile} />
-                  <Route component={ErrorPage} />
-                </Switch>
+                <Routes />
               </Suspense>
               <div id="snackbar">Information saved</div>
             </AppContext.Provider>
