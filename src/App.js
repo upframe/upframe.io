@@ -22,7 +22,6 @@ const Company = React.lazy(() => import('./screens/Company'))
 const ErrorPage = React.lazy(() => import('./screens/404'))
 const DevPlayground = React.lazy(() => import('./screens/DevPlayground'))
 const GoogleSync = React.lazy(() => import('./screens/Sync'))
-const MentorGroup = React.lazy(() => import('./screens/MentorGroup'))
 
 export default class App extends Component {
   state = {
@@ -218,9 +217,9 @@ export default class App extends Component {
                     path="/onboarding/:keycode"
                     component={Onboarding}
                   />
-                  <Route exact path="/product" component={MentorGroup} />
-                  <Route exact path="/design" component={MentorGroup} />
-                  <Route exact path="/software" component={MentorGroup} />
+                  <Route exact path="/product" component={Main} />
+                  <Route exact path="/design" component={Main} />
+                  <Route exact path="/software" component={Main} />
                   <Route exact path="/:keycode" component={Profile} />
                   <Route component={ErrorPage} />
                 </Switch>

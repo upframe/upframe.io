@@ -9,10 +9,12 @@ import Categories from './Categories'
 import aos from 'aos'
 import 'aos/dist/aos.css'
 
-export default function Main() {
+export default function Main({ match }) {
   const [mentors, setMentors] = useState([])
   const [filtered, setFiltered] = useState([])
   const { searchQuery: search, loggedIn } = useContext(context)
+
+  const category = match.url.split('/').pop()
 
   useEffect(() => {
     Api.getAllMentors(true).then(({ mentors }) => {
@@ -30,9 +32,9 @@ export default function Main() {
   }, [])
 
   useEffect(() => {
-    if (!search) return setFiltered(mentors)
-    Api.searchFull(search).then(({ search }) => setFiltered(search))
-  }, [search, mentors])
+    if (!search && !category) return setFiltered(mentors)
+    Api.searchFull(category || search).then(({ search }) => setFiltered(search))
+  }, [search, mentors, category])
 
   return (
     <main className={styles.main}>
