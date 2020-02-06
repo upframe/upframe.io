@@ -14,11 +14,25 @@
 .showcase {
   display: flex;
   overflow-x: hidden;
+
+  @media (orientation: portrait) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .leftColumn {
   width: 13rem;
   margin-right: 3.5rem;
+
+  @media (orientation: portrait) {
+    margin-right: 0;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+  }
 
   & > * {
     display: block;
