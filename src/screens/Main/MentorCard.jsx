@@ -10,13 +10,7 @@ export default function MentorCard({ mentor }) {
   const imgSize = window.innerWidth > 720 ? '13rem' : '18rem'
 
   return (
-    <Card
-      className={styles.mentorCard}
-      linkTo={mentor.keycode}
-      data-aos="fade-up"
-      data-aos-offset="0"
-      data-aos-delay="300"
-    >
+    <Card className={styles.mentorCard} linkTo={mentor.keycode}>
       <ProfilePicture
         imgs={
           Object.entries(mentor.pictures || {}).length

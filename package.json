@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@types/mixpanel-browser": "^2.23.0",
-    "aos": "^2.3.4",
     "browserslist": "^4.6.3",
     "caniuse-lite": "^1.0.30000979",
     "classnames": "^2.2.6",
