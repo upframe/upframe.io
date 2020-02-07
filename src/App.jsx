@@ -1,26 +1,25 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { Navbar, Spinner } from './components'
+import { Navbar, Spinner, Toast } from './components'
 import Routes from './Routes'
 import mixpanel from 'mixpanel-browser'
 import Api from './utils/Api'
 import Context from './context'
+import styles from './styles/app.module.scss'
 
 export default function App() {
   const [ctx, setCtx] = useState({
     loggedIn: false,
     user: {},
     searchQuery: '',
-    setProfilePic(profilePic) {
-      setCtx({ ...ctx, user: { ...ctx.user, profilePic } })
-    },
+    toast: null,
   })
 
   function login(email, password) {
     localStorage.clear()
     Api.login(email, password).then(({ ok, code }) => {
-      if (ok !== 1 || code !== 200) return ctx.showToast("Couldn't log you in")
+      if (ok !== 1 || code !== 200) return showToast("Couldn't log you in")
       Api.getUserInfo().then(({ user }) => {
         setCtx({ ...ctx, user, loggedIn: true })
       })
@@ -29,30 +28,28 @@ export default function App() {
   function logout() {
     localStorage.clear()
     Api.logout().then(({ ok }) => {
-      if (ok !== 1) return ctx.showToast("Couldn't log you out")
+      if (ok !== 1) return showToast("Couldn't log you out")
       setCtx({ ...ctx, user: {} })
       window.location = '/login'
     })
   }
   function saveUserInfo(user) {
     Api.updateUserInfo(user).then(({ ok }) => {
-      if (!ok)
-        return ctx.showToast('There was a problem saving your information')
+      if (!ok) return showToast('There was a problem saving your information')
       setCtx({ ...ctx, user })
-      ctx.showToast('Information saved')
+      showToast('Information saved')
     })
   }
-  function showToast(text) {
-    let x = document.getElementById('snackbar')
-    x.innerHTML = text
-    x.className = 'show'
-    setTimeout(function() {
-      x.className = x.className.replace('show', '')
-    }, 2000)
+  function showToast(toast) {
+    setCtx({ ...ctx, toast })
   }
 
   function setSearchQuery(searchQuery) {
     setCtx({ ...ctx, searchQuery })
+  }
+
+  function setProfilePic(profilePic) {
+    setCtx({ ...ctx, user: { ...ctx.user, profilePic } })
   }
 
   useEffect(() => {
@@ -65,6 +62,8 @@ export default function App() {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  console.log('render', ctx.loggedIn)
 
   return (
     <>
@@ -90,24 +89,25 @@ export default function App() {
         <meta name="twitter:card" content="summary_large_image"></meta>
       </Helmet>
       <Router>
-        <div className="App">
-          <Context.Provider
-            value={{
-              ...ctx,
-              login,
-              logout,
-              saveUserInfo,
-              showToast,
-              setSearchQuery,
-            }}
-          >
+        <Context.Provider
+          value={{
+            ...ctx,
+            login,
+            logout,
+            saveUserInfo,
+            showToast,
+            setSearchQuery,
+            setProfilePic,
+          }}
+        >
+          <div className={styles.app}>
             <Navbar />
             <Suspense fallback={<Spinner />}>
               <Routes />
             </Suspense>
-            <div id="snackbar" />
-          </Context.Provider>
-        </div>
+            <Toast />
+          </div>
+        </Context.Provider>
       </Router>
     </>
   )

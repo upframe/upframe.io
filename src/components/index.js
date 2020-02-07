@@ -18,6 +18,7 @@ import Divider from './Divider/Divider'
 import Icon from './Icon/Icon'
 import Card from './Card/Card'
 import Spinner from './Spinner/Spinner'
+import Toast from './Toast/Toast'
 
 export {
   RecommendationCard,
@@ -40,4 +41,5 @@ export {
   Icon,
   Card,
   Spinner,
+  Toast,
 }
