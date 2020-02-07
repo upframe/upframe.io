@@ -6,9 +6,14 @@
   color: var(--greyish-brown);
   font-size: 12px;
   margin-top: 1rem;
+  list-style: none;
+  padding: 0;
 
   li {
     line-height: 1rem;
+    a {
+      text-decoration: none;
+    }
   }
 
   li:not(:last-of-type)::after {

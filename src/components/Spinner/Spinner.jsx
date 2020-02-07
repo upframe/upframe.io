@@ -1,9 +1,13 @@
 import React from 'react'
 import styles from './spinner.module.scss'
+import { classes } from '../../utils/css'
 
 export default function Spinner({ centered = false }) {
   return (
-    <svg className={styles.spinner} data-active={true}>
+    <svg
+      className={classes(styles.spinner, { [styles.centered]: centered })}
+      data-active={true}
+    >
       <circle
         cx="2.5rem"
         cy="2.5rem"

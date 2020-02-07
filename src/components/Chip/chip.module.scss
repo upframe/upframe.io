@@ -12,6 +12,7 @@
     line-height: 2rem;
     white-space: nowrap;
     text-transform: capitalize;
+    margin: 0;
   }
 
   span {
@@ -20,6 +21,7 @@
     top: 50%;
     transform: translateY(-50%);
     color: var(--cl-text-medium);
+    margin: 0;
     margin-left: 0.5rem;
   }
 }

@@ -2,8 +2,9 @@
 @import 'styles/utils.scss';
 
 .settings {
-  padding-top: 7rem !important;
+  padding-top: 1rem;
   box-sizing: border-box;
+  overflow-x: hidden;
 
   input,
   textarea {

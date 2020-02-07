@@ -3,6 +3,7 @@
   height: 5rem;
   animation: rotate 2s linear infinite;
   transition: opacity 0.15s ease;
+  transform-origin: center;
 
   &[data-active='false'] {
     opacity: 0;
@@ -39,4 +40,11 @@
       stroke-dashoffset: -124px;
     }
   }
+}
+
+.centered {
+  position: fixed;
+  left: 50vw;
+  top: 50vh;
+  transform: translateX(-50%) translateY(-50%);
 }

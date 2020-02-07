@@ -40,6 +40,8 @@
     color: var(--cl-text-medium);
     cursor: pointer;
     text-indent: 1rem;
+    text-decoration: none;
+    margin: 0;
 
     &:visited,
     &:hover {

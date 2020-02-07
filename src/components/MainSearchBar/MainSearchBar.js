@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './MainSearchBar.module.scss'
+import { Input } from '..'
 
 export default function SearchBar({ onChange, onSubmit, searchQuery }) {
   function handleSubmit(e) {
@@ -9,10 +10,10 @@ export default function SearchBar({ onChange, onSubmit, searchQuery }) {
 
   return (
     <form onSubmit={handleSubmit} className={styles.search} autoComplete="off">
-      <input
+      <Input
         type="text"
         placeholder="What are you looking for?"
-        onChange={({ target }) => onChange(target.value)}
+        onChange={onChange}
         value={searchQuery}
         data-lpignore="true"
       />

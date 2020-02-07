@@ -8,7 +8,9 @@ export default function UserIcon({ user, onClick }) {
       <ProfilePicture
         size="2.625rem"
         imgs={
-          Object.keys(user.pictures).length ? user.pictures : user.profilePic
+          Object.keys(user.pictures || {}).length
+            ? user.pictures
+            : user.profilePic
         }
       />
     </div>

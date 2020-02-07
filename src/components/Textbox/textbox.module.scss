@@ -4,4 +4,7 @@
   padding: 0.7rem 1rem;
   font-size: 1rem;
   color: var(--cl-text-medium);
+  font: inherit;
+  box-sizing: border-box;
+  resize: none;
 }

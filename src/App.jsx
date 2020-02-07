@@ -63,8 +63,6 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log('render', ctx.loggedIn)
-
   return (
     <>
       <Helmet>
@@ -102,7 +100,7 @@ export default function App() {
         >
           <div className={styles.app}>
             <Navbar />
-            <Suspense fallback={<Spinner />}>
+            <Suspense fallback={<Spinner centered />}>
               <Routes />
             </Suspense>
             <Toast />

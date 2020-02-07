@@ -27,7 +27,7 @@ export default function Profile({ match }) {
   }, [match.params.keycode])
 
   if (!exists) return <Redirect to="/404" />
-  if (!mentor) return <Spinner />
+  if (!mentor) return <Spinner centered />
   return (
     <main className={styles.profile}>
       <Breadcrumbs name={mentor.name} />

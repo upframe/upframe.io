@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import './styles/master.scss'
 import './styles/variables.css'
-import './index.css'
 import App from './App'
 
 import mixpanel from 'mixpanel-browser'

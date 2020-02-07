@@ -19,6 +19,9 @@ export default function Input({ type, ...props }) {
       onChange={handleChange}
       placeholder={props.placeholder}
       type={type}
+      {...Object.fromEntries(
+        Object.entries(props).filter(([k]) => k.startsWith('data-'))
+      )}
     />
   )
 }
