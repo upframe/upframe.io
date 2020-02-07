@@ -85,7 +85,6 @@ export default function Signup() {
             label="Upframe Dev Mode Pass"
             action={
               <Input
-                type="password"
                 placeholder="Nuclear code"
                 value={devPass}
                 onChange={setDevPass}

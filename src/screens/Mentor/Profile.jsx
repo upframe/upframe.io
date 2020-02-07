@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import Api from '../../utils/Api'
-import { Breadcrumbs, RecommendationCard } from '../../components'
+import { Breadcrumbs, RecommendationCard, Spinner } from '../../components'
 import styles from './profile.module.scss'
 import Showcase from './Showcase'
 import Meetup from './Meetup'
@@ -27,7 +27,7 @@ export default function Profile({ match }) {
   }, [match.params.keycode])
 
   if (!exists) return <Redirect to="/404" />
-  if (!mentor) return <div>loading...</div>
+  if (!mentor) return <Spinner />
   return (
     <main className={styles.profile}>
       <Breadcrumbs name={mentor.name} />

@@ -16,14 +16,12 @@ export default function Navbar() {
 
   function search() {
     ctx.setSearchQuery(searchQuery)
-    ctx.startSearchQuery(true)
     if (window.location !== '/') history.push('/')
   }
 
   function resetSearch() {
-    ctx.searchQuery = ''
-    ctx.isSearchQuery = false
     setSearchQuery('')
+    ctx.setSearchQuery('')
   }
 
   return (
@@ -58,9 +56,7 @@ export default function Navbar() {
           </>
         )}
       </div>
-      {showDropdown && (
-        <Dropdown ctx={ctx} onBlur={() => setShowDropdown(false)} />
-      )}
+      {showDropdown && <Dropdown onBlur={() => setShowDropdown(false)} />}
     </nav>
   )
 }

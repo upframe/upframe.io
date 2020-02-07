@@ -1,9 +1,11 @@
 import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './dropdown.module.scss'
+import { useCtx } from '../../utils/Hooks'
 
-export default function Dropdown({ ctx, onBlur }) {
+export default function Dropdown({ onBlur }) {
   const ref = useRef()
+  const ctx = useCtx()
 
   useEffect(() => {
     if (!ref.current) return

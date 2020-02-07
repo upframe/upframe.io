@@ -16,7 +16,9 @@ export default function Main({ match }) {
 
   useEffect(() => {
     Api.getAllMentors(true).then(({ mentors }) => {
-      const sorted = mentors.sort((a, b) => b.slots.length - a.slots.length)
+      const sorted = (mentors || []).sort(
+        (a, b) => b.slots.length - a.slots.length
+      )
       setMentors(sorted)
       setFiltered(sorted)
     })
@@ -24,7 +26,9 @@ export default function Main({ match }) {
 
   useEffect(() => {
     if (!search && !category) return setFiltered(mentors)
-    Api.searchFull(category || search).then(({ search }) => setFiltered(search))
+    Api.searchFull(category || search).then(({ search }) =>
+      setFiltered(search || [])
+    )
   }, [search, mentors, category])
 
   return (
