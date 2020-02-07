@@ -16,12 +16,9 @@
   }
 
   span {
-    position: absolute;
-    right: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
     color: var(--cl-text-medium);
     margin: 0;
     margin-left: 0.5rem;
+    line-height: 2rem;
   }
 }

@@ -57,7 +57,7 @@ export default function App() {
     mixpanel.init('993a3d7a78434079b7a9bec245dbaec2')
     Api.getUserInfo().then(({ ok, code, user }) => {
       if (ok !== 1 || code !== 200) return
-      if (user.tags !== '') user.tags = '[]'
+      if (user.tags === '') user.tags = '[]'
       setCtx({ ...ctx, user, loggedIn: true })
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
