@@ -22,3 +22,8 @@ export default new ApolloClient({
   ]),
   cache: new InMemoryCache(),
 })
+
+export function hasError(error, code) {
+  if (!error || !code) return false
+  return error.graphQLErrors.find(({ extensions }) => extensions.code === code)
+}

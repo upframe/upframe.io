@@ -12,7 +12,7 @@ export default function Meetup({ mentor, onSlot, onMsg }) {
         or in-person meetings. You can also send me a direct message.
       </Text>
       <div className={styles.slots}>
-        {mentor.slots.map(({ start }) => (
+        {(mentor.slots || []).map(({ start }) => (
           <Slot
             key={start}
             start={start}

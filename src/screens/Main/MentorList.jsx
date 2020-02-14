@@ -2,26 +2,19 @@ import React from 'react'
 import MentorCard from './MentorCard'
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
+import fragments from '../../gql/fragments'
 
-const FETCH_MENTORS = gql`
+const MENTORS_QUERY = gql`
   query getMentors {
     mentors {
-      name
-      keycode
-      role
-      company
-      bio
-      profilePictures {
-        size
-        type
-        url
-      }
+      ...LandingPageMentor
     }
   }
+  ${fragments.landingPage.mentor}
 `
 
 export default function MentorList() {
-  const { data } = useQuery(FETCH_MENTORS)
+  const { data } = useQuery(MENTORS_QUERY)
 
   return (
     <>
