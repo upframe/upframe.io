@@ -11,6 +11,11 @@ const FETCH_MENTORS = gql`
       role
       company
       bio
+      profilePictures {
+        size
+        type
+        url
+      }
     }
   }
 `

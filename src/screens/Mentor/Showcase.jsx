@@ -17,14 +17,7 @@ export default function Showcase({ mentor }) {
   return (
     <Card className={styles.showcase}>
       <div className={styles.leftColumn}>
-        <ProfilePicture
-          imgs={
-            Object.entries(mentor.pictures || {}).length
-              ? mentor.pictures
-              : mentor.profilePic
-          }
-          size="13rem"
-        />
+        <ProfilePicture imgs={mentor.profilePictures} size="13rem" />
         <p className={styles.name}>{mentor.name}</p>
         <p className={styles.role}>
           {mentor.role}

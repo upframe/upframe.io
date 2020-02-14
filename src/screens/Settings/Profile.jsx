@@ -136,7 +136,7 @@ export default function Profile() {
   return (
     <div>
       <div className={styles.head}>
-        <ProfilePicture imgs={ctx.user.profilePic} />
+        <ProfilePicture imgs={[]} />
         <div>
           <Title s2>Profile Picture</Title>
           <Text>

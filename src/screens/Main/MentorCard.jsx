@@ -11,14 +11,7 @@ export default function MentorCard({ mentor }) {
 
   return (
     <Card className={styles.mentorCard} linkTo={mentor.keycode}>
-      <ProfilePicture
-        imgs={
-          Object.entries(mentor.pictures || {}).length
-            ? mentor.pictures
-            : mentor.profilePic
-        }
-        size={imgSize}
-      />
+      <ProfilePicture imgs={mentor.profilePictures} size={imgSize} />
       <div className={styles.info}>
         <Title s3>{mentor.name}</Title>{' '}
         <p className={styles.role}>
