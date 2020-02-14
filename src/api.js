@@ -20,7 +20,14 @@ export default new ApolloClient({
       credentials: 'same-origin',
     }),
   ]),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    cacheRedirects: {
+      Query: {
+        mentor: (_, { keycode }, { getCacheKey }) =>
+          getCacheKey({ __typename: 'Mentor', id: keycode }),
+      },
+    },
+  }),
 })
 
 export function hasError(error, code) {

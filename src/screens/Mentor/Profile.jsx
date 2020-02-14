@@ -18,8 +18,8 @@ const recommend = {
 }
 
 const PROFILE_QUERY = gql`
-  query MentorProfile($keycode: String) {
-    mentor(keycode: $keycode) {
+  query MentorProfile($keycode: String!) {
+    mentor(keycode: $keycode) @connection(key: $keycode) {
       ...LandingPageMentor
     }
   }
