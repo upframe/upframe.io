@@ -33,7 +33,7 @@ export default function Navbar() {
         onSubmit={search}
       />
       <div className={styles.right}>
-        {ctx.loggedIn && (
+        {ctx.currentUser && (
           <UserIcon
             user={ctx.user}
             onClick={() => {
@@ -41,7 +41,7 @@ export default function Navbar() {
             }}
           />
         )}
-        {!ctx.loggedIn && (
+        {!ctx.currentUser && (
           <>
             <Button text linkTo="/login">
               Sign in

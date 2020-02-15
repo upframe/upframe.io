@@ -5,10 +5,7 @@ import styles from './profile.module.scss'
 import Showcase from './Showcase'
 import Meetup from './Meetup'
 import Request from './Request'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
-import { person } from '../../gql/fragments'
-import { hasError } from '../../api'
+import { useQuery, queries, hasError } from '../../gql'
 
 const recommend = {
   malik: ['pf', 'hugo.franca'],
@@ -17,19 +14,10 @@ const recommend = {
   tiagopedras: ['pf', 'hugo.franca'],
 }
 
-const PROFILE_QUERY = gql`
-  query MentorProfile($keycode: String!) {
-    mentor(keycode: $keycode) @connection(key: $keycode) {
-      ...MentorDetails
-    }
-  }
-  ${person.mentorDetails}
-`
-
 export default function Profile({ match }) {
   const [showRequest, toggleRequest] = useState(false)
 
-  const { data: { mentor } = {}, loading, error } = useQuery(PROFILE_QUERY, {
+  const { data: { mentor } = {}, loading, error } = useQuery(queries.PROFILE, {
     variables: { keycode: match.params.keycode },
   })
 

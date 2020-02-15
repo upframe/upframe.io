@@ -26,7 +26,7 @@ export default new ApolloClient({
     }),
     new HttpLink({
       uri: 'http://localhost:5000',
-      credentials: 'same-origin',
+      credentials: 'include',
     }),
   ]),
   cache: new InMemoryCache({

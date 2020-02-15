@@ -15,6 +15,7 @@ export default function App() {
     user: {},
     searchQuery: '',
     toast: null,
+    currentUser: null,
   })
 
   function login(email, password) {
@@ -52,6 +53,10 @@ export default function App() {
 
   function setProfilePic(profilePic) {
     setCtx({ ...ctx, user: { ...ctx.user, profilePic } })
+  }
+
+  function setCurrentUser(currentUser) {
+    setCtx({ ...ctx, currentUser })
   }
 
   useEffect(() => {
@@ -98,6 +103,7 @@ export default function App() {
             showToast,
             setSearchQuery,
             setProfilePic,
+            setCurrentUser,
           }}
         >
           <div className={styles.app}>

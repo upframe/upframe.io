@@ -3,21 +3,19 @@ import styles from './login.module.scss'
 import { Labeled, Input, Button, Card } from '../../components'
 import { Helmet } from 'react-helmet'
 import { useMutation } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
-
-const SIGN_IN = gql`
-  mutation SignIn($email: String!, $password: String!) {
-    signIn(input: { email: $email, password: $password }) {
-      name
-    }
-  }
-`
+import { useCtx } from '../../utils/Hooks'
+import { mutations } from '../../gql'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const { setCurrentUser } = useCtx()
 
-  const [signIn, { data }] = useMutation(SIGN_IN)
+  const [signIn] = useMutation(mutations.SIGN_IN, {
+    onCompleted: ({ signIn: user }) => {
+      setCurrentUser(user._id)
+    },
+  })
 
   function handleSubmit(e) {
     e.preventDefault()
