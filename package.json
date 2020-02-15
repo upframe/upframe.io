@@ -32,9 +32,9 @@
     "react-window": "^1.8.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npx graphql-codegen && react-scripts start",
     "bundle": "bundlesize",
-    "build": "react-scripts build",
+    "build": "npx graphql-codegen && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "format": "prettier --write \"./**/*.{js,jsx}\"",
@@ -47,6 +47,8 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.12.2",
+    "@graphql-codegen/fragment-matcher": "^1.12.2",
     "bundlesize": "^0.18.0",
     "eslint-plugin-prettier": "^3.1.1",
     "jest-dom": "^4.0.0",

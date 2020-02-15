@@ -1,0 +1,6 @@
+schema: https://xje8z3q6n4.execute-api.eu-west-2.amazonaws.com/dev/
+overwrite: true
+generates:
+  ./src/_fragmentTypes.json:
+    plugins:
+      - fragment-matcher
