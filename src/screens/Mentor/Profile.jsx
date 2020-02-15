@@ -7,7 +7,7 @@ import Meetup from './Meetup'
 import Request from './Request'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
-import fragments from '../../gql/fragments'
+import { person } from '../../gql/fragments'
 import { hasError } from '../../api'
 
 const recommend = {
@@ -20,10 +20,10 @@ const recommend = {
 const PROFILE_QUERY = gql`
   query MentorProfile($keycode: String!) {
     mentor(keycode: $keycode) @connection(key: $keycode) {
-      ...LandingPageMentor
+      ...MentorDetails
     }
   }
-  ${fragments.landingPage.mentor}
+  ${person.mentorDetails}
 `
 
 export default function Profile({ match }) {

@@ -7,6 +7,7 @@ import mixpanel from 'mixpanel-browser'
 import Api from './utils/Api'
 import Context from './context'
 import styles from './styles/app.module.scss'
+import { setErrorHandler } from './api'
 
 export default function App() {
   const [ctx, setCtx] = useState({
@@ -43,6 +44,7 @@ export default function App() {
   function showToast(toast) {
     setCtx({ ...ctx, toast })
   }
+  setErrorHandler(showToast)
 
   function setSearchQuery(searchQuery) {
     setCtx({ ...ctx, searchQuery })

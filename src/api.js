@@ -1,18 +1,27 @@
 import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import { onError } from 'apollo-link-error'
 import { ApolloLink } from 'apollo-link'
+import introspectionQueryResultData from './_fragmentTypes.json'
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from 'apollo-cache-inmemory'
 
 export default new ApolloClient({
   link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError }) => {
+    onError(({ graphQLErrors, networkError, response }) => {
       if (graphQLErrors)
-        graphQLErrors.forEach(({ message, locations, path }) =>
+        graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+          if (extensions.code === 'BAD_USER_INPUT') {
+            errorHandler(message)
+            response.errors = null
+            return
+          }
           console.log(
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
           )
-        )
+        })
       if (networkError) console.log(`[Network error]: ${networkError}`)
     }),
     new HttpLink({
@@ -21,6 +30,9 @@ export default new ApolloClient({
     }),
   ]),
   cache: new InMemoryCache({
+    fragmentMatcher: new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    }),
     cacheRedirects: {
       Query: {
         mentor: (_, { keycode }, { getCacheKey }) =>
@@ -33,4 +45,9 @@ export default new ApolloClient({
 export function hasError(error, code) {
   if (!error || !code) return false
   return error.graphQLErrors.find(({ extensions }) => extensions.code === code)
+}
+
+let errorHandler = () => {}
+export function setErrorHandler(handler) {
+  errorHandler = handler
 }

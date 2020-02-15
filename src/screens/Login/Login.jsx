@@ -2,19 +2,26 @@ import React, { useState } from 'react'
 import styles from './login.module.scss'
 import { Labeled, Input, Button, Card } from '../../components'
 import { Helmet } from 'react-helmet'
-import { useCtx } from '../../utils/Hooks'
-import { Redirect } from 'react-router-dom'
+import { useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
+
+const SIGN_IN = gql`
+  mutation SignIn($email: String!, $password: String!) {
+    signIn(input: { email: $email, password: $password }) {
+      name
+    }
+  }
+`
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { login, loggedIn } = useCtx()
 
-  if (loggedIn) return <Redirect to="/settings/public" />
+  const [signIn, { data }] = useMutation(SIGN_IN)
 
   function handleSubmit(e) {
     e.preventDefault()
-    login(email, password)
+    signIn({ variables: { email, password } })
   }
 
   return (
