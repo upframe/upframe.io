@@ -11,7 +11,7 @@ export default function ProfilePicture({ imgs, size = '13rem' }) {
   }, [size])
 
   useEffect(() => {
-    if (!Array.isArray(imgs)) return
+    if (!Array.isArray(imgs) || imgs.length === 0) return
 
     let pool = imgs.map(({ size, ...img }) => ({
       size: size || Infinity,

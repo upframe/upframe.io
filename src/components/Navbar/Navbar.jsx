@@ -35,7 +35,7 @@ export default function Navbar() {
       <div className={styles.right}>
         {ctx.currentUser && (
           <UserIcon
-            user={ctx.user}
+            userId={ctx.currentUser}
             onClick={() => {
               if (!showDropdown) setShowDropdown(true)
             }}

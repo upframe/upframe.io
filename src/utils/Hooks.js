@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import Api from 'utils/Api'
 import context from '../context'
 import debounce from 'lodash/debounce'
+import { useHistory } from 'react-router-dom'
 
 export function useUser() {
   const [user, setUser] = useState()
@@ -99,3 +100,5 @@ export function useScrollAtTop() {
 }
 
 export const useCtx = () => useContext(context)
+
+export { useHistory }

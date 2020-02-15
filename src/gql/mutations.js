@@ -9,3 +9,9 @@ export const SIGN_IN = gql`
   }
   ${person.base}
 `
+
+export const SIGN_OUT = gql`
+  mutation SignOut {
+    signOut
+  }
+`

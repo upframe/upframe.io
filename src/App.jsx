@@ -8,6 +8,7 @@ import Api from './utils/Api'
 import Context from './context'
 import styles from './styles/app.module.scss'
 import { setErrorHandler } from './api'
+import { queries, useQuery } from './gql'
 
 export default function App() {
   const [ctx, setCtx] = useState({
@@ -18,23 +19,6 @@ export default function App() {
     currentUser: null,
   })
 
-  function login(email, password) {
-    localStorage.clear()
-    Api.login(email, password).then(({ ok, code }) => {
-      if (ok !== 1 || code !== 200) return showToast("Couldn't log you in")
-      Api.getUserInfo().then(({ user }) => {
-        setCtx({ ...ctx, user, loggedIn: true })
-      })
-    })
-  }
-  function logout() {
-    localStorage.clear()
-    Api.logout().then(({ ok }) => {
-      if (ok !== 1) return showToast("Couldn't log you out")
-      setCtx({ ...ctx, user: {} })
-      window.location = '/login'
-    })
-  }
   function saveUserInfo(user) {
     Api.updateUserInfo(user).then(({ ok }) => {
       if (!ok) return showToast('There was a problem saving your information')
@@ -70,6 +54,14 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useQuery(queries.ME, {
+    skip: ctx.currentUser,
+    errorPolicy: 'ignore',
+    onCompleted: ({ me }) => {
+      if (me) setCurrentUser(me._id)
+    },
+  })
+
   return (
     <>
       <Helmet>
@@ -97,8 +89,6 @@ export default function App() {
         <Context.Provider
           value={{
             ...ctx,
-            login,
-            logout,
             saveUserInfo,
             showToast,
             setSearchQuery,

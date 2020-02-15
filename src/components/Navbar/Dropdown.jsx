@@ -1,11 +1,20 @@
 import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './dropdown.module.scss'
-import { useCtx } from '../../utils/Hooks'
+import { useCtx, useHistory } from '../../utils/Hooks'
+import { mutations, useMutation } from '../../gql'
 
 export default function Dropdown({ onBlur }) {
   const ref = useRef()
   const ctx = useCtx()
+  const history = useHistory()
+
+  const [signOut] = useMutation(mutations.SIGN_OUT, {
+    onCompleted() {
+      ctx.setCurrentUser(null)
+      history.push('/login')
+    },
+  })
 
   useEffect(() => {
     if (!ref.current) return
@@ -21,7 +30,7 @@ export default function Dropdown({ onBlur }) {
     >
       <Link to={`/${ctx.user.keycode}`}>My Profile</Link>
       <Link to={`/settings/public`}>Settings</Link>
-      <p onClick={ctx.logout}>Sign out</p>
+      <p onClick={signOut}>Sign out</p>
     </nav>
   )
 }
