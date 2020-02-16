@@ -5,13 +5,13 @@ import IntervalSelect from './IntervalSelect'
 import styles from './notifications.module.scss'
 import ChangeBanner from './ChangeBanner'
 import Api from 'utils/Api'
-import { useToast, useCtx } from 'utils/Hooks'
+import { useCtx } from 'utils/Hooks'
+import { notify } from '../../notification'
 
 export default function Notifications() {
   const ctx = useCtx()
   const [email, setEmail] = useState(null)
   const [avail, setAvail] = useState(null)
-  const showToast = useToast()
 
   useEffect(() => {
     if (email !== null || !ctx.user) return
@@ -36,7 +36,7 @@ export default function Notifications() {
         if (ok !== 1) throw Error()
         ctx.saveUserInfo({ ...ctx.user, ...diff })
       })
-      .catch(() => showToast('something went wrong'))
+      .catch(() => notify('something went wrong'))
   }
 
   return (

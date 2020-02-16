@@ -7,6 +7,7 @@ import {
   InMemoryCache,
   IntrospectionFragmentMatcher,
 } from 'apollo-cache-inmemory'
+import { notify } from './notification'
 
 export default new ApolloClient({
   link: ApolloLink.from([
@@ -14,7 +15,7 @@ export default new ApolloClient({
       if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
           if (extensions.code === 'BAD_USER_INPUT') {
-            errorHandler(message)
+            notify(message)
             response.errors = null
             return
           }
@@ -45,9 +46,4 @@ export default new ApolloClient({
 export function hasError(error, code) {
   if (!error || !code) return false
   return error.graphQLErrors.find(({ extensions }) => extensions.code === code)
-}
-
-let errorHandler = () => {}
-export function setErrorHandler(handler) {
-  errorHandler = handler
 }

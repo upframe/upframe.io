@@ -1,14 +1,14 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { Navbar, Spinner, Toast } from './components'
+import { Navbar, Spinner, NotificationStack } from './components'
 import Routes from './Routes'
 import mixpanel from 'mixpanel-browser'
 import Api from './utils/Api'
 import Context from './context'
 import styles from './styles/app.module.scss'
-import { setErrorHandler } from './api'
 import { queries, useQuery } from './gql'
+import { notify } from './notification'
 
 export default function App() {
   const [ctx, setCtx] = useState({
@@ -21,15 +21,11 @@ export default function App() {
 
   function saveUserInfo(user) {
     Api.updateUserInfo(user).then(({ ok }) => {
-      if (!ok) return showToast('There was a problem saving your information')
+      if (!ok) return notify('There was a problem saving your information')
       setCtx({ ...ctx, user })
-      showToast('Information saved')
+      notify('Information saved')
     })
   }
-  function showToast(toast) {
-    setCtx({ ...ctx, toast })
-  }
-  setErrorHandler(showToast)
 
   function setSearchQuery(searchQuery) {
     setCtx({ ...ctx, searchQuery })
@@ -90,7 +86,6 @@ export default function App() {
           value={{
             ...ctx,
             saveUserInfo,
-            showToast,
             setSearchQuery,
             setProfilePic,
             setCurrentUser,
@@ -101,7 +96,8 @@ export default function App() {
             <Suspense fallback={<Spinner centered />}>
               <Routes />
             </Suspense>
-            <Toast />
+            {/* <Toast /> */}
+            <NotificationStack />
           </div>
         </Context.Provider>
       </Router>

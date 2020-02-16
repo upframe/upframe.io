@@ -2,18 +2,20 @@ import React, { useState } from 'react'
 import styles from './login.module.scss'
 import { Labeled, Input, Button, Card } from '../../components'
 import { Helmet } from 'react-helmet'
-import { useMutation } from '@apollo/react-hooks'
-import { useCtx } from '../../utils/Hooks'
-import { mutations } from '../../gql'
+import { useCtx, useHistory } from '../../utils/Hooks'
+import { mutations, useMutation } from '../../gql'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { setCurrentUser } = useCtx()
+  const history = useHistory()
 
   const [signIn] = useMutation(mutations.SIGN_IN, {
     onCompleted: ({ signIn: user }) => {
+      if (!user) return
       setCurrentUser(user._id)
+      history.push('/settings')
     },
   })
 

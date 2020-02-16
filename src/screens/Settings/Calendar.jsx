@@ -1,7 +1,8 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
-import { useToast, useGCalEvents } from 'utils/Hooks'
+import { useGCalEvents } from 'utils/Hooks'
+import { notify } from '../../notification'
 
 import styles from './calendar.module.scss'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
@@ -21,7 +22,6 @@ export default function Calendar({
   gCals,
   gToken,
 }) {
-  const showToast = useToast()
   const gCalEvents = useGCalEvents(gCals.map(({ id }) => id), gToken)
 
   function addSlot(newSlot) {
@@ -33,7 +33,7 @@ export default function Calendar({
           slot.end.getTime() > newSlot.start.getTime()
       )
     ) {
-      showToast("You can't add a slot there!")
+      notify("You can't add a slot there!")
       return
     }
     onAddSlot({ start: newSlot.start, end: newSlot.end })

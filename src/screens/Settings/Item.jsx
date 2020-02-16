@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input, Textbox, Text, Button } from 'components'
 import style from './item.module.scss'
 
@@ -14,8 +14,13 @@ export default function Item({
   onChange,
   required = false,
   error = false,
+  inputType,
 }) {
   const [value, setValue] = useState(input || text)
+
+  useEffect(() => {
+    setValue(input || text)
+  }, [input, text])
 
   function handleChange(v) {
     setValue(v)
@@ -33,7 +38,13 @@ export default function Item({
         {!required ? '' : <span> *</span>}
       </label>
       {Action && !button && (
-        <Action id={id} value={value} onChange={handleChange} error={error} />
+        <Action
+          id={id}
+          value={value}
+          onChange={handleChange}
+          error={error}
+          {...(inputType && { type: inputType })}
+        />
       )}
       {(button || custom) && (
         <div className={style.btWrap}>

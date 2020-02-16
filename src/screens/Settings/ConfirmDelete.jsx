@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
 import { Title, Text, Input, Button } from 'components'
 import Api from 'utils/Api'
-import { useToast, useCtx } from 'utils/Hooks'
+import { useCtx } from 'utils/Hooks'
 import styles from './confirmDelete.module.scss'
+import { notify } from '../../notification'
 
 export default function ConfirmDelete({ onCancel }) {
   const ctx = useCtx()
   const [password, setPassword] = useState('')
-  const showToast = useToast()
 
   function deleteAccount() {
     Api.deleteAccount(password)
       .then(res => {
         if (res.status !== 200) throw Error('UNAUTHORIZED')
-        showToast('account deleted successfully')
+        notify('account deleted successfully')
         setTimeout(() => window.open('/', '_self'), 2000)
       })
       .catch(err => {
-        showToast(
+        notify(
           err.message === 'UNAUTHORIZED'
             ? 'wrong password'
             : "couldn't delete account"

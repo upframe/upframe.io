@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useToast, useGoogleCalendars, useCtx } from 'utils/Hooks'
+import { useGoogleCalendars, useCtx } from 'utils/Hooks'
+import { notify } from '../../notification'
 import Api from 'utils/Api'
 import { haveSameContent } from 'utils/Array'
 import { Title, Text } from 'components'
@@ -19,7 +20,6 @@ export default function CalendarTab() {
   )
   const [showCals, setShowCals] = useState([])
   const slotsChanged = !haveSameContent(oldSlots, slots, slotComp)
-  const showToast = useToast()
 
   useEffect(() => {
     async function getSlots() {
@@ -45,7 +45,7 @@ export default function CalendarTab() {
     const deleted = oldSlots.filter(slot => !slots.find(slotCompTo(slot)))
     const { ok } = await Api.addFreeSlots(added, deleted)
     if (ok) setOldSlots(slots)
-    else showToast('something went wrong')
+    else notify('something went wrong')
   }
 
   return (

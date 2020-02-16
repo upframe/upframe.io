@@ -16,8 +16,6 @@ export function useUser() {
   return user
 }
 
-export const useToast = () => useContext(context).showToast
-
 const blacklist = ['holiday@group', 'contacts@group', 'weeknum@group']
 export function useGoogleCalendars(token) {
   const [calendars, setCalendars] = useState([])

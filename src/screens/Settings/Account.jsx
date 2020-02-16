@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useToast } from 'utils/Hooks'
+import { notify } from '../../notification'
 import { Text, Title, Checkbox } from 'components'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
@@ -10,7 +10,6 @@ import { useCtx } from '../../utils/Hooks'
 
 export default function Account() {
   const ctx = useCtx()
-  const showToast = useToast()
   const [hidden, setHidden] = useState(null)
   const [deleteRequested, setDeleteRequested] = useState(false)
 
@@ -24,10 +23,10 @@ export default function Account() {
       .bind(Api)(ctx.user.email)
       .then(({ ok }) => {
         if (ok !== 1) throw Error()
-        showToast('An email has been sent to you')
+        notify('An email has been sent to you')
       })
       .catch(() =>
-        showToast('Could not complete request. Please contact support.')
+        notify('Could not complete request. Please contact support.')
       )
 
   function savePrivacy() {
@@ -37,7 +36,7 @@ export default function Account() {
         if (ok !== 1) throw Error()
         ctx.saveUserInfo({ ...ctx.user, newsfeed })
       })
-      .catch(() => showToast('something went wrong'))
+      .catch(() => notify('something went wrong'))
   }
 
   return (
