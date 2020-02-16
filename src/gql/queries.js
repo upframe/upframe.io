@@ -13,10 +13,10 @@ export const MENTORS = gql`
 export const PROFILE = gql`
   query MentorProfile($keycode: String!) {
     mentor(keycode: $keycode) {
-      ...MentorDetails
+      ...MentorProfile
     }
   }
-  ${person.mentorDetails}
+  ${person.mentorProfile}
 `
 
 export const ME = gql`

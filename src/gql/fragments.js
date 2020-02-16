@@ -38,4 +38,23 @@ export const person = {
       ${this.base}
     `
   },
+
+  get mentorProfile() {
+    return gql`
+      fragment MentorProfile on Mentor {
+        ...MentorDetails
+        location
+        website
+        social {
+          dribbble
+          facebook
+          github
+          linkedin
+          twitter
+        }
+        tags
+      }
+      ${this.mentorDetails}
+    `
+  },
 }

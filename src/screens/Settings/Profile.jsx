@@ -1,106 +1,109 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Text, Title, Button, Input, Chip, ProfilePicture } from 'components'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
-import { useToast, useCtx } from 'utils/Hooks'
-import Api from 'utils/Api'
+import { useCtx } from 'utils/Hooks'
 import { haveSameContent } from 'utils/Array'
 import styles from './profile.module.scss'
+import { useQuery, queries, useMutation, fragments, gql } from '../../gql'
+
+const UPDATE_PROFILE = gql`
+  mutation UpdateProfile($diff: ProfileInput) {
+    updateProfile(input: $diff) {
+      ...MentorProfile
+    }
+  }
+  ${fragments.person.mentorProfile}
+`
 
 export default function Profile() {
-  const ctx = useCtx()
-  const ctxUser = {
-    ...ctx.user,
-    tags: JSON.parse(ctx.user.tags || '[]'),
-  }
-  const [user, setUser] = useState(ctxUser)
   const [skill, setSkill] = useState('')
   const fileInput = useRef(null)
-  const showToast = useToast()
-  const [triedSubmit, setTriedSubmit] = useState(false)
+  const { currentUser } = useCtx()
+  const [diff, setDiff] = useState({})
+  const [invalid, setInvalid] = useState([])
+  const [tags, setTags] = useState([])
 
-  function uploadPhoto(e) {
-    const file = e.currentTarget.files[0]
-    if (file.size > 2 ** 20) return showToast('Please select a smaller file')
-    Api.uploadPhoto(file)
-      .then(({ ok, url }) => {
-        if (ok !== 1) throw Error()
-        ctx.setProfilePic(url)
-      })
-      .catch(() => showToast('Could not update picture'))
-  }
+  const { data: { mentor: user = {} } = {} } = useQuery(queries.PROFILE, {
+    variables: { keycode: currentUser, skip: !currentUser },
+  })
 
-  function removePhoto() {
-    const profilePic =
-      'https://connect-api-profile-pictures.s3.amazonaws.com/default.png'
-    Api.updateUserInfo({ profilePic }).then(() => ctx.setProfilePic(profilePic))
-  }
+  useEffect(() => {
+    if (Array.isArray(user.tags)) setTags(user.tags)
+  }, [user.tags])
+
+  function uploadPhoto(e) {}
+
+  function removePhoto() {}
 
   function addSkill(e) {
     e.preventDefault()
-    if (skill.length === 0) return
-    let tags = user.tags
-    if (tags.length < 6) {
-      tags = Array.from(new Set([...tags.map(({ text }) => text), skill])).map(
-        skill => ({ id: skill, text: skill })
-      )
-      if (JSON.stringify(tags).length > 255)
-        showToast('Please pick shorter tags')
-      else setUser({ ...user, tags })
-    } else showToast('You already added 6 skills')
+    const newTags = [...tags, skill.toLowerCase()]
+    setTags(newTags)
+    handleChange('tags', newTags)
     setSkill('')
   }
 
   function removeSkill(name) {
-    setUser({
-      ...user,
-      tags: user.tags.filter(({ text }) => text !== name),
-    })
+    const newTags = tags.filter(tag => tag !== name)
+    setTags(newTags)
+    handleChange('tags', newTags)
   }
-
-  const diff = Object.fromEntries(
-    Object.entries(user).flatMap(([k, v]) =>
-      (Array.isArray(v)
-      ? !haveSameContent(
-          ctxUser[k],
-          v,
-          ({ text: t1 }, { text: t2 }) => t1 === t2
-        )
-      : ctxUser[k] !== v)
-        ? [[k, v]]
-        : []
-    )
-  )
 
   const required = ['name', 'keycode', 'role', 'bio']
   const requiredMet = required.every(field => user[field])
 
-  function saveChanges() {
-    setTriedSubmit(true)
-    if (!requiredMet) {
-      showToast('please fill in all required fields')
-      return
-    }
-    Api.updateUserInfo(diff)
-      .then(({ ok }) => {
-        if (ok !== 1) throw Error()
-        ctx.saveUserInfo({
-          ...ctx.user,
-          ...Object.fromEntries(
-            Object.entries(diff).map(([k, v]) =>
-              k !== 'tags' ? [k, v] : [k, JSON.stringify(v)]
-            )
-          ),
-        })
-      })
-      .catch(() => showToast('something went wrong'))
+  const [updateProfile] = useMutation(UPDATE_PROFILE, {
+    variables: { diff },
+    onCompleted(v) {
+      setInvalid([])
+    },
+    onError({ graphQLErrors }) {
+      if (!graphQLErrors) return
+      setInvalid(
+        graphQLErrors.map(({ extensions }) => extensions.field).filter(Boolean)
+      )
+    },
+  })
+
+  function handleChange(k, v) {
+    setDiff({ ...diff, [k]: v })
   }
 
-  const setField = field => v => setUser({ ...user, ...{ [field]: v } })
-  const item = ({ label, field, type = 'input', hint, social = false }) => {
+  useEffect(() => {
+    if (
+      Object.entries(diff).length &&
+      Object.entries(diff).every(([k, v]) =>
+        Array.isArray(v)
+          ? haveSameContent(user.tags, v)
+          : user[k] === v || user.social[k] === v
+      )
+    ) {
+      setDiff({})
+      setInvalid([])
+    }
+  }, [user, diff])
+
+  const item = ({
+    label,
+    field,
+    type = 'input',
+    hint,
+    social = false,
+    inputType,
+  }) => {
     field = field || label.toLowerCase()
-    if (!hint && social && user[field]) {
-      let urlPredict = user[field]
+    const value = !social
+      ? user[field]
+      : user.social && user.social[field]
+      ? user.social[field]
+      : undefined
+    if (
+      !hint &&
+      social &&
+      (!social ? user[field] : user.social && user.social[field])
+    ) {
+      let urlPredict = value
         .replace(/^http(s?):\/\//, '')
         .replace(/\/$/, '')
         .split('/')
@@ -108,8 +111,8 @@ export default function Profile() {
         .join('/')
       if (urlPredict.length < 3) urlPredict = false
       if (social.startsWith(urlPredict))
-        hint = `https://${user[field].replace(/^http(s?):\/\//, '')}`
-      else hint = `https://${social}${user[field]}`
+        hint = `https://${value.replace(/^http(s?):\/\//, '')}`
+      else hint = `https://${social}${value}`
       hint = (
         <a href={hint} target="_blank" rel="noopener noreferrer">
           {hint}
@@ -120,15 +123,11 @@ export default function Profile() {
       <Item
         label={label}
         required={required.includes(field)}
-        {...{ [type]: ctx.user[field] || '' }}
-        onChange={setField(field)}
+        {...{ [type]: value || '' }}
+        {...(inputType && { inputType })}
+        onChange={v => handleChange(field, v)}
         hint={hint}
-        error={
-          required.includes(field) &&
-          !user[field] &&
-          Object.keys(diff).length &&
-          triedSubmit
-        }
+        error={invalid.includes(field)}
       />
     )
   }
@@ -136,7 +135,7 @@ export default function Profile() {
   return (
     <div>
       <div className={styles.head}>
-        <ProfilePicture imgs={[]} />
+        <ProfilePicture imgs={user.profilePictures} />
         <div>
           <Title s2>Profile Picture</Title>
           <Text>
@@ -182,7 +181,7 @@ export default function Profile() {
       {item({ label: 'Location' })}
       {item({ label: 'Your Position', field: 'role' })}
       {item({ label: 'Company' })}
-      {item({ label: 'Website' })}
+      {item({ label: 'Website', inputType: 'url' })}
       {item({ label: 'Biography', field: 'bio', type: 'text' })}
       <Title s2>Social Profiles</Title>
       {item({ label: 'Dribbble', social: 'dribbble.com/' })}
@@ -191,7 +190,7 @@ export default function Profile() {
       {item({ label: 'LinkedIn', social: 'linkedin.com/in/' })}
       {item({ label: 'Twitter', social: 'twitter.com/' })}
       {Object.keys(diff).length > 0 && (
-        <ChangeBanner onSave={saveChanges} accent={requiredMet} />
+        <ChangeBanner onSave={updateProfile} accent={requiredMet} />
       )}
       <Title s2>Experience</Title>
       <Text>
@@ -205,9 +204,9 @@ export default function Profile() {
         </Button>
       </form>
       <div className={styles.skillList}>
-        {user.tags.map(({ id, text }) => (
-          <Chip key={id} onClick={removeSkill}>
-            {text}
+        {tags.map(tag => (
+          <Chip key={tag} onClick={removeSkill}>
+            {tag}
           </Chip>
         ))}
       </div>
