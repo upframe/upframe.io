@@ -96,7 +96,6 @@ export default function App() {
             <Suspense fallback={<Spinner centered />}>
               <Routes />
             </Suspense>
-            {/* <Toast /> */}
             <NotificationStack />
           </div>
         </Context.Provider>

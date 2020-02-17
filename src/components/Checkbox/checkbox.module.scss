@@ -19,4 +19,8 @@
     background-repeat: no-repeat;
     background-size: 60%;
   }
+
+  &:focus {
+    outline: none;
+  }
 }

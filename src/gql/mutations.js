@@ -15,3 +15,24 @@ export const SIGN_OUT = gql`
     signOut
   }
 `
+
+export const SET_PROFILE_VISIBILITY = gql`
+  mutation SetProfileVisibility($visibility: Visibility) {
+    setProfileVisibility(visibility: $visibility) {
+      _id
+      visibility
+    }
+  }
+`
+
+export const REQUEST_EMAIL_CHANGE = gql`
+  mutation RequestEmailChange {
+    requestEmailChange
+  }
+`
+
+export const REQUEST_PASSWORD_CHANGE = gql`
+  mutation RequestPasswordChange {
+    requestPasswordChange
+  }
+`

@@ -27,3 +27,13 @@ export const ME = gql`
   }
   ${person.base}
 `
+
+export const SETTINGS_ACCOUNT = gql`
+  query Account($keycode: String!) {
+    mentor(keycode: $keycode) {
+      _id
+      email
+      visibility
+    }
+  }
+`

@@ -6,9 +6,9 @@ export default function Checkbox({ onChange, checked }) {
     <input
       type="checkbox"
       className={styles.checkbox}
-      defaultChecked={checked}
-      onClick={({ currentTarget }) => {
-        if (onChange) onChange(currentTarget.checked)
+      checked={checked || false}
+      onChange={({ currentTarget }) => {
+        onChange(currentTarget.checked)
       }}
     />
   )

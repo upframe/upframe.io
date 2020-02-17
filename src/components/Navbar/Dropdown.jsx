@@ -28,7 +28,7 @@ export default function Dropdown({ onBlur }) {
       ref={ref}
       onBlur={() => setTimeout(onBlur, 100)}
     >
-      <Link to={`/${ctx.user.keycode}`}>My Profile</Link>
+      <Link to={`/${ctx.currentUser}`}>My Profile</Link>
       <Link to={`/settings/public`}>Settings</Link>
       <p onClick={signOut}>Sign out</p>
     </nav>

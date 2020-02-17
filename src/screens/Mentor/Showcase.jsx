@@ -11,9 +11,6 @@ import {
 } from '../../components'
 
 export default function Showcase({ mentor }) {
-  const tags =
-    mentor && mentor.tags ? JSON.parse(mentor.tags).map(({ text }) => text) : []
-
   return (
     <Card className={styles.showcase}>
       <div className={styles.leftColumn}>
@@ -38,11 +35,11 @@ export default function Showcase({ mentor }) {
         {mentor.bio.split('\n').map((v, i) => (
           <Text key={`bio${i}`}>{v}</Text>
         ))}
-        {tags.length && (
+        {Array.isArray(mentor.tags) && (
           <>
             <Title s3>I can advise you on</Title>
             <div className={styles.skills}>
-              {tags.map(v => (
+              {mentor.tags.map(v => (
                 <Chip key={v} removable={false}>
                   {v}
                 </Chip>
