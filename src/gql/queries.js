@@ -37,3 +37,15 @@ export const SETTINGS_ACCOUNT = gql`
     }
   }
 `
+
+export const SETTINGS_NOTIFICATIONS = gql`
+  query Account($keycode: String!) {
+    mentor(keycode: $keycode) {
+      _id
+      notificationPrefs {
+        receiveEmails
+        slotReminder
+      }
+    }
+  }
+`

@@ -5,16 +5,7 @@ import ChangeBanner from './ChangeBanner'
 import { useCtx } from 'utils/Hooks'
 import { haveSameContent } from 'utils/Array'
 import styles from './profile.module.scss'
-import { useQuery, queries, useMutation, fragments, gql } from '../../gql'
-
-const UPDATE_PROFILE = gql`
-  mutation UpdateProfile($diff: ProfileInput) {
-    updateProfile(input: $diff) {
-      ...MentorProfile
-    }
-  }
-  ${fragments.person.mentorProfile}
-`
+import { useQuery, queries, mutations, useMutation } from '../../gql'
 
 export default function Profile() {
   const [skill, setSkill] = useState('')
@@ -53,7 +44,7 @@ export default function Profile() {
   const required = ['name', 'keycode', 'role', 'bio']
   const requiredMet = required.every(field => user[field])
 
-  const [updateProfile] = useMutation(UPDATE_PROFILE, {
+  const [updateProfile] = useMutation(mutations.UPDATE_PROFILE, {
     variables: { diff },
     onCompleted(v) {
       setInvalid([])

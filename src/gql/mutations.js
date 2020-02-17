@@ -42,3 +42,25 @@ export const DELETE_ACCOUNT = gql`
     deleteAccount(password: $password)
   }
 `
+
+export const UPDATE_PROFILE = gql`
+  mutation UpdateProfile($diff: ProfileInput) {
+    updateProfile(input: $diff) {
+      ...MentorProfile
+    }
+  }
+  ${person.mentorProfile}
+`
+
+export const UPDATE_NOTIICATION_PREFERENCES = gql`
+  mutation updateNotificationSettings($diff: NotificationSettingsInput) {
+    updateNotificationPreferences(input: $diff) {
+      ...PersonBase
+      notificationPrefs {
+        receiveEmails
+        slotReminder
+      }
+    }
+  }
+  ${person.base}
+`
