@@ -3,11 +3,9 @@ import { Card, ProfilePicture, Title, Chip } from '../../components'
 import styles from './mentorcard.module.scss'
 
 export default function MentorCard({ mentor }) {
-  let tags =
-    mentor && mentor.tags ? JSON.parse(mentor.tags).map(({ text }) => text) : []
-  if (tags.length > 2) tags = [...tags.slice(0, 2), '+']
-
   const imgSize = window.innerWidth > 720 ? '13rem' : '18rem'
+  let tags = (mentor.tags || []).slice(0, 2)
+  if (tags.length) tags.push('+')
 
   return (
     <Card className={styles.mentorCard} linkTo={mentor.keycode}>

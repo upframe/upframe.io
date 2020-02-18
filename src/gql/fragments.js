@@ -34,6 +34,7 @@ export const person = {
         role
         company
         bio
+        tags
       }
       ${this.base}
     `
