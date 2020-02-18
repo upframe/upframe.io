@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { useGoogleCalendars, useCtx } from 'utils/Hooks'
-import { notify } from '../../notification'
-import Api from 'utils/Api'
 import { haveSameContent } from 'utils/Array'
 import { Title, Text } from 'components'
 import Item from './Item'
@@ -10,42 +8,55 @@ import Calendar from './Calendar'
 import GoogleSync from './GoogleSync'
 import CalendarList from './CalendarList'
 import styles from './calendarTab.module.scss'
+import { queries, mutations, useQuery, useMutation } from '../../gql'
 
 export default function CalendarTab() {
-  const [oldSlots, setOldSlots] = useState([])
-  const [slots, setSlots] = useState(oldSlots)
-  const ctx = useCtx()
+  const [remoteSlots, setRemoteSlots] = useState([])
+  const [slots, setSlots] = useState(remoteSlots)
+  const { currentUser, ...ctx } = useCtx()
   const gCals = useGoogleCalendars(
     ctx && ctx.user && ctx.user.googleAccessToken
   )
   const [showCals, setShowCals] = useState([])
-  const slotsChanged = !haveSameContent(oldSlots, slots, slotComp)
+
+  const { data: { mentor: user = {} } = {} } = useQuery(queries.SLOTS, {
+    variables: { keycode: currentUser },
+  })
 
   useEffect(() => {
-    async function getSlots() {
-      const now = new Date()
-      let { slots } = await Api.getFreeSlots(
-        now.toDateString(),
-        new Date(now.setMonth(now.getMonth() + 1)).toDateString()
-      )
-      slots = (slots || []).map(({ start, end, sid: id }) => ({
-        id,
-        start: new Date(start),
-        end: new Date(end),
-      }))
-      setOldSlots(slots)
-      setSlots(slots)
-    }
-    getSlots()
-  }, [])
+    if (!Array.isArray(user.slots)) return
+    setRemoteSlots(
+      user.slots.map(({ start, duration = 30, id }) => {
+        start = new Date(start)
+        return {
+          start,
+          end: new Date(start.getTime() + duration * 60 * 1000),
+          id,
+        }
+      })
+    )
+  }, [user.slots])
+
+  useEffect(() => {
+    setSlots(remoteSlots)
+  }, [remoteSlots])
+
+  const slotsChanged = !haveSameContent(remoteSlots, slots, slotComp)
+
+  const [updateSlots] = useMutation(mutations.UPDATE_SLOTS)
 
   async function saveChanges() {
-    if (haveSameContent(oldSlots, slots)) return
-    const added = slots.filter(slot => !oldSlots.find(slotCompTo(slot)))
-    const deleted = oldSlots.filter(slot => !slots.find(slotCompTo(slot)))
-    const { ok } = await Api.addFreeSlots(added, deleted)
-    if (ok) setOldSlots(slots)
-    else notify('something went wrong')
+    if (haveSameContent(remoteSlots, slots)) return
+    updateSlots({
+      variables: {
+        added: slots
+          .filter(slot => !remoteSlots.find(slotCompTo(slot)))
+          .map(({ start }) => ({ start })),
+        deleted: remoteSlots
+          .filter(slot => !slots.find(slotCompTo(slot)))
+          .map(({ id }) => id),
+      },
+    })
   }
 
   return (

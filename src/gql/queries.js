@@ -49,3 +49,16 @@ export const SETTINGS_NOTIFICATIONS = gql`
     }
   }
 `
+
+export const SLOTS = gql`
+  query GetMentorSlots($keycode: String!) {
+    mentor(keycode: $keycode) {
+      _id
+      slots {
+        id
+        start
+        duration
+      }
+    }
+  }
+`

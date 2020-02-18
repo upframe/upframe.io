@@ -64,3 +64,16 @@ export const UPDATE_NOTIICATION_PREFERENCES = gql`
   }
   ${person.base}
 `
+
+export const UPDATE_SLOTS = gql`
+  mutation updateSlots($added: [SlotInput!], $deleted: [ID!]) {
+    updateSlots(slots: { added: $added, deleted: $deleted }) {
+      _id
+      slots {
+        id
+        start
+        duration
+      }
+    }
+  }
+`
