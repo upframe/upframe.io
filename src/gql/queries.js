@@ -11,9 +11,13 @@ export const MENTORS = gql`
 `
 
 export const PROFILE = gql`
-  query MentorProfile($keycode: String!) {
+  query MentorProfile($keycode: String!, $slotsAfter: String) {
     mentor(keycode: $keycode) {
       ...MentorProfile
+      slots(after: $slotsAfter) {
+        id
+        start
+      }
     }
   }
   ${person.mentorProfile}

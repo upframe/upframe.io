@@ -17,7 +17,7 @@ export default function Meetup({ mentor, onSlot, onMsg }) {
             key={start}
             start={start}
             onClick={v =>
-              onSlot(mentor.slots.find(({ start }) => start === v).sid)
+              onSlot(mentor.slots.find(({ start }) => start === v).id)
             }
           />
         ))}

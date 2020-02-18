@@ -14,12 +14,20 @@ const recommend = {
   tiagopedras: ['pf', 'hugo.franca'],
 }
 
+const slotsAfter = new Date().toISOString()
+
 export default function Profile({ match }) {
   const [showRequest, toggleRequest] = useState(false)
 
-  const { data: { mentor } = {}, loading, error } = useQuery(queries.PROFILE, {
-    variables: { keycode: match.params.keycode },
-  })
+  const { data: { mentor = {} } = {}, loading, error } = useQuery(
+    queries.PROFILE,
+    {
+      variables: {
+        keycode: match.params.keycode,
+        slotsAfter,
+      },
+    }
+  )
 
   if (hasError(error, 'KEYCODE_ERROR')) return <Redirect to="/404" />
   if (loading) return <Spinner centered />
