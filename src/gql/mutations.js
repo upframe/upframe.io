@@ -53,7 +53,7 @@ export const UPDATE_PROFILE = gql`
 `
 
 export const UPDATE_NOTIICATION_PREFERENCES = gql`
-  mutation updateNotificationSettings($diff: NotificationSettingsInput!) {
+  mutation UpdateNotificationSettings($diff: NotificationSettingsInput!) {
     updateNotificationPreferences(input: $diff) {
       ...PersonBase
       notificationPrefs {
@@ -66,7 +66,7 @@ export const UPDATE_NOTIICATION_PREFERENCES = gql`
 `
 
 export const UPDATE_SLOTS = gql`
-  mutation updateSlots($added: [SlotInput!], $deleted: [ID!]) {
+  mutation UpdateSlots($added: [SlotInput!], $deleted: [ID!]) {
     updateSlots(slots: { added: $added, deleted: $deleted }) {
       id
       slots {
@@ -79,7 +79,7 @@ export const UPDATE_SLOTS = gql`
 `
 
 export const SEND_MESSAGE_EXT = gql`
-  mutation sendMessage(
+  mutation SendMessage(
     $to: ID!
     $name: String!
     $email: String!
@@ -90,7 +90,7 @@ export const SEND_MESSAGE_EXT = gql`
 `
 
 export const REQUEST_MEETUP = gql`
-  mutation requestMeetup(
+  mutation RequestMeetup(
     $slotId: ID!
     $name: String!
     $email: String!
@@ -99,5 +99,17 @@ export const REQUEST_MEETUP = gql`
     requestSlot(
       input: { slotId: $slotId, name: $name, email: $email, message: $msg }
     )
+  }
+`
+
+export const ACCEPT_MEETUP = gql`
+  mutation AcceptMeetup($meetupId: ID!) {
+    acceptMeetup(meetupId: $meetupId) {
+      start
+      location
+      mentee {
+        name
+      }
+    }
   }
 `

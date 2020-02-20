@@ -44,7 +44,6 @@
 
 .centered {
   position: fixed;
-  left: 50vw;
-  top: 50vh;
-  transform: translateX(-50%) translateY(-50%);
+  left: calc(50vw - 2.5rem);
+  top: calc(50vh - 2.5rem);
 }

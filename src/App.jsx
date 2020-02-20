@@ -30,7 +30,7 @@ export default function App() {
   useQuery(queries.ME, {
     skip: ctx.currentUser,
     errorPolicy: 'ignore',
-    onCompleted: ({ me }) => {
+    onCompleted: ({ me } = {}) => {
       if (me) setCurrentUser(me.keycode)
     },
   })

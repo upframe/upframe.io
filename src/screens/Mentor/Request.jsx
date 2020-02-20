@@ -12,6 +12,7 @@ import {
   Divider,
   Icon,
 } from '../../components/'
+import { notify } from '../../notification'
 
 export default function Request({ mentor, onClose, slot }) {
   const [msg, setMsg] = useState('')
@@ -29,6 +30,7 @@ export default function Request({ mentor, onClose, slot }) {
   const [requestSlot] = useMutation(mutations.REQUEST_MEETUP, {
     variables: { msg, email, name, slotId: slot },
     onCompleted() {
+      notify('Meetup was requested. Now wait for the mentor to confirm.')
       onClose()
     },
   })
