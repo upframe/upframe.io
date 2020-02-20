@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { mutations, useMutation } from '../../gql'
-import { Spinner } from '../../components'
+import { Spinner, Text } from '../../components'
 import styles from './meetup.module.scss'
+import { notify } from '../../notification'
 
 export default function MeetupConfirm({ match }) {
   const [
@@ -9,6 +10,11 @@ export default function MeetupConfirm({ match }) {
     { data: { acceptMeetup: meetup } = {}, loading },
   ] = useMutation(mutations.ACCEPT_MEETUP, {
     variables: { meetupId: match.params.meetupid },
+    onError({ graphQLErrors }) {
+      graphQLErrors
+        .filter(({ extensions }) => extensions.code !== 'BAD_USER_INPUT')
+        .forEach(notify)
+    },
   })
 
   useEffect(() => {
@@ -19,8 +25,8 @@ export default function MeetupConfirm({ match }) {
   if (!meetup) return null
   return (
     <div className={styles.status}>
-      <p>
-        Accepted meeting with {meetup.mentee.name} on{' '}
+      <Text>
+        Accepted meetup with {meetup.mentee.name} on{' '}
         {new Date(meetup.start).toLocaleString('en-US', {
           weekday: 'long',
           month: 'long',
@@ -32,10 +38,10 @@ export default function MeetupConfirm({ match }) {
           minute: '2-digit',
         })}
         .
-      </p>
-      <p>
-        You can join the call <a href={meetup.location}>here</a>.
-      </p>
+      </Text>
+      <Text>
+        You can join the call at <a href={meetup.location}>this url</a>.
+      </Text>
     </div>
   )
 }

@@ -113,3 +113,9 @@ export const ACCEPT_MEETUP = gql`
     }
   }
 `
+
+export const CANCEL_MEETING = gql`
+  mutation CancelMeetup($meetupId: ID!) {
+    cancelMeetup(meetupId: $meetupId)
+  }
+`

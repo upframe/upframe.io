@@ -13,7 +13,7 @@ const ResetPassword = React.lazy(() =>
 )
 const Profile = React.lazy(() => import('./screens/Mentor/Profile'))
 const MeetupConfirm = React.lazy(() => import('./screens/Meetup/Confirm'))
-const MeetupRefuse = React.lazy(() => import('./screens/Meetup/Refuse'))
+const MeetupCancel = React.lazy(() => import('./screens/Meetup/Cancel'))
 const ErrorPage = React.lazy(() => import('./screens/404'))
 const Sync = React.lazy(() => import('./screens/Sync/Sync'))
 
@@ -29,7 +29,7 @@ export default function Routes() {
       <Route exact path="/changemyemail/:token" component={ChangeEmail} />
       <Route exact path="/resetmypassword/:token" component={ResetPassword} />
       <Route exact path="/meetup/confirm/:meetupid" component={MeetupConfirm} />
-      <Route exact path="/meetup/re fuse/:meetupid" component={MeetupRefuse} />
+      <Route exact path="/meetup/cancel/:meetupid" component={MeetupCancel} />
       <Route exact path="/sync" component={Sync} />
       <Route exact path="/:keycode" component={Profile} />
       <Route component={ErrorPage} />

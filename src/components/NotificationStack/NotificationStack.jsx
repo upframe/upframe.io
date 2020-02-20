@@ -12,7 +12,7 @@ export default function NotificationStack() {
     if (!notification) return
     setNotifications([
       {
-        msg: notification,
+        msg: notification.message || notification,
         key: performance.now(),
       },
       ...notifications.filter(({ key }) => performance.now() - key < 2000),
