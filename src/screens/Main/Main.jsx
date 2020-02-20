@@ -10,7 +10,7 @@ import { useCtx } from '../../utils/Hooks'
 export default function Main({ match }) {
   const [mentors, setMentors] = useState([])
   const [filtered, setFiltered] = useState([])
-  const { searchQuery: search, loggedIn } = useCtx()
+  const { searchQuery: search, currentUser } = useCtx()
 
   const category = match.url.split('/').pop()
 
@@ -33,9 +33,9 @@ export default function Main({ match }) {
 
   return (
     <main className={styles.main}>
-      {!loggedIn && !search && <Landing />}
+      {!currentUser && !search && <Landing />}
       <div className={styles.container}>
-        {loggedIn && !search && !category && (
+        {currentUser && !search && !category && (
           <>
             <Categories />
             <Title s2>Featured Mentors</Title>

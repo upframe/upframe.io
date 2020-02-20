@@ -35,7 +35,7 @@ export const ME = gql`
 export const SETTINGS_ACCOUNT = gql`
   query Account($keycode: String!) {
     mentor(keycode: $keycode) {
-      _id
+      id
       email
       visibility
     }
@@ -45,7 +45,7 @@ export const SETTINGS_ACCOUNT = gql`
 export const SETTINGS_NOTIFICATIONS = gql`
   query Account($keycode: String!) {
     mentor(keycode: $keycode) {
-      _id
+      id
       notificationPrefs {
         receiveEmails
         slotReminder
@@ -57,7 +57,7 @@ export const SETTINGS_NOTIFICATIONS = gql`
 export const SLOTS = gql`
   query GetMentorSlots($keycode: String!) {
     mentor(keycode: $keycode) {
-      _id
+      id
       slots {
         id
         start

@@ -14,7 +14,7 @@ export default function Login() {
   const [signIn] = useMutation(mutations.SIGN_IN, {
     onCompleted: ({ signIn: user }) => {
       if (!user) return
-      setCurrentUser(user._id)
+      setCurrentUser(user.keycode)
       history.push('/settings')
     },
   })

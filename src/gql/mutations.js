@@ -17,9 +17,9 @@ export const SIGN_OUT = gql`
 `
 
 export const SET_PROFILE_VISIBILITY = gql`
-  mutation SetProfileVisibility($visibility: Visibility) {
+  mutation SetProfileVisibility($visibility: Visibility!) {
     setProfileVisibility(visibility: $visibility) {
-      _id
+      id
       visibility
     }
   }
@@ -44,7 +44,7 @@ export const DELETE_ACCOUNT = gql`
 `
 
 export const UPDATE_PROFILE = gql`
-  mutation UpdateProfile($diff: ProfileInput) {
+  mutation UpdateProfile($diff: ProfileInput!) {
     updateProfile(input: $diff) {
       ...MentorProfile
     }
@@ -53,7 +53,7 @@ export const UPDATE_PROFILE = gql`
 `
 
 export const UPDATE_NOTIICATION_PREFERENCES = gql`
-  mutation updateNotificationSettings($diff: NotificationSettingsInput) {
+  mutation updateNotificationSettings($diff: NotificationSettingsInput!) {
     updateNotificationPreferences(input: $diff) {
       ...PersonBase
       notificationPrefs {
@@ -68,12 +68,36 @@ export const UPDATE_NOTIICATION_PREFERENCES = gql`
 export const UPDATE_SLOTS = gql`
   mutation updateSlots($added: [SlotInput!], $deleted: [ID!]) {
     updateSlots(slots: { added: $added, deleted: $deleted }) {
-      _id
+      id
       slots {
         id
         start
         duration
       }
     }
+  }
+`
+
+export const SEND_MESSAGE_EXT = gql`
+  mutation sendMessage(
+    $to: ID!
+    $name: String!
+    $email: String!
+    $msg: String!
+  ) {
+    messageExt(input: { to: $to, name: $name, email: $email, message: $msg })
+  }
+`
+
+export const REQUEST_MEETUP = gql`
+  mutation requestMeetup(
+    $slotId: ID!
+    $name: String!
+    $email: String!
+    $msg: String!
+  ) {
+    requestSlot(
+      input: { slotId: $slotId, name: $name, email: $email, message: $msg }
+    )
   }
 `

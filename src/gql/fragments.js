@@ -16,7 +16,7 @@ export const person = {
   get base() {
     return gql`
       fragment PersonBase on Person {
-        _id
+        id
         name
         ... on Mentor {
           keycode

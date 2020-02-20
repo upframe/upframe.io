@@ -32,9 +32,10 @@ export default function Showcase({ mentor }) {
       </div>
       <div className={styles.rightColumn}>
         <Title s3>About me</Title>
-        {mentor.bio.split('\n').map((v, i) => (
-          <Text key={`bio${i}`}>{v}</Text>
-        ))}
+        {mentor.bio &&
+          mentor.bio
+            .split('\n')
+            .map((v, i) => <Text key={`bio${i}`}>{v}</Text>)}
         {Array.isArray(mentor.tags) && (
           <>
             <Title s3>I can advise you on</Title>
