@@ -66,3 +66,9 @@ export const SLOTS = gql`
     }
   }
 `
+
+export const CONNECT_CALENDAR_URL = gql`
+  query GetCalendarConnectUrl {
+    calendarConnectUrl
+  }
+`

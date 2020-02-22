@@ -119,3 +119,9 @@ export const CANCEL_MEETING = gql`
     cancelMeetup(meetupId: $meetupId)
   }
 `
+
+export const CONNECT_CALENDAR = gql`
+  mutation ConnectCalendar($code: ID!) {
+    connectCalendar(code: $code)
+  }
+`

@@ -1,28 +1,18 @@
 import React from 'react'
-import Api from 'utils/Api'
-import { useCtx } from '../../utils/Hooks'
 import { Button } from 'components'
+import { queries, useQuery } from '../../gql'
 
 export default function GoogleSync() {
-  const ctx = useCtx()
-  const isSynced = ctx.user && ctx.user.googleAccessToken
+  const isSynced = false
 
-  async function link() {
-    const { url } = await Api.getGoogleSyncUrl()
-    window.location = url
-  }
+  const { data: { calendarConnectUrl: url } = {} } = useQuery(
+    queries.CONNECT_CALENDAR_URL
+  )
 
-  async function unlink() {
-    await Api.updateUserInfo({
-      googleAccessToken: '',
-      googleRefreshToken: '',
-      upframeCalendarId: '',
-    })
-    window.location.reload()
-  }
+  async function unlink() {}
 
   return (
-    <Button onClick={isSynced ? unlink : link} accent={!isSynced}>
+    <Button accent {...(isSynced ? { onClick: unlink } : { linkTo: url })}>
       {isSynced ? 'Disconnect' : 'Connect Account'}
     </Button>
   )

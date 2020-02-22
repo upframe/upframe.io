@@ -1,39 +1,33 @@
 import React, { useEffect } from 'react'
 import { Spinner, Title } from '../../components'
 import styles from './sync.module.scss'
-import Api from '../../utils/Api'
-import { useCtx } from '../../utils/Hooks'
 import { useHistory } from 'react-router-dom'
+import { mutations, useMutation } from '../../gql'
+import { notify } from '../../notification'
 
-export default function Sync() {
-  const { saveUserInfo } = useCtx()
+export default function Sync({ location }) {
   const history = useHistory()
 
+  const [connect] = useMutation(mutations.CONNECT_CALENDAR, {
+    onError() {
+      notify("couldn't connect calendar")
+    },
+    onCompleted() {
+      history.push('/settings/mycalendar')
+    },
+  })
+
   useEffect(() => {
-    if (!saveUserInfo || !history) return
-    Api.getTokens(window.location.search.split('?code=')[1]).then(
-      ({ ok, token, refreshToken }) => {
-        if (!ok) return
-        fetch('https://www.googleapis.com/calendar/v3/calendars', {
-          method: 'POST',
-          mode: 'cors',
-          BODY: JSON.stringify({ summary: 'Upframe Calendar' }),
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }).then(({ ok, id }) => {
-          if (!ok) return alert('something went wrong')
-          saveUserInfo({
-            googleAccessToken: token,
-            googleRefreshToken: refreshToken,
-            upframeCalendarId: id,
-          })
-          history.push('/settings/mycalendar')
-        })
-      }
+    const { code } = Object.fromEntries(
+      location.search
+        .replace(/^\?(.+)/, '$1')
+        .split('&')
+        .map(v => v.split('='))
     )
-  }, [saveUserInfo, history])
+    if (!code) return
+
+    connect({ variables: { code } })
+  }, [location.search, connect])
 
   return (
     <div className={styles.sync}>
