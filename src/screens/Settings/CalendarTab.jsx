@@ -15,9 +15,12 @@ export default function CalendarTab() {
   const [slots, setSlots] = useState(remoteSlots)
   const { currentUser } = useCtx()
 
-  const { data: { mentor: user = {} } = {} } = useQuery(queries.SLOTS, {
-    variables: { id: currentUser },
-  })
+  const { data: { mentor: user = {} } = {} } = useQuery(
+    queries.SETTINGS_CALENDAR,
+    {
+      variables: { id: currentUser },
+    }
+  )
 
   useEffect(() => {
     if (!Array.isArray(user.slots)) return
@@ -65,7 +68,6 @@ export default function CalendarTab() {
           setSlots(slots.filter(slot => slot !== deleted))
         }
         gCals={[]}
-        gToken={user.googleAccessToken}
       />
       <Title s2>Calendar Connections</Title>
       <Text>
@@ -73,7 +75,7 @@ export default function CalendarTab() {
         calendar with Upframe.
       </Text>
       <Item label="Google Calendar" custom={<GoogleSync />}>
-        {user.googleAccessToken ? (
+        {user.calendarConnected ? (
           <Text>
             <Text underlined>{user.email}</Text> is connected to your Upframe
             account

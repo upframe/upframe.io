@@ -122,6 +122,18 @@ export const CANCEL_MEETING = gql`
 
 export const CONNECT_CALENDAR = gql`
   mutation ConnectCalendar($code: ID!) {
-    connectCalendar(code: $code)
+    connectCalendar(code: $code) {
+      id
+      calendarConnected
+    }
+  }
+`
+
+export const DISCONNECT_CALENDAR = gql`
+  mutation DisconnectCalendar {
+    disconnectCalendar {
+      id
+      calendarConnected
+    }
   }
 `

@@ -27,6 +27,9 @@ export const ME = gql`
   query CurrentUser {
     me {
       ...PersonBase
+      ... on Mentor {
+        calendarConnected
+      }
     }
   }
   ${person.base}
@@ -58,6 +61,21 @@ export const SETTINGS_NOTIFICATIONS = gql`
       notificationPrefs {
         receiveEmails
         slotReminder
+      }
+    }
+  }
+`
+
+export const SETTINGS_CALENDAR = gql`
+  query SettingsCalendar($id: ID!) {
+    mentor(id: $id) {
+      id
+      calendarConnected
+      email
+      slots {
+        id
+        start
+        duration
       }
     }
   }

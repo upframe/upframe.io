@@ -1,19 +1,24 @@
 import React from 'react'
 import { Button } from 'components'
-import { queries, useQuery } from '../../gql'
+import { queries, useQuery, client, mutations, useMutation } from '../../gql'
 
 export default function GoogleSync() {
-  const isSynced = false
-
   const { data: { calendarConnectUrl: url } = {} } = useQuery(
     queries.CONNECT_CALENDAR_URL
   )
 
-  async function unlink() {}
+  const { me } = client.readQuery({
+    query: queries.ME,
+  })
+
+  const [disconnect] = useMutation(mutations.DISCONNECT_CALENDAR)
 
   return (
-    <Button accent {...(isSynced ? { onClick: unlink } : { linkTo: url })}>
-      {isSynced ? 'Disconnect' : 'Connect Account'}
+    <Button
+      accent
+      {...(me.calendarConnected ? { onClick: disconnect } : { linkTo: url })}
+    >
+      {me.calendarConnected ? 'Disconnect' : 'Connect Account'}
     </Button>
   )
 }

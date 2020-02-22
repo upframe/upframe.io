@@ -1,7 +1,6 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
-import { useGCalEvents } from 'utils/Hooks'
 import { notify } from '../../notification'
 
 import styles from './calendar.module.scss'
@@ -15,15 +14,7 @@ moment.locale('en', {
 
 const localizer = BigCalendar.momentLocalizer(moment)
 
-export default function Calendar({
-  slots,
-  onAddSlot,
-  onDeleteSlot,
-  gCals,
-  gToken,
-}) {
-  const gCalEvents = useGCalEvents(gCals.map(({ id }) => id), gToken)
-
+export default function Calendar({ slots, onAddSlot, onDeleteSlot }) {
   function addSlot(newSlot) {
     if (
       newSlot.start.getTime() < Date.now() ||
@@ -54,7 +45,7 @@ export default function Calendar({
         localizer={localizer}
         selectable
         defaultView="week"
-        events={[...slots, ...gCalEvents]}
+        events={slots}
         onSelectSlot={addSlot}
         onSelectEvent={deleteSlot}
         views={{ month: true, week: true, day: true }}
