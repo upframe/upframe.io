@@ -32,9 +32,18 @@ export const ME = gql`
   ${person.base}
 `
 
+export const SETTINGS_PROFILE = gql`
+  query SettingsProfile($id: ID!) {
+    mentor(id: $id) {
+      ...MentorProfile
+    }
+  }
+  ${person.mentorProfile}
+`
+
 export const SETTINGS_ACCOUNT = gql`
-  query Account($keycode: String!) {
-    mentor(keycode: $keycode) {
+  query SettingsAccount($id: ID!) {
+    mentor(id: $id) {
       id
       email
       visibility
@@ -43,8 +52,8 @@ export const SETTINGS_ACCOUNT = gql`
 `
 
 export const SETTINGS_NOTIFICATIONS = gql`
-  query Account($keycode: String!) {
-    mentor(keycode: $keycode) {
+  query SettingsNotifications($id: ID!) {
+    mentor(id: $id) {
       id
       notificationPrefs {
         receiveEmails
@@ -55,8 +64,8 @@ export const SETTINGS_NOTIFICATIONS = gql`
 `
 
 export const SLOTS = gql`
-  query GetMentorSlots($keycode: String!) {
-    mentor(keycode: $keycode) {
+  query GetMentorSlots($id: ID!) {
+    mentor(id: $id) {
       id
       slots {
         id

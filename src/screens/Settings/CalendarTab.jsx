@@ -14,10 +14,9 @@ export default function CalendarTab() {
   const [remoteSlots, setRemoteSlots] = useState([])
   const [slots, setSlots] = useState(remoteSlots)
   const { currentUser } = useCtx()
-  const [showCals, setShowCals] = useState([])
 
   const { data: { mentor: user = {} } = {} } = useQuery(queries.SLOTS, {
-    variables: { keycode: currentUser },
+    variables: { id: currentUser },
   })
 
   useEffect(() => {
@@ -58,14 +57,13 @@ export default function CalendarTab() {
 
   return (
     <div className={styles.calendarTab}>
-      <CalendarList gCals={[]} onChange={setShowCals} />
+      <CalendarList gCals={[]} onChange={() => {}} />
       <Calendar
         slots={slots}
         onAddSlot={slot => setSlots([...slots, slot])}
         onDeleteSlot={deleted =>
           setSlots(slots.filter(slot => slot !== deleted))
         }
-        // gCals={gCals.filter(({ summary }) => showCals.includes(summary))}
         gCals={[]}
         gToken={user.googleAccessToken}
       />

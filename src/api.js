@@ -31,12 +31,6 @@ export default new ApolloClient({
     fragmentMatcher: new IntrospectionFragmentMatcher({
       introspectionQueryResultData,
     }),
-    cacheRedirects: {
-      Query: {
-        mentor: (_, { keycode }, { getCacheKey }) =>
-          getCacheKey({ __typename: 'Mentor', id: keycode }),
-      },
-    },
   }),
 })
 

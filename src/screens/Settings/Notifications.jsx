@@ -12,7 +12,7 @@ export default function Notifications() {
   const { data: { mentor: user = {} } = {} } = useQuery(
     queries.SETTINGS_NOTIFICATIONS,
     {
-      variables: { keycode: currentUser },
+      variables: { id: currentUser },
     }
   )
 

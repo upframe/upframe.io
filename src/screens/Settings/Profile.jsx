@@ -15,9 +15,12 @@ export default function Profile() {
   const [invalid, setInvalid] = useState([])
   const [tags, setTags] = useState([])
 
-  const { data: { mentor: user = {} } = {} } = useQuery(queries.PROFILE, {
-    variables: { keycode: currentUser, skip: !currentUser },
-  })
+  const { data: { mentor: user = {} } = {} } = useQuery(
+    queries.SETTINGS_PROFILE,
+    {
+      variables: { id: currentUser, skip: !currentUser },
+    }
+  )
 
   useEffect(() => {
     if (Array.isArray(user.tags)) setTags(user.tags)

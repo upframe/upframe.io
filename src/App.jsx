@@ -31,7 +31,7 @@ export default function App() {
     skip: ctx.currentUser,
     errorPolicy: 'ignore',
     onCompleted: ({ me } = {}) => {
-      if (me) setCurrentUser(me.keycode)
+      if (me) setCurrentUser(me.id)
     },
   })
 

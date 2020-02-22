@@ -13,7 +13,7 @@ export default function Account() {
   const { data: { mentor: user = {} } = {} } = useQuery(
     queries.SETTINGS_ACCOUNT,
     {
-      variables: { keycode: currentUser, skip: !currentUser },
+      variables: { id: currentUser, skip: !currentUser },
     }
   )
 

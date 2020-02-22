@@ -4,8 +4,9 @@ import styles from './userIcon.module.scss'
 import { gql, useQuery, fragments } from '../../gql'
 
 const IMG_QUERY = gql`
-  query profilePicture($userId: String!) {
-    mentor(keycode: $userId) {
+  query ProfilePicture($userId: ID) {
+    mentor(id: $userId) {
+      id
       ...ProfilePictures
     }
   }
