@@ -79,6 +79,7 @@ export function useCalendars(requested) {
     variables: { calendarIds: calNotFetched },
   })
 
+  // add to fetch list
   useEffect(() => {
     if (loading) return
     const diff = requested.filter(id => !calendars.find(cal => cal.id === id))
@@ -91,6 +92,7 @@ export function useCalendars(requested) {
       )
   }, [requested, calendars, calNotFetched, loading])
 
+  // add fetched to calendars
   useEffect(() => {
     if (loading) return
     const newlyFetched = gcals.filter(
@@ -98,13 +100,14 @@ export function useCalendars(requested) {
         !calendars.find(cal => cal.id === id) && requested.includes(id)
     )
     if (newlyFetched.length === 0) return
-    setCalendars([...calendars, ...newlyFetched])
+    const newCalendars = [...calendars, ...newlyFetched]
+    setCalendars(newCalendars)
     setCalNotFetched(
-      calNotFetched.filter(id => !calendars.find(cal => cal.id === id))
+      calNotFetched.filter(id => !newCalendars.find(cal => cal.id === id))
     )
   }, [loading, gcals, calendars, calNotFetched, requested])
 
-  return calendars
+  return [calendars, calNotFetched]
 }
 
 export { useHistory }

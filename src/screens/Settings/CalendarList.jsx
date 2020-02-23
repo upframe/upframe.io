@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Title, Text, Checkbox } from 'components'
+import { Title, Text, Checkbox, Spinner } from 'components'
 import GoogleSync from './GoogleSync'
 import { classes } from 'utils/css'
 import styles from './calendarList.module.scss'
 
-export default function CalendarList({ onChange, user }) {
+export default function CalendarList({ onChange, user, loading = [] }) {
   const [selection, setSelection] = useState([])
 
   useEffect(() => {
@@ -35,18 +35,21 @@ export default function CalendarList({ onChange, user }) {
           <>
             <Title s3>Calendars</Title>
             <div className={styles.list}>
-              {(user.calendars || []).map(({ id, name, color }) => (
-                <div className={styles.calendarToggle} key={id}>
-                  <Checkbox
-                    onChange={v => toggleCalendar(id, v)}
-                    checked={selection.includes(id)}
-                    color={color}
-                  />
-                  <Text small strong>
-                    {name}
-                  </Text>
-                </div>
-              ))}
+              {(user.calendars || []).map(({ id, name, color }, i) => {
+                const Tag = loading.includes(id) ? Spinner : Checkbox
+                return (
+                  <div className={styles.calendarToggle} key={id}>
+                    <Tag
+                      onChange={v => toggleCalendar(id, v)}
+                      checked={selection.includes(id)}
+                      color={color}
+                    />
+                    <Text small strong>
+                      {name}
+                    </Text>
+                  </div>
+                )
+              })}
             </div>
           </>
         )}

@@ -16,21 +16,8 @@ export default function CalendarTab() {
   const [slots, setSlots] = useState(remoteSlots)
   const { currentUser } = useCtx()
   const [showCalendars, setShowCalendars] = useState([])
-  const calendars = useCalendars(showCalendars)
+  const [calendars, loading] = useCalendars(showCalendars)
   const [extEvents, setExtEvents] = useState([])
-
-  useEffect(() => {
-    setExtEvents(
-      calendars.flatMap(({ events, id }) =>
-        events.map(({ start, end }) => ({
-          start: new Date(start),
-          end: new Date(end),
-          external: true,
-          color: (user.calendars || []).find(cal => cal.id === id).color,
-        }))
-      )
-    )
-  }, [calendars])
 
   const { data: { mentor: user = {} } = {} } = useQuery(
     queries.SETTINGS_CALENDAR,
@@ -54,6 +41,19 @@ export default function CalendarTab() {
     setSlots(remoteSlots)
   }, [remoteSlots])
 
+  useEffect(() => {
+    setExtEvents(
+      calendars.flatMap(({ events, id }) =>
+        events.map(({ start, end }) => ({
+          start: new Date(start),
+          end: new Date(end),
+          external: true,
+          color: (user.calendars || []).find(cal => cal.id === id).color,
+        }))
+      )
+    )
+  }, [calendars, user.calendars])
+
   const slotsChanged = !haveSameContent(remoteSlots, slots, slotComp)
 
   const [updateSlots] = useMutation(mutations.UPDATE_SLOTS)
@@ -74,7 +74,7 @@ export default function CalendarTab() {
 
   return (
     <div className={styles.calendarTab}>
-      <CalendarList user={user} onChange={setShowCalendars} />
+      <CalendarList user={user} onChange={setShowCalendars} loading={loading} />
       <Calendar
         slots={slots}
         onAddSlot={slot => setSlots([...slots, slot])}
