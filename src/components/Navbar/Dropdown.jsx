@@ -2,22 +2,14 @@ import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './dropdown.module.scss'
 import { useCtx, useHistory } from '../../utils/Hooks'
-import { mutations, useMutation, client, gql } from '../../gql'
+import { mutations, useMutation, useQuery, queries } from '../../gql'
 
 export default function Dropdown({ onBlur }) {
   const ref = useRef()
   const { setCurrentUser } = useCtx()
   const history = useHistory()
 
-  const { me } = client.readQuery({
-    query: gql`
-      {
-        me {
-          keycode
-        }
-      }
-    `,
-  })
+  const { data: { me = {} } = {} } = useQuery(queries.ME)
 
   const [signOut] = useMutation(mutations.SIGN_OUT, {
     onCompleted() {

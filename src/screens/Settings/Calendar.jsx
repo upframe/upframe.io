@@ -14,7 +14,12 @@ moment.locale('en', {
 
 const localizer = BigCalendar.momentLocalizer(moment)
 
-export default function Calendar({ slots, onAddSlot, onDeleteSlot }) {
+export default function Calendar({
+  slots,
+  onAddSlot,
+  onDeleteSlot,
+  external = [],
+}) {
   function addSlot(newSlot) {
     if (
       newSlot.start.getTime() < Date.now() ||
@@ -45,7 +50,7 @@ export default function Calendar({ slots, onAddSlot, onDeleteSlot }) {
         localizer={localizer}
         selectable
         defaultView="week"
-        events={slots}
+        events={[...slots, ...external]}
         onSelectSlot={addSlot}
         onSelectEvent={deleteSlot}
         views={{ month: true, week: true, day: true }}

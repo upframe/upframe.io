@@ -75,7 +75,11 @@ export const SETTINGS_CALENDAR = gql`
       slots {
         id
         start
-        duration
+        end
+      }
+      calendars {
+        id
+        name
       }
     }
   }
@@ -88,7 +92,7 @@ export const SLOTS = gql`
       slots {
         id
         start
-        duration
+        end
       }
     }
   }
@@ -97,5 +101,24 @@ export const SLOTS = gql`
 export const CONNECT_CALENDAR_URL = gql`
   query GetCalendarConnectUrl {
     calendarConnectUrl
+  }
+`
+
+export const GCAL_EVENTS = gql`
+  query GoogleCalendarEvents($calendarIds: [ID!]!) {
+    me {
+      id
+      ... on Mentor {
+        calendars(ids: $calendarIds) {
+          id
+          name
+          events {
+            id
+            start
+            end
+          }
+        }
+      }
+    }
   }
 `

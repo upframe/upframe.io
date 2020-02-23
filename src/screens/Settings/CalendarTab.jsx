@@ -9,11 +9,27 @@ import GoogleSync from './GoogleSync'
 import CalendarList from './CalendarList'
 import styles from './calendarTab.module.scss'
 import { queries, mutations, useQuery, useMutation } from '../../gql'
+import { useCalendars } from '../../utils/Hooks'
 
 export default function CalendarTab() {
   const [remoteSlots, setRemoteSlots] = useState([])
   const [slots, setSlots] = useState(remoteSlots)
   const { currentUser } = useCtx()
+  const [showCalendars, setShowCalendars] = useState([])
+  const calendars = useCalendars(showCalendars)
+  const [extEvents, setExtEvents] = useState([])
+
+  useEffect(() => {
+    setExtEvents(
+      calendars.flatMap(({ events }) =>
+        events.map(({ start, end }) => ({
+          start: new Date(start),
+          end: new Date(end),
+          external: true,
+        }))
+      )
+    )
+  }, [calendars])
 
   const { data: { mentor: user = {} } = {} } = useQuery(
     queries.SETTINGS_CALENDAR,
@@ -25,14 +41,11 @@ export default function CalendarTab() {
   useEffect(() => {
     if (!Array.isArray(user.slots)) return
     setRemoteSlots(
-      user.slots.map(({ start, duration = 30, id }) => {
-        start = new Date(start)
-        return {
-          start,
-          end: new Date(start.getTime() + duration * 60 * 1000),
-          id,
-        }
-      })
+      user.slots.map(({ start, end, id }) => ({
+        start: new Date(start),
+        end: new Date(end),
+        id,
+      }))
     )
   }, [user.slots])
 
@@ -60,14 +73,14 @@ export default function CalendarTab() {
 
   return (
     <div className={styles.calendarTab}>
-      <CalendarList gCals={[]} onChange={() => {}} />
+      <CalendarList user={user} onChange={setShowCalendars} />
       <Calendar
         slots={slots}
         onAddSlot={slot => setSlots([...slots, slot])}
         onDeleteSlot={deleted =>
           setSlots(slots.filter(slot => slot !== deleted))
         }
-        gCals={[]}
+        external={extEvents}
       />
       <Title s2>Calendar Connections</Title>
       <Text>

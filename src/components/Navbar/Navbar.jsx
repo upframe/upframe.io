@@ -25,7 +25,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className={classes(styles.navbar, { [styles.shadow]: !atTop })}>
+    <header className={classes(styles.navbar, { [styles.shadow]: !atTop })}>
       <Logo home onClick={resetSearch} />
       <SearchBar
         searchQuery={searchQuery}
@@ -57,6 +57,6 @@ export default function Navbar() {
         )}
       </div>
       {showDropdown && <Dropdown onBlur={() => setShowDropdown(false)} />}
-    </nav>
+    </header>
   )
 }

@@ -72,7 +72,7 @@ export const UPDATE_SLOTS = gql`
       slots {
         id
         start
-        duration
+        end
       }
     }
   }

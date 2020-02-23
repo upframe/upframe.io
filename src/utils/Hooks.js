@@ -3,6 +3,7 @@ import Api from 'utils/Api'
 import context from '../context'
 import debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
+import { useQuery, queries } from '../gql'
 
 export function useUser() {
   const [user, setUser] = useState()
@@ -66,5 +67,44 @@ export function useScrollAtTop() {
 }
 
 export const useCtx = () => useContext(context)
+
+export function useCalendars(requested) {
+  const [calNotFetched, setCalNotFetched] = useState([])
+  const [calendars, setCalendars] = useState([])
+
+  const {
+    data: { me: { calendars: gcals = [] } = {} } = {},
+    loading,
+  } = useQuery(queries.GCAL_EVENTS, {
+    variables: { calendarIds: calNotFetched },
+  })
+
+  useEffect(() => {
+    if (loading) return
+    const diff = requested.filter(id => !calendars.find(cal => cal.id === id))
+    const missing = diff.filter(id => !calNotFetched.includes(id))
+    if (missing.length > 0) setCalNotFetched([...calNotFetched, ...missing])
+    const remove = calendars.filter(({ id }) => !requested.includes(id))
+    if (remove.length > 0)
+      setCalendars(
+        calendars.filter(({ id }) => !remove.find(cal => cal.id === id))
+      )
+  }, [requested, calendars, calNotFetched, loading])
+
+  useEffect(() => {
+    if (loading) return
+    const newlyFetched = gcals.filter(
+      ({ id }) =>
+        !calendars.find(cal => cal.id === id) && requested.includes(id)
+    )
+    if (newlyFetched.length === 0) return
+    setCalendars([...calendars, ...newlyFetched])
+    setCalNotFetched(
+      calNotFetched.filter(id => !calendars.find(cal => cal.id === id))
+    )
+  }, [loading, gcals, calendars, calNotFetched, requested])
+
+  return calendars
+}
 
 export { useHistory }
