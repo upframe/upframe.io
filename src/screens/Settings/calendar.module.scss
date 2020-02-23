@@ -7,7 +7,6 @@
     }
 
     .rbc-event {
-      border: none !important;
       color: white !important;
     }
 
@@ -19,8 +18,10 @@
 
 .internalEvent {
   background-color: var(--cl-primary) !important;
+  border: none !important;
 }
 
 .externalEvent {
-  background-color: var(--cl-secondary) !important;
+  background-color: var(--cl-secondary);
+  border: 1px solid #fff !important;
 }

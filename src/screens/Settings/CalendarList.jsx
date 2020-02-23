@@ -35,11 +35,12 @@ export default function CalendarList({ onChange, user }) {
           <>
             <Title s3>Calendars</Title>
             <div className={styles.list}>
-              {(user.calendars || []).map(({ id, name }) => (
+              {(user.calendars || []).map(({ id, name, color }) => (
                 <div className={styles.calendarToggle} key={id}>
                   <Checkbox
                     onChange={v => toggleCalendar(id, v)}
                     checked={selection.includes(id)}
+                    color={color}
                   />
                   <Text small strong>
                     {name}

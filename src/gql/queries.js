@@ -80,6 +80,7 @@ export const SETTINGS_CALENDAR = gql`
       calendars {
         id
         name
+        color
       }
     }
   }

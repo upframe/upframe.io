@@ -59,6 +59,7 @@ export default function Calendar({
             className: event.external
               ? styles.externalEvent
               : styles.internalEvent,
+            style: { backgroundColor: event.color },
           }
         }}
         scrollToTime={new Date(new Date().setHours(7))}
