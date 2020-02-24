@@ -10,7 +10,11 @@ export default function MentorCard({ mentor }) {
   const imgSize = window.innerWidth > 720 ? '13rem' : '18rem'
 
   return (
-    <Card className={styles.mentorCard} linkTo={mentor.keycode}>
+    <Card
+      className={styles.mentorCard}
+      linkTo={mentor.keycode}
+      hoverEffect={true}
+    >
       <ProfilePicture
         imgs={
           Object.entries(mentor.pictures || {}).length
