@@ -21,4 +21,14 @@
     margin-left: 0.5rem;
     line-height: 2rem;
   }
+
+  &:hover {
+    background: #feeef2;
+    box-shadow: 0px 1px 4px #ffc9d8;
+    border-radius: 60px;
+
+    p {
+      color: #ff205c;
+    }
+  }
 }
