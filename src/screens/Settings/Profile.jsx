@@ -129,7 +129,7 @@ export default function Profile() {
   return (
     <div>
       <div className={styles.head}>
-        <ProfilePicture imgs={user.profilePictures} />
+        <ProfilePicture imgs={user.profilePictures} size="11.125rem" />
         <div>
           <Title s2>Profile Picture</Title>
           <Text>

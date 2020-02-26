@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { parseSize } from '../../utils/css'
+import styles from './picture.module.scss'
 
 export default function ProfilePicture({ imgs, size = '13rem' }) {
   const [pxSize, setPxSize] = useState(parseSize(size))
@@ -35,11 +36,16 @@ export default function ProfilePicture({ imgs, size = '13rem' }) {
   }, [pxSize, imgs])
 
   return (
-    <picture>
+    <picture className={styles.picture}>
       {pics.map(({ type, url }) => (
         <source srcSet={url} type={`image/${type}`} key={url} />
       ))}
-      <img src={fallback} alt="profile" />
+      <img
+        src={fallback}
+        alt="profile"
+        width={parseSize(size)}
+        height={parseSize(size)}
+      />
     </picture>
   )
 }
