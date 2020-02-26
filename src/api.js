@@ -23,7 +23,7 @@ export default new ApolloClient({
         notify('There seems to be a problem with your network connection')
     }),
     new HttpLink({
-      uri: process.env.GRAPHAPI || 'http://localhost:5000',
+      uri: process.env.REACT_APP_GRAPHAPI,
       credentials: 'include',
     }),
   ]),
