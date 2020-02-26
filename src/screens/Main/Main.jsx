@@ -2,33 +2,35 @@ import React, { useState, useEffect } from 'react'
 import styles from './main.module.scss'
 import Landing from './Landing'
 import MentorList from './MentorList'
-import Api from '../../utils/Api'
 import { Title, Text } from '../../components'
 import Categories from './Categories'
 import { useCtx } from '../../utils/Hooks'
+import { queries, useQuery } from '../../gql'
 
 export default function Main({ match }) {
-  const [mentors, setMentors] = useState([])
   const [filtered, setFiltered] = useState([])
   const { searchQuery: search, currentUser } = useCtx()
-
   const category = match.url.split('/').pop()
+  const { data: { mentors = [] } = {} } = useQuery(queries.MENTORS)
 
   useEffect(() => {
-    Api.getAllMentors(true).then(({ mentors }) => {
-      const sorted = (mentors || []).sort(
-        (a, b) => b.slots.length - a.slots.length
+    if (!search && !category) {
+      if (filtered.length === mentors.length) return
+      return setFiltered(mentors)
+    }
+    if (search)
+      setFiltered(
+        mentors.filter(({ name }) =>
+          name
+            .split(' ')
+            .some(v => v.toLowerCase().startsWith(search.toLowerCase()))
+        )
       )
-      setMentors(sorted)
-      setFiltered(sorted)
-    })
-  }, [])
-
-  useEffect(() => {
-    if (!search && !category) return setFiltered(mentors)
-    Api.searchFull(category || search).then(({ search }) =>
-      setFiltered(search || [])
-    )
+    if (category)
+      setFiltered(
+        mentors.filter(({ categories }) => categories.includes(category))
+      )
+    // eslint-disable-next-line
   }, [search, mentors, category])
 
   return (
