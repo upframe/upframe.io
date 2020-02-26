@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import API from '../../utils/Api'
+import { queries } from '../../gql'
+import Api from '../../api'
+import { ProfilePicture } from '../../components'
 
 import './RecommendationCard.scss'
 
@@ -10,11 +12,11 @@ const MentorAvatar = props => {
     return (
       <div className="mentorWrapper">
         <a href={MENTOR_URL + props.mentor.keycode} className="mentorContent">
-          <img src={props.mentor.profilePic} alt={props.mentor.name} />
+          <ProfilePicture imgs={props.mentor.profilePictures} />
           <div className="mentorText">
             <h2>{props.mentor.name}</h2>
             <h3>
-              {props.mentor.role} at {props.mentor.company}{' '}
+              {props.mentor.role} at {props.mentor.company}
             </h3>
           </div>
         </a>
@@ -32,20 +34,15 @@ const MentorAvatar = props => {
 const Recommendation = props => {
   const [mentorsList, setMentorsList] = useState([])
 
-  const apiCall = async mentorKeycode => {
-    let res = await API.getMentorInfo(mentorKeycode)
-
-    return res.mentor
-  }
-
   useEffect(() => {
-    const promises = props.recommendations.map(mentorPromise => {
-      return apiCall(mentorPromise)
-    })
-
-    Promise.all(promises).then(result => {
-      setMentorsList(result)
-    })
+    Promise.all(
+      props.recommendations.map(keycode =>
+        Api.query({
+          query: queries.PROFILE,
+          variables: { keycode, slotsAfter: new Date().toISOString() },
+        })
+      )
+    ).then(results => setMentorsList(results.map(({ data }) => data.mentor)))
   }, [props.recommendations])
 
   const mentorComponent = mentorsList.map((mentor, key) => {
