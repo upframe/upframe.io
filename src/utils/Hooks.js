@@ -1,33 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
-import Api from 'utils/Api'
 import context from '../context'
 import debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
 import { useQuery, queries } from '../gql'
-
-export function useUser() {
-  const [user, setUser] = useState()
-  useEffect(() => {
-    async function getUser() {
-      const { user } = await Api.getUserInfo()
-      setUser(user)
-    }
-    getUser()
-  }, [])
-  return user
-}
-
-const blacklist = ['holiday@group', 'contacts@group', 'weeknum@group']
-export function useGoogleCalendars(token) {
-  const [calendars, setCalendars] = useState([])
-  useEffect(() => {
-    if (!token) return
-    Api.getCalendarList(token).then(({ items }) => setCalendars(items))
-  }, [token])
-  return (calendars || []).filter(
-    ({ id }) => !blacklist.some(v => id.includes(v))
-  )
-}
 
 export function useScrollAtTop() {
   const [atTop, setAtTop] = useState(window.scrollY === 0)
@@ -95,7 +70,7 @@ export function useCalendars(requested) {
   // add fetched to calendars
   useEffect(() => {
     if (loading) return
-    const newlyFetched = gcals.filter(
+    const newlyFetched = (gcals || []).filter(
       ({ id }) =>
         !calendars.find(cal => cal.id === id) && requested.includes(id)
     )

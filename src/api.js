@@ -11,7 +11,7 @@ import { notify } from './notification'
 
 export default new ApolloClient({
   link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError, response }) => {
+    onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
           if (extensions.code === 'BAD_USER_INPUT') return notify(message)
@@ -23,7 +23,7 @@ export default new ApolloClient({
         notify('There seems to be a problem with your network connection')
     }),
     new HttpLink({
-      uri: 'http://localhost:5000',
+      uri: process.env.GRAPHAPI || 'http://localhost:5000',
       credentials: 'include',
     }),
   ]),
