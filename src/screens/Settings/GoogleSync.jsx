@@ -11,12 +11,23 @@ export default function GoogleSync() {
     query: queries.ME,
   })
 
-  const [disconnect] = useMutation(mutations.DISCONNECT_CALENDAR)
+  const [disconnect] = useMutation(mutations.DISCONNECT_CALENDAR, {
+    onCompleted() {
+      localStorage.removeItem('calendars')
+    },
+  })
 
   return (
     <Button
       accent
-      {...(me.calendarConnected ? { onClick: disconnect } : { linkTo: url })}
+      {...(me.calendarConnected
+        ? { onClick: disconnect }
+        : {
+            linkTo: url,
+            onClick() {
+              localStorage.removeItem('calendars')
+            },
+          })}
     >
       {me.calendarConnected ? 'Disconnect' : 'Connect Account'}
     </Button>

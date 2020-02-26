@@ -5,6 +5,7 @@ import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
 import { useCtx } from '../../utils/Hooks'
 import { queries, mutations, useQuery, useMutation } from '../../gql'
+import { notify } from 'notification'
 
 export default function Account() {
   const { currentUser } = useCtx()
@@ -18,8 +19,16 @@ export default function Account() {
   )
 
   const [setVisibility] = useMutation(mutations.SET_PROFILE_VISIBILITY)
-  const [changeEmail] = useMutation(mutations.REQUEST_EMAIL_CHANGE)
-  const [changePassword] = useMutation(mutations.REQUEST_PASSWORD_CHANGE)
+  const [changeEmail] = useMutation(mutations.REQUEST_EMAIL_CHANGE, {
+    onCompleted() {
+      notify('we send your an email with a link to change your email')
+    },
+  })
+  const [changePassword] = useMutation(mutations.REQUEST_PASSWORD_CHANGE, {
+    onCompleted() {
+      notify('we send your an email with a link to change your password')
+    },
+  })
 
   return (
     <div className={styles.account}>

@@ -5,6 +5,7 @@ export const MENTORS = gql`
   query MentorList {
     mentors {
       ...MentorDetails
+      categories
     }
   }
   ${person.mentorDetails}
