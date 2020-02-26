@@ -4,7 +4,8 @@ import { Labeled, Input, Button, Card } from '../../components'
 import { Helmet } from 'react-helmet'
 import { useHistory } from 'react-router-dom'
 import { isEmail } from '../../utils/validate'
-import Api from '../../utils/Api'
+import { mutations, useMutation } from '../../gql'
+import { notify } from '../../notification'
 
 export default function Signup() {
   const [name, setName] = useState('')
@@ -14,16 +15,21 @@ export default function Signup() {
   const [valid, setValid] = useState(false)
   const history = useHistory()
 
+  const [signUp] = useMutation(mutations.SIGN_UP, {
+    variables: { name, email, password, devPass },
+    onCompleted() {
+      history.push('/settings')
+    },
+    onError({ graphQLErrors }) {
+      graphQLErrors.forEach(err => {
+        notify(err.message)
+      })
+    },
+  })
+
   function submit(e) {
     e.preventDefault()
-    Api.register(email, password, name, devPass).then(({ ok, message }) => {
-      if (ok !== 1) return alert(message)
-      Api.login(email, password).then(({ ok }) => {
-        if (ok === 1) return history.push('/settings/public')
-        alert('Could not log you in')
-        history.push('/login')
-      })
-    })
+    signUp()
   }
 
   useEffect(() => {

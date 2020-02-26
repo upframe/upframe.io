@@ -25,7 +25,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className={classes(styles.navbar, { [styles.shadow]: !atTop })}>
+    <header className={classes(styles.navbar, { [styles.shadow]: !atTop })}>
       <Logo home onClick={resetSearch} />
       <SearchBar
         searchQuery={searchQuery}
@@ -33,15 +33,15 @@ export default function Navbar() {
         onSubmit={search}
       />
       <div className={styles.right}>
-        {ctx.loggedIn && (
+        {ctx.currentUser && (
           <UserIcon
-            user={ctx.user}
+            userId={ctx.currentUser}
             onClick={() => {
               if (!showDropdown) setShowDropdown(true)
             }}
           />
         )}
-        {!ctx.loggedIn && (
+        {!ctx.currentUser && (
           <>
             <Button text linkTo="/login">
               Sign in
@@ -57,6 +57,6 @@ export default function Navbar() {
         )}
       </div>
       {showDropdown && <Dropdown onBlur={() => setShowDropdown(false)} />}
-    </nav>
+    </header>
   )
 }

@@ -1,24 +1,17 @@
 .toast {
-  position: fixed;
   min-width: 20rem;
   max-width: 100vw;
   box-sizing: border-box;
-  top: 100vh;
-  left: 50%;
-  transform: translateX(-50%);
   display: block;
   background-color: var(--cl-accent);
   border-radius: 0.25rem;
   padding: 1rem;
   transition: transform 0.3s ease;
+  margin-bottom: 1rem;
 
   p {
     color: #fff;
     font-size: 1.2rem;
     margin: 0;
-  }
-
-  &[data-state='visible'] {
-    transform: translateX(-50%) translateY(calc(-100% - 2rem));
   }
 }

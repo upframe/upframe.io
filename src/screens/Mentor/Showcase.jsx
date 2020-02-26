@@ -11,20 +11,10 @@ import {
 } from '../../components'
 
 export default function Showcase({ mentor }) {
-  const tags =
-    mentor && mentor.tags ? JSON.parse(mentor.tags).map(({ text }) => text) : []
-
   return (
     <Card className={styles.showcase}>
       <div className={styles.leftColumn}>
-        <ProfilePicture
-          imgs={
-            Object.entries(mentor.pictures || {}).length
-              ? mentor.pictures
-              : mentor.profilePic
-          }
-          size="13rem"
-        />
+        <ProfilePicture imgs={mentor.profilePictures} size="13rem" />
         <p className={styles.name}>{mentor.name}</p>
         <p className={styles.role}>
           {mentor.role}
@@ -42,14 +32,15 @@ export default function Showcase({ mentor }) {
       </div>
       <div className={styles.rightColumn}>
         <Title s3>About me</Title>
-        {mentor.bio.split('\n').map((v, i) => (
-          <Text key={`bio${i}`}>{v}</Text>
-        ))}
-        {tags.length && (
+        {mentor.bio &&
+          mentor.bio
+            .split('\n')
+            .map((v, i) => <Text key={`bio${i}`}>{v}</Text>)}
+        {Array.isArray(mentor.tags) && (
           <>
             <Title s3>I can advise you on</Title>
             <div className={styles.skills}>
-              {tags.map(v => (
+              {mentor.tags.map(v => (
                 <Chip key={v} removable={false}>
                   {v}
                 </Chip>

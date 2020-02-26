@@ -1,32 +1,47 @@
-import React, { Component } from 'react'
-import Api from '../../utils/Api'
-import mixpanel from 'mixpanel-browser'
-import { useCtx } from '../../utils/Hooks'
+import React, { useEffect } from 'react'
+import { mutations, useMutation } from '../../gql'
+import { Spinner, Text } from '../../components'
+import styles from './meetup.module.scss'
+import { notify } from '../../notification'
 
-export default class MeetupConfirm extends Component {
-  static contextType = useCtx()
+export default function MeetupConfirm({ match }) {
+  const [
+    accept,
+    { data: { acceptMeetup: meetup } = {}, loading },
+  ] = useMutation(mutations.ACCEPT_MEETUP, {
+    variables: { meetupId: match.params.meetupid },
+    onError({ graphQLErrors }) {
+      graphQLErrors
+        .filter(({ extensions }) => extensions.code !== 'BAD_USER_INPUT')
+        .forEach(notify)
+    },
+  })
 
-  componentDidMount() {
-    Api.confirmMeetup(this.props.match.params.meetupid).then(res => {
-      if (res.ok === 0) {
-        alert('Could not confirm your meetup, make sure you are logged in')
-      } else {
-        if (this.props.match.params.meetupid.charAt(0) === 't') {
-          mixpanel.track('[' + this.context.user.name + '] - Confirmed talk')
-        } else {
-          mixpanel.track('[' + this.context.user.name + '] - Confirmed meetup')
-        }
-        alert('Meetup confirmed!')
-        window.location = '/settings'
-      }
-    })
-  }
+  useEffect(() => {
+    accept()
+  }, [accept])
 
-  render() {
-    return (
-      <div>
-        <h1>Confirming...</h1>
-      </div>
-    )
-  }
+  if (loading) return <Spinner centered />
+  if (!meetup) return null
+  return (
+    <div className={styles.status}>
+      <Text>
+        Accepted meetup with {meetup.mentee.name} on{' '}
+        {new Date(meetup.start).toLocaleString('en-US', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+        })}{' '}
+        at{' '}
+        {new Date(meetup.start).toLocaleString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+        })}
+        .
+      </Text>
+      <Text>
+        You can join the call at <a href={meetup.location}>this url</a>.
+      </Text>
+    </div>
+  )
 }
