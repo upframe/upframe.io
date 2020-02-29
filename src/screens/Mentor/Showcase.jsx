@@ -26,7 +26,7 @@ export default function Showcase({ mentor }) {
         </p>
         <div className={styles.social}>
           {['facebook', 'twitter', 'linkedin', 'github', 'dribbble'].map(v => (
-            <SocialIcon {...{ [v]: true }} link={mentor[v]} key={v} />
+            <SocialIcon {...{ [v]: true }} link={mentor.social[v]} key={v} />
           ))}
         </div>
       </div>
