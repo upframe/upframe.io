@@ -1,0 +1,18 @@
+{
+  "__schema": {
+    "types": [
+      {
+        "kind": "INTERFACE",
+        "name": "Person",
+        "possibleTypes": [
+          {
+            "name": "Mentor"
+          },
+          {
+            "name": "User"
+          }
+        ]
+      }
+    ]
+  }
+}
