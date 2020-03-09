@@ -19,6 +19,7 @@ import Icon from './Icon/Icon'
 import Card from './Card/Card'
 import Spinner from './Spinner/Spinner'
 import Toast from './Toast/Toast'
+import NotificationStack from './NotificationStack/NotificationStack'
 
 export {
   RecommendationCard,
@@ -42,4 +43,5 @@ export {
   Card,
   Spinner,
   Toast,
+  NotificationStack,
 }

@@ -1,65 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
-import Api from 'utils/Api'
 import context from '../context'
 import debounce from 'lodash/debounce'
-
-export function useUser() {
-  const [user, setUser] = useState()
-  useEffect(() => {
-    async function getUser() {
-      const { user } = await Api.getUserInfo()
-      setUser(user)
-    }
-    getUser()
-  }, [])
-  return user
-}
-
-export const useToast = () => useContext(context).showToast
-
-const blacklist = ['holiday@group', 'contacts@group', 'weeknum@group']
-export function useGoogleCalendars(token) {
-  const [calendars, setCalendars] = useState([])
-  useEffect(() => {
-    if (!token) return
-    Api.getCalendarList(token).then(({ items }) => setCalendars(items))
-  }, [token])
-  return (calendars || []).filter(
-    ({ id }) => !blacklist.some(v => id.includes(v))
-  )
-}
-
-export function useGCalEvents(calendarIds, token) {
-  const [events, setEvents] = useState([])
-  const [calendars, setCalendars] = useState([])
-  const [lock, setLock] = useState(false)
-  useEffect(() => {
-    if (lock || calendars.length === calendarIds.length || !token) return
-
-    setLock(true)
-    Promise.all(calendarIds.map(id => Api.getCalendarEvents(id, token))).then(
-      results => {
-        setEvents(
-          results.flatMap(result =>
-            result.items.map(slot => {
-              return {
-                id: slot.id,
-                title: slot.summary,
-                start: new Date(slot.start.dateTime || slot.start.date),
-                end: new Date(slot.end.dateTime || slot.start.date),
-                allDay: 'date' in slot.start,
-                external: true,
-              }
-            })
-          )
-        )
-        setCalendars([...calendarIds])
-        setLock(false)
-      }
-    )
-  }, [calendarIds, calendars, events, lock, token])
-  return events
-}
+import { useHistory } from 'react-router-dom'
+import { useQuery, queries } from '../gql'
 
 export function useScrollAtTop() {
   const [atTop, setAtTop] = useState(window.scrollY === 0)
@@ -99,3 +42,47 @@ export function useScrollAtTop() {
 }
 
 export const useCtx = () => useContext(context)
+
+export function useCalendars(requested) {
+  const [calNotFetched, setCalNotFetched] = useState([])
+  const [calendars, setCalendars] = useState([])
+
+  const {
+    data: { me: { calendars: gcals = [] } = {} } = {},
+    loading,
+  } = useQuery(queries.GCAL_EVENTS, {
+    variables: { calendarIds: calNotFetched },
+  })
+
+  // add to fetch list
+  useEffect(() => {
+    if (loading) return
+    const diff = requested.filter(id => !calendars.find(cal => cal.id === id))
+    const missing = diff.filter(id => !calNotFetched.includes(id))
+    if (missing.length > 0) setCalNotFetched([...calNotFetched, ...missing])
+    const remove = calendars.filter(({ id }) => !requested.includes(id))
+    if (remove.length > 0)
+      setCalendars(
+        calendars.filter(({ id }) => !remove.find(cal => cal.id === id))
+      )
+  }, [requested, calendars, calNotFetched, loading])
+
+  // add fetched to calendars
+  useEffect(() => {
+    if (loading) return
+    const newlyFetched = (gcals || []).filter(
+      ({ id }) =>
+        !calendars.find(cal => cal.id === id) && requested.includes(id)
+    )
+    if (newlyFetched.length === 0) return
+    const newCalendars = [...calendars, ...newlyFetched]
+    setCalendars(newCalendars)
+    setCalNotFetched(
+      calNotFetched.filter(id => !newCalendars.find(cal => cal.id === id))
+    )
+  }, [loading, gcals, calendars, calNotFetched, requested])
+
+  return [calendars, calNotFetched]
+}
+
+export { useHistory }

@@ -2,19 +2,26 @@ import React, { useState } from 'react'
 import styles from './login.module.scss'
 import { Labeled, Input, Button, Card } from '../../components'
 import { Helmet } from 'react-helmet'
-import { useCtx } from '../../utils/Hooks'
-import { Redirect } from 'react-router-dom'
+import { useCtx, useHistory } from '../../utils/Hooks'
+import { mutations, useMutation } from '../../gql'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { login, loggedIn } = useCtx()
+  const { setCurrentUser } = useCtx()
+  const history = useHistory()
 
-  if (loggedIn) return <Redirect to="/settings/public" />
+  const [signIn] = useMutation(mutations.SIGN_IN, {
+    onCompleted: ({ signIn: user }) => {
+      if (!user) return
+      setCurrentUser(user.id)
+      history.push('/settings')
+    },
+  })
 
   function handleSubmit(e) {
     e.preventDefault()
-    login(email, password)
+    signIn({ variables: { email, password } })
   }
 
   return (

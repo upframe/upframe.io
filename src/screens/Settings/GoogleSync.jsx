@@ -1,29 +1,35 @@
 import React from 'react'
-import Api from 'utils/Api'
-import { useCtx } from '../../utils/Hooks'
 import { Button } from 'components'
+import { queries, useQuery, client, mutations, useMutation } from '../../gql'
 
 export default function GoogleSync() {
-  const ctx = useCtx()
-  const isSynced = ctx.user && ctx.user.googleAccessToken
+  const { data: { calendarConnectUrl: url } = {} } = useQuery(
+    queries.CONNECT_CALENDAR_URL
+  )
 
-  async function link() {
-    const { url } = await Api.getGoogleSyncUrl()
-    window.location = url
-  }
+  const { me } = client.readQuery({
+    query: queries.ME,
+  })
 
-  async function unlink() {
-    await Api.updateUserInfo({
-      googleAccessToken: '',
-      googleRefreshToken: '',
-      upframeCalendarId: '',
-    })
-    window.location.reload()
-  }
+  const [disconnect] = useMutation(mutations.DISCONNECT_CALENDAR, {
+    onCompleted() {
+      localStorage.removeItem('calendars')
+    },
+  })
 
   return (
-    <Button onClick={isSynced ? unlink : link} accent={!isSynced}>
-      {isSynced ? 'Disconnect' : 'Connect Account'}
+    <Button
+      accent
+      {...(me.calendarConnected
+        ? { onClick: disconnect }
+        : {
+            linkTo: url,
+            onClick() {
+              localStorage.removeItem('calendars')
+            },
+          })}
+    >
+      {me.calendarConnected ? 'Disconnect' : 'Connect Account'}
     </Button>
   )
 }

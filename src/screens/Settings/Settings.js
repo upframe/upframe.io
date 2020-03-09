@@ -10,8 +10,8 @@ import styles from './Settings.module.scss'
 import { useCtx } from '../../utils/Hooks'
 
 export default function Settings() {
-  const ctx = useCtx()
-  if (!ctx.loggedIn) return null
+  const { currentUser } = useCtx()
+  if (!currentUser) return null
 
   return (
     <React.Fragment>
@@ -34,6 +34,11 @@ export default function Settings() {
             <Route path="/settings/notifications" component={Notifications} />
             <Route path="/settings/mycalendar" component={CalendarTab} />
             <Redirect exact from="/settings/sync" to="/settings/mycalendar" />
+            <Redirect
+              exact
+              from="/settings/calendar"
+              to="/settings/mycalendar"
+            />
             <Redirect exact from="/settings" to="/settings/public" />
             <Route>
               <Redirect to="/404" />

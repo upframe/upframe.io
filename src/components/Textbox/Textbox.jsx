@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import style from './textbox.module.scss'
 
 export default function Textbox(props) {
   const [value, setValue] = useState('')
-  if (props.value !== undefined && props.value !== value) setValue(props.value)
+
+  useEffect(() => {
+    if (props.value === undefined) return
+    setValue(props.value)
+  }, [props.value])
 
   function handleChange(e) {
     setValue(e.target.value)
@@ -16,7 +20,7 @@ export default function Textbox(props) {
       id={props.id}
       rows="5"
       onChange={handleChange}
-      value={props.value}
+      value={value}
       placeholder={props.placeholder}
     ></textarea>
   )

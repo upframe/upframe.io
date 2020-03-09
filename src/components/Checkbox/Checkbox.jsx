@@ -1,15 +1,17 @@
 import React from 'react'
 import styles from './checkbox.module.scss'
 
-export default function Checkbox({ onChange, checked }) {
+export default function Checkbox({ onChange, checked, color }) {
   return (
     <input
       type="checkbox"
       className={styles.checkbox}
-      defaultChecked={checked}
-      onClick={({ currentTarget }) => {
-        if (onChange) onChange(currentTarget.checked)
+      checked={checked || false}
+      onChange={({ currentTarget }) => {
+        onChange(currentTarget.checked)
       }}
+      style={color && { backgroundColor: color, borderColor: color }}
+      data-colored={color}
     />
   )
 }

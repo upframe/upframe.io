@@ -1,5 +1,3 @@
 import React from 'react'
 
-export default React.createContext({
-  showToast() {},
-})
+export default React.createContext({})

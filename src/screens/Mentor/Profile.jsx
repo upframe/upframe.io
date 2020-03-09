@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import Api from '../../utils/Api'
 import { Breadcrumbs, RecommendationCard, Spinner } from '../../components'
 import styles from './profile.module.scss'
 import Showcase from './Showcase'
 import Meetup from './Meetup'
 import Request from './Request'
+import { useQuery, queries, hasError } from '../../gql'
 
 const recommend = {
   malik: ['pf', 'hugo.franca'],
@@ -14,20 +14,23 @@ const recommend = {
   tiagopedras: ['pf', 'hugo.franca'],
 }
 
+const slotsAfter = new Date().toISOString()
+
 export default function Profile({ match }) {
-  const [mentor, setMentor] = useState()
-  const [exists, setExists] = useState(true)
   const [showRequest, toggleRequest] = useState(false)
 
-  useEffect(() => {
-    Api.getMentorInfo(match.params.keycode).then(({ ok, mentor }) => {
-      if (!ok) setExists(false)
-      else setMentor(mentor)
-    })
-  }, [match.params.keycode])
+  const { data: { mentor = {} } = {}, loading, error } = useQuery(
+    queries.PROFILE,
+    {
+      variables: {
+        keycode: match.params.keycode,
+        slotsAfter,
+      },
+    }
+  )
 
-  if (!exists) return <Redirect to="/404" />
-  if (!mentor) return <Spinner centered />
+  if (hasError(error, 'KEYCODE_ERROR')) return <Redirect to="/404" />
+  if (loading) return <Spinner centered />
   return (
     <main className={styles.profile}>
       <Breadcrumbs name={mentor.name} />

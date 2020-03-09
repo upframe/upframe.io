@@ -23,3 +23,6 @@ yarn-error.log*
 
 *.sql
 .vscode
+.env
+
+_fragmentTypes.json

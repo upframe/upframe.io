@@ -1,44 +1,34 @@
-import React, { useState, useEffect } from 'react'
-import { useToast } from 'utils/Hooks'
+import React, { useState } from 'react'
 import { Text, Title, Checkbox } from 'components'
 import Item from './Item'
-import ChangeBanner from './ChangeBanner'
-import Api from 'utils/Api'
 import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
 import { useCtx } from '../../utils/Hooks'
+import { queries, mutations, useQuery, useMutation } from '../../gql'
+import { notify } from 'notification'
 
 export default function Account() {
-  const ctx = useCtx()
-  const showToast = useToast()
-  const [hidden, setHidden] = useState(null)
+  const { currentUser } = useCtx()
   const [deleteRequested, setDeleteRequested] = useState(false)
 
-  useEffect(() => {
-    if (hidden !== null || !ctx.user) return
-    setHidden(ctx.user.newsfeed !== 'Y')
-  }, [ctx, hidden])
+  const { data: { mentor: user = {} } = {} } = useQuery(
+    queries.SETTINGS_ACCOUNT,
+    {
+      variables: { id: currentUser, skip: !currentUser },
+    }
+  )
 
-  const change = request => () =>
-    request
-      .bind(Api)(ctx.user.email)
-      .then(({ ok }) => {
-        if (ok !== 1) throw Error()
-        showToast('An email has been sent to you')
-      })
-      .catch(() =>
-        showToast('Could not complete request. Please contact support.')
-      )
-
-  function savePrivacy() {
-    const newsfeed = hidden ? 'N' : 'Y'
-    Api.updateUserInfo({ newsfeed })
-      .then(({ ok }) => {
-        if (ok !== 1) throw Error()
-        ctx.saveUserInfo({ ...ctx.user, newsfeed })
-      })
-      .catch(() => showToast('something went wrong'))
-  }
+  const [setVisibility] = useMutation(mutations.SET_PROFILE_VISIBILITY)
+  const [changeEmail] = useMutation(mutations.REQUEST_EMAIL_CHANGE, {
+    onCompleted() {
+      notify('we send your an email with a link to change your email')
+    },
+  })
+  const [changePassword] = useMutation(mutations.REQUEST_PASSWORD_CHANGE, {
+    onCompleted() {
+      notify('we send your an email with a link to change your password')
+    },
+  })
 
   return (
     <div className={styles.account}>
@@ -47,19 +37,11 @@ export default function Account() {
         Spend less time here and focus on what really matters by syncing your
         calendar with Upframe.
       </Text>
-      <Item
-        label="Your email"
-        button="Change Email"
-        onChange={change(Api.changeEmail)}
-      >
-        <Text underlined>{ctx.user.email}</Text> is your current email address
+      <Item label="Your email" button="Change Email" onChange={changeEmail}>
+        <Text underlined>{user.email}</Text> is your current email address
         connected to your Upframe account.
       </Item>
-      <Item
-        label="Password"
-        button="Change Password"
-        onChange={change(Api.resetPassword)}
-      >
+      <Item label="Password" button="Change Password" onChange={changePassword}>
         You’ll receive an email in your inbox so you can reset your password.
       </Item>
       <Title s2>Your Data</Title>
@@ -79,14 +61,18 @@ export default function Account() {
       </Item>
       <Title s2>Privacy</Title>
       <div className={styles.privacyCheck}>
-        <Checkbox checked={hidden} onChange={setHidden} />
+        <Checkbox
+          checked={user.visibility === 'UNLISTED'}
+          onChange={v =>
+            setVisibility({
+              variables: { visibility: v ? 'UNLISTED' : 'LISTED' },
+            })
+          }
+        />
         <Text>Hide my profile from the homepage.</Text>
       </div>
       {deleteRequested && (
         <ConfirmDelete onCancel={() => setDeleteRequested(false)} />
-      )}
-      {ctx.user && hidden !== (ctx.user.newsfeed !== 'Y') && (
-        <ChangeBanner onSave={savePrivacy} />
       )}
     </div>
   )

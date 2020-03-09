@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styles from './request.module.scss'
-import Api from '../../utils/Api'
 import { isEmail } from '../../utils/validate'
+import { mutations, useMutation } from '../../gql'
 import {
   Shade,
   Title,
@@ -12,8 +12,7 @@ import {
   Divider,
   Icon,
 } from '../../components/'
-
-const tz = new Date().getTimezoneOffset()
+import { notify } from '../../notification'
 
 export default function Request({ mentor, onClose, slot }) {
   const [msg, setMsg] = useState('')
@@ -21,30 +20,28 @@ export default function Request({ mentor, onClose, slot }) {
   const [name, setName] = useState('')
   const [valid, setValid] = useState(true)
 
+  const [sendMessage] = useMutation(mutations.SEND_MESSAGE_EXT, {
+    variables: { msg, email, name, to: mentor.id },
+    onCompleted() {
+      onClose()
+    },
+  })
+
+  const [requestSlot] = useMutation(mutations.REQUEST_MEETUP, {
+    variables: { msg, email, name, slotId: slot },
+    onCompleted() {
+      notify('Meetup was requested. Now wait for the mentor to confirm.')
+      onClose()
+    },
+  })
+
   useEffect(() => {
     setValid(isEmail(email) && msg.length && name.length)
   }, [email, msg, name])
 
   async function submit() {
-    const { ok } = await (slot
-      ? Api.createMeetup(
-          slot,
-          `https://talky.io/${mentor.name.replace(/ /g, '').toLowerCase()}`,
-          msg,
-          email,
-          name,
-          tz
-        )
-      : Api.requestTimeSlot(mentor.keycode, email, name, msg, tz))
-
-    alert(
-      ok !== 1
-        ? 'Something failed! Contact our dev team!'
-        : slot
-        ? 'Time slots requested. Now wait for mentor confirmation.'
-        : 'Meetup created! Now wait for mentor confirmation'
-    )
-    onClose()
+    if (slot) requestSlot()
+    else sendMessage()
   }
 
   return (
