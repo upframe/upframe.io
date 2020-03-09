@@ -124,6 +124,11 @@
   button {
     height: 4rem;
     width: 11rem;
+
+    &:hover {
+      transform: scale(1.01);
+      opacity: 70%;
+    }
   }
 
   & > * {
