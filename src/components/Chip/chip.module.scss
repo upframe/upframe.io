@@ -1,7 +1,7 @@
 .chip {
   display: flex;
   align-content: center;
-  border: 1px solid whitesmoke;
+  border: 1px solid #f5f5f5;
   padding: 0 1rem;
   height: 2rem;
   border-radius: 1rem;
@@ -28,11 +28,9 @@
     background: #feeef2;
     box-shadow: 0px 1px 4px #ffc9d8;
     border-radius: 60px;
-    //transition: background 0.15s ease 0.125s;
 
     p {
       color: #ff205c;
-      //transition: color 0.15s ease 0.125s;
     }
   }
 }
