@@ -8,15 +8,15 @@ export default function MentorCard({ mentor }) {
   if (tags.length) tags.push('+')
 
   return (
-    <Card className={styles.mentorCard} linkTo={mentor.keycode} article>
+    <Card className={styles.mentorCard} linkTo={mentor.handle} article>
       <ProfilePicture imgs={mentor.profilePictures} size={imgSize} />
       <div className={styles.info}>
         <Title s3>{mentor.name}</Title>{' '}
         <p className={styles.role}>
-          {mentor.role}
+          {mentor.title}
           {mentor.company ? ` at ${mentor.company}` : ''}
         </p>
-        <p className={styles.bio}>{mentor.bio}</p>
+        <p className={styles.biography}>{mentor.biography}</p>
         <div className={styles.skills}>
           {tags.map(v => (
             <Chip key={v} removable={false}>

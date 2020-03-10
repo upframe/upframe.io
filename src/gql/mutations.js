@@ -67,10 +67,10 @@ export const DELETE_ACCOUNT = gql`
 export const UPDATE_PROFILE = gql`
   mutation UpdateProfile($diff: ProfileInput!) {
     updateProfile(input: $diff) {
-      ...MentorProfile
+      ...ProfileSettings
     }
   }
-  ${person.mentorProfile}
+  ${person.profileSettings}
 `
 
 export const UPDATE_NOTIICATION_PREFERENCES = gql`

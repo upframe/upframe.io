@@ -18,10 +18,8 @@ export const person = {
       fragment PersonBase on Person {
         id
         name
-        ... on Mentor {
-          keycode
-          ...ProfilePictures
-        }
+        handle
+        ...ProfilePictures
       }
       ${this.profilePictures}
     `
@@ -31,9 +29,9 @@ export const person = {
     return gql`
       fragment MentorDetails on Mentor {
         ...PersonBase
-        role
+        title
         company
-        bio
+        biography
         tags
       }
       ${this.base}
@@ -47,15 +45,36 @@ export const person = {
         location
         website
         social {
-          dribbble
-          facebook
-          github
-          linkedin
-          twitter
+          id
+          name
+          url
+          handle
         }
         tags
       }
       ${this.mentorDetails}
+    `
+  },
+
+  get profileSettings() {
+    return gql`
+      fragment ProfileSettings on Mentor {
+        ...PersonBase
+        website
+        title
+        company
+        website
+        biography
+        location
+        social(includeEmpty: true) {
+          id
+          name
+          url
+          handle
+        }
+        tags
+      }
+      ${this.base}
     `
   },
 }

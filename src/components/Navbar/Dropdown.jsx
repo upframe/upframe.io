@@ -30,7 +30,7 @@ export default function Dropdown({ onBlur }) {
       ref={ref}
       onBlur={() => setTimeout(onBlur, 100)}
     >
-      <Link to={`/${me.keycode}`}>My Profile</Link>
+      <Link to={`/${me.handle}`}>My Profile</Link>
       <Link to={`/settings/public`}>Settings</Link>
       <p onClick={signOut}>Sign out</p>
     </nav>

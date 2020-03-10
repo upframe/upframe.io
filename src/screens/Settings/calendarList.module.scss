@@ -29,7 +29,7 @@
     margin-top: 0;
   }
 
-  & > *:not(button) {
+  & > *:not(button):not(:last-child) {
     color: black;
     margin: 0;
     margin-bottom: 1.2rem;
@@ -43,6 +43,7 @@
 .synced {
   border: none;
   overflow-x: hidden;
+  padding-bottom: 0;
 
   & > * {
     text-align: left !important;

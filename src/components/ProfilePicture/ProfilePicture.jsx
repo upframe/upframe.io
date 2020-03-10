@@ -24,7 +24,7 @@ export default function ProfilePicture({ imgs, size = '13rem' }) {
         .filter(({ size }) => size >= pxSize * devicePixelRatio)
         .map(({ size }) => size)
     )
-    if (optimalSize === -Infinity)
+    if (optimalSize === -Infinity || optimalSize === Infinity)
       optimalSize = Math.max(...pool.map(({ size }) => size))
 
     const selection = pool
@@ -32,7 +32,7 @@ export default function ProfilePicture({ imgs, size = '13rem' }) {
       .sort(({ type }) => (type === 'webp' ? -1 : 1))
 
     setPics(selection)
-    setFallback(selection.slice(-1)[0].url)
+    setFallback(selection.length && selection.slice(-1)[0].url)
   }, [pxSize, imgs])
 
   return (

@@ -14,7 +14,13 @@ export default function Card({
   const ArtWrap = article ? 'article' : 'div'
   return (
     <ArtWrap>
-      <Tag className={classes(styles.card, className)} to={linkTo} {...props}>
+      <Tag
+        className={classes(styles.card, className, 'foo', 'bar', {
+          something: 'long',
+        })}
+        to={linkTo}
+        {...props}
+      >
         {children}
       </Tag>
     </ArtWrap>

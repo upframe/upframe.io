@@ -23,7 +23,7 @@ export default function Routes() {
       <Route exact path="/meetup/confirm/:meetupid" component={MeetupConfirm} />
       <Route exact path="/meetup/cancel/:meetupid" component={MeetupCancel} />
       <Route exact path="/sync" component={Sync} />
-      <Route exact path="/:keycode" component={Profile} />
+      <Route exact path="/:handle" component={Profile} />
       <Route component={ErrorPage} />
     </Switch>
   )

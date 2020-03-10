@@ -11,12 +11,12 @@ const MentorAvatar = props => {
   if (props.mentor) {
     return (
       <div className="mentorWrapper">
-        <a href={MENTOR_URL + props.mentor.keycode} className="mentorContent">
+        <a href={MENTOR_URL + props.mentor.handle} className="mentorContent">
           <ProfilePicture imgs={props.mentor.profilePictures} />
           <div className="mentorText">
             <h2>{props.mentor.name}</h2>
             <h3>
-              {props.mentor.role} at {props.mentor.company}
+              {props.mentor.title} at {props.mentor.company}
             </h3>
           </div>
         </a>
@@ -36,10 +36,10 @@ const Recommendation = props => {
 
   useEffect(() => {
     Promise.all(
-      props.recommendations.map(keycode =>
+      props.recommendations.map(handle =>
         Api.query({
           query: queries.PROFILE,
-          variables: { keycode, slotsAfter: new Date().toISOString() },
+          variables: { handle, slotsAfter: new Date().toISOString() },
         })
       )
     ).then(results => setMentorsList(results.map(({ data }) => data.mentor)))
