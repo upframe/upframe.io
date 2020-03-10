@@ -44,12 +44,11 @@ export default function Profile() {
     handleChange('tags', newTags)
   }
 
-  const required = ['name', 'keycode', 'role', 'bio']
+  const required = ['name', 'handle', 'title', 'biography']
   const requiredMet = required.every(field => user[field])
 
   const [updateProfile] = useMutation(mutations.UPDATE_PROFILE, {
-    variables: { diff },
-    onCompleted(v) {
+    onCompleted() {
       setInvalid([])
     },
     onError({ graphQLErrors }) {
@@ -59,6 +58,27 @@ export default function Profile() {
       )
     },
   })
+
+  function update() {
+    updateProfile({
+      variables: {
+        diff: Object.entries(diff).reduce(
+          (a, [k, v]) => ({
+            ...a,
+            ...(!/\d+/.test(k)
+              ? { [k]: v }
+              : {
+                  social: [
+                    ...(a.social || []),
+                    { platform: parseInt(k), handle: v },
+                  ],
+                }),
+          }),
+          {}
+        ),
+      },
+    })
+  }
 
   function handleChange(k, v) {
     setDiff({ ...diff, [k]: v })
@@ -70,7 +90,10 @@ export default function Profile() {
       Object.entries(diff).every(([k, v]) =>
         Array.isArray(v)
           ? haveSameContent(user.tags, v)
-          : user[k] === v || user.social[k] === v
+          : /\d+/.test(k)
+          ? (user.social.find(({ id }) => id.toString() === k).handle || '') ===
+            v
+          : user[k] === v
       )
     ) {
       setDiff({})
@@ -78,35 +101,11 @@ export default function Profile() {
     }
   }, [user, diff])
 
-  const item = ({
-    label,
-    field,
-    type = 'input',
-    hint,
-    social = false,
-    inputType,
-  }) => {
+  const item = ({ label, field, type = 'input', hint, inputType }) => {
     field = field || label.toLowerCase()
-    const value = !social
-      ? user[field]
-      : user.social && user.social[field]
-      ? user.social[field]
-      : undefined
-    if (
-      !hint &&
-      social &&
-      (!social ? user[field] : user.social && user.social[field])
-    ) {
-      let urlPredict = value
-        .replace(/^http(s?):\/\//, '')
-        .replace(/\/$/, '')
-        .split('/')
-        .slice(0, -1)
-        .join('/')
-      if (urlPredict.length < 3) urlPredict = false
-      if (social.startsWith(urlPredict))
-        hint = `https://${value.replace(/^http(s?):\/\//, '')}`
-      else hint = `https://${social}${value}`
+    const value = user[field]
+
+    if (!hint && user[field]) {
       hint = (
         <a href={hint} target="_blank" rel="noopener noreferrer">
           {hint}
@@ -158,33 +157,38 @@ export default function Profile() {
       {item({ label: 'Your Name', field: 'name' })}
       {item({
         label: 'Username',
-        field: 'keycode',
+        field: 'handle',
         hint: (
           <span>
             Your personal URL is{' '}
             <a
-              href={`https://upframe.io/${user.keycode}`}
+              href={`https://upframe.io/${user.handle}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              upframe.io/<b>{user.keycode}</b>
+              upframe.io/<b>{user.handle}</b>
             </a>
           </span>
         ),
       })}
       {item({ label: 'Location' })}
-      {item({ label: 'Your Position', field: 'role' })}
+      {item({ label: 'Your Position', field: 'title' })}
       {item({ label: 'Company' })}
       {item({ label: 'Website', inputType: 'url' })}
-      {item({ label: 'Biography', field: 'bio', type: 'text' })}
+      {item({ label: 'Biography', field: 'biography', type: 'text' })}
       <Title s2>Social Profiles</Title>
-      {item({ label: 'Dribbble', social: 'dribbble.com/' })}
-      {item({ label: 'Facebook', social: 'facebook.com/' })}
-      {item({ label: 'Github', social: 'github.com/' })}
-      {item({ label: 'LinkedIn', social: 'linkedin.com/in/' })}
-      {item({ label: 'Twitter', social: 'twitter.com/' })}
+      {(user.social || []).map(({ id, name, handle, url }) => (
+        <Item
+          key={id}
+          label={name}
+          required={false}
+          input={handle}
+          {...(handle && { hint: url + handle })}
+          onChange={v => handleChange(id, v)}
+        />
+      ))}
       {Object.keys(diff).length > 0 && (
-        <ChangeBanner onSave={updateProfile} accent={requiredMet} />
+        <ChangeBanner onSave={update} accent={requiredMet} />
       )}
       <Title s2>Experience</Title>
       <Text>
@@ -205,7 +209,7 @@ export default function Profile() {
         ))}
       </div>
       <Button
-        linkTo={`/${user.keycode}`}
+        linkTo={`/${user.handle}`}
         newTab
         className={styles.btViewProfile}
       >

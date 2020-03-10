@@ -17,7 +17,7 @@ export default function Showcase({ mentor }) {
         <ProfilePicture imgs={mentor.profilePictures} size="13rem" />
         <p className={styles.name}>{mentor.name}</p>
         <p className={styles.role}>
-          {mentor.role}
+          {mentor.title}
           {mentor.company ? ` at ${mentor.company}` : ''}
         </p>
         <p className={styles.location}>
@@ -25,17 +25,21 @@ export default function Showcase({ mentor }) {
           {mentor.location}
         </p>
         <div className={styles.social}>
-          {['facebook', 'twitter', 'linkedin', 'github', 'dribbble'].map(v => (
-            <SocialIcon {...{ [v]: true }} link={mentor[v]} key={v} />
+          {(mentor.social || []).map(({ name, url, handle }) => (
+            <SocialIcon
+              key={name}
+              link={url + handle}
+              {...{ [name.toLowerCase()]: true }}
+            />
           ))}
         </div>
       </div>
       <div className={styles.rightColumn}>
         <Title s3>About me</Title>
-        {mentor.bio &&
-          mentor.bio
+        {mentor.biography &&
+          mentor.biography
             .split('\n')
-            .map((v, i) => <Text key={`bio${i}`}>{v}</Text>)}
+            .map((v, i) => <Text key={`biography${i}`}>{v}</Text>)}
         {Array.isArray(mentor.tags) && (
           <>
             <Title s3>I can advise you on</Title>
