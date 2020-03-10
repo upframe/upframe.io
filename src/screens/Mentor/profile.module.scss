@@ -44,7 +44,7 @@
 
   picture,
   picture > img {
-    border-radius: 0.18rem;
+    border-radius: 0.45rem;
     width: 13rem;
     height: 13rem;
   }
@@ -105,8 +105,8 @@
   flex-wrap: wrap;
 
   & > * {
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
   }
 }
 
@@ -124,6 +124,12 @@
   button {
     height: 4rem;
     width: 11rem;
+
+    &:hover {
+      transform: scale(1.01);
+      opacity: 70%;
+      background: rgba(255, 32, 92, 0.8);
+    }
   }
 
   & > * {

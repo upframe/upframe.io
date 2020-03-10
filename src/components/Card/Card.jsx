@@ -7,6 +7,7 @@ export default function Card({
   className,
   children,
   linkTo,
+  hoverEffect = false,
   article,
   ...props
 }) {
@@ -15,8 +16,8 @@ export default function Card({
   return (
     <ArtWrap>
       <Tag
-        className={classes(styles.card, className, 'foo', 'bar', {
-          something: 'long',
+        className={classes(styles.card, className, {
+          [styles.hoverEffect]: hoverEffect,
         })}
         to={linkTo}
         {...props}

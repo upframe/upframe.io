@@ -3,12 +3,14 @@
   padding: 0;
   height: 13rem;
   text-decoration: none;
-
+  border-radius: 0.5rem;
+  border: none;
   picture,
   img {
     width: 13rem;
     height: 13rem;
     flex-shrink: 0;
+    border-radius: 8px 0px 0px 8px;
   }
 
   @media (max-width: 700px) {
@@ -22,6 +24,11 @@
       width: 18rem;
       height: 18rem;
     }
+  }
+  transition: transform 0.125s ease;
+
+  &:hover {
+    transform: scale(1.03);
   }
 }
 

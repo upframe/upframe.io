@@ -8,7 +8,12 @@ export default function MentorCard({ mentor }) {
   if (tags.length) tags.push('+')
 
   return (
-    <Card className={styles.mentorCard} linkTo={mentor.handle} article>
+    <Card
+      className={styles.mentorCard}
+      linkTo={mentor.keycode}
+      hoverEffect={true}
+      article
+    >
       <ProfilePicture imgs={mentor.profilePictures} size={imgSize} />
       <div className={styles.info}>
         <Title s3>{mentor.name}</Title>{' '}

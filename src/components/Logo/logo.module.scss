@@ -5,3 +5,9 @@
 .link {
   display: contents !important;
 }
+
+.logo:hover {
+  opacity: 0.8;
+  transition: transform 0.125s ease, opacity 0.125s ease;
+  transform: scale(1.05);
+}
