@@ -29,6 +29,7 @@
 
   &:hover {
     transform: scale(1.03);
+    transition: transform 0.25s ease 0s;
   }
 }
 
