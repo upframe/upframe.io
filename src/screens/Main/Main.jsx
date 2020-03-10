@@ -12,6 +12,7 @@ export default function Main({ match }) {
   const { searchQuery: search, currentUser } = useCtx()
   const category = match.url.split('/').pop()
   const { data: { mentors = [] } = {} } = useQuery(queries.MENTORS)
+  const [loggedIn] = useState(localStorage.getItem('loggedin') === 'true')
 
   useEffect(() => {
     if (!search && !category) {
@@ -35,7 +36,7 @@ export default function Main({ match }) {
 
   return (
     <main className={styles.main}>
-      {!currentUser && !search && <Landing />}
+      {!currentUser && !loggedIn && !search && <Landing />}
       <div className={styles.container}>
         {currentUser && !search && !category && (
           <>

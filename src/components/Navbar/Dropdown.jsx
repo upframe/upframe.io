@@ -15,6 +15,7 @@ export default function Dropdown({ onBlur }) {
     onCompleted() {
       setCurrentUser(null)
       history.push('/login')
+      localStorage.setItem('loggedin', false)
     },
   })
 
