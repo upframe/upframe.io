@@ -1,16 +1,20 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from './navigation.module.scss'
-
-const tabs = [
-  { title: 'Public Profile', url: 'public' },
-  { title: 'Account Settings', url: 'account' },
-  { title: 'Notifications', url: 'notifications' },
-  { title: 'My Calendar', url: 'mycalendar' },
-]
+import { queries, useQuery } from '../../gql'
 
 export default function Navigation() {
   const current = window.location.href.split('/').pop()
+  const { data: { me = {} } = {} } = useQuery(queries.ME)
+
+  const tabs = [
+    { title: 'Public Profile', url: 'public' },
+    { title: 'Account Settings', url: 'account' },
+    { title: 'Notifications', url: 'notifications' },
+    ...(me.role === 'MENTOR'
+      ? [{ title: 'My Calendar', url: 'mycalendar' }]
+      : []),
+  ]
 
   return (
     <nav className={styles.navigation}>

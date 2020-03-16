@@ -8,9 +8,11 @@ import Notifications from './Notifications'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import styles from './Settings.module.scss'
 import { useCtx } from '../../utils/Hooks'
+import { queries, useQuery } from '../../gql'
 
 export default function Settings() {
   const { currentUser } = useCtx()
+  const { data: { me = {} } = {} } = useQuery(queries.ME)
   if (!currentUser) return null
 
   return (
@@ -32,13 +34,22 @@ export default function Settings() {
             <Route path="/settings/public" component={Profile} />
             <Route path="/settings/account" component={Account} />
             <Route path="/settings/notifications" component={Notifications} />
-            <Route path="/settings/mycalendar" component={CalendarTab} />
-            <Redirect exact from="/settings/sync" to="/settings/mycalendar" />
-            <Redirect
-              exact
-              from="/settings/calendar"
-              to="/settings/mycalendar"
-            />
+            {me.role === 'MENTOR' && (
+              <>
+                <Route path="/settings/mycalendar" component={CalendarTab} />
+                <Redirect
+                  exact
+                  from="/settings/sync"
+                  to="/settings/mycalendar"
+                />
+                <Redirect
+                  exact
+                  from="/settings/calendar"
+                  to="/settings/mycalendar"
+                />
+              </>
+            )}
+
             <Redirect exact from="/settings" to="/settings/public" />
             <Route>
               <Redirect to="/404" />

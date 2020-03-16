@@ -28,6 +28,7 @@ export const ME = gql`
   query CurrentUser {
     me {
       ...PersonBase
+      role
       ... on Mentor {
         calendarConnected
       }
