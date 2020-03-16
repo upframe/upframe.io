@@ -115,8 +115,8 @@ export const CONNECT_CALENDAR_URL = gql`
 `
 
 export const GCAL_EVENTS = gql`
-  query GoogleCalendarEvents($calendarIds: [ID!]!) {
-    me {
+  query GoogleCalendarEvents($calendarIds: [ID!]!, $id: ID) {
+    user(id: $id) {
       id
       ... on Mentor {
         calendars(ids: $calendarIds) {
