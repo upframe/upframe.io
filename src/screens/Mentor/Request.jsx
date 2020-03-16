@@ -13,15 +13,17 @@ import {
   Icon,
 } from '../../components/'
 import { notify } from '../../notification'
+import { useCtx } from '../../utils/Hooks'
 
 export default function Request({ mentor, onClose, slot }) {
   const [msg, setMsg] = useState('')
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [valid, setValid] = useState(true)
+  const { currentUser } = useCtx()
 
   const [sendMessage] = useMutation(mutations.SEND_MESSAGE_EXT, {
-    variables: { msg, email, name, to: mentor.id },
+    variables: { msg, to: mentor.id, ...(!currentUser && { email, name }) },
     onCompleted() {
       onClose()
     },
@@ -36,8 +38,8 @@ export default function Request({ mentor, onClose, slot }) {
   })
 
   useEffect(() => {
-    setValid(isEmail(email) && msg.length && name.length)
-  }, [email, msg, name])
+    setValid(msg.length && (currentUser || (isEmail(email) && name.length)))
+  }, [email, msg, name, currentUser])
 
   async function submit() {
     if (slot) requestSlot()
@@ -62,14 +64,19 @@ export default function Request({ mentor, onClose, slot }) {
             />
           }
         />
-        <Labeled
-          label="Your name"
-          action={<Input value={name} onChange={setName} />}
-        />
-        <Labeled
-          label="Your email"
-          action={<Input value={email} onChange={setEmail} />}
-        />
+        {!currentUser && (
+          <>
+            <Labeled
+              label="Your name"
+              action={<Input value={name} onChange={setName} />}
+            />
+            <Labeled
+              label="Your email"
+              action={<Input value={email} onChange={setEmail} />}
+            />
+          </>
+        )}
+
         <Button disabled={!valid} filled onClick={submit}>
           Send
         </Button>
