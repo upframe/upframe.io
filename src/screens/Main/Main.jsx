@@ -15,6 +15,7 @@ export default function Main({ match }) {
   const [loggedIn] = useState(localStorage.getItem('loggedin') === 'true')
 
   useEffect(() => {
+    if (!mentors.length) return
     if (!search && !category) {
       if (filtered.length === mentors.length) return
       return setFiltered(mentors)
@@ -31,7 +32,7 @@ export default function Main({ match }) {
       setFiltered(
         mentors.filter(({ categories }) => categories.includes(category))
       )
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, mentors, category])
 
   return (

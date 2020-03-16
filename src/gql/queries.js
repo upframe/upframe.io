@@ -73,7 +73,7 @@ export const SETTINGS_CALENDAR = gql`
       id
       calendarConnected
       email
-      slots {
+      slots(includeBooked: true) {
         id
         start
         end

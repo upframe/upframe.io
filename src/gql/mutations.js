@@ -93,7 +93,7 @@ export const UPDATE_SLOTS = gql`
   mutation UpdateSlots($added: [SlotInput!], $deleted: [ID!]) {
     updateSlots(slots: { added: $added, deleted: $deleted }) {
       id
-      slots {
+      slots(includeBooked: true) {
         id
         start
         end
