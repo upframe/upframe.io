@@ -58,14 +58,13 @@ export const person = {
 
   get profileSettings() {
     return gql`
-      fragment ProfileSettings on Mentor {
+      fragment ProfileSettings on Person {
         ...PersonBase
         website
-        title
-        company
         website
         biography
         location
+        role
         social(includeEmpty: true) {
           id
           name
@@ -73,6 +72,10 @@ export const person = {
           handle
         }
         tags
+        ... on Mentor {
+          title
+          company
+        }
       }
       ${this.base}
     `

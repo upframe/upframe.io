@@ -15,12 +15,9 @@ export default function Profile() {
   const [invalid, setInvalid] = useState([])
   const [tags, setTags] = useState([])
 
-  const { data: { mentor: user = {} } = {} } = useQuery(
-    queries.SETTINGS_PROFILE,
-    {
-      variables: { id: currentUser, skip: !currentUser },
-    }
-  )
+  const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_PROFILE, {
+    variables: { id: currentUser, skip: !currentUser },
+  })
 
   useEffect(() => {
     if (Array.isArray(user.tags)) setTags(user.tags)
@@ -172,8 +169,12 @@ export default function Profile() {
         ),
       })}
       {item({ label: 'Location' })}
-      {item({ label: 'Your Position', field: 'title' })}
-      {item({ label: 'Company' })}
+      {user.role !== 'USER' && (
+        <>
+          {item({ label: 'Your Position', field: 'title' })}
+          {item({ label: 'Company' })}
+        </>
+      )}
       {item({ label: 'Website', inputType: 'url' })}
       {item({ label: 'Biography', field: 'biography', type: 'text' })}
       <Title s2>Social Profiles</Title>

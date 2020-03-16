@@ -46,7 +46,7 @@ export const ME = gql`
 
 export const SETTINGS_PROFILE = gql`
   query SettingsProfile($id: ID!) {
-    mentor(id: $id) {
+    user(id: $id) {
       ...ProfileSettings
     }
   }
