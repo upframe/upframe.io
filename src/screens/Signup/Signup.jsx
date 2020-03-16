@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { Redirect, useHistory } from 'react-router-dom'
 import styles from './signup.module.scss'
 import { Labeled, Input, Button, Card } from '../../components'
 import { Helmet } from 'react-helmet'
-import { useHistory } from 'react-router-dom'
 import { isEmail } from '../../utils/validate'
-import { mutations, useMutation } from '../../gql'
+import { queries, mutations, useQuery, useMutation } from '../../gql'
 import { notify } from '../../notification'
 
 export default function Signup() {
@@ -14,6 +14,7 @@ export default function Signup() {
   const [devPass, setDevPass] = useState('')
   const [valid, setValid] = useState(false)
   const history = useHistory()
+  const { data: { me } = {} } = useQuery(queries.ME)
 
   const [signUp] = useMutation(mutations.SIGN_UP, {
     variables: { name, email, password, devPass },
@@ -41,6 +42,7 @@ export default function Signup() {
     )
   }, [name, password, devPass, email])
 
+  if (me) return <Redirect to="/settings" />
   return (
     <>
       <Helmet>
