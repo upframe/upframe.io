@@ -12,8 +12,10 @@ export default function Main({ match }) {
   const { searchQuery: search, currentUser } = useCtx()
   const category = match.url.split('/').pop()
   const { data: { mentors = [] } = {} } = useQuery(queries.MENTORS)
+  const [loggedIn] = useState(localStorage.getItem('loggedin') === 'true')
 
   useEffect(() => {
+    if (!mentors.length) return
     if (!search && !category) {
       if (filtered.length === mentors.length) return
       return setFiltered(mentors)
@@ -30,12 +32,12 @@ export default function Main({ match }) {
       setFiltered(
         mentors.filter(({ categories }) => categories.includes(category))
       )
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, mentors, category])
 
   return (
     <main className={styles.main}>
-      {!currentUser && !search && <Landing />}
+      {!currentUser && !loggedIn && !search && <Landing />}
       <div className={styles.container}>
         {currentUser && !search && !category && (
           <>

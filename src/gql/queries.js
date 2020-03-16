@@ -12,8 +12,8 @@ export const MENTORS = gql`
 `
 
 export const PROFILE = gql`
-  query MentorProfile($keycode: String!, $slotsAfter: String) {
-    mentor(keycode: $keycode) {
+  query MentorProfile($handle: String!, $slotsAfter: String) {
+    mentor(handle: $handle) {
       ...MentorProfile
       slots(after: $slotsAfter) {
         id
@@ -39,10 +39,10 @@ export const ME = gql`
 export const SETTINGS_PROFILE = gql`
   query SettingsProfile($id: ID!) {
     mentor(id: $id) {
-      ...MentorProfile
+      ...ProfileSettings
     }
   }
-  ${person.mentorProfile}
+  ${person.profileSettings}
 `
 
 export const SETTINGS_ACCOUNT = gql`
@@ -73,7 +73,7 @@ export const SETTINGS_CALENDAR = gql`
       id
       calendarConnected
       email
-      slots {
+      slots(includeBooked: true) {
         id
         start
         end

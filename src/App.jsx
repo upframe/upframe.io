@@ -30,8 +30,13 @@ export default function App() {
   useQuery(queries.ME, {
     skip: ctx.currentUser,
     errorPolicy: 'ignore',
-    onCompleted: ({ me } = {}) => {
-      if (me) setCurrentUser(me.id)
+    onCompleted({ me } = {}) {
+      if (!me) return
+      setCurrentUser(me.id)
+      localStorage.setItem('loggedin', true)
+    },
+    onError() {
+      localStorage.setItem('loggedin', false)
     },
   })
 

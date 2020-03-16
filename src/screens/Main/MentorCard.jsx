@@ -10,7 +10,7 @@ export default function MentorCard({ mentor }) {
   return (
     <Card
       className={styles.mentorCard}
-      linkTo={mentor.keycode}
+      linkTo={mentor.handle}
       hoverEffect={true}
       article
     >
@@ -18,10 +18,10 @@ export default function MentorCard({ mentor }) {
       <div className={styles.info}>
         <Title s3>{mentor.name}</Title>{' '}
         <p className={styles.role}>
-          {mentor.role}
+          {mentor.title}
           {mentor.company ? ` at ${mentor.company}` : ''}
         </p>
-        <p className={styles.bio}>{mentor.bio}</p>
+        <p className={styles.biography}>{mentor.biography}</p>
         <div className={styles.skills}>
           {tags.map(v => (
             <Chip key={v} removable={false}>

@@ -15,13 +15,13 @@ export default function Card({
   const ArtWrap = article ? 'article' : 'div'
   return (
     <ArtWrap>
-      <Tag 
+      <Tag
         className={classes(styles.card, className, {
           [styles.hoverEffect]: hoverEffect,
-        })} 
-        to={linkTo} 
+        })}
+        to={linkTo}
         {...props}
-       >
+      >
         {children}
       </Tag>
     </ArtWrap>

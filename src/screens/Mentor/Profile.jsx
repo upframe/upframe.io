@@ -23,7 +23,7 @@ export default function Profile({ match }) {
     queries.PROFILE,
     {
       variables: {
-        keycode: match.params.keycode,
+        handle: match.params.handle,
         slotsAfter,
       },
     }
@@ -47,8 +47,8 @@ export default function Profile({ match }) {
           onClose={() => toggleRequest(false)}
         />
       )}
-      {mentor.keycode in recommend && (
-        <RecommendationCard recommendations={recommend[`${mentor.keycode}`]} />
+      {mentor.handle in recommend && (
+        <RecommendationCard recommendations={recommend[`${mentor.handle}`]} />
       )}
     </main>
   )

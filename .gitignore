@@ -2,7 +2,6 @@
 /node_modules
 /.pnp
 .pnp.js
-_fragmentTypes.json
 
 # testing
 /coverage

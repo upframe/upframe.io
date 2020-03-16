@@ -70,10 +70,10 @@ export const DELETE_ACCOUNT = gql`
 export const UPDATE_PROFILE = gql`
   mutation UpdateProfile($diff: ProfileInput!) {
     updateProfile(input: $diff) {
-      ...MentorProfile
+      ...ProfileSettings
     }
   }
-  ${person.mentorProfile}
+  ${person.profileSettings}
 `
 
 export const UPDATE_NOTIICATION_PREFERENCES = gql`
@@ -93,7 +93,7 @@ export const UPDATE_SLOTS = gql`
   mutation UpdateSlots($added: [SlotInput!], $deleted: [ID!]) {
     updateSlots(slots: { added: $added, deleted: $deleted }) {
       id
-      slots {
+      slots(includeBooked: true) {
         id
         start
         end

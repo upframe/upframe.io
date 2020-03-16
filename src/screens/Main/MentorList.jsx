@@ -6,7 +6,7 @@ export default function MentorList({ mentors }) {
     <>
       {mentors &&
         mentors.map(mentor => (
-          <MentorCard key={mentor.keycode} mentor={mentor} />
+          <MentorCard key={mentor.handle} mentor={mentor} />
         ))}
     </>
   )
