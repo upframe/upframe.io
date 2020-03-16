@@ -14,8 +14,8 @@ export default function Dropdown({ onBlur }) {
   const [signOut] = useMutation(mutations.SIGN_OUT, {
     onCompleted() {
       setCurrentUser(null)
-      history.push('/login')
       localStorage.setItem('loggedin', false)
+      history.push('/login')
     },
   })
 

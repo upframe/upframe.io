@@ -20,20 +20,8 @@ export const SIGN_OUT = gql`
 `
 
 export const SIGN_UP = gql`
-  mutation SignUp(
-    $name: String!
-    $email: String!
-    $password: String!
-    $devPass: String!
-  ) {
-    createAccount(
-      input: {
-        name: $name
-        email: $email
-        password: $password
-        devPass: $devPass
-      }
-    ) {
+  mutation SignUp($name: String!, $email: String!, $password: String!) {
+    createAccount(input: { name: $name, email: $email, password: $password }) {
       ...PersonBase
     }
   }

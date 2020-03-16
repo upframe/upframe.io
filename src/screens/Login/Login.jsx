@@ -17,8 +17,8 @@ export default function Login() {
     onCompleted: ({ signIn: user }) => {
       if (!user) return
       setCurrentUser(user.id)
-      history.push('/settings')
       localStorage.setItem('loggedin', true)
+      history.push('/settings')
     },
   })
 
