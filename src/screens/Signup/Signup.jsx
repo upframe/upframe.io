@@ -4,9 +4,9 @@ import styles from './signup.module.scss'
 import { Labeled, Input, Button, Card } from '../../components'
 import { Helmet } from 'react-helmet'
 import { isEmail } from '../../utils/validate'
-import { queries, mutations, useQuery, useMutation } from '../../gql'
+import { mutations, useMutation } from '../../gql'
 import { notify } from '../../notification'
-import { useCtx } from '../../utils/Hooks'
+import { useCtx, useMe } from '../../utils/Hooks'
 
 export default function Signup() {
   const [name, setName] = useState('')
@@ -14,7 +14,7 @@ export default function Signup() {
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState(false)
   const history = useHistory()
-  const { data: { me } = {} } = useQuery(queries.ME)
+  const me = useMe()
   const { setCurrentUser } = useCtx()
 
   const [signUp] = useMutation(mutations.SIGN_UP, {

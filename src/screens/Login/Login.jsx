@@ -3,15 +3,15 @@ import { Redirect } from 'react-router-dom'
 import styles from './login.module.scss'
 import { Labeled, Input, Button, Card } from '../../components'
 import { Helmet } from 'react-helmet'
-import { useCtx, useHistory } from '../../utils/Hooks'
-import { queries, mutations, useQuery, useMutation } from '../../gql'
+import { useCtx, useHistory, useMe } from '../../utils/Hooks'
+import { mutations, useMutation } from '../../gql'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { setCurrentUser } = useCtx()
   const history = useHistory()
-  const { data: { me } = {} } = useQuery(queries.ME)
+  const me = useMe()
 
   const [signIn] = useMutation(mutations.SIGN_IN, {
     onCompleted: ({ signIn: user }) => {

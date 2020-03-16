@@ -85,4 +85,13 @@ export function useCalendars(requested) {
   return [calendars, calNotFetched]
 }
 
+export function useMe() {
+  const { currentUser } = useCtx()
+  const { data: { user } = {} } = useQuery(queries.ME, {
+    variables: { id: currentUser },
+    skip: !currentUser,
+  })
+  return user
+}
+
 export { useHistory }

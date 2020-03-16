@@ -1,21 +1,20 @@
 import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './dropdown.module.scss'
-import { useCtx, useHistory } from '../../utils/Hooks'
-import { mutations, useMutation, useQuery, queries } from '../../gql'
+import { useCtx, useHistory, useMe } from '../../utils/Hooks'
+import { mutations, useMutation } from '../../gql'
 
 export default function Dropdown({ onBlur }) {
   const ref = useRef()
   const { setCurrentUser } = useCtx()
   const history = useHistory()
-
-  const { data: { me = {} } = {} } = useQuery(queries.ME)
+  const me = useMe()
 
   const [signOut] = useMutation(mutations.SIGN_OUT, {
     onCompleted() {
       setCurrentUser(null)
       localStorage.setItem('loggedin', false)
-      history.push('/login')
+      setTimeout(() => history.push('/login'), 500)
     },
   })
 
@@ -24,6 +23,7 @@ export default function Dropdown({ onBlur }) {
     ref.current.focus()
   }, [ref])
 
+  if (!me) return null
   return (
     <nav
       className={styles.dropdown}

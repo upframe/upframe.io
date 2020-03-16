@@ -24,9 +24,16 @@ export const PROFILE = gql`
   ${person.mentorProfile}
 `
 
-export const ME = gql`
+export const ME_ID = gql`
   query CurrentUser {
     me {
+      id
+    }
+  }
+`
+export const ME = gql`
+  query CurrentUser2($id: ID) {
+    user(id: $id) {
       ...PersonBase
       role
       ... on Mentor {

@@ -27,7 +27,7 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useQuery(queries.ME, {
+  useQuery(queries.ME_ID, {
     skip: ctx.currentUser,
     errorPolicy: 'ignore',
     onCompleted({ me } = {}) {
