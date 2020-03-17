@@ -1,8 +1,15 @@
 @import 'styles/layout.scss';
 
+.profile {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+}
+
 .head {
   display: flex;
   justify-content: flex-start;
+  grid-column: 1 / span 2;
 
   img {
     height: 11.125rem;
@@ -47,6 +54,10 @@
   & > * {
     margin: 0.5rem 0.5rem;
   }
+}
+
+.span2 {
+  grid-column: 1 / span 2;
 }
 
 .btViewProfile {

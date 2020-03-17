@@ -1,10 +1,9 @@
 .item {
-  margin: 2rem 0;
-
   label {
     font-size: 1rem;
     font-weight: bold;
     color: var(--cl-text-strong);
+    margin-top: 0;
 
     span {
       color: var(--cl-primary);
@@ -21,6 +20,7 @@
   font-size: 0.875rem;
   color: var(--cl-text-medium);
   margin-top: 0.5rem;
+  margin-bottom: 0;
 
   p,
   span,

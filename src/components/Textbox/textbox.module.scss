@@ -1,5 +1,4 @@
 .textbox {
-  border: 1px solid var(--cl-text-light);
   border-radius: 0.3rem;
   padding: 0.7rem 1rem;
   font-size: 1rem;
@@ -7,6 +6,8 @@
   font: inherit;
   box-sizing: border-box;
   resize: none;
+  background-color: #f1f3f4;
+  border: none;
 
   &:focus {
     outline: none;

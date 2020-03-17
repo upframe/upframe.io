@@ -98,7 +98,14 @@ export default function Profile() {
     }
   }, [user, diff])
 
-  const item = ({ label, field, type = 'input', hint, inputType }) => {
+  const item = ({
+    label,
+    field,
+    type = 'input',
+    hint,
+    inputType,
+    span1 = false,
+  }) => {
     field = field || label.toLowerCase()
     const value = user[field]
 
@@ -118,12 +125,14 @@ export default function Profile() {
         onChange={v => handleChange(field, v)}
         hint={hint}
         error={invalid.includes(field)}
+        {...(!span1 && { className: styles.span2 })}
+        key={label}
       />
     )
   }
 
   return (
-    <div>
+    <div className={styles.profile}>
       <div className={styles.head}>
         <ProfilePicture imgs={user.profilePictures} size="11.125rem" />
         <div>
@@ -151,7 +160,8 @@ export default function Profile() {
           />
         </div>
       </div>
-      {item({ label: 'Your Name', field: 'name' })}
+      {item({ label: 'Your Name', field: 'name', span1: true })}
+      {item({ label: 'Location', span1: true })}
       {item({
         label: 'Username',
         field: 'handle',
@@ -168,33 +178,20 @@ export default function Profile() {
           </span>
         ),
       })}
-      {item({ label: 'Location' })}
       {user.role !== 'USER' && (
         <>
           {item({ label: 'Your Position', field: 'title' })}
           {item({ label: 'Company' })}
         </>
       )}
-      {item({ label: 'Website', inputType: 'url' })}
       {item({ label: 'Biography', field: 'biography', type: 'text' })}
-      <Title s2>Social Profiles</Title>
-      {(user.social || []).map(({ id, name, handle, url }) => (
-        <Item
-          key={id}
-          label={name}
-          required={false}
-          input={handle}
-          {...(handle && { hint: url + handle })}
-          onChange={v => handleChange(id, v)}
-        />
-      ))}
-      {Object.keys(diff).length > 0 && (
-        <ChangeBanner onSave={update} accent={requiredMet} />
-      )}
-      <Title s2>Experience</Title>
-      <Text>
-        Add up to 6 skills to display in your profile. Other people will see
-        them under the section "I can advise you on".
+      <Title s2 className={styles.span2}>
+        Experience
+      </Title>
+      <Text className={styles.span2}>
+        What can you advise people on? Add up to 6 skills to display in your
+        profile. The more specific, the better (‘Event Marketing’ is easier to
+        picture than ‘Marketing).
       </Text>
       <form className={styles.skillInput} onSubmit={addSkill}>
         <Input placeholder="add new tag" value={skill} onChange={setSkill} />
@@ -209,6 +206,25 @@ export default function Profile() {
           </Chip>
         ))}
       </div>
+      <Title s2 className={styles.span2}>
+        Other Profiles
+      </Title>
+      {[
+        item({ label: 'Personal Website', inputType: 'url', span1: true }),
+        ...(user.social || []).map(({ id, name, handle, url }) => (
+          <Item
+            key={id}
+            label={name}
+            required={false}
+            input={handle}
+            {...(handle && { hint: url + handle })}
+            onChange={v => handleChange(id, v)}
+          />
+        )),
+      ]}
+      {Object.keys(diff).length > 0 && (
+        <ChangeBanner onSave={update} accent={requiredMet} />
+      )}
       <Button
         linkTo={`/${user.handle}`}
         newTab
