@@ -12,7 +12,6 @@
     "apollo-link-http": "^1.5.16",
     "browserslist": "^4.6.3",
     "caniuse-lite": "^1.0.30000979",
-    "classnames": "^2.2.6",
     "core-js": "3",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
@@ -28,12 +27,10 @@
     "react-helmet": "^5.2.1",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.0",
-    "react-tag-input": "6.2.0",
-    "react-window": "^1.8.5"
+    "react-tag-input": "6.2.0"
   },
   "scripts": {
     "start": "npx graphql-codegen && react-scripts start",
-    "bundle": "bundlesize",
     "build": "npx graphql-codegen && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -49,17 +46,9 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^1.12.2",
     "@graphql-codegen/fragment-matcher": "^1.12.2",
-    "bundlesize": "^0.18.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "jest-dom": "^4.0.0",
     "prettier": "^1.18.2",
     "react-testing-library": "^8.0.1",
     "stylelint": "^9.9.0"
-  },
-  "bundlesize": [
-    {
-      "path": "./build/static/js/*.js",
-      "maxSize": "1 MB"
-    }
-  ]
+  }
 }
