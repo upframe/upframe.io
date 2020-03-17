@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from './input.module.scss'
 import { classes } from 'utils/css'
 
-export default function Input({ type, ...props }) {
+export default function Input({ type = 'text', ...props }) {
   const [value, setValue] = useState('')
   if (props.value !== undefined && props.value !== value) setValue(props.value)
 
@@ -19,6 +19,7 @@ export default function Input({ type, ...props }) {
       onChange={handleChange}
       placeholder={props.placeholder}
       type={type}
+      {...(type === 'text' && { 'data-lpignore': true })}
       {...Object.fromEntries(
         Object.entries(props).filter(([k]) => k.startsWith('data-'))
       )}

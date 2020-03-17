@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Text, Title, Button, Input, Chip, ProfilePicture } from 'components'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
 import { useCtx } from 'utils/Hooks'
 import { haveSameContent } from 'utils/Array'
 import styles from './profile.module.scss'
 import { useQuery, queries, mutations, useMutation } from '../../gql'
+import { Text, Title, Button, ProfilePicture, Multiselect } from 'components'
 
 export default function Profile() {
-  const [skill, setSkill] = useState('')
   const fileInput = useRef(null)
   const { currentUser } = useCtx()
   const [diff, setDiff] = useState({})
@@ -26,20 +25,6 @@ export default function Profile() {
   function uploadPhoto(e) {}
 
   function removePhoto() {}
-
-  function addSkill(e) {
-    e.preventDefault()
-    const newTags = [...tags, skill.toLowerCase()]
-    setTags(newTags)
-    handleChange('tags', newTags)
-    setSkill('')
-  }
-
-  function removeSkill(name) {
-    const newTags = tags.filter(tag => tag !== name)
-    setTags(newTags)
-    handleChange('tags', newTags)
-  }
 
   const required = ['name', 'handle', 'title', 'biography']
   const requiredMet = required.every(field => user[field])
@@ -193,18 +178,14 @@ export default function Profile() {
         profile. The more specific, the better (‘Event Marketing’ is easier to
         picture than ‘Marketing).
       </Text>
-      <form className={styles.skillInput} onSubmit={addSkill}>
-        <Input placeholder="add new tag" value={skill} onChange={setSkill} />
-        <Button accent type="submit">
-          Add tag
-        </Button>
-      </form>
-      <div className={styles.skillList}>
-        {tags.map(tag => (
-          <Chip key={tag} onClick={removeSkill}>
-            {tag}
-          </Chip>
-        ))}
+      <div className={styles.span2}>
+        <Multiselect
+          selection={tags}
+          onChange={v => {
+            setTags(v)
+            handleChange('tags', v)
+          }}
+        />
       </div>
       <Title s2 className={styles.span2}>
         Other Profiles
