@@ -59,7 +59,9 @@ export default function Item({
           {custom}
         </div>
       )}
-      {hint && <p className={style.hint}>{hint}</p>}
+      {(hint || typeof hint === 'string') && (
+        <p className={style.hint}>{hint}</p>
+      )}
     </div>
   )
 }

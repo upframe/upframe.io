@@ -94,13 +94,6 @@ export default function Profile() {
     field = field || label.toLowerCase()
     const value = user[field]
 
-    if (!hint && user[field]) {
-      hint = (
-        <a href={hint} target="_blank" rel="noopener noreferrer">
-          {hint}
-        </a>
-      )
-    }
     return (
       <Item
         label={label}
@@ -165,11 +158,16 @@ export default function Profile() {
       })}
       {user.role !== 'USER' && (
         <>
-          {item({ label: 'Your Position', field: 'title' })}
-          {item({ label: 'Company' })}
+          {item({ label: 'Headline', field: 'title' })}
+          {item({ label: 'Companies', field: 'company' })}
         </>
       )}
-      {item({ label: 'Biography', field: 'biography', type: 'text' })}
+      {item({
+        label: 'Biography',
+        field: 'biography',
+        type: 'text',
+        hint: 'URLs are hyperlinked',
+      })}
       <Title s2 className={styles.span2}>
         Experience
       </Title>
@@ -191,14 +189,28 @@ export default function Profile() {
         Other Profiles
       </Title>
       {[
-        item({ label: 'Personal Website', inputType: 'url', span1: true }),
+        item({
+          label: 'Personal Website',
+          field: 'website',
+          inputType: 'url',
+          span1: true,
+        }),
         ...(user.social || []).map(({ id, name, handle, url }) => (
           <Item
             key={id}
             label={name}
             required={false}
             input={handle}
-            {...(handle && { hint: url + handle })}
+            hint={
+              handle ? (
+                <span>
+                  <b>Preview: </b>
+                  {url + handle}
+                </span>
+              ) : (
+                ''
+              )
+            }
             onChange={v => handleChange(id, v)}
           />
         )),

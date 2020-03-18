@@ -3,13 +3,23 @@
 .profile {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 1rem;
+  grid-gap: 2rem;
+
+  & > p {
+    margin: 0;
+  }
+
+  h2 {
+    margin: 0;
+    margin-top: 1rem;
+  }
 }
 
 .head {
   display: flex;
   justify-content: flex-start;
   grid-column: 1 / span 2;
+  margin-bottom: 1rem;
 
   img {
     height: 11.125rem;
