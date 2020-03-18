@@ -13,11 +13,13 @@ export const MENTORS = gql`
 
 export const PROFILE = gql`
   query MentorProfile($handle: String!, $slotsAfter: String) {
-    mentor(handle: $handle) {
+    user(handle: $handle) {
       ...MentorProfile
-      slots(after: $slotsAfter) {
-        id
-        start
+      ... on Mentor {
+        slots(after: $slotsAfter) {
+          id
+          start
+        }
       }
     }
   }
