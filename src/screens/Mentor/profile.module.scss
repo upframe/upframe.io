@@ -97,6 +97,10 @@
 
   a {
     margin-right: 0.5rem;
+    &:hover {
+      transform: scale(1.1);
+      transition: transform 0.2s ease;
+    }
   }
 }
 
@@ -127,7 +131,7 @@
 
     &:hover {
       transform: scale(1.01);
-      opacity: 70%;
+      opacity: 0.7;
       background: rgba(255, 32, 92, 0.8);
     }
   }
