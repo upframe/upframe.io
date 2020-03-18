@@ -10,6 +10,7 @@ export default function Text({
   mark,
   underlined = false,
   inline = false,
+  className,
   ...props
 }) {
   if (children)
@@ -37,7 +38,7 @@ export default function Text({
   const Tag = inline ? 'span' : 'p'
   return (
     <Tag
-      className={classes(styles.text, {
+      className={classes(styles.text, className, {
         [styles.strong]: strong,
         [styles.small]: small,
         [styles.underlined]: underlined,

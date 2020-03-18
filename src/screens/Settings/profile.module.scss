@@ -1,8 +1,25 @@
 @import 'styles/layout.scss';
 
+.profile {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 2rem;
+
+  & > p {
+    margin: 0;
+  }
+
+  h2 {
+    margin: 0;
+    margin-top: 1rem;
+  }
+}
+
 .head {
   display: flex;
   justify-content: flex-start;
+  grid-column: 1 / span 2;
+  margin-bottom: 1rem;
 
   img {
     height: 11.125rem;
@@ -26,18 +43,6 @@
   }
 }
 
-.skillInput {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  margin: 2rem 0;
-
-  input {
-    flex-grow: 1;
-    margin-right: 1rem;
-  }
-}
-
 .skillList {
   display: flex;
   margin: 0 -0.5rem;
@@ -47,6 +52,10 @@
   & > * {
     margin: 0.5rem 0.5rem;
   }
+}
+
+.span2 {
+  grid-column: 1 / span 2;
 }
 
 .btViewProfile {

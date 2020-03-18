@@ -20,6 +20,7 @@ import Card from './Card/Card'
 import Spinner from './Spinner/Spinner'
 import Toast from './Toast/Toast'
 import NotificationStack from './NotificationStack/NotificationStack'
+import Multiselect from './Multiselect'
 
 export {
   RecommendationCard,
@@ -44,4 +45,5 @@ export {
   Spinner,
   Toast,
   NotificationStack,
+  Multiselect,
 }

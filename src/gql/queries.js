@@ -24,10 +24,18 @@ export const PROFILE = gql`
   ${person.mentorProfile}
 `
 
-export const ME = gql`
+export const ME_ID = gql`
   query CurrentUser {
     me {
+      id
+    }
+  }
+`
+export const ME = gql`
+  query CurrentUser2($id: ID) {
+    user(id: $id) {
       ...PersonBase
+      role
       ... on Mentor {
         calendarConnected
       }
@@ -38,7 +46,7 @@ export const ME = gql`
 
 export const SETTINGS_PROFILE = gql`
   query SettingsProfile($id: ID!) {
-    mentor(id: $id) {
+    user(id: $id) {
       ...ProfileSettings
     }
   }
@@ -107,8 +115,8 @@ export const CONNECT_CALENDAR_URL = gql`
 `
 
 export const GCAL_EVENTS = gql`
-  query GoogleCalendarEvents($calendarIds: [ID!]!) {
-    me {
+  query GoogleCalendarEvents($calendarIds: [ID!]!, $id: ID) {
+    user(id: $id) {
       id
       ... on Mentor {
         calendars(ids: $calendarIds) {

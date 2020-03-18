@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react'
+import { Redirect, useHistory } from 'react-router-dom'
 import styles from './signup.module.scss'
 import { Labeled, Input, Button, Card } from '../../components'
 import { Helmet } from 'react-helmet'
-import { useHistory } from 'react-router-dom'
 import { isEmail } from '../../utils/validate'
 import { mutations, useMutation } from '../../gql'
 import { notify } from '../../notification'
+import { useCtx, useMe } from '../../utils/Hooks'
 
 export default function Signup() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [devPass, setDevPass] = useState('')
   const [valid, setValid] = useState(false)
   const history = useHistory()
+  const me = useMe()
+  const { setCurrentUser } = useCtx()
 
   const [signUp] = useMutation(mutations.SIGN_UP, {
-    variables: { name, email, password, devPass },
-    onCompleted() {
+    variables: { name, email, password },
+    onCompleted({ createAccount: user }) {
+      setCurrentUser(user.id)
+      localStorage.setItem('loggedin', true)
       history.push('/settings')
     },
     onError({ graphQLErrors }) {
@@ -33,14 +37,10 @@ export default function Signup() {
   }
 
   useEffect(() => {
-    setValid(
-      name.length >= 3 &&
-        password.length >= 8 &&
-        devPass.length &&
-        isEmail(email)
-    )
-  }, [name, password, devPass, email])
+    setValid(name.length >= 3 && password.length >= 8 && isEmail(email))
+  }, [name, password, email])
 
+  if (me) return <Redirect to="/settings" />
   return (
     <>
       <Helmet>
@@ -59,7 +59,7 @@ export default function Signup() {
             label="Name"
             action={
               <Input
-                placeholder="Awesome Mentor"
+                placeholder="Awesome User"
                 value={name}
                 onChange={setName}
               />
@@ -84,16 +84,6 @@ export default function Signup() {
                 placeholder="Sup3r S4f3 P4ssw0rd"
                 value={password}
                 onChange={setPassword}
-              />
-            }
-          />
-          <Labeled
-            label="Upframe Dev Mode Pass"
-            action={
-              <Input
-                placeholder="Nuclear code"
-                value={devPass}
-                onChange={setDevPass}
               />
             }
           />

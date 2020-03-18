@@ -46,12 +46,13 @@ export const useCtx = () => useContext(context)
 export function useCalendars(requested) {
   const [calNotFetched, setCalNotFetched] = useState([])
   const [calendars, setCalendars] = useState([])
+  const { currentUser } = useCtx()
 
   const {
-    data: { me: { calendars: gcals = [] } = {} } = {},
+    data: { user: { calendars: gcals = [] } = {} } = {},
     loading,
   } = useQuery(queries.GCAL_EVENTS, {
-    variables: { calendarIds: calNotFetched },
+    variables: { calendarIds: calNotFetched, id: currentUser },
   })
 
   // add to fetch list
@@ -83,6 +84,15 @@ export function useCalendars(requested) {
   }, [loading, gcals, calendars, calNotFetched, requested])
 
   return [calendars, calNotFetched]
+}
+
+export function useMe() {
+  const { currentUser } = useCtx()
+  const { data: { user } = {} } = useQuery(queries.ME, {
+    variables: { id: currentUser },
+    skip: !currentUser,
+  })
+  return user
 }
 
 export { useHistory }

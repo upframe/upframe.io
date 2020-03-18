@@ -1,15 +1,14 @@
 import React from 'react'
 import { Button } from 'components'
-import { queries, useQuery, client, mutations, useMutation } from '../../gql'
+import { queries, useQuery, mutations, useMutation } from '../../gql'
+import { useMe } from '../../utils/Hooks'
 
 export default function GoogleSync() {
   const { data: { calendarConnectUrl: url } = {} } = useQuery(
     queries.CONNECT_CALENDAR_URL
   )
 
-  const { me } = client.readQuery({
-    query: queries.ME,
-  })
+  const me = useMe()
 
   const [disconnect] = useMutation(mutations.DISCONNECT_CALENDAR, {
     onCompleted() {

@@ -3,12 +3,13 @@ import { Text, Title, Checkbox } from 'components'
 import Item from './Item'
 import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
-import { useCtx } from '../../utils/Hooks'
+import { useCtx, useMe } from '../../utils/Hooks'
 import { queries, mutations, useQuery, useMutation } from '../../gql'
 import { notify } from 'notification'
 
 export default function Account() {
   const { currentUser } = useCtx()
+  const me = useMe()
   const [deleteRequested, setDeleteRequested] = useState(false)
 
   const { data: { mentor: user = {} } = {} } = useQuery(
@@ -59,18 +60,22 @@ export default function Account() {
         profile will no longer be available at upframe.io. This action is
         irreversible, please proceed with caution.
       </Item>
-      <Title s2>Privacy</Title>
-      <div className={styles.privacyCheck}>
-        <Checkbox
-          checked={user.visibility === 'UNLISTED'}
-          onChange={v =>
-            setVisibility({
-              variables: { visibility: v ? 'UNLISTED' : 'LISTED' },
-            })
-          }
-        />
-        <Text>Hide my profile from the homepage.</Text>
-      </div>
+      {me.role !== 'USER' && (
+        <>
+          <Title s2>Privacy</Title>
+          <div className={styles.privacyCheck}>
+            <Checkbox
+              checked={user.visibility === 'UNLISTED'}
+              onChange={v =>
+                setVisibility({
+                  variables: { visibility: v ? 'UNLISTED' : 'LISTED' },
+                })
+              }
+            />
+            <Text>Hide my profile from the homepage.</Text>
+          </div>
+        </>
+      )}
       {deleteRequested && (
         <ConfirmDelete onCancel={() => setDeleteRequested(false)} />
       )}

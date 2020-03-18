@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Input, Textbox, Text, Button } from 'components'
 import style from './item.module.scss'
+import { classes } from '../../utils/css'
 
 export default function Item({
   label,
@@ -15,6 +16,7 @@ export default function Item({
   required = false,
   error = false,
   inputType,
+  className,
 }) {
   const [value, setValue] = useState(input || text)
 
@@ -32,7 +34,7 @@ export default function Item({
 
   const id = label.replace(/\s/g, '')
   return (
-    <div className={style.item}>
+    <div className={classes(style.item, className)}>
       <label htmlFor={id}>
         {label}
         {!required ? '' : <span> *</span>}
@@ -57,7 +59,9 @@ export default function Item({
           {custom}
         </div>
       )}
-      {hint && <p className={style.hint}>{hint}</p>}
+      {(hint || typeof hint === 'string') && (
+        <p className={style.hint}>{hint}</p>
+      )}
     </div>
   )
 }

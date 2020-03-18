@@ -3,11 +3,12 @@ import { Title, Text, Checkbox, Spinner } from 'components'
 import Item from './Item'
 import IntervalSelect from './IntervalSelect'
 import styles from './notifications.module.scss'
-import { useCtx } from 'utils/Hooks'
+import { useCtx, useMe } from 'utils/Hooks'
 import { queries, mutations, useQuery, useMutation } from '../../gql'
 
 export default function Notifications() {
   const { currentUser } = useCtx()
+  const me = useMe()
 
   const { data: { mentor: user = {} } = {} } = useQuery(
     queries.SETTINGS_NOTIFICATIONS,
@@ -23,22 +24,26 @@ export default function Notifications() {
     <div className={styles.notifications}>
       <Title s2>Email Notifications</Title>
       <Text>Get emails to find out about what’s new on Upframe.</Text>
-      <Item
-        label="⚡️ Remind me to add free slots"
-        custom={
-          <IntervalSelect
-            selected={user.notificationPrefs.slotReminder}
-            onChange={v =>
-              updatePrefs({
-                variables: { diff: { slotReminder: v.toUpperCase() } },
-              })
+      {me.role !== 'USER' && (
+        <>
+          <Item
+            label="⚡️ Remind me to add free slots"
+            custom={
+              <IntervalSelect
+                selected={user.notificationPrefs.slotReminder}
+                onChange={v =>
+                  updatePrefs({
+                    variables: { diff: { slotReminder: v.toUpperCase() } },
+                  })
+                }
+              />
             }
-          />
-        }
-      >
-        We’ll remind you to add new free slots to your calendar, so people can
-        schedule calls with you in a zap.
-      </Item>
+          >
+            We’ll remind you to add new free slots to your calendar, so people
+            can schedule calls with you in a zap.
+          </Item>
+        </>
+      )}
       <Title s2>Emails from Upframe</Title>
       <div className={styles.emailCheck}>
         <Checkbox

@@ -1,26 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Text, Title, Button, Input, Chip, ProfilePicture } from 'components'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
 import { useCtx } from 'utils/Hooks'
 import { haveSameContent } from 'utils/Array'
 import styles from './profile.module.scss'
 import { useQuery, queries, mutations, useMutation } from '../../gql'
+import { Text, Title, Button, ProfilePicture, Multiselect } from 'components'
 
 export default function Profile() {
-  const [skill, setSkill] = useState('')
   const fileInput = useRef(null)
   const { currentUser } = useCtx()
   const [diff, setDiff] = useState({})
   const [invalid, setInvalid] = useState([])
   const [tags, setTags] = useState([])
 
-  const { data: { mentor: user = {} } = {} } = useQuery(
-    queries.SETTINGS_PROFILE,
-    {
-      variables: { id: currentUser, skip: !currentUser },
-    }
-  )
+  const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_PROFILE, {
+    variables: { id: currentUser, skip: !currentUser },
+  })
 
   useEffect(() => {
     if (Array.isArray(user.tags)) setTags(user.tags)
@@ -29,20 +25,6 @@ export default function Profile() {
   function uploadPhoto(e) {}
 
   function removePhoto() {}
-
-  function addSkill(e) {
-    e.preventDefault()
-    const newTags = [...tags, skill.toLowerCase()]
-    setTags(newTags)
-    handleChange('tags', newTags)
-    setSkill('')
-  }
-
-  function removeSkill(name) {
-    const newTags = tags.filter(tag => tag !== name)
-    setTags(newTags)
-    handleChange('tags', newTags)
-  }
 
   const required = ['name', 'handle', 'title', 'biography']
   const requiredMet = required.every(field => user[field])
@@ -101,17 +83,17 @@ export default function Profile() {
     }
   }, [user, diff])
 
-  const item = ({ label, field, type = 'input', hint, inputType }) => {
+  const item = ({
+    label,
+    field,
+    type = 'input',
+    hint,
+    inputType,
+    span1 = false,
+  }) => {
     field = field || label.toLowerCase()
     const value = user[field]
 
-    if (!hint && user[field]) {
-      hint = (
-        <a href={hint} target="_blank" rel="noopener noreferrer">
-          {hint}
-        </a>
-      )
-    }
     return (
       <Item
         label={label}
@@ -121,12 +103,14 @@ export default function Profile() {
         onChange={v => handleChange(field, v)}
         hint={hint}
         error={invalid.includes(field)}
+        {...(!span1 && { className: styles.span2 })}
+        key={label}
       />
     )
   }
 
   return (
-    <div>
+    <div className={styles.profile}>
       <div className={styles.head}>
         <ProfilePicture imgs={user.profilePictures} size="11.125rem" />
         <div>
@@ -154,7 +138,8 @@ export default function Profile() {
           />
         </div>
       </div>
-      {item({ label: 'Your Name', field: 'name' })}
+      {item({ label: 'Your Name', field: 'name', span1: true })}
+      {item({ label: 'Location', span1: true })}
       {item({
         label: 'Username',
         field: 'handle',
@@ -171,43 +156,68 @@ export default function Profile() {
           </span>
         ),
       })}
-      {item({ label: 'Location' })}
-      {item({ label: 'Your Position', field: 'title' })}
-      {item({ label: 'Company' })}
-      {item({ label: 'Website', inputType: 'url' })}
-      {item({ label: 'Biography', field: 'biography', type: 'text' })}
-      <Title s2>Social Profiles</Title>
-      {(user.social || []).map(({ id, name, handle, url }) => (
-        <Item
-          key={id}
-          label={name}
-          required={false}
-          input={handle}
-          {...(handle && { hint: url + handle })}
-          onChange={v => handleChange(id, v)}
+      {user.role !== 'USER' && (
+        <>
+          {item({ label: 'Headline', field: 'title' })}
+          {item({ label: 'Companies', field: 'company' })}
+        </>
+      )}
+      {item({
+        label: 'Biography',
+        field: 'biography',
+        type: 'text',
+        hint: 'URLs are hyperlinked',
+      })}
+      <Title s2 className={styles.span2}>
+        Experience
+      </Title>
+      <Text className={styles.span2}>
+        What can you advise people on? Add up to 6 skills to display in your
+        profile. The more specific, the better (‘Event Marketing’ is easier to
+        picture than ‘Marketing).
+      </Text>
+      <div className={styles.span2}>
+        <Multiselect
+          selection={tags}
+          onChange={v => {
+            setTags(v)
+            handleChange('tags', v)
+          }}
         />
-      ))}
+      </div>
+      <Title s2 className={styles.span2}>
+        Other Profiles
+      </Title>
+      {[
+        item({
+          label: 'Personal Website',
+          field: 'website',
+          inputType: 'url',
+          span1: true,
+        }),
+        ...(user.social || []).map(({ id, name, handle, url }) => (
+          <Item
+            key={id}
+            label={name}
+            required={false}
+            input={handle}
+            hint={
+              handle ? (
+                <span>
+                  <b>Preview: </b>
+                  {url + handle}
+                </span>
+              ) : (
+                ''
+              )
+            }
+            onChange={v => handleChange(id, v)}
+          />
+        )),
+      ]}
       {Object.keys(diff).length > 0 && (
         <ChangeBanner onSave={update} accent={requiredMet} />
       )}
-      <Title s2>Experience</Title>
-      <Text>
-        Add up to 6 skills to display in your profile. Other people will see
-        them under the section "I can advise you on".
-      </Text>
-      <form className={styles.skillInput} onSubmit={addSkill}>
-        <Input placeholder="add new tag" value={skill} onChange={setSkill} />
-        <Button accent type="submit">
-          Add tag
-        </Button>
-      </form>
-      <div className={styles.skillList}>
-        {tags.map(tag => (
-          <Chip key={tag} onClick={removeSkill}>
-            {tag}
-          </Chip>
-        ))}
-      </div>
       <Button
         linkTo={`/${user.handle}`}
         newTab

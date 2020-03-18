@@ -20,20 +20,8 @@ export const SIGN_OUT = gql`
 `
 
 export const SIGN_UP = gql`
-  mutation SignUp(
-    $name: String!
-    $email: String!
-    $password: String!
-    $devPass: String!
-  ) {
-    createAccount(
-      input: {
-        name: $name
-        email: $email
-        password: $password
-        devPass: $devPass
-      }
-    ) {
+  mutation SignUp($name: String!, $email: String!, $password: String!) {
+    createAccount(input: { name: $name, email: $email, password: $password }) {
       ...PersonBase
     }
   }
@@ -103,12 +91,7 @@ export const UPDATE_SLOTS = gql`
 `
 
 export const SEND_MESSAGE_EXT = gql`
-  mutation SendMessage(
-    $to: ID!
-    $name: String!
-    $email: String!
-    $msg: String!
-  ) {
+  mutation SendMessage($to: ID!, $msg: String!, $name: String, $email: String) {
     messageExt(input: { to: $to, name: $name, email: $email, message: $msg })
   }
 `
