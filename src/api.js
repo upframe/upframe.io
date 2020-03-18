@@ -24,7 +24,7 @@ export default new ApolloClient({
     }),
     new HttpLink({
       uri: process.env.REACT_APP_GRAPHAPI,
-      credentials: 'same-origin',
+      credentials: 'include',
     }),
   ]),
   cache: new InMemoryCache({
