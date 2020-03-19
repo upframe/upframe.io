@@ -21,7 +21,7 @@ export default function Profile({ match }) {
   const [showRequest, toggleRequest] = useState(false)
   const { role } = useMe() || {}
 
-  const { data: { mentor = {} } = {}, loading, error } = useQuery(
+  const { data: { user = {} } = {}, loading, error } = useQuery(
     queries.PROFILE,
     {
       variables: {
@@ -35,26 +35,24 @@ export default function Profile({ match }) {
   if (loading) return <Spinner centered />
   return (
     <main className={styles.profile}>
-      <Breadcrumbs name={mentor.name} />
-      <Showcase mentor={mentor} />
+      <Breadcrumbs name={user.name} />
+      <Showcase user={user} />
       {role !== 'USER' && (
         <>
           <Meetup
-            mentor={mentor}
+            mentor={user}
             onSlot={toggleRequest}
             onMsg={() => toggleRequest(true)}
           />
           {showRequest && (
             <Request
-              mentor={mentor}
+              mentor={user}
               {...(typeof showRequest === 'string' && { slot: showRequest })}
               onClose={() => toggleRequest(false)}
             />
           )}
-          {mentor.handle in recommend && (
-            <RecommendationCard
-              recommendations={recommend[`${mentor.handle}`]}
-            />
+          {user.handle in recommend && (
+            <RecommendationCard recommendations={recommend[user.handle]} />
           )}
         </>
       )}

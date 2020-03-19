@@ -31,6 +31,10 @@ export default new ApolloClient({
     fragmentMatcher: new IntrospectionFragmentMatcher({
       introspectionQueryResultData,
     }),
+    dataIdFromObject: object => {
+      if (object.__typename === 'SocialHandle') return null
+      return object.id || null
+    },
   }),
 })
 

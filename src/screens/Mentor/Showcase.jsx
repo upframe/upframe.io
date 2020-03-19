@@ -10,22 +10,22 @@ import {
   Chip,
 } from '../../components'
 
-export default function Showcase({ mentor }) {
+export default function Showcase({ user }) {
   return (
     <Card className={styles.showcase}>
       <div className={styles.leftColumn}>
-        <ProfilePicture imgs={mentor.profilePictures} size="13rem" />
-        <p className={styles.name}>{mentor.name}</p>
+        <ProfilePicture imgs={user.profilePictures} size="13rem" />
+        <p className={styles.name}>{user.name}</p>
         <p className={styles.role}>
-          {mentor.title}
-          {mentor.company ? ` at ${mentor.company}` : ''}
+          {user.title}
+          {user.company ? ` at ${user.company}` : ''}
         </p>
         <p className={styles.location}>
           <Icon icon="location" />
-          {mentor.location}
+          {user.location}
         </p>
         <div className={styles.social}>
-          {(mentor.social || []).map(({ name, url, handle }) => (
+          {(user.social || []).map(({ name, url, handle }) => (
             <SocialIcon
               key={name}
               link={url + handle}
@@ -36,15 +36,15 @@ export default function Showcase({ mentor }) {
       </div>
       <div className={styles.rightColumn}>
         <Title s3>About me</Title>
-        {mentor.biography &&
-          mentor.biography
+        {user.biography &&
+          user.biography
             .split('\n')
             .map((v, i) => <Text key={`biography${i}`}>{v}</Text>)}
-        {Array.isArray(mentor.tags) && (
+        {user.role !== 'USER' && Array.isArray(user.tags) && (
           <>
             <Title s3>I can advise you on</Title>
             <div className={styles.skills}>
-              {mentor.tags.map(v => (
+              {user.tags.map(v => (
                 <Chip key={v} removable={false}>
                   {v}
                 </Chip>

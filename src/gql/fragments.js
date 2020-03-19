@@ -19,6 +19,7 @@ export const person = {
         id
         name
         handle
+        role
         ...ProfilePictures
       }
       ${this.profilePictures}
@@ -27,12 +28,14 @@ export const person = {
 
   get mentorDetails() {
     return gql`
-      fragment MentorDetails on Mentor {
+      fragment MentorDetails on Person {
         ...PersonBase
-        title
-        company
         biography
         tags
+        ... on Mentor {
+          title
+          company
+        }
       }
       ${this.base}
     `
@@ -40,7 +43,7 @@ export const person = {
 
   get mentorProfile() {
     return gql`
-      fragment MentorProfile on Mentor {
+      fragment MentorProfile on Person {
         ...MentorDetails
         location
         website
@@ -64,7 +67,6 @@ export const person = {
         website
         biography
         location
-        role
         social(includeEmpty: true) {
           id
           name
