@@ -6,6 +6,7 @@ import Showcase from './Showcase'
 import Meetup from './Meetup'
 import Request from './Request'
 import { useQuery, queries, hasError } from '../../gql'
+import { useMe } from '../../utils/Hooks'
 
 const recommend = {
   malik: ['pf', 'hugo.franca'],
@@ -18,6 +19,7 @@ const slotsAfter = new Date().toISOString()
 
 export default function Profile({ match }) {
   const [showRequest, toggleRequest] = useState(false)
+  const { role } = useMe() || {}
 
   const { data: { mentor = {} } = {}, loading, error } = useQuery(
     queries.PROFILE,
@@ -35,20 +37,26 @@ export default function Profile({ match }) {
     <main className={styles.profile}>
       <Breadcrumbs name={mentor.name} />
       <Showcase mentor={mentor} />
-      <Meetup
-        mentor={mentor}
-        onSlot={toggleRequest}
-        onMsg={() => toggleRequest(true)}
-      />
-      {showRequest && (
-        <Request
-          mentor={mentor}
-          {...(typeof showRequest === 'string' && { slot: showRequest })}
-          onClose={() => toggleRequest(false)}
-        />
-      )}
-      {mentor.handle in recommend && (
-        <RecommendationCard recommendations={recommend[`${mentor.handle}`]} />
+      {role !== 'USER' && (
+        <>
+          <Meetup
+            mentor={mentor}
+            onSlot={toggleRequest}
+            onMsg={() => toggleRequest(true)}
+          />
+          {showRequest && (
+            <Request
+              mentor={mentor}
+              {...(typeof showRequest === 'string' && { slot: showRequest })}
+              onClose={() => toggleRequest(false)}
+            />
+          )}
+          {mentor.handle in recommend && (
+            <RecommendationCard
+              recommendations={recommend[`${mentor.handle}`]}
+            />
+          )}
+        </>
       )}
     </main>
   )
