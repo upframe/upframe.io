@@ -132,3 +132,11 @@ export const GCAL_EVENTS = gql`
     }
   }
 `
+
+export const TAG_LIST = gql`
+  query TagList {
+    tags {
+      name
+    }
+  }
+`

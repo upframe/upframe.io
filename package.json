@@ -13,6 +13,7 @@
     "browserslist": "^4.6.3",
     "caniuse-lite": "^1.0.30000979",
     "core-js": "3",
+    "fuse.js": "^5.0.7-beta",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
     "lodash": "^4.17.15",

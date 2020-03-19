@@ -17,6 +17,7 @@ export default function Profile() {
   const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_PROFILE, {
     variables: { id: currentUser, skip: !currentUser },
   })
+  const { data: { tags: tagList = [] } = {} } = useQuery(queries.TAG_LIST)
 
   useEffect(() => {
     if (Array.isArray(user.tags)) setTags(user.tags)
@@ -186,6 +187,7 @@ export default function Profile() {
                 setTags(v)
                 handleChange('tags', v)
               }}
+              options={tagList.map(v => v.name)}
             />
           </div>
         </>
