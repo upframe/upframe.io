@@ -17,6 +17,7 @@ export default function Profile() {
   const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_PROFILE, {
     variables: { id: currentUser, skip: !currentUser },
   })
+  const { data: { tags: tagList = [] } = {} } = useQuery(queries.TAG_LIST)
 
   useEffect(() => {
     if (Array.isArray(user.tags)) setTags(user.tags)
@@ -168,23 +169,29 @@ export default function Profile() {
         type: 'text',
         hint: 'URLs are hyperlinked',
       })}
-      <Title s2 className={styles.span2}>
-        Experience
-      </Title>
-      <Text className={styles.span2}>
-        What can you advise people on? Add up to 6 skills to display in your
-        profile. The more specific, the better (‘Event Marketing’ is easier to
-        picture than ‘Marketing).
-      </Text>
-      <div className={styles.span2}>
-        <Multiselect
-          selection={tags}
-          onChange={v => {
-            setTags(v)
-            handleChange('tags', v)
-          }}
-        />
-      </div>
+      {user.role !== 'USER' && (
+        <>
+          <Title s2 className={styles.span2}>
+            Experience
+          </Title>
+          <Text className={styles.span2}>
+            What can you advise people on? Add up to 6 skills to display in your
+            profile. The more specific, the better (‘Event Marketing’ is easier
+            to picture than ‘Marketing).
+          </Text>
+
+          <div className={styles.span2}>
+            <Multiselect
+              selection={tags}
+              onChange={v => {
+                setTags(v)
+                handleChange('tags', v)
+              }}
+              options={tagList.map(v => v.name)}
+            />
+          </div>
+        </>
+      )}
       <Title s2 className={styles.span2}>
         Other Profiles
       </Title>
