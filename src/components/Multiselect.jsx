@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { Input, Chip } from '.'
 import Fuse from 'fuse.js'
@@ -7,16 +7,21 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
   const [input, setInput] = useState('')
   const [fuse, setFuse] = useState()
   const [search, setSearch] = useState([])
+  const [selected, setSelected] = useState()
+  const listRef = useRef()
+  const [lastScroll, setLastScroll] = useState(performance.now())
 
   useEffect(() => {
     setFuse(
       new Fuse(options, {
         includeMatches: true,
         threshold: 0.3,
+        findAllMatches: true,
       })
     )
   }, [options])
 
+  // search & highlight
   useEffect(() => {
     if (!fuse) return
     const res = fuse.search(input)
@@ -64,7 +69,7 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
           formatted: (
             <>
               {segs.map(({ seg, match, key }) => {
-                const Tag = match ? 'span' : 'b'
+                const Tag = match ? 'b' : 'span'
                 return <Tag key={key}>{seg}</Tag>
               })}
             </>
@@ -74,17 +79,61 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
     )
   }, [fuse, input])
 
+  useEffect(() => {
+    if (!search.length) return
+    setSelected(search[0].value)
+  }, [input, search])
+
+  // keep selection in view
+  useEffect(() => {
+    if (!listRef || !listRef.current) return
+    const index = search.findIndex(({ value }) => value === selected)
+    const node = listRef.current.children[index]
+    if (!node) return
+
+    if (node.offsetTop < listRef.current.scrollTop) {
+      listRef.current.scrollTop = node.offsetTop
+      setLastScroll(performance.now())
+    } else if (
+      node.offsetTop + node.offsetHeight >
+      listRef.current.scrollTop + listRef.current.offsetHeight
+    ) {
+      listRef.current.scrollTop =
+        node.offsetTop + node.offsetHeight - listRef.current.offsetHeight
+      setLastScroll(performance.now())
+    }
+  }, [selected, search])
+
+  function addTag(tag) {
+    if (tag) onChange(Array.from(new Set([...selection, tag.toLowerCase()])))
+    setInput('')
+  }
+
+  function handleKey(e) {
+    if (['Enter', 'Tab', ','].includes(e.key)) {
+      e.preventDefault()
+      addTag(selected ? selected : input)
+    }
+    if (e.key === 'Backspace') {
+      if (input === '' && selection.length) onChange(selection.slice(0, -1))
+    }
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault()
+      const focusIndex = search.findIndex(({ value }) => value === selected)
+      setSelected(
+        search[
+          Math.min(
+            Math.max(0, focusIndex + 1 * (e.key.endsWith('Down') ? 1 : -1)),
+            search.length - 1
+          )
+        ].value
+      )
+    }
+  }
+
   return (
     <S.Wrap>
-      <S.Select
-        onKeyDown={e => {
-          if (e.key === 'Enter') {
-            e.preventDefault()
-            onChange(Array.from(new Set([...selection, input.toLowerCase()])))
-            setInput('')
-          }
-        }}
-      >
+      <S.Select onKeyDown={handleKey}>
         <Input onChange={setInput} value={input} />
         {selection
           .map(v => (
@@ -98,10 +147,17 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
           .reverse()}
       </S.Select>
       {input.length > 0 && (
-        <S.List>
+        <S.List ref={listRef}>
           {search.map(({ value, formatted }) => (
-            <li key={value}>
-              <span>{formatted}</span>
+            <li
+              key={value}
+              {...(value === selected && { 'data-selected': true })}
+              onMouseEnter={() => {
+                if (performance.now() - lastScroll > 100) setSelected(value)
+              }}
+              onClick={() => addTag(value)}
+            >
+              {formatted}
             </li>
           ))}
         </S.List>
@@ -155,6 +211,11 @@ const S = {
       padding: 0 1rem;
       font-size: 1rem;
       line-height: var(--item-height);
+      cursor: pointer;
+
+      &[data-selected] {
+        background-color: #feeef2;
+      }
     }
   `,
 }
