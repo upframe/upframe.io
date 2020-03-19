@@ -8,18 +8,20 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
   const [fuse, setFuse] = useState()
   const [search, setSearch] = useState([])
   const [selected, setSelected] = useState()
+  const [newSelected, setNewSelected] = useState(false)
   const listRef = useRef()
   const [lastScroll, setLastScroll] = useState(performance.now())
+  const [toDelete, setToDelete] = useState()
 
   useEffect(() => {
     setFuse(
-      new Fuse(options, {
+      new Fuse(options.filter(v => !selection.includes(v)), {
         includeMatches: true,
         threshold: 0.3,
         findAllMatches: true,
       })
     )
-  }, [options])
+  }, [options, selection])
 
   // search & highlight
   useEffect(() => {
@@ -80,8 +82,13 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
   }, [fuse, input])
 
   useEffect(() => {
-    if (!search.length) return
-    setSelected(search[0].value)
+    if (!search.length) {
+      setSelected()
+      setNewSelected(true)
+    } else {
+      setSelected(search[0].value)
+      setNewSelected()
+    }
   }, [input, search])
 
   // keep selection in view
@@ -105,29 +112,48 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
   }, [selected, search])
 
   function addTag(tag) {
+    tag = tag.trim()
     if (tag) onChange(Array.from(new Set([...selection, tag.toLowerCase()])))
     setInput('')
   }
 
   function handleKey(e) {
+    if (e.key === 'Backspace') {
+      if (input || !selection.length) return
+      if (toDelete) {
+        onChange(selection.slice(0, -1))
+        setToDelete(null)
+      } else setToDelete(selection.slice(-1)[0])
+    } else setToDelete()
     if (['Enter', 'Tab', ','].includes(e.key)) {
       e.preventDefault()
       addTag(selected ? selected : input)
     }
-    if (e.key === 'Backspace') {
-      if (input === '' && selection.length) onChange(selection.slice(0, -1))
-    }
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      if (search.length === 0) return
       e.preventDefault()
-      const focusIndex = search.findIndex(({ value }) => value === selected)
-      setSelected(
-        search[
-          Math.min(
-            Math.max(0, focusIndex + 1 * (e.key.endsWith('Down') ? 1 : -1)),
-            search.length - 1
-          )
-        ].value
+      const focusIndex = newSelected
+        ? search.length
+        : search.findIndex(({ value }) => value === selected)
+
+      const nextSelected = Math.max(
+        0,
+        focusIndex + 1 * (e.key.endsWith('Down') ? 1 : -1)
       )
+      if (nextSelected < search.length) {
+        setSelected(
+          search[
+            Math.min(
+              Math.max(0, focusIndex + 1 * (e.key.endsWith('Down') ? 1 : -1)),
+              search.length - 1
+            )
+          ].value
+        )
+        setNewSelected()
+      } else {
+        setSelected()
+        setNewSelected(true)
+      }
     }
   }
 
@@ -140,6 +166,7 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
             <Chip
               key={v}
               onClick={() => onChange(selection.filter(s => s !== v))}
+              highlight={toDelete === v}
             >
               {v}
             </Chip>
@@ -153,13 +180,30 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
               key={value}
               {...(value === selected && { 'data-selected': true })}
               onMouseEnter={() => {
-                if (performance.now() - lastScroll > 100) setSelected(value)
+                if (performance.now() - lastScroll > 100) {
+                  setSelected(value)
+                  setNewSelected()
+                }
               }}
               onClick={() => addTag(value)}
             >
               {formatted}
             </li>
           ))}
+          {!options.includes(input.toLowerCase()) && (
+            <S.Add
+              {...(newSelected && { 'data-selected': true })}
+              onClick={() => addTag(input)}
+              onMouseEnter={() => {
+                if (performance.now() - lastScroll > 100) {
+                  setNewSelected(true)
+                  setSelected()
+                }
+              }}
+            >
+              &lsquo;{input}&rsquo;
+            </S.Add>
+          )}
         </S.List>
       )}
     </S.Wrap>
@@ -216,6 +260,15 @@ const S = {
       &[data-selected] {
         background-color: #feeef2;
       }
+    }
+  `,
+
+  Add: styled.li`
+    font-weight: bold;
+
+    &:before {
+      content: 'ADD ';
+      color: #ff205c;
     }
   `,
 }

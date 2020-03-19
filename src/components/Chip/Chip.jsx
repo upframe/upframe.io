@@ -6,9 +6,14 @@ export default function Chip({
   children,
   onClick = () => {},
   removable = true,
+  highlight,
 }) {
   return (
-    <div className={styles.chip} onClick={() => onClick(children)}>
+    <div
+      className={styles.chip}
+      onClick={() => onClick(children)}
+      {...(highlight && { 'data-highlight': true })}
+    >
       <Text>{children}</Text>
       {removable && <span>×</span>}
     </div>
