@@ -10,11 +10,13 @@ const MeetupConfirm = React.lazy(() => import('./screens/Meetup/Confirm'))
 const MeetupCancel = React.lazy(() => import('./screens/Meetup/Cancel'))
 const ErrorPage = React.lazy(() => import('./screens/404'))
 const Sync = React.lazy(() => import('./screens/Sync/Sync'))
+const List = React.lazy(() => import('./screens/List'))
 
 export default function Routes() {
   return (
     <Switch>
-      <Route exact path="/(product|design|software)?" component={Main} />
+      <Route exact path="/" component={Main} />
+      <Route exact path="/list/:list" component={List} />
       <Route exact path="/login" component={Login} />
       <Route exact path="/(register|signup)" component={Register} />
       <Route exact path="/settings" component={Settings} />

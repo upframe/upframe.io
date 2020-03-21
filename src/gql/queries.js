@@ -2,13 +2,31 @@ import gql from 'graphql-tag'
 import { person } from './fragments'
 
 export const MENTORS = gql`
-  query MentorList {
+  query Mentors {
     mentors {
       ...MentorDetails
       categories
     }
   }
   ${person.mentorDetails}
+`
+
+export const LIST = gql`
+  query UserList($name: String!) {
+    list(name: $name) {
+      name
+      users {
+        ...PersonBase
+        biography
+        tags
+        ... on Mentor {
+          title
+          company
+        }
+      }
+    }
+  }
+  ${person.base}
 `
 
 export const PROFILE = gql`
