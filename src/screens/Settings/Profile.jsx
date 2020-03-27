@@ -64,7 +64,14 @@ export default function Profile() {
   }
 
   function handleChange(k, v) {
-    setDiff({ ...diff, [k]: v })
+    if (
+      !v &&
+      (!/\d+/.test(k)
+        ? !user[k]
+        : !user.social.find(({ id }) => id === parseInt(k)))
+    )
+      setDiff(Object.fromEntries(Object.entries(diff).filter(e => e[0] !== k)))
+    else setDiff({ ...diff, [k]: v })
   }
 
   useEffect(() => {
@@ -209,10 +216,10 @@ export default function Profile() {
             required={false}
             input={handle}
             hint={
-              handle ? (
+              handle || diff[id] ? (
                 <span>
                   <b>Preview: </b>
-                  {url + handle}
+                  {url + (diff[id] ? diff[id] : handle)}
                 </span>
               ) : (
                 ''
