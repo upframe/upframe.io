@@ -35,7 +35,7 @@ export default function Settings() {
             <Route path="/settings/public" component={Profile} />
             <Route path="/settings/account" component={Account} />
             <Route path="/settings/notifications" component={Notifications} />
-            {me && me.role === 'MENTOR' && (
+            {me && me.role !== 'USER' && (
               <>
                 <Route path="/settings/mycalendar" component={CalendarTab} />
                 <Redirect

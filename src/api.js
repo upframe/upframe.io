@@ -14,7 +14,8 @@ export default new ApolloClient({
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
-          if (extensions.code === 'BAD_USER_INPUT') return notify(message)
+          if (['BAD_USER_INPUT', 'FORBIDDEN'].includes(extensions.code))
+            return notify(message)
           console.log(
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
           )
