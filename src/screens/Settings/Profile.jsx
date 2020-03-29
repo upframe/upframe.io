@@ -5,7 +5,14 @@ import { useCtx } from 'utils/Hooks'
 import { haveSameContent } from 'utils/Array'
 import styles from './profile.module.scss'
 import { useQuery, queries, mutations, useMutation } from '../../gql'
-import { Text, Title, Button, ProfilePicture, Multiselect } from 'components'
+import {
+  Text,
+  Title,
+  Button,
+  ProfilePicture,
+  Multiselect,
+  PhotoCrop,
+} from 'components'
 
 export default function Profile() {
   const fileInput = useRef(null)
@@ -13,6 +20,7 @@ export default function Profile() {
   const [diff, setDiff] = useState({})
   const [invalid, setInvalid] = useState([])
   const [tags, setTags] = useState([])
+  const [photo, setPhoto] = useState()
 
   const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_PROFILE, {
     variables: { id: currentUser, skip: !currentUser },
@@ -23,7 +31,11 @@ export default function Profile() {
     if (Array.isArray(user.tags)) setTags(user.tags)
   }, [user.tags])
 
-  function uploadPhoto(e) {}
+  function uploadPhoto(e) {
+    const reader = new FileReader()
+    reader.onload = e => setPhoto(e.target.result)
+    reader.readAsDataURL(e.target.files[0])
+  }
 
   function removePhoto() {}
 
@@ -239,6 +251,7 @@ export default function Profile() {
       >
         View Profile
       </Button>
+      {photo && <PhotoCrop photo={photo} />}
     </div>
   )
 }
