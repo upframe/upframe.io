@@ -36,13 +36,13 @@ export default function CalendarList({ onChange, user, loading = [] }) {
             <Title s3>Calendars</Title>
             <div className={styles.list}>
               {(user.calendars || []).map(({ id, name, color }, i) => {
-                const Tag = loading.includes(id) ? Spinner : Checkbox
                 return (
                   <div className={styles.calendarToggle} key={id}>
-                    <Tag
+                    <Checkbox
                       onChange={v => toggleCalendar(id, v)}
                       checked={selection.includes(id)}
                       color={color}
+                      loading={loading.includes(id)}
                     />
                     <Text small strong>
                       {name}

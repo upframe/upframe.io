@@ -78,12 +78,7 @@
   }
 
   svg {
-    --size: 3rem;
-    width: var(--size);
-    height: var(--size);
-    --off: calc((var(--size) - 1.375rem) / 2 * -1);
-    margin: var(--off);
-    margin-right: calc(var(--off) + 1rem);
+    margin-right: calc(var(--off) + 1rem) !important;
   }
 }
 

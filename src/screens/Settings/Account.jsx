@@ -19,7 +19,9 @@ export default function Account() {
     }
   )
 
-  const [setVisibility] = useMutation(mutations.SET_PROFILE_VISIBILITY)
+  const [setVisibility, { loading }] = useMutation(
+    mutations.SET_PROFILE_VISIBILITY
+  )
   const [changeEmail] = useMutation(mutations.REQUEST_EMAIL_CHANGE, {
     onCompleted() {
       notify('we send your an email with a link to change your email')
@@ -71,6 +73,7 @@ export default function Account() {
                   variables: { visibility: v ? 'UNLISTED' : 'LISTED' },
                 })
               }
+              loading={loading}
             />
             <Text>Hide my profile from the homepage.</Text>
           </div>
