@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { Shade, Title } from '.'
+import { Shade, Title, Button, Icon } from '.'
 
-export default function PhotoCrop({ photo }) {
+export default function PhotoCrop({ photo, name, onCancel, onSave }) {
   const selectRef = useRef()
   const previewRef = useRef()
   const imgRef = useRef()
@@ -24,9 +24,9 @@ export default function PhotoCrop({ photo }) {
     previewRef.current.style.width = `${(1 /
       (selectRef.current.offsetWidth / imgRef.current.offsetWidth)) *
       100}%`
-    previewRef.current.style.transform = `translateX(-${((select.x - img.x) /
-      img.width) *
-      100}%) translateY(-${((select.y - img.y) / img.height) * 100}%)`
+    previewRef.current.style.transform = `translateX(-${Math.round(
+      ((select.x - img.x) / img.width) * 100
+    )}%) translateY(-${Math.round(((select.y - img.y) / img.height) * 100)}%)`
   }, [selectRef, previewRef, imgRef])
 
   function dragStart() {
@@ -147,10 +147,60 @@ export default function PhotoCrop({ photo }) {
     )
   }
 
+  function crop() {
+    const canvas = document.createElement('canvas')
+    const selectRect = selectRef.current.getBoundingClientRect()
+    const imgRect = imgRef.current.getBoundingClientRect()
+    const ctx = canvas.getContext('2d')
+    const maxSizeMB = 5
+
+    const resize = (scale = 1) => {
+      canvas.width =
+        (selectRect.width / imgRect.width) * imgRef.current.naturalWidth * scale
+      canvas.height =
+        (selectRect.height / imgRect.height) *
+        imgRef.current.naturalHeight *
+        scale
+
+      const img = new Image()
+      img.onload = () => {
+        ctx.drawImage(
+          img,
+          0,
+          0,
+          imgRef.current.naturalWidth,
+          imgRef.current.naturalHeight,
+          -((selectRect.left - imgRect.left) / imgRect.width) *
+            imgRef.current.naturalWidth *
+            scale,
+          -(
+            ((selectRect.top - imgRect.top) / imgRect.height) *
+            imgRef.current.naturalHeight *
+            scale
+          ),
+          imgRef.current.naturalWidth * scale,
+          imgRef.current.naturalHeight * scale
+        )
+        let data = canvas.toDataURL()
+        let size = Math.round((data.length * 3) / 4) / 10e5
+
+        if (size > maxSizeMB && scale === 1) {
+          resize(Math.sqrt((maxSizeMB / size) * 0.8))
+        } else onSave(data)
+      }
+      img.src = photo
+    }
+
+    resize()
+  }
+
   return (
     <Shade>
       <S.Container>
-        <Title s3>Crop your photo</Title>
+        <S.TitleRow>
+          <Title s3>Crop your photo</Title>
+          <Icon icon="close" onClick={onCancel} />
+        </S.TitleRow>
         <S.Frame>
           <S.Img src={photo} draggable={false} alt="original" ref={imgRef} />
           <S.Selection ref={selectRef} onMouseDown={dragStart}>
@@ -165,7 +215,14 @@ export default function PhotoCrop({ photo }) {
           <S.PreviewImgWrap>
             <img ref={previewRef} alt="preview" src={photo} />
           </S.PreviewImgWrap>
+          <S.Name>{name}</S.Name>
         </S.Preview>
+        <S.BtWrap>
+          <Button onClick={onCancel}>Cancel</Button>
+          <Button filled onClick={crop}>
+            Save
+          </Button>
+        </S.BtWrap>
       </S.Container>
     </Shade>
   )
@@ -183,6 +240,15 @@ const S = {
     border-radius: 0.5rem;
     user-select: none;
 
+    h4 {
+      margin-bottom: 0.8rem;
+    }
+  `,
+
+  TitleRow: styled.div`
+    display: flex;
+    justify-content: space-between;
+
     h3 {
       margin-top: 0;
       color: #000;
@@ -195,7 +261,7 @@ const S = {
     background-color: #f7f7f7;
     overflow: hidden;
     height: 25rem;
-    width: 25rem;
+    width: 30rem;
   `,
 
   Img: styled.img`
@@ -212,9 +278,7 @@ const S = {
     position: absolute;
     display: block;
     box-sizing: border-box;
-    width: 5rem;
-    height: 5rem;
-    border: 5px dotted #f00;
+    border: 2px dashed #fff;
     cursor: pointer;
 
     &[data-grabbed='true'] {
@@ -225,10 +289,20 @@ const S = {
   Corner: styled.div`
     position: absolute;
     display: block;
-    width: 1rem;
-    height: 1rem;
-    background: red;
+    width: 1.5rem;
+    height: 1.5rem;
     transform: translateX(-50%) translateY(-50%);
+
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 0.5rem;
+      height: 0.5rem;
+      background: #fff;
+      left: 0.5rem;
+      top: 0.5rem;
+    }
 
     &:nth-child(1) {
       cursor: nwse-resize;
@@ -250,11 +324,43 @@ const S = {
 
   Preview: styled.div`
     display: flex;
+    align-items: center;
   `,
 
   PreviewImgWrap: styled.div`
-    width: 5rem;
-    height: 5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 0.25rem;
     overflow: hidden;
+  `,
+
+  Name: styled.p`
+    color: #000;
+    font-weight: bold;
+    margin-left: 1rem;
+    margin-top: 0;
+    margin-bottom: 0;
+
+    &::after {
+      content: '';
+      display: block;
+      margin-top: 0.4rem;
+      width: 10rem;
+      height: 0.8rem;
+      border-radius: 0.4rem;
+      background: #e9e9e9;
+    }
+  `,
+
+  BtWrap: styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2.5rem;
+
+    button {
+      width: 6rem;
+      margin-right: 0;
+      margin-left: 1rem;
+    }
   `,
 }
