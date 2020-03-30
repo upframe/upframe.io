@@ -64,6 +64,24 @@ export const UPDATE_PROFILE = gql`
   ${person.profileSettings}
 `
 
+export const UPLOAD_PROFILE_PICTURE = gql`
+  mutation UploadProfilePicture($file: Upload!) {
+    uploadProfilePicture(file: $file) {
+      ...PersonBase
+    }
+  }
+  ${person.base}
+`
+
+export const REMOVE_PROFILE_PICTURE = gql`
+  mutation RemoveProfilePicture {
+    removeProfilePicture {
+      ...PersonBase
+    }
+  }
+  ${person.base}
+`
+
 export const UPDATE_NOTIICATION_PREFERENCES = gql`
   mutation UpdateNotificationSettings($diff: NotificationSettingsInput!) {
     updateNotificationPreferences(input: $diff) {

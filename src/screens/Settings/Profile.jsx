@@ -12,6 +12,7 @@ import {
   ProfilePicture,
   Multiselect,
   PhotoCrop,
+  Modal,
 } from 'components'
 
 export default function Profile() {
@@ -20,7 +21,8 @@ export default function Profile() {
   const [diff, setDiff] = useState({})
   const [invalid, setInvalid] = useState([])
   const [tags, setTags] = useState([])
-  const [photo, setPhoto] = useState()
+  const [photo, setPhoto] = useState(localStorage.getItem('photo'))
+  const [showRemove, setShowRemove] = useState(false)
 
   const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_PROFILE, {
     variables: { id: currentUser, skip: !currentUser },
@@ -31,13 +33,11 @@ export default function Profile() {
     if (Array.isArray(user.tags)) setTags(user.tags)
   }, [user.tags])
 
-  function uploadPhoto(e) {
+  function editPhoto(e) {
     const reader = new FileReader()
     reader.onload = e => setPhoto(e.target.result)
     reader.readAsDataURL(e.target.files[0])
   }
-
-  function removePhoto() {}
 
   const required = ['name', 'handle', 'title', 'biography']
   const requiredMet = required.every(field => user[field])
@@ -51,6 +51,18 @@ export default function Profile() {
       setInvalid(
         graphQLErrors.map(({ extensions }) => extensions.field).filter(Boolean)
       )
+    },
+  })
+
+  const [uploadPhoto] = useMutation(mutations.UPLOAD_PROFILE_PICTURE, {
+    onCompleted() {
+      setPhoto()
+    },
+  })
+
+  const [removePhoto] = useMutation(mutations.REMOVE_PROFILE_PICTURE, {
+    onCompleted() {
+      setShowRemove(false)
     },
   })
 
@@ -147,13 +159,13 @@ export default function Profile() {
             <Button accent onClick={() => fileInput.current.click()}>
               Upload photo
             </Button>
-            <Button onClick={removePhoto}>Remove</Button>
+            <Button onClick={() => setShowRemove(true)}>Remove</Button>
           </div>
           <input
             type="file"
             accept="image/*"
             ref={fileInput}
-            onChange={uploadPhoto}
+            onChange={editPhoto}
             hidden
           />
         </div>
@@ -251,7 +263,29 @@ export default function Profile() {
       >
         View Profile
       </Button>
-      {photo && <PhotoCrop photo={photo} />}
+      {photo && (
+        <PhotoCrop
+          photo={photo}
+          name={user.name}
+          onSave={file => uploadPhoto({ variables: { file } })}
+          onCancel={() => setPhoto()}
+        />
+      )}
+      {showRemove && (
+        <Modal
+          title="Remove profile photo?"
+          text="Are you sure you want to remove your profile photo? We'll replace it with the default Upframe photo."
+          onClose={() => setShowRemove(false)}
+          actions={[
+            <Button key="cancel" onClick={() => setShowRemove(false)}>
+              Cancel
+            </Button>,
+            <Button filled key="remove" onClick={removePhoto}>
+              Remove Photo
+            </Button>,
+          ]}
+        />
+      )}
     </div>
   )
 }
