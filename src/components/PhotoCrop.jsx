@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { Shade, Title, Button, Icon } from '.'
+import { Title, Button, Modal } from '.'
 
 export default function PhotoCrop({ photo, name, onCancel, onSave }) {
   const selectRef = useRef()
@@ -195,66 +195,39 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
   }
 
   return (
-    <Shade>
-      <S.Container>
-        <S.TitleRow>
-          <Title s3>Crop your photo</Title>
-          <Icon icon="close" onClick={onCancel} />
-        </S.TitleRow>
-        <S.Frame>
-          <S.Img src={photo} draggable={false} alt="original" ref={imgRef} />
-          <S.Selection ref={selectRef} onMouseDown={dragStart}>
-            <S.Corner onMouseDown={resize} />
-            <S.Corner onMouseDown={resize} />
-            <S.Corner onMouseDown={resize} />
-            <S.Corner onMouseDown={resize} />
-          </S.Selection>
-        </S.Frame>
-        <Title s4>Preview</Title>
-        <S.Preview>
-          <S.PreviewImgWrap>
-            <img ref={previewRef} alt="preview" src={photo} />
-          </S.PreviewImgWrap>
-          <S.Name>{name}</S.Name>
-        </S.Preview>
-        <S.BtWrap>
-          <Button onClick={onCancel}>Cancel</Button>
-          <Button filled onClick={crop}>
-            Save
-          </Button>
-        </S.BtWrap>
-      </S.Container>
-    </Shade>
+    <Modal
+      title="Crop you photo"
+      actions={[
+        <Button onClick={onCancel} key="cancel">
+          Cancel
+        </Button>,
+        <Button filled onClick={crop} key="save">
+          Save
+        </Button>,
+      ]}
+      cstSize
+    >
+      <S.Frame>
+        <S.Img src={photo} draggable={false} alt="original" ref={imgRef} />
+        <S.Selection ref={selectRef} onMouseDown={dragStart}>
+          <S.Corner onMouseDown={resize} />
+          <S.Corner onMouseDown={resize} />
+          <S.Corner onMouseDown={resize} />
+          <S.Corner onMouseDown={resize} />
+        </S.Selection>
+      </S.Frame>
+      <Title s4>Preview</Title>
+      <S.Preview>
+        <S.PreviewImgWrap>
+          <img ref={previewRef} alt="preview" src={photo} />
+        </S.PreviewImgWrap>
+        <S.Name>{name}</S.Name>
+      </S.Preview>
+    </Modal>
   )
 }
 
 const S = {
-  Container: styled.div`
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    display: block;
-    padding: 1rem 1.5rem;
-    background: #fff;
-    border-radius: 0.5rem;
-    user-select: none;
-
-    h4 {
-      margin-bottom: 0.8rem;
-    }
-  `,
-
-  TitleRow: styled.div`
-    display: flex;
-    justify-content: space-between;
-
-    h3 {
-      margin-top: 0;
-      color: #000;
-    }
-  `,
-
   Frame: styled.div`
     position: relative;
     display: block;
@@ -349,18 +322,6 @@ const S = {
       height: 0.8rem;
       border-radius: 0.4rem;
       background: #e9e9e9;
-    }
-  `,
-
-  BtWrap: styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 2.5rem;
-
-    button {
-      width: 6rem;
-      margin-right: 0;
-      margin-left: 1rem;
     }
   `,
 }

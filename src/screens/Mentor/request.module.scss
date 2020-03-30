@@ -41,18 +41,5 @@
     position: absolute;
     right: 0.5rem;
     top: 0.5rem;
-    cursor: pointer;
-    border-radius: 50%;
-
-    path {
-      position: absolute;
-    }
-
-    &:hover {
-      path {
-        fill: var(--cl-accent);
-      }
-      background-color: #feeef2;
-    }
   }
 }
