@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
-import { Redirect } from 'react-router-dom'
-import styles from './login.module.scss'
-import { Labeled, Input, Button, Card, Page } from '../../components'
-import { useCtx, useHistory, useMe } from '../../utils/Hooks'
-import { mutations, useMutation } from '../../gql'
+import { Redirect, Link } from 'react-router-dom'
+import { Labeled, Input, Button, Page } from '../components'
+import { useCtx, useHistory, useMe } from '../utils/Hooks'
+import { mutations, useMutation } from '../gql'
+import styled from 'styled-components'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { setCurrentUser } = useCtx()
   const history = useHistory()
-  const me = useMe()
+  const { me } = useMe()
 
   const [signIn] = useMutation(mutations.SIGN_IN, {
     onCompleted: ({ signIn: user }) => {
@@ -28,7 +28,7 @@ export default function Login() {
 
   if (me) return <Redirect to="/" />
   return (
-    <Page form title="Login" onSubmit={handleSubmit} className={styles.login}>
+    <Page form title="Login" onSubmit={handleSubmit}>
       <Labeled
         label="Email"
         action={
@@ -51,9 +51,24 @@ export default function Login() {
           />
         }
       />
+      <S.Forgot>
+        <Link to="/reset/password">Forgot Password?</Link>
+      </S.Forgot>
       <Button accent type="submit">
         Login
       </Button>
     </Page>
   )
+}
+
+const S = {
+  Forgot: styled.div`
+    position: absolute;
+    transform: translateY(-6.1rem);
+    right: 3rem;
+
+    a {
+      font-size: 0.7rem;
+    }
+  `,
 }

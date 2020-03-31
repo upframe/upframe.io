@@ -15,6 +15,7 @@ export default function Button({
   text = false,
   type,
   disabled = false,
+  hidden = false,
 }) {
   const Button = (
     <button
@@ -27,6 +28,7 @@ export default function Button({
       onClick={onClick}
       {...(type && { type })}
       disabled={disabled}
+      hidden={hidden}
     >
       {children}
     </button>
