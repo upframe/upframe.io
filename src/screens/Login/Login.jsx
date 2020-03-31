@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import styles from './login.module.scss'
-import { Labeled, Input, Button, Card } from '../../components'
-import { Helmet } from 'react-helmet'
+import { Labeled, Input, Button, Card, Page } from '../../components'
 import { useCtx, useHistory, useMe } from '../../utils/Hooks'
 import { mutations, useMutation } from '../../gql'
 
@@ -18,7 +17,7 @@ export default function Login() {
       if (!user) return
       setCurrentUser(user.id)
       localStorage.setItem('loggedin', true)
-      history.push('/settings')
+      history.push('/')
     },
   })
 
@@ -27,36 +26,34 @@ export default function Login() {
     signIn({ variables: { email, password } })
   }
 
-  if (me) return <Redirect to="/settings" />
+  if (me) return <Redirect to="/" />
   return (
-    <>
-      <Helmet>
-        <title>Login | Upframe</title>
-        <meta property="og:title" content="Login | Upframe"></meta>
-        <meta
-          property="og:description"
-          content="Login to your account and start helping people."
-        ></meta>
-        <meta property="og:image" content="/media/logo-app-192.png"></meta>
-        <meta name="twitter:card" content="summary_large_image"></meta>
-      </Helmet>
-      <Card className={styles.wrap}>
-        <form className={styles.login} onSubmit={handleSubmit}>
-          <Labeled
-            label="Email"
-            action={<Input type="email" value={email} onChange={setEmail} />}
+    <Page form title="Login" onSubmit={handleSubmit} className={styles.login}>
+      <Labeled
+        label="Email"
+        action={
+          <Input
+            type="email"
+            autoComplete="username"
+            value={email}
+            onChange={setEmail}
           />
-          <Labeled
-            label="Password"
-            action={
-              <Input type="password" value={password} onChange={setPassword} />
-            }
+        }
+      />
+      <Labeled
+        label="Password"
+        action={
+          <Input
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={setPassword}
           />
-          <Button accent type="submit">
-            Login
-          </Button>
-        </form>
-      </Card>
-    </>
+        }
+      />
+      <Button accent type="submit">
+        Login
+      </Button>
+    </Page>
   )
 }
