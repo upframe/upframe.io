@@ -3,21 +3,13 @@ import { Text, Title, Checkbox } from 'components'
 import Item from './Item'
 import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
-import { useCtx, useMe } from '../../utils/Hooks'
-import { queries, mutations, useQuery, useMutation } from '../../gql'
+import { useMe } from '../../utils/Hooks'
+import { mutations, useMutation } from '../../gql'
 import { notify } from 'notification'
 
 export default function Account() {
-  const { currentUser } = useCtx()
-  const me = useMe()
+  const { me } = useMe()
   const [deleteRequested, setDeleteRequested] = useState(false)
-
-  const { data: { mentor: user = {} } = {} } = useQuery(
-    queries.SETTINGS_ACCOUNT,
-    {
-      variables: { id: currentUser, skip: !currentUser },
-    }
-  )
 
   const [setVisibility, { loading }] = useMutation(
     mutations.SET_PROFILE_VISIBILITY
@@ -25,11 +17,6 @@ export default function Account() {
   const [changeEmail] = useMutation(mutations.REQUEST_EMAIL_CHANGE, {
     onCompleted() {
       notify('we send your an email with a link to change your email')
-    },
-  })
-  const [changePassword] = useMutation(mutations.REQUEST_PASSWORD_CHANGE, {
-    onCompleted() {
-      notify('we send your an email with a link to change your password')
     },
   })
 
@@ -41,10 +28,10 @@ export default function Account() {
         calendar with Upframe.
       </Text>
       <Item label="Your email" button="Change Email" onChange={changeEmail}>
-        <Text underlined>{user.email}</Text> is your current email address
+        <Text underlined>{me.email}</Text> is your current email address
         connected to your Upframe account.
       </Item>
-      <Item label="Password" button="Change Password" onChange={changePassword}>
+      <Item label="Password" button="Change Password" linkTo="/reset/password">
         You’ll receive an email in your inbox so you can reset your password.
       </Item>
       <Title s2>Your Data</Title>
@@ -62,12 +49,12 @@ export default function Account() {
         profile will no longer be available at upframe.io. This action is
         irreversible, please proceed with caution.
       </Item>
-      {me.role !== 'USER' && (
+      {me.role && me.role !== 'USER' && (
         <>
           <Title s2>Privacy</Title>
           <div className={styles.privacyCheck}>
             <Checkbox
-              checked={user.visibility === 'UNLISTED'}
+              checked={me.visibility === 'UNLISTED'}
               onChange={v =>
                 setVisibility({
                   variables: { visibility: v ? 'UNLISTED' : 'LISTED' },

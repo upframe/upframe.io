@@ -8,7 +8,7 @@ export default function Dropdown({ onBlur }) {
   const ref = useRef()
   const { setCurrentUser } = useCtx()
   const history = useHistory()
-  const me = useMe()
+  const { me } = useMe()
 
   const [signOut] = useMutation(mutations.SIGN_OUT, {
     onCompleted() {

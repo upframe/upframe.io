@@ -8,7 +8,7 @@ export default function GoogleSync() {
     queries.CONNECT_CALENDAR_URL
   )
 
-  const me = useMe()
+  const { me } = useMe()
 
   const [disconnect] = useMutation(mutations.DISCONNECT_CALENDAR, {
     onCompleted() {

@@ -44,8 +44,8 @@ export const REQUEST_EMAIL_CHANGE = gql`
 `
 
 export const REQUEST_PASSWORD_CHANGE = gql`
-  mutation RequestPasswordChange {
-    requestPasswordChange
+  mutation RequestPasswordChange($email: String!) {
+    requestPasswordChange(email: $email)
   }
 `
 
@@ -161,4 +161,16 @@ export const DISCONNECT_CALENDAR = gql`
       calendarConnected
     }
   }
+`
+
+export const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($password: String!, $token: String) {
+    changePassword(password: $password, token: $token) {
+      ...PersonBase
+      ... on Mentor {
+        calendarConnected
+      }
+    }
+  }
+  ${person.base}
 `

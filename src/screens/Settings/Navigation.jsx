@@ -5,7 +5,7 @@ import { useMe } from '../../utils/Hooks'
 
 export default function Navigation() {
   const current = window.location.href.split('/').pop()
-  const me = useMe()
+  const { me } = useMe()
 
   const tabs = [
     { title: 'Public Profile', url: 'public' },

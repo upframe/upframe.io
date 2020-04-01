@@ -56,8 +56,10 @@ export const ME = gql`
     user(id: $id) {
       ...PersonBase
       role
+      email
       ... on Mentor {
         calendarConnected
+        visibility
       }
     }
   }
@@ -71,16 +73,6 @@ export const SETTINGS_PROFILE = gql`
     }
   }
   ${person.profileSettings}
-`
-
-export const SETTINGS_ACCOUNT = gql`
-  query SettingsAccount($id: ID!) {
-    mentor(id: $id) {
-      id
-      email
-      visibility
-    }
-  }
 `
 
 export const SETTINGS_NOTIFICATIONS = gql`
@@ -158,5 +150,11 @@ export const TAG_LIST = gql`
     tags {
       name
     }
+  }
+`
+
+export const VERIFY_TOKEN = gql`
+  query VerifyToken($token: String!) {
+    isTokenValid(token: $token)
   }
 `

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Title, Text, Checkbox, Spinner } from 'components'
+import { Title, Text, Checkbox } from 'components'
 import GoogleSync from './GoogleSync'
 import { classes } from 'utils/css'
 import styles from './calendarList.module.scss'

@@ -1,14 +1,16 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Title, Button, Modal } from '.'
+import { Title, Button, Modal, Spinner } from '.'
 
 export default function PhotoCrop({ photo, name, onCancel, onSave }) {
   const selectRef = useRef()
   const previewRef = useRef()
   const imgRef = useRef()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (!selectRef.current || !previewRef.current || !imgRef.current) return
+    if (!selectRef.current || !previewRef.current || !imgRef.current || loading)
+      return
     const img = imgRef.current.getBoundingClientRect()
     selectRef.current.style.width = `${Math.min(img.width, img.height)}px`
     selectRef.current.style.height = `${Math.min(img.width, img.height)}px`
@@ -27,7 +29,7 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
     previewRef.current.style.transform = `translateX(-${Math.round(
       ((select.x - img.x) / img.width) * 100
     )}%) translateY(-${Math.round(((select.y - img.y) / img.height) * 100)}%)`
-  }, [selectRef, previewRef, imgRef])
+  }, [selectRef, previewRef, imgRef, loading])
 
   function dragStart() {
     let dragPoint
@@ -148,19 +150,18 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
   }
 
   function crop() {
-    const canvas = document.createElement('canvas')
     const selectRect = selectRef.current.getBoundingClientRect()
     const imgRect = imgRef.current.getBoundingClientRect()
+    const { naturalWidth, naturalHeight } = imgRef.current
+    setLoading(true)
+    const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
     const maxSizeMB = 5
 
     const resize = (scale = 1) => {
-      canvas.width =
-        (selectRect.width / imgRect.width) * imgRef.current.naturalWidth * scale
+      canvas.width = (selectRect.width / imgRect.width) * naturalWidth * scale
       canvas.height =
-        (selectRect.height / imgRect.height) *
-        imgRef.current.naturalHeight *
-        scale
+        (selectRect.height / imgRect.height) * naturalHeight * scale
 
       const img = new Image()
       img.onload = () => {
@@ -168,18 +169,18 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
           img,
           0,
           0,
-          imgRef.current.naturalWidth,
-          imgRef.current.naturalHeight,
+          naturalWidth,
+          naturalHeight,
           -((selectRect.left - imgRect.left) / imgRect.width) *
-            imgRef.current.naturalWidth *
+            naturalWidth *
             scale,
           -(
             ((selectRect.top - imgRect.top) / imgRect.height) *
-            imgRef.current.naturalHeight *
+            naturalHeight *
             scale
           ),
-          imgRef.current.naturalWidth * scale,
-          imgRef.current.naturalHeight * scale
+          naturalWidth * scale,
+          naturalHeight * scale
         )
         let data = canvas.toDataURL()
         let size = Math.round((data.length * 3) / 4) / 10e5
@@ -194,6 +195,12 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
     resize()
   }
 
+  if (loading)
+    return (
+      <Modal title="Uploading your photo…">
+        <Spinner />
+      </Modal>
+    )
   return (
     <Modal
       title="Crop you photo"

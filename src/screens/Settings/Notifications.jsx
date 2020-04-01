@@ -8,7 +8,7 @@ import { queries, mutations, useQuery, useMutation } from '../../gql'
 
 export default function Notifications() {
   const { currentUser } = useCtx()
-  const me = useMe()
+  const { me } = useMe()
   const [mail, setMail] = useState(false)
 
   const { data: { mentor: user = {} } = {} } = useQuery(

@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
 const Main = React.lazy(() => import('./screens/Main/Main'))
-const Login = React.lazy(() => import('./screens/Login/Login'))
+const Login = React.lazy(() => import('./screens/Login'))
 const Register = React.lazy(() => import('./screens/Signup/Signup'))
 const Settings = React.lazy(() => import('./screens/Settings/Settings'))
 const Profile = React.lazy(() => import('./screens/Mentor/Profile'))
@@ -11,6 +11,7 @@ const MeetupCancel = React.lazy(() => import('./screens/Meetup/Cancel'))
 const ErrorPage = React.lazy(() => import('./screens/404'))
 const Sync = React.lazy(() => import('./screens/Sync/Sync'))
 const List = React.lazy(() => import('./screens/List'))
+const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
 
 export default function Routes() {
   return (
@@ -26,6 +27,7 @@ export default function Routes() {
       <Route exact path="/meetup/cancel/:meetupid" component={MeetupCancel} />
       <Route exact path="/sync" component={Sync} />
       <Route exact path="/:handle" component={Profile} />
+      <Route exact path="/reset/password/:token?" component={ResetPassword} />
       <Route component={ErrorPage} />
     </Switch>
   )

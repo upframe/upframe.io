@@ -159,7 +159,10 @@ export default function Profile() {
             <Button accent onClick={() => fileInput.current.click()}>
               Upload photo
             </Button>
-            <Button onClick={() => setShowRemove(true)}>Remove</Button>
+            {Array.isArray(user.profilePictures) &&
+              !user.profilePictures[0].url.endsWith('default.png') && (
+                <Button onClick={() => setShowRemove(true)}>Remove</Button>
+              )}
           </div>
           <input
             type="file"
