@@ -12,6 +12,7 @@ const ErrorPage = React.lazy(() => import('./screens/404'))
 const Sync = React.lazy(() => import('./screens/Sync/Sync'))
 const List = React.lazy(() => import('./screens/List'))
 const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
+const ResetEmail = React.lazy(() => import('./screens/ResetEmail'))
 
 export default function Routes() {
   return (
@@ -28,6 +29,7 @@ export default function Routes() {
       <Route exact path="/sync" component={Sync} />
       <Route exact path="/:handle" component={Profile} />
       <Route exact path="/reset/password/:token?" component={ResetPassword} />
+      <Route exact path="/reset/email/:token?" component={ResetEmail} />
       <Route component={ErrorPage} />
     </Switch>
   )

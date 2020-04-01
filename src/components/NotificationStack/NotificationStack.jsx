@@ -15,7 +15,7 @@ export default function NotificationStack() {
         msg: notification.message || notification,
         key: performance.now(),
       },
-      ...notifications.filter(({ key }) => performance.now() - key < 4000),
+      ...notifications.filter(({ key }) => performance.now() - key < 5000),
     ])
     setNotification(null)
   }, [notification, notifications])

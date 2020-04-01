@@ -38,8 +38,8 @@ export const SET_PROFILE_VISIBILITY = gql`
 `
 
 export const REQUEST_EMAIL_CHANGE = gql`
-  mutation RequestEmailChange {
-    requestEmailChange
+  mutation RequestEmailChange($email: String!) {
+    requestEmailChange(email: $email)
   }
 `
 
@@ -166,6 +166,18 @@ export const DISCONNECT_CALENDAR = gql`
 export const CHANGE_PASSWORD = gql`
   mutation ChangePassword($password: String!, $token: String) {
     changePassword(password: $password, token: $token) {
+      ...PersonBase
+      ... on Mentor {
+        calendarConnected
+      }
+    }
+  }
+  ${person.base}
+`
+
+export const CHANGE_EMAIL = gql`
+  mutation ChangeEmail($token: String!) {
+    changeEmail(token: $token) {
       ...PersonBase
       ... on Mentor {
         calendarConnected

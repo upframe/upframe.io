@@ -7,7 +7,7 @@ export default function Page({
   title,
   style,
   children,
-  onSubmit = e => e.preventDefault(),
+  onSubmit,
   ...props
 }) {
   const Wrap = form ? S.Form : style ? S.Page : React.Fragment
@@ -19,7 +19,13 @@ export default function Page({
       <Wrap
         {...(style && { as: style })}
         data-style={style || props.className ? 'cst' : 'default'}
-        {...{ onSubmit, ...props }}
+        {...{
+          onSubmit: e => {
+            e.preventDefault()
+            if (onSubmit) onSubmit(e)
+          },
+          ...props,
+        }}
       >
         {children}
       </Wrap>

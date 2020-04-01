@@ -5,7 +5,6 @@ import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
 import { useMe } from '../../utils/Hooks'
 import { mutations, useMutation } from '../../gql'
-import { notify } from 'notification'
 
 export default function Account() {
   const { me } = useMe()
@@ -14,11 +13,6 @@ export default function Account() {
   const [setVisibility, { loading }] = useMutation(
     mutations.SET_PROFILE_VISIBILITY
   )
-  const [changeEmail] = useMutation(mutations.REQUEST_EMAIL_CHANGE, {
-    onCompleted() {
-      notify('we send your an email with a link to change your email')
-    },
-  })
 
   return (
     <div className={styles.account}>
@@ -27,7 +21,7 @@ export default function Account() {
         Spend less time here and focus on what really matters by syncing your
         calendar with Upframe.
       </Text>
-      <Item label="Your email" button="Change Email" onChange={changeEmail}>
+      <Item label="Your email" button="Change Email" linkTo="/reset/email">
         <Text underlined>{me.email}</Text> is your current email address
         connected to your Upframe account.
       </Item>
