@@ -5,13 +5,13 @@ import { useMe } from '../../utils/Hooks'
 
 export default function Navigation() {
   const current = window.location.href.split('/').pop()
-  const me = useMe()
+  const { me } = useMe()
 
   const tabs = [
     { title: 'Public Profile', url: 'public' },
     { title: 'Account Settings', url: 'account' },
     { title: 'Notifications', url: 'notifications' },
-    ...(me && me.role === 'MENTOR'
+    ...(me && me.role !== 'USER'
       ? [{ title: 'My Calendar', url: 'mycalendar' }]
       : []),
   ]

@@ -7,8 +7,12 @@
 .clickable {
   cursor: pointer;
   transition: background-color 0.2s ease;
+  border-radius: 50%;
 
-  path {
-    transition: fill 0.2s ease;
+  &:hover {
+    path {
+      fill: var(--cl-accent);
+    }
+    background-color: #feeef2;
   }
 }

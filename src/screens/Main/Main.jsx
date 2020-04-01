@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import styles from './main.module.scss'
 import Landing from './Landing'
 import MentorList from './MentorList'
 import { Title, Text } from '../../components'
 import Categories from './Categories'
 import { useCtx } from '../../utils/Hooks'
 import { queries, useQuery } from '../../gql'
+import Home from '../Home'
 
-export default function Main({ match }) {
+export default function Main() {
   const [filtered, setFiltered] = useState([])
   const { searchQuery: search, currentUser } = useCtx()
-  const category = match.url.split('/').pop()
-  const { data: { mentors = [] } = {} } = useQuery(queries.MENTORS)
   const [loggedIn] = useState(localStorage.getItem('loggedin') === 'true')
+  const { data: { mentors = [] } = {} } = useQuery(queries.MENTORS)
 
   useEffect(() => {
     if (!mentors.length) return
-    if (!search && !category) {
+    if (!search) {
       if (filtered.length === mentors.length) return
       return setFiltered(mentors)
     }
@@ -28,18 +27,14 @@ export default function Main({ match }) {
             .some(v => v.toLowerCase().startsWith(search.toLowerCase()))
         )
       )
-    if (category)
-      setFiltered(
-        mentors.filter(({ categories }) => categories.includes(category))
-      )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, mentors, category])
+  }, [search, mentors])
 
   return (
-    <main className={styles.main}>
+    <>
       {!currentUser && !loggedIn && !search && <Landing />}
-      <div className={styles.container}>
-        {currentUser && !search && !category && (
+      <Home>
+        {currentUser && !search && (
           <>
             <Categories />
             <Title s2>Featured Mentors</Title>
@@ -53,7 +48,7 @@ export default function Main({ match }) {
         )}
 
         <MentorList mentors={filtered} />
-      </div>
-    </main>
+      </Home>
+    </>
   )
 }

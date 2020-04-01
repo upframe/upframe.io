@@ -42,7 +42,7 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
           )
         }
         if (indices.length === 0)
-          return { value: item, formatted: <span>{item}</span> }
+          return { value: item, formatted: <b>{item}</b> }
         const slices = [
           { index: [0, indices[0][0]], match: false },
           ...indices
@@ -71,7 +71,7 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
           formatted: (
             <>
               {segs.map(({ seg, match, key }) => {
-                const Tag = match ? 'b' : 'span'
+                const Tag = match ? 'span' : 'b'
                 return <Tag key={key}>{seg}</Tag>
               })}
             </>

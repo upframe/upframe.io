@@ -38,14 +38,14 @@ export const SET_PROFILE_VISIBILITY = gql`
 `
 
 export const REQUEST_EMAIL_CHANGE = gql`
-  mutation RequestEmailChange {
-    requestEmailChange
+  mutation RequestEmailChange($email: String!) {
+    requestEmailChange(email: $email)
   }
 `
 
 export const REQUEST_PASSWORD_CHANGE = gql`
-  mutation RequestPasswordChange {
-    requestPasswordChange
+  mutation RequestPasswordChange($email: String!) {
+    requestPasswordChange(email: $email)
   }
 `
 
@@ -62,6 +62,24 @@ export const UPDATE_PROFILE = gql`
     }
   }
   ${person.profileSettings}
+`
+
+export const UPLOAD_PROFILE_PICTURE = gql`
+  mutation UploadProfilePicture($file: Upload!) {
+    uploadProfilePicture(file: $file) {
+      ...PersonBase
+    }
+  }
+  ${person.base}
+`
+
+export const REMOVE_PROFILE_PICTURE = gql`
+  mutation RemoveProfilePicture {
+    removeProfilePicture {
+      ...PersonBase
+    }
+  }
+  ${person.base}
 `
 
 export const UPDATE_NOTIICATION_PREFERENCES = gql`
@@ -143,4 +161,28 @@ export const DISCONNECT_CALENDAR = gql`
       calendarConnected
     }
   }
+`
+
+export const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($password: String!, $token: String) {
+    changePassword(password: $password, token: $token) {
+      ...PersonBase
+      ... on Mentor {
+        calendarConnected
+      }
+    }
+  }
+  ${person.base}
+`
+
+export const CHANGE_EMAIL = gql`
+  mutation ChangeEmail($token: String!) {
+    changeEmail(token: $token) {
+      ...PersonBase
+      ... on Mentor {
+        calendarConnected
+      }
+    }
+  }
+  ${person.base}
 `

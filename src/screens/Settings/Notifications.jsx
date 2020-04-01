@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Title, Text, Checkbox, Spinner } from 'components'
 import Item from './Item'
 import IntervalSelect from './IntervalSelect'
@@ -8,7 +8,8 @@ import { queries, mutations, useQuery, useMutation } from '../../gql'
 
 export default function Notifications() {
   const { currentUser } = useCtx()
-  const me = useMe()
+  const { me } = useMe()
+  const [mail, setMail] = useState(false)
 
   const { data: { mentor: user = {} } = {} } = useQuery(
     queries.SETTINGS_NOTIFICATIONS,
@@ -17,7 +18,14 @@ export default function Notifications() {
     }
   )
 
-  const [updatePrefs] = useMutation(mutations.UPDATE_NOTIICATION_PREFERENCES)
+  const [updatePrefs, { loading }] = useMutation(
+    mutations.UPDATE_NOTIICATION_PREFERENCES,
+    {
+      onCompleted() {
+        setMail(false)
+      },
+    }
+  )
 
   if (!user.notificationPrefs) return <Spinner centered />
   return (
@@ -48,11 +56,13 @@ export default function Notifications() {
       <div className={styles.emailCheck}>
         <Checkbox
           checked={user.notificationPrefs.receiveEmails}
-          onChange={receiveEmails =>
+          onChange={receiveEmails => {
+            setMail(true)
             updatePrefs({
               variables: { diff: { receiveEmails } },
             })
-          }
+          }}
+          loading={mail && loading}
         />
         <Text>Updates about our new product features and releases.</Text>
       </div>

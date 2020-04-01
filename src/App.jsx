@@ -1,9 +1,8 @@
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Navbar, Spinner, NotificationStack } from './components'
 import Routes from './Routes'
-import mixpanel from 'mixpanel-browser'
 import Context from './context'
 import styles from './styles/app.module.scss'
 import { queries, useQuery } from './gql'
@@ -20,12 +19,6 @@ export default function App() {
   function setCurrentUser(currentUser) {
     setCtx({ ...ctx, currentUser })
   }
-
-  useEffect(() => {
-    if (ctx.loggedIn) return
-    mixpanel.init('993a3d7a78434079b7a9bec245dbaec2')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   useQuery(queries.ME_ID, {
     skip: ctx.currentUser,

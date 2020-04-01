@@ -2,10 +2,12 @@ import React from 'react'
 import styles from './spinner.module.scss'
 import { classes } from '../../utils/css'
 
-export default function Spinner({ centered = false, color }) {
+export default function Spinner({ centered = false, color, className }) {
   return (
     <svg
-      className={classes(styles.spinner, { [styles.centered]: centered })}
+      className={classes(styles.spinner, className, {
+        [styles.centered]: centered,
+      })}
       data-active={true}
       viewBox="0 0 100 100"
     >

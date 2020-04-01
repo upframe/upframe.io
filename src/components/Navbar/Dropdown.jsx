@@ -8,7 +8,7 @@ export default function Dropdown({ onBlur }) {
   const ref = useRef()
   const { setCurrentUser } = useCtx()
   const history = useHistory()
-  const me = useMe()
+  const { me } = useMe()
 
   const [signOut] = useMutation(mutations.SIGN_OUT, {
     onCompleted() {
@@ -23,7 +23,6 @@ export default function Dropdown({ onBlur }) {
     ref.current.focus()
   }, [ref])
 
-  if (!me) return null
   return (
     <nav
       className={styles.dropdown}
@@ -31,7 +30,7 @@ export default function Dropdown({ onBlur }) {
       ref={ref}
       onBlur={() => setTimeout(onBlur, 100)}
     >
-      <Link to={`/${me.handle}`}>My Profile</Link>
+      <Link to={`/${me ? me.handle : ''}`}>My Profile</Link>
       <Link to={`/settings/public`}>Settings</Link>
       <p onClick={signOut}>Sign out</p>
     </nav>

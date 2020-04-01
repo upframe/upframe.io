@@ -64,7 +64,6 @@ export const person = {
       fragment ProfileSettings on Person {
         ...PersonBase
         website
-        website
         biography
         location
         social(includeEmpty: true) {

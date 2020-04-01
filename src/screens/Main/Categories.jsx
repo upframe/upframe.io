@@ -10,7 +10,7 @@ export default function Categories() {
       <Text>How can we help? Start by picking one of our main categories.</Text>
       <div className={styles.categories}>
         {['product', 'design', 'software'].map(v => (
-          <Link key={v} to={`/${v}`}>
+          <Link key={v} to={`/list/${v}`}>
             {v}
           </Link>
         ))}

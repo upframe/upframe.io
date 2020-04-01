@@ -10,7 +10,7 @@ export default function MentorCard({ mentor }) {
   return (
     <Card
       className={styles.mentorCard}
-      linkTo={mentor.handle}
+      linkTo={`/${mentor.handle}`}
       hoverEffect={true}
       article
     >

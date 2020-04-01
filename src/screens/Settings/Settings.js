@@ -12,7 +12,7 @@ import { Spinner } from '../../components'
 
 export default function Settings() {
   const { currentUser } = useCtx()
-  const me = useMe()
+  const { me } = useMe()
   if (!currentUser) return null
 
   if (!me) return <Spinner centered />
@@ -35,7 +35,7 @@ export default function Settings() {
             <Route path="/settings/public" component={Profile} />
             <Route path="/settings/account" component={Account} />
             <Route path="/settings/notifications" component={Notifications} />
-            {me && me.role === 'MENTOR' && (
+            {me && me.role !== 'USER' && (
               <>
                 <Route path="/settings/mycalendar" component={CalendarTab} />
                 <Redirect

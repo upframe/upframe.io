@@ -17,6 +17,7 @@ export default function Item({
   error = false,
   inputType,
   className,
+  linkTo,
 }) {
   const [value, setValue] = useState(input || text)
 
@@ -52,7 +53,10 @@ export default function Item({
         <div className={style.btWrap}>
           <Text>{children}</Text>
           {button && (
-            <Button onClick={onChange} accent={accent}>
+            <Button
+              {...(linkTo ? { linkTo } : { onClick: onChange })}
+              accent={accent}
+            >
               {button}
             </Button>
           )}

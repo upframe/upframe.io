@@ -14,7 +14,7 @@ export default function Signup() {
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState(false)
   const history = useHistory()
-  const me = useMe()
+  const { me } = useMe()
   const { setCurrentUser } = useCtx()
 
   const [signUp] = useMutation(mutations.SIGN_UP, {
