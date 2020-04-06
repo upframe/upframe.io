@@ -44,9 +44,10 @@ export default function CalendarTab() {
   useEffect(() => {
     setExtEvents(
       calendars.flatMap(({ events, id }) =>
-        events.map(({ start, end }) => ({
+        events.map(({ start, end, name }) => ({
           start: new Date(start),
           end: new Date(end),
+          title: name,
           external: true,
           color: (user.calendars || []).find(cal => cal.id === id).color,
         }))
