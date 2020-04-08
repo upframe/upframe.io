@@ -1,7 +1,6 @@
 import RecommendationCard from './RecommendationCard/RecommendationCard'
 import ProfilePicture from './ProfilePicture/ProfilePicture'
 import Navbar from './Navbar/Navbar'
-import SearchBar from './MainSearchBar/MainSearchBar'
 import Breadcrumbs from './Breadcrumbs/Breadcrumbs'
 import Button from './Button/Button'
 import Title from './Title/Title'
@@ -24,6 +23,7 @@ import Multiselect from './Multiselect'
 export { default as PhotoCrop } from './PhotoCrop'
 export { default as Modal } from './Modal'
 export { default as Page } from './Page'
+export { default as SearchBar } from './SearchBar'
 export { default as TagInput } from './TagInput'
 
 export {
@@ -31,7 +31,6 @@ export {
   ProfilePicture,
   Navbar,
   Breadcrumbs,
-  SearchBar,
   Button,
   Title,
   Text,
