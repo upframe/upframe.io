@@ -6,11 +6,16 @@ import MentorList from './Main/MentorList'
 import Home from './Home'
 
 export default function List({ match }) {
-  const name = match.url.split('/').pop()
-  const { data: { list } = {}, loading } = useQuery(queries.LIST, {
-    variables: { name },
-  })
+  const [type, name] = match.url.split('/').slice(-2)
+  const { data = {}, loading } = useQuery(
+    type === 'list' ? queries.LIST : queries.TAG,
+    {
+      variables: { name: name.toLowerCase() },
+    }
+  )
+  const list = type === 'list' ? data.list : data.tag
 
+  if (list && name !== list.name) return <Redirect replace to={list.name} />
   if (loading) return <Spinner centered />
   if (!loading && !list) return <Redirect to="/404" />
   return (

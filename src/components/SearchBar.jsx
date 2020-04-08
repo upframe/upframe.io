@@ -51,13 +51,14 @@ export default function SearchBar() {
     const inputDelta = inputStamps.slice(1).map((v, i) => v - inputStamps[i])
     const inputAvg = inputDelta.reduce((a, c) => a + c, 0) / inputDelta.length
 
-    let next = isNaN(inputAvg) ? 200 : Math.min(inputAvg * 1.7, 200)
-
     setCancelGo(
-      setTimeout(() => {
-        setInputStampsRef.current([])
-        setInputFinalRef.current(inputRef.current)
-      }, next)
+      setTimeout(
+        () => {
+          setInputStampsRef.current([])
+          setInputFinalRef.current(inputRef.current)
+        },
+        isNaN(inputAvg) ? 200 : Math.min(inputAvg * 1.7, 200)
+      )
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputStamps])

@@ -113,7 +113,7 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
 
   function addTag(tag) {
     tag = tag.trim()
-    if (tag) onChange(Array.from(new Set([...selection, tag.toLowerCase()])))
+    if (tag) onChange(Array.from(new Set([...selection, tag])))
     setInput('')
   }
 
@@ -184,7 +184,7 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
               {formatted}
             </li>
           ))}
-          {!options.includes(input.toLowerCase()) && (
+          {!options.map(v => v.toLowerCase()).includes(input.toLowerCase()) && (
             <S.Add
               {...(newSelected && { 'data-selected': true })}
               onClick={() => addTag(input)}

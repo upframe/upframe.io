@@ -16,17 +16,23 @@ export const LIST = gql`
     list(name: $name) {
       name
       users {
-        ...PersonBase
-        biography
-        tags
-        ... on Mentor {
-          title
-          company
-        }
+        ...MentorDetails
       }
     }
   }
-  ${person.base}
+  ${person.mentorDetails}
+`
+
+export const TAG = gql`
+  query TagList($name: String!) {
+    tag(name: $name) {
+      name
+      users {
+        ...MentorDetails
+      }
+    }
+  }
+  ${person.mentorDetails}
 `
 
 export const PROFILE = gql`
@@ -149,6 +155,7 @@ export const GCAL_EVENTS = gql`
 export const TAG_LIST = gql`
   query TagList {
     tags {
+      id
       name
     }
   }
