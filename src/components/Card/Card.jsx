@@ -11,19 +11,17 @@ export default function Card({
   article,
   ...props
 }) {
-  const Tag = linkTo ? Link : 'div'
-  const ArtWrap = article ? 'article' : 'div'
+  const Tag = article ? 'article' : 'div'
   return (
-    <ArtWrap>
-      <Tag
-        className={classes(styles.card, className, {
-          [styles.hoverEffect]: hoverEffect,
-        })}
-        to={linkTo}
-        {...props}
-      >
-        {children}
-      </Tag>
-    </ArtWrap>
+    <Tag
+      className={classes(styles.card, className, {
+        [styles.hoverEffect]: hoverEffect,
+      })}
+      to={linkTo}
+      {...props}
+    >
+      {!!linkTo && <Link className={styles.link} to={linkTo} />}
+      {children}
+    </Tag>
   )
 }
