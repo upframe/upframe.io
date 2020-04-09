@@ -5,7 +5,6 @@ import styles from './mentorcard.module.scss'
 export default function MentorCard({ mentor }) {
   const imgSize = window.innerWidth > 720 ? '13rem' : '18rem'
   let tags = (mentor.tags || []).slice(0, 2)
-  if (tags.length) tags.push('+')
 
   return (
     <Card
