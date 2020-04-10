@@ -5,8 +5,8 @@ import { useQuery, gql } from '../gql'
 import { Link } from 'react-router-dom'
 
 const SEARCH = gql`
-  query Search($term: String!) {
-    search(term: $term) {
+  query Search($term: String!, $withTags: [Int!]) {
+    search(term: $term, withTags: $withTags) {
       users {
         id
         name
@@ -16,6 +16,13 @@ const SEARCH = gql`
           type
           url
         }
+      }
+      tags {
+        tag {
+          id
+          name
+        }
+        markup
       }
     }
   }
@@ -27,10 +34,17 @@ export default function SearchBar() {
   const [focus, setFocus] = useState(false)
   const [inputStamps, setInputStamps] = useState([])
   const [cancelGo, setCancelGo] = useState()
-  const { data: { search: { users = [] } = {} } = {} } = useQuery(SEARCH, {
-    skip: !/\w/.test(inputFinal),
-    variables: { term: inputFinal.trim().replace(/\s{2,}/g, ' ') },
-  })
+  const [searchTags, setSearchTags] = useState([])
+  const { data: { search: { users = [], tags = [] } = {} } = {} } = useQuery(
+    SEARCH,
+    {
+      skip: !/\w/.test(inputFinal),
+      variables: {
+        term: inputFinal.trim().replace(/\s{2,}/g, ' '),
+        withTags: searchTags.map(({ id }) => id),
+      },
+    }
+  )
 
   const inputRef = useRef(input)
   inputRef.current = input
@@ -38,6 +52,8 @@ export default function SearchBar() {
   setInputStampsRef.current = setInputStamps
   const setInputFinalRef = useRef(setInputFinal)
   setInputFinalRef.current = setInputFinal
+  const setFocusRef = useRef(setFocus)
+  setFocusRef.current = setFocus
 
   function setInput(v) {
     _setInput(v)
@@ -70,12 +86,37 @@ export default function SearchBar() {
           value={input}
           onChange={setInput}
           onFocus={() => setFocus(true)}
-          onBlur={() => setTimeout(() => setFocus(false), 100)}
+          onBlur={() => {
+            setTimeout(() => setFocusRef.current(false), 100)
+          }}
+          tags={searchTags}
+          onTagClick={id =>
+            setSearchTags(searchTags.filter(tag => tag.id !== id))
+          }
         />
         <Icon icon="search" />
       </S.Search>
-      {focus && users.length > 0 && (
-        <S.Preview>
+      {focus && users.length + tags.length > 0 && (
+        <S.Preview
+          tabIndex={0}
+          onFocus={e => {
+            const inputNode = e.target.parentNode.querySelector('input')
+            if (inputNode) {
+              inputNode.focus()
+              setTimeout(() => setFocusRef.current(true), 100)
+            }
+          }}
+        >
+          {tags.map(({ tag, markup }) => (
+            <S.Tag
+              key={tag.id}
+              onClick={() => {
+                setSearchTags([...searchTags, tag])
+                setInput('')
+              }}
+              dangerouslySetInnerHTML={{ __html: markup }}
+            />
+          ))}
           {users.map(({ id, name, handle, profilePictures }) => (
             <S.User key={id}>
               <Link to={`/${handle}`}>
@@ -132,11 +173,10 @@ const S = {
     padding: 0 1rem;
     max-height: min(200rem, calc(100vh - 5rem));
     overflow-y: auto;
+    padding: 0 1rem;
   `,
 
-  User: styled.ul`
-    padding: 0;
-
+  User: styled.li`
     & > a {
       display: flex;
       padding: 0;
@@ -150,5 +190,14 @@ const S = {
         margin-right: 1rem;
       }
     }
+  `,
+
+  Tag: styled.li`
+    margin: 0.5rem 0;
+    width: 100%;
+    height: ${IMG_SIZE};
+    display: block;
+    line-height: ${IMG_SIZE};
+    cursor: pointer;
   `,
 }
