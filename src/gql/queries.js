@@ -35,6 +35,17 @@ export const TAG = gql`
   ${person.mentorDetails}
 `
 
+export const SEARCH = gql`
+  query SearchList($query: String, $tags: [String!]) {
+    search(term: $query, withTagNames: $tags) {
+      users {
+        ...MentorDetails
+      }
+    }
+  }
+  ${person.mentorDetails}
+`
+
 export const PROFILE = gql`
   query MentorProfile($handle: String!, $slotsAfter: String) {
     user(handle: $handle) {

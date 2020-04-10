@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { TagInput, Icon, ProfilePicture } from '.'
 import { useQuery, gql } from '../gql'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const SEARCH = gql`
   query Search($term: String!, $withTags: [Int!]) {
@@ -35,6 +35,8 @@ export default function SearchBar() {
   const [inputStamps, setInputStamps] = useState([])
   const [cancelGo, setCancelGo] = useState()
   const [searchTags, setSearchTags] = useState([])
+  const history = useHistory()
+
   const { data: { search: { users = [], tags = [] } = {} } = {} } = useQuery(
     SEARCH,
     {
@@ -79,8 +81,23 @@ export default function SearchBar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputStamps])
 
+  function submit(e) {
+    e.preventDefault()
+    if (!inputFinal.length && !searchTags.length) return
+    e.target.querySelector('input').blur()
+    history.push(
+      `/search?${Object.entries({
+        q: inputFinal.trim().replace(/\s{2,}/g, ' '),
+        t: searchTags.map(({ name }) => name).join(','),
+      })
+        .filter(([, v]) => v.length)
+        .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+        .join('&')}`
+    )
+  }
+
   return (
-    <S.Wrap>
+    <S.Wrap onSubmit={submit}>
       <S.Search>
         <TagInput
           value={input}
@@ -134,7 +151,7 @@ export default function SearchBar() {
 const IMG_SIZE = '2.8rem'
 
 const S = {
-  Wrap: styled.div`
+  Wrap: styled.form`
     max-width: 35rem;
     flex-grow: 1;
     display: block;
