@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './dropdown.module.scss'
-import { useCtx, useHistory, useMe } from '../../utils/Hooks'
+import { useCtx, useHistory, useMe } from '../../utils/hooks'
 import { mutations, useMutation } from '../../gql'
 
 export default function Dropdown({ onBlur }) {

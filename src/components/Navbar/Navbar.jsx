@@ -4,7 +4,7 @@ import { Logo, SearchBar, Button } from 'components'
 import UserIcon from './UserIcon'
 import Dropdown from './Dropdown'
 import { classes } from 'utils/css'
-import { useScrollAtTop, useCtx } from 'utils/Hooks'
+import { useScrollAtTop, useCtx } from 'utils/hooks'
 import styles from './navbar.module.scss'
 
 export default function Navbar() {

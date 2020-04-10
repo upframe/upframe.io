@@ -3,7 +3,7 @@ import Landing from './Landing'
 import MentorList from './MentorList'
 import { Title, Text } from '../../components'
 import Categories from './Categories'
-import { useCtx } from '../../utils/Hooks'
+import { useCtx } from '../../utils/hooks'
 import { queries, useQuery } from '../../gql'
 import Home from '../Home'
 

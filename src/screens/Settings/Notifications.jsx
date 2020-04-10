@@ -3,7 +3,7 @@ import { Title, Text, Checkbox, Spinner } from 'components'
 import Item from './Item'
 import IntervalSelect from './IntervalSelect'
 import styles from './notifications.module.scss'
-import { useCtx, useMe } from 'utils/Hooks'
+import { useCtx, useMe } from 'utils/hooks'
 import { queries, mutations, useQuery, useMutation } from '../../gql'
 
 export default function Notifications() {

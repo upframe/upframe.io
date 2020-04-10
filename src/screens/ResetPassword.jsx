@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Input, Title, Button, Spinner, Page, Text } from '../components'
-import { useMe, useHistory, useCtx } from '../utils/Hooks'
+import { useMe, useHistory, useCtx } from '../utils/hooks'
 import { queries, mutations, useQuery, useMutation } from '../gql'
 import { notify } from '../notification'
 

@@ -3,7 +3,7 @@ import { Text, Title, Checkbox } from 'components'
 import Item from './Item'
 import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
-import { useMe } from '../../utils/Hooks'
+import { useMe } from '../../utils/hooks'
 import { mutations, useMutation } from '../../gql'
 
 export default function Account() {

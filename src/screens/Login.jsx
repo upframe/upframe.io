@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Redirect, Link } from 'react-router-dom'
 import { Labeled, Input, Button, Page } from '../components'
-import { useCtx, useHistory, useMe } from '../utils/Hooks'
+import { useCtx, useHistory, useMe } from '../utils/hooks'
 import { mutations, useMutation } from '../gql'
 import styled from 'styled-components'
 

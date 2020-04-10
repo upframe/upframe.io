@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useCtx } from 'utils/Hooks'
-import { haveSameContent } from 'utils/Array'
+import { useCtx } from 'utils/hooks'
+import { haveSameContent } from 'utils/array'
 import { Title, Text } from 'components'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
@@ -9,7 +9,7 @@ import GoogleSync from './GoogleSync'
 import CalendarList from './CalendarList'
 import styles from './calendarTab.module.scss'
 import { queries, mutations, useQuery, useMutation } from '../../gql'
-import { useCalendars } from '../../utils/Hooks'
+import { useCalendars } from '../../utils/hooks'
 
 export default function CalendarTab() {
   const [remoteSlots, setRemoteSlots] = useState([])

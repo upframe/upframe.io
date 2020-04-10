@@ -7,7 +7,7 @@ import Navigation from './Navigation'
 import Notifications from './Notifications'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import styles from './Settings.module.scss'
-import { useCtx, useMe } from '../../utils/Hooks'
+import { useCtx, useMe } from '../../utils/hooks'
 import { Spinner } from '../../components'
 
 export default function Settings() {

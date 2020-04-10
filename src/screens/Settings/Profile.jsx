@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
-import { useCtx } from 'utils/Hooks'
-import { haveSameContent } from 'utils/Array'
+import { useCtx } from 'utils/hooks'
+import { haveSameContent } from 'utils/array'
 import styles from './profile.module.scss'
 import { useQuery, queries, mutations, useMutation } from '../../gql'
 import {
