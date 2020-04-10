@@ -1,100 +1,48 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { TagInput } from '.'
-import Fuse from 'fuse.js'
+import { useQuery, gql } from '../gql'
 
-export default function MultiSelect({ selection, onChange, options = [] }) {
+const TAG_SEARCH = gql`
+  query TagSearch($input: String!) {
+    search(term: $input, maxTags: 100) {
+      tags {
+        tag {
+          id
+          name
+        }
+        markup
+      }
+    }
+  }
+`
+
+export default function TagSelect({ selection, onChange }) {
   const [input, setInput] = useState('')
-  const [fuse, setFuse] = useState()
-  const [search, setSearch] = useState([])
   const [selected, setSelected] = useState()
   const [newSelected, setNewSelected] = useState(false)
   const listRef = useRef()
   const [lastScroll, setLastScroll] = useState(performance.now())
   const [toDelete, setToDelete] = useState()
 
-  useEffect(() => {
-    setFuse(
-      new Fuse(options.filter(v => !selection.includes(v)), {
-        includeMatches: true,
-        threshold: 0.3,
-        findAllMatches: true,
-      })
-    )
-  }, [options, selection])
-
-  // search & highlight
-  useEffect(() => {
-    if (!fuse) return
-    const res = fuse.search(input)
-    setSearch(
-      res.map(({ item, matches }) => {
-        let indices =
-          matches && matches.length
-            ? matches[0].indices.map(([start, end]) => [start, end + 1])
-            : []
-        if (indices.length) {
-          const maxDiff = Math.max(
-            ...indices.map(([start, end]) => end - start)
-          )
-          indices = indices.filter(
-            ([start, end]) => (end - start) / maxDiff >= 0.8
-          )
-        }
-        if (indices.length === 0)
-          return { value: item, formatted: <b>{item}</b> }
-        const slices = [
-          { index: [0, indices[0][0]], match: false },
-          ...indices
-            .slice(0, -1)
-            .flatMap((slice, i) => [
-              { index: [slice[0], slice[1]], match: true },
-              { index: [slice[1], indices[i + 1][0]], match: false },
-            ]),
-          {
-            index: indices.slice(-1)[0],
-            match: true,
-          },
-          { index: [indices.slice(-1)[0][1]], match: false },
-        ]
-
-        const segs = slices
-          .map(({ index: [start, end], match }) => ({
-            match,
-            seg: item.slice(start, end),
-            key: item + start + end,
-          }))
-          .filter(({ seg }) => seg)
-
-        return {
-          value: item,
-          formatted: (
-            <>
-              {segs.map(({ seg, match, key }) => {
-                const Tag = match ? 'span' : 'b'
-                return <Tag key={key}>{seg}</Tag>
-              })}
-            </>
-          ),
-        }
-      })
-    )
-  }, [fuse, input])
+  const { data: { search: { tags = [] } = {} } = {} } = useQuery(TAG_SEARCH, {
+    variables: { input },
+  })
 
   useEffect(() => {
-    if (!search.length) {
+    if (!tags.length) {
       setSelected()
       setNewSelected(true)
     } else {
-      setSelected(search[0].value)
+      setSelected(tags[0].tag.id)
       setNewSelected()
     }
-  }, [input, search])
+  }, [input, tags])
 
   // keep selection in view
   useEffect(() => {
     if (!listRef || !listRef.current) return
-    const index = search.findIndex(({ value }) => value === selected)
+    const index = tags.findIndex(({ tag }) => tag.id === selected)
     const node = listRef.current.children[index]
     if (!node) return
 
@@ -109,11 +57,19 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
         node.offsetTop + node.offsetHeight - listRef.current.offsetHeight
       setLastScroll(performance.now())
     }
-  }, [selected, search])
+  }, [selected, tags])
 
   function addTag(tag) {
-    tag = tag.trim()
-    if (tag) onChange(Array.from(new Set([...selection, tag])))
+    if (tag)
+      onChange([
+        ...selection,
+        ...(!selection.find(
+          ({ id, name }) =>
+            id === tag.id || name.toLowerCase() === tag.name.toLowerCase()
+        )
+          ? [tag]
+          : []),
+      ])
     setInput('')
   }
 
@@ -123,31 +79,35 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
       if (toDelete) {
         onChange(selection.slice(0, -1))
         setToDelete(null)
-      } else setToDelete(selection.slice(-1)[0])
+      } else setToDelete(selection.slice(-1)[0].id)
     } else setToDelete()
     if (['Enter', 'Tab', ','].includes(e.key)) {
       e.preventDefault()
-      addTag(selected ? selected : input)
+      addTag(
+        selected
+          ? tags.find(({ tag }) => tag.id === selected).tag
+          : { name: input, id: input }
+      )
     }
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      if (search.length === 0) return
+      if (tags.length === 0) return
       e.preventDefault()
       const focusIndex = newSelected
-        ? search.length
-        : search.findIndex(({ value }) => value === selected)
+        ? tags.length
+        : tags.findIndex(({ tag }) => tag.id === selected)
 
       const nextSelected = Math.max(
         0,
         focusIndex + 1 * (e.key.endsWith('Down') ? 1 : -1)
       )
-      if (nextSelected < search.length) {
+      if (nextSelected < tags.length) {
         setSelected(
-          search[
+          tags[
             Math.min(
               Math.max(0, focusIndex + 1 * (e.key.endsWith('Down') ? 1 : -1)),
-              search.length - 1
+              tags.length - 1
             )
-          ].value
+          ].tag.id
         )
         setNewSelected()
       } else {
@@ -165,29 +125,30 @@ export default function MultiSelect({ selection, onChange, options = [] }) {
         tags={selection}
         highlight={toDelete}
         onKeyDown={handleKey}
-        onTagClick={tag => onChange(selection.filter(v => v !== tag))}
+        onTagClick={id => onChange(selection.filter(tag => tag.id !== id))}
       />
       {input.length > 0 && (
         <S.List ref={listRef}>
-          {search.map(({ value, formatted }) => (
+          {tags.map(({ tag, markup }) => (
             <li
-              key={value}
-              {...(value === selected && { 'data-selected': true })}
+              key={tag.id}
+              {...(tag.id === selected && { 'data-selected': true })}
               onMouseEnter={() => {
                 if (performance.now() - lastScroll > 100) {
-                  setSelected(value)
+                  setSelected(tag.id)
                   setNewSelected()
                 }
               }}
-              onClick={() => addTag(value)}
-            >
-              {formatted}
-            </li>
+              onClick={() => addTag(tag)}
+              dangerouslySetInnerHTML={{ __html: markup }}
+            ></li>
           ))}
-          {!options.map(v => v.toLowerCase()).includes(input.toLowerCase()) && (
+          {!tags
+            .map(({ tag }) => tag.name.toLowerCase())
+            .includes(input.toLowerCase()) && (
             <S.Add
               {...(newSelected && { 'data-selected': true })}
-              onClick={() => addTag(input)}
+              onClick={() => addTag({ name: input, id: input })}
               onMouseEnter={() => {
                 if (performance.now() - lastScroll > 100) {
                   setNewSelected(true)
