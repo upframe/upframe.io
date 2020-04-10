@@ -13,7 +13,7 @@ import {
   Icon,
 } from '../../components/'
 import { notify } from '../../notification'
-import { useCtx } from '../../utils/Hooks'
+import { useCtx } from '../../utils/hooks'
 
 export default function Request({ mentor, onClose, slot }) {
   const [msg, setMsg] = useState('')

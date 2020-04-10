@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'components'
 import { queries, useQuery, mutations, useMutation } from '../../gql'
-import { useMe } from '../../utils/Hooks'
+import { useMe } from '../../utils/hooks'
 
 export default function GoogleSync() {
   const { data: { calendarConnectUrl: url } = {} } = useQuery(

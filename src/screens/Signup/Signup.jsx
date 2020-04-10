@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet'
 import { isEmail } from '../../utils/validate'
 import { mutations, useMutation } from '../../gql'
 import { notify } from '../../notification'
-import { useCtx, useMe } from '../../utils/Hooks'
+import { useCtx, useMe } from '../../utils/hooks'
 
 export default function Signup() {
   const [name, setName] = useState('')

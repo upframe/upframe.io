@@ -16,17 +16,34 @@ export const LIST = gql`
     list(name: $name) {
       name
       users {
-        ...PersonBase
-        biography
-        tags
-        ... on Mentor {
-          title
-          company
-        }
+        ...MentorDetails
       }
     }
   }
-  ${person.base}
+  ${person.mentorDetails}
+`
+
+export const TAG = gql`
+  query TagList($name: String!) {
+    tag(name: $name) {
+      name
+      users {
+        ...MentorDetails
+      }
+    }
+  }
+  ${person.mentorDetails}
+`
+
+export const SEARCH = gql`
+  query SearchList($query: String, $tags: [String!]) {
+    search(term: $query, withTagNames: $tags) {
+      users {
+        ...MentorDetails
+      }
+    }
+  }
+  ${person.mentorDetails}
 `
 
 export const PROFILE = gql`
@@ -142,14 +159,6 @@ export const GCAL_EVENTS = gql`
           }
         }
       }
-    }
-  }
-`
-
-export const TAG_LIST = gql`
-  query TagList {
-    tags {
-      name
     }
   }
 `

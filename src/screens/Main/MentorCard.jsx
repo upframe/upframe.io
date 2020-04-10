@@ -5,7 +5,6 @@ import styles from './mentorcard.module.scss'
 export default function MentorCard({ mentor }) {
   const imgSize = window.innerWidth > 720 ? '13rem' : '18rem'
   let tags = (mentor.tags || []).slice(0, 2)
-  if (tags.length) tags.push('+')
 
   return (
     <Card
@@ -23,9 +22,9 @@ export default function MentorCard({ mentor }) {
         </p>
         <p className={styles.biography}>{mentor.biography}</p>
         <div className={styles.skills}>
-          {tags.map(v => (
-            <Chip key={v} removable={false}>
-              {v}
+          {tags.map(({ id, name }) => (
+            <Chip key={id} removable={false}>
+              {name}
             </Chip>
           ))}
         </div>
