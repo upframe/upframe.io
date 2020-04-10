@@ -10,7 +10,7 @@ import {
   Title,
   Button,
   ProfilePicture,
-  Multiselect,
+  Tagselect,
   PhotoCrop,
   Modal,
 } from 'components'
@@ -27,7 +27,6 @@ export default function Profile() {
   const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_PROFILE, {
     variables: { id: currentUser, skip: !currentUser },
   })
-  const { data: { tags: tagList = [] } = {} } = useQuery(queries.TAG_LIST)
 
   useEffect(() => {
     if (Array.isArray(user.tags)) setTags(user.tags)
@@ -69,20 +68,37 @@ export default function Profile() {
   function update() {
     updateProfile({
       variables: {
-        diff: Object.entries(diff).reduce(
-          (a, [k, v]) => ({
-            ...a,
-            ...(!/\d+/.test(k)
-              ? { [k]: v }
-              : {
-                  social: [
-                    ...(a.social || []),
-                    { platform: parseInt(k), handle: v },
-                  ],
-                }),
-          }),
-          {}
-        ),
+        diff: {
+          ...Object.entries(diff).reduce(
+            (a, [k, v]) => ({
+              ...a,
+              ...(!/\d+/.test(k)
+                ? { [k]: v }
+                : {
+                    social: [
+                      ...(a.social || []),
+                      { platform: parseInt(k), handle: v },
+                    ],
+                  }),
+            }),
+            {}
+          ),
+          tags: {
+            addedIds: tags
+              .filter(
+                ({ id }) =>
+                  typeof id !== 'string' &&
+                  !user.tags.find(tag => tag.id === id)
+              )
+              .map(({ id }) => id),
+            removedIds: user.tags
+              .filter(({ id }) => !tags.find(tag => tag.id === id))
+              .map(({ id }) => id),
+            addedName: tags
+              .filter(({ id }) => typeof id === 'string')
+              .map(({ name }) => name),
+          },
+        },
       },
     })
   }
@@ -103,7 +119,14 @@ export default function Profile() {
       Object.entries(diff).length &&
       Object.entries(diff).every(([k, v]) =>
         Array.isArray(v)
-          ? haveSameContent(user.tags, v)
+          ? haveSameContent(
+              user.tags,
+              v,
+              (a, b) =>
+                a.id === b.id ||
+                (typeof a === 'string' &&
+                  a.name.toLowerCase() === b.name.toLowerCase())
+            )
           : /\d+/.test(k)
           ? (user.social.find(({ id }) => id.toString() === k).handle || '') ===
             v
@@ -215,13 +238,12 @@ export default function Profile() {
           </Text>
 
           <div className={styles.span2}>
-            <Multiselect
+            <Tagselect
               selection={tags}
               onChange={v => {
                 setTags(v)
                 handleChange('tags', v)
               }}
-              options={tagList.map(v => v.name)}
             />
           </div>
         </>

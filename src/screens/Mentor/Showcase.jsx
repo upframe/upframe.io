@@ -44,9 +44,9 @@ export default function Showcase({ user }) {
           <>
             <Title s3>I can advise you on</Title>
             <div className={styles.skills}>
-              {user.tags.map(v => (
-                <Chip key={v} removable={false}>
-                  {v}
+              {user.tags.map(({ id, name }) => (
+                <Chip key={id} removable={false}>
+                  {name}
                 </Chip>
               ))}
             </div>

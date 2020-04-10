@@ -14,13 +14,14 @@ export default function TagInput({
     <S.Input {...props}>
       <Input onChange={onChange} value={value} />
       {tags
-        .map(v => (
+        .map(({ id, name }) => (
           <Chip
-            key={v}
-            onClick={() => onTagClick(v)}
-            highlight={highlight === v}
+            key={id}
+            onClick={() => onTagClick(id)}
+            highlight={highlight === id}
+            removable
           >
-            {v}
+            {name}
           </Chip>
         ))
         .reverse()}

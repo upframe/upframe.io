@@ -31,7 +31,10 @@ export const person = {
       fragment MentorDetails on Person {
         ...PersonBase
         biography
-        tags
+        tags {
+          id
+          name
+        }
         ... on Mentor {
           title
           company
@@ -53,7 +56,10 @@ export const person = {
           url
           handle
         }
-        tags
+        tags {
+          id
+          name
+        }
       }
       ${this.mentorDetails}
     `
@@ -72,7 +78,10 @@ export const person = {
           url
           handle
         }
-        tags
+        tags {
+          id
+          name
+        }
         ... on Mentor {
           title
           company

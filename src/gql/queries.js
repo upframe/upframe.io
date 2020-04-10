@@ -152,15 +152,6 @@ export const GCAL_EVENTS = gql`
   }
 `
 
-export const TAG_LIST = gql`
-  query TagList {
-    tags {
-      id
-      name
-    }
-  }
-`
-
 export const VERIFY_TOKEN = gql`
   query VerifyToken($token: String!) {
     isTokenValid(token: $token)

@@ -19,7 +19,7 @@ import Card from './Card/Card'
 import Spinner from './Spinner/Spinner'
 import Toast from './Toast/Toast'
 import NotificationStack from './NotificationStack/NotificationStack'
-import Multiselect from './Multiselect'
+export { default as Tagselect } from './Tagselect'
 export { default as PhotoCrop } from './PhotoCrop'
 export { default as Modal } from './Modal'
 export { default as Page } from './Page'
@@ -48,5 +48,4 @@ export {
   Spinner,
   Toast,
   NotificationStack,
-  Multiselect,
 }

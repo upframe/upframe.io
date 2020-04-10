@@ -6,7 +6,7 @@ import styles from './chip.module.scss'
 export default function Chip({
   children,
   onClick = () => {},
-  removable = true,
+  removable = false,
   highlight,
   link = !removable,
 }) {
