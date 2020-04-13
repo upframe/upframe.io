@@ -5,7 +5,6 @@
     .rbc-calendar {
       height: $calendar-height;
     }
-
     .rbc-event {
       color: white !important;
     }
@@ -13,11 +12,45 @@
     .rbc-time-content {
       overscroll-behavior: none;
     }
+    .rbc-time-slot {
+      font-family: Poppins;
+      color: #bdbdbd;
+    }
+    .rbc-time-gutter .rbc-timeslot-group {
+      border-bottom: none !important;
+    }
+    .rbc-time-header-content {
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 16px;
+    }
+    .rbc-day-slot .rbc-time-slot {
+      border-top: none;
+    }
 
+    .rbc-current-time-indicator {
+      background-color: #ff004b;
+    }
+
+    .rbc-time-slot {
+      border-top: none;
+    }
+    .rbc-time-view {
+      border-radius: 5px;
+      border: 1px solid #dddddd;
+      border-radius: 4px;
+    }
     .rbc-today {
       background-color: #feeef2;
       opacity: 0.7 !important;
     }
+
+    .rbc-header {
+      border-bottom: none;
+    }
+    .rbc-toolbar-label,
     .rbc-toolbar,
     .rbc-btn-group {
       button {
@@ -25,11 +58,11 @@
         font-style: normal;
         font-weight: 600;
         font-size: 13px;
-        line-height: 19px;
+        line-height: 16px;
         align-items: center;
         text-align: center;
         color: #a5a6a9;
-        border: 1px solid #a5a6a9;
+        border: 1px solid #dddddd;
         box-sizing: border-box;
         border-radius: 5px 5px 5px 5px;
 
@@ -37,7 +70,7 @@
         &:focus,
         &:active {
           color: #ff205c;
-          background: #feeef2;
+          background: #fff4f7;
         }
       }
     }
