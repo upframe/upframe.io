@@ -25,7 +25,8 @@ export default function List({ match }) {
   const list =
     type === 'list' ? data.list : type === 'tag' ? data.tag : data.search
 
-  if (list && name !== list.name) return <Redirect replace to={list.name} />
+  if (list && name !== list.name && !loading)
+    return <Redirect replace to={list.name} />
   if (loading) return <Spinner centered />
   if (!loading && !list) return <Redirect to="/404" />
   return (
