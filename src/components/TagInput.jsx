@@ -11,8 +11,8 @@ export default function TagInput({
   ...props
 }) {
   return (
-    <S.Input {...props}>
-      <Input onChange={onChange} value={value} />
+    <S.Input>
+      <Input onChange={onChange} value={value} {...props} />
       {tags
         .map(({ id, name }) => (
           <Chip

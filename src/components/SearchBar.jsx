@@ -85,6 +85,7 @@ export default function SearchBar() {
     e.preventDefault()
     if (!inputFinal.length && !searchTags.length) return
     e.target.querySelector('input').blur()
+    setInput('')
     history.push(
       `/search?${Object.entries({
         q: inputFinal.trim().replace(/\s{2,}/g, ' '),
@@ -110,6 +111,7 @@ export default function SearchBar() {
           onTagClick={id =>
             setSearchTags(searchTags.filter(tag => tag.id !== id))
           }
+          placeholder="What are you looking for?"
         />
         <Icon icon="search" />
       </S.Search>
@@ -136,7 +138,7 @@ export default function SearchBar() {
           ))}
           {users.map(({ id, name, handle, profilePictures }) => (
             <S.User key={id}>
-              <Link to={`/${handle}`}>
+              <Link to={`/${handle}`} onClick={() => setInput('')}>
                 <ProfilePicture size={IMG_SIZE} imgs={profilePictures} />
                 <span>{name}</span>
               </Link>
@@ -174,6 +176,10 @@ const S = {
 
     input {
       margin-left: 0.5rem;
+
+      &::placeholder {
+        color: var(--cl-text-medium);
+      }
     }
   `,
 
@@ -216,5 +222,9 @@ const S = {
     display: block;
     line-height: ${IMG_SIZE};
     cursor: pointer;
+
+    span {
+      font-weight: 300;
+    }
   `,
 }
