@@ -36,5 +36,9 @@
     line-height: 21px;
     cursor: pointer;
     outline: none;
+    &:hover {
+      transform: scale(1.03);
+      transition: transform ease 0.125s;
+    }
   }
 }
