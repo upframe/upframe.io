@@ -151,7 +151,7 @@ export const GCAL_EVENTS = gql`
         calendars(ids: $calendarIds) {
           id
           name
-          events(max: 20) {
+          events(max: 100) {
             id
             name
             start
