@@ -2,14 +2,20 @@ import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Chip } from '.'
 
-function Tagarea({ tags = [], input = '', onChange = () => {}, ...props }) {
+function Tagarea({
+  tags = [],
+  input = '',
+  onChange = () => {},
+  onTagClick = () => {},
+  ...props
+}) {
   const ref = useRef()
   const [indent, setIndent] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     if (!ref.current || !('MutationObserver' in window)) return
     const observer = new MutationObserver(mutations => {
-      const node = mutations[0].addedNodes[0]
+      const node = Array.from(mutations[0].target.childNodes).slice(-1)[0]
 
       const nodeBox = node.getBoundingClientRect()
       const parentBox = node.parentNode.getBoundingClientRect()
@@ -50,8 +56,10 @@ function Tagarea({ tags = [], input = '', onChange = () => {}, ...props }) {
         indent={indent}
       ></S.Textarea>
       <S.Tags ref={ref}>
-        {tags.map((tag, i) => (
-          <Chip key={tag}>{tag}</Chip>
+        {tags.map(tag => (
+          <Chip key={tag} removable onClick={() => onTagClick(tag)}>
+            {tag}
+          </Chip>
         ))}
       </S.Tags>
     </S.Wrap>
