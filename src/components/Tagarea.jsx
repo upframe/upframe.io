@@ -16,6 +16,7 @@ function Tagarea({
     if (!ref.current || !('MutationObserver' in window)) return
     const observer = new MutationObserver(mutations => {
       const node = Array.from(mutations[0].target.childNodes).slice(-1)[0]
+      if (!node) return setIndent({ x: 0, y: 0 })
 
       const nodeBox = node.getBoundingClientRect()
       const parentBox = node.parentNode.getBoundingClientRect()
@@ -102,12 +103,12 @@ const S = {
     pointer-events: none;
     display: flex;
     flex-wrap: wrap;
-    padding: 0.7rem 0.5rem;
+    padding: 0.7rem 0.7rem;
 
     & > * {
       pointer-events: initial;
       box-sizing: border-box;
-      margin: 0.2rem 0.5rem;
+      margin: 0.2rem 0.3rem;
     }
   `,
 }

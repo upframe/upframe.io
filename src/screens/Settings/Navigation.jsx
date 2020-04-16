@@ -14,6 +14,7 @@ export default function Navigation() {
     ...(me && me.role !== 'USER'
       ? [{ title: 'My Calendar', url: 'mycalendar' }]
       : []),
+    { title: 'Invite', url: 'invite' },
   ]
 
   return (

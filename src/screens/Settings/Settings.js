@@ -9,6 +9,7 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 import styles from './Settings.module.scss'
 import { useCtx, useMe } from '../../utils/hooks'
 import { Spinner } from '../../components'
+import Invite from './Invite'
 
 export default function Settings() {
   const { currentUser } = useCtx()
@@ -35,6 +36,7 @@ export default function Settings() {
             <Route path="/settings/public" component={Profile} />
             <Route path="/settings/account" component={Account} />
             <Route path="/settings/notifications" component={Notifications} />
+            <Route path="/settings/invite" component={Invite} />
             {me && me.role !== 'USER' && (
               <>
                 <Route path="/settings/mycalendar" component={CalendarTab} />
