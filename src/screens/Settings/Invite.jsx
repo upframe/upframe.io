@@ -3,12 +3,50 @@ import styled from 'styled-components'
 import { Title, Labeled, Tagarea, Text, Button } from '../../components'
 import { isEmail } from '../../utils/validate'
 import { useMe } from '../../utils/hooks'
+import { gql, useQuery, useMutation, fragments } from '../../gql'
+
+const INVITE = gql`
+  mutation Invite($emails: [String!]!, $role: Role) {
+    invite(emails: $emails, role: $role) {
+      ...PersonBase
+      ...Invites
+    }
+  }
+  ${fragments.person.base}
+  ${fragments.person.invites}
+`
+
+const INVITES = gql`
+  query invites($id: ID) {
+    user(id: $id) {
+      id
+      ...Invites
+    }
+  }
+  ${fragments.person.invites}
+`
 
 export default function Invite() {
   const [input, setInput] = useState('')
   const [tags, setTags] = useState([])
   const [invalid, setInvalid] = useState([])
+  const [role, setRole] = useState('USER')
   const { me } = useMe()
+
+  const { data: { user: { invites = [] } = {} } = {} } = useQuery(INVITES, {
+    variables: { id: me.id },
+    skip: !me,
+  })
+
+  console.log(invites)
+
+  const [invite] = useMutation(INVITE, {
+    variables: { emails: [...tags, input].filter(Boolean), role },
+    onCompleted() {
+      setInput('')
+      setTags([])
+    },
+  })
 
   useEffect(() => {
     setInvalid(tags.filter(tag => !isEmail(tag)))
@@ -72,18 +110,37 @@ export default function Invite() {
         {me && me.role !== 'USER' && (
           <>
             <label htmlFor="role">Invite as</label>
-            <select id="role">
-              <option value="user" name="role">
+            <select
+              id="role"
+              value={role}
+              onChange={({ target }) => setRole(target.value)}
+            >
+              <option value="USER" name="role">
                 User
               </option>
-              <option value="mentor">Mentor</option>
+              <option value="MENTOR">Mentor</option>
             </select>
           </>
         )}
-        <Button filled disabled={!inputValid()}>
+        <Button filled disabled={!inputValid()} onClick={invite}>
           Send invitations
         </Button>
       </S.Actions>
+      {invites.length > 0 && (
+        <>
+          <Title s2>Sent Invitations</Title>
+          <S.List>
+            <b>email</b>
+            <b>role</b>
+            <b>status</b>
+            {invites.flatMap(({ email, role, status }) => [
+              <span key={`${email}-email`}>{email}</span>,
+              <span key={`${email}-role`}>{role}</span>,
+              <span key={`${email}-status`}>{status}</span>,
+            ])}
+          </S.List>
+        </>
+      )}
     </S.Invite>
   )
 }
@@ -111,6 +168,7 @@ const S = {
   Actions: styled.div`
     display: flex;
     margin-top: 2rem;
+    margin-bottom: 5rem;
     align-items: center;
 
     & > * {
@@ -126,5 +184,13 @@ const S = {
       margin-right: 0;
       margin-left: auto;
     }
+  `,
+
+  List: styled.div`
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-gap: 1.5rem;
+    margin-top: 2rem;
+    text-transform: lowercase;
   `,
 }

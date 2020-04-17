@@ -90,4 +90,16 @@ export const person = {
       ${this.base}
     `
   },
+
+  get invites() {
+    return gql`
+      fragment Invites on Person {
+        invites {
+          email
+          role
+          status
+        }
+      }
+    `
+  },
 }
