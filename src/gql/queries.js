@@ -168,3 +168,12 @@ export const VERIFY_TOKEN = gql`
     isTokenValid(token: $token)
   }
 `
+
+export const SIGNUP_INFO = gql`
+  query SignUpInfo($token: ID!) {
+    signUpInfo(token: $token) {
+      email
+      role
+    }
+  }
+`

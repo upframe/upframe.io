@@ -38,8 +38,6 @@ export default function Invite() {
     skip: !me,
   })
 
-  console.log(invites)
-
   const [invite] = useMutation(INVITE, {
     variables: { emails: [...tags, input].filter(Boolean), role },
     onCompleted() {

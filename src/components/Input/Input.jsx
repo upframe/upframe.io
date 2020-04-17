@@ -6,7 +6,8 @@ export default function Input({
   type = 'text',
   id,
   value = '',
-  onChange,
+  onChange = () => {},
+  changeTarget = false,
   placeholder,
   error = false,
   ...props
@@ -16,7 +17,7 @@ export default function Input({
       className={classes(styles.input, { [styles.error]: error })}
       id={id}
       value={value}
-      onChange={({ target }) => onChange(target.value)}
+      onChange={({ target }) => onChange(changeTarget ? target : target.value)}
       placeholder={placeholder}
       type={type}
       {...(type === 'text' && { 'data-lpignore': true })}
