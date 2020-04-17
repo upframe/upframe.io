@@ -1,11 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button, Icon } from '../../components'
+import { gql, useQuery } from '../../gql'
 
-export default function Google(props) {
+const SIGNIN_URL = gql`
+  query GoogleSignInUrl($state: String) {
+    googleSigninUrl(state: $state)
+  }
+`
+
+export default function Google({ state, ...props }) {
+  const { data: { googleSigninUrl } = {} } = useQuery(SIGNIN_URL, {
+    variables: { state },
+  })
+
   return (
     <S.Google>
-      <Button {...props}>
+      <Button {...props} linkTo={googleSigninUrl}>
         <Icon icon="google" />
         <span>Sign up with Google</span>
       </Button>

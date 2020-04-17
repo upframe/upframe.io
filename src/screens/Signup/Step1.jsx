@@ -1,16 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Page, Labeled, Input, Button, Divider } from '../../components'
 import Google from './Google'
 import styled from 'styled-components'
+import { gql, useMutation } from '../../gql'
 
-export default function Step1({ info }) {
+const SIGNUP_GOOGLE = gql`
+  mutation SignupWithGoogle($token: ID!, $code: ID!) {
+    signUpGoogle(token: $token, code: $code)
+  }
+`
+
+export default function Step1({ info, token }) {
   const [email, setEmail] = useState(info.email)
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState({ email: true, password: false })
+  const [signUpGoogle] = useMutation(SIGNUP_GOOGLE)
+
+  useEffect(() => {
+    if (!signUpGoogle || !token) return
+    const code = new URLSearchParams(window.location.search).get('code')
+    if (!code) return
+    signUpGoogle({ variables: { code, token } })
+  }, [signUpGoogle, token])
 
   return (
-    <Page form title="Signup" style={S.Step1} defaultStyle>
-      <Google />
+    <Page title="Signup" style={S.Step1} defaultStyle>
+      <Google type="button" state={token} />
       <Divider />
       <Labeled
         label="Email"
