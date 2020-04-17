@@ -1,5 +1,5 @@
 .icon {
-  path {
+  & > path {
     fill: var(--cl-text-strong);
   }
 }

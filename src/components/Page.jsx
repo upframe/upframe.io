@@ -2,12 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { Helmet } from 'react-helmet'
 
-export default function Page({
+function Page({
   form = false,
   title,
   style,
   children,
   onSubmit,
+  defaultStyle = false,
   ...props
 }) {
   const Wrap = form ? S.Form : style ? S.Page : React.Fragment
@@ -18,7 +19,9 @@ export default function Page({
       </Helmet>
       <Wrap
         {...(style && { as: style })}
-        data-style={style || props.className ? 'cst' : 'default'}
+        data-style={
+          !defaultStyle && (style || props.className) ? 'cst' : 'default'
+        }
         {...{
           onSubmit: e => {
             e.preventDefault()
@@ -75,3 +78,5 @@ const S = {
 
   Page: styled.div``,
 }
+
+export default Object.assign(Page, S)
