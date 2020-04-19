@@ -4,14 +4,14 @@ import { Button, Icon } from '../../components'
 import { gql, useQuery } from '../../gql'
 
 const SIGNIN_URL = gql`
-  query GoogleSignInUrl($state: String) {
-    googleSigninUrl(state: $state)
+  query GoogleSignInUrl($redirect: String!, $state: String) {
+    googleSigninUrl(redirect: $redirect, state: $state)
   }
 `
 
-export default function Google({ state, ...props }) {
+export default function Google({ state, redirect, ...props }) {
   const { data: { googleSigninUrl } = {} } = useQuery(SIGNIN_URL, {
-    variables: { state },
+    variables: { state, redirect },
   })
 
   return (

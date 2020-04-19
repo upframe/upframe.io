@@ -7,13 +7,13 @@ import { mutations, useMutation } from '../../gql'
 
 export default function ConfirmDelete({ onCancel }) {
   const { setCurrentUser } = useCtx()
-  const user = useMe()
-  const [password, setPassword] = useState('')
+  const { me } = useMe()
+  const [handle, setHandle] = useState('')
   const history = useHistory()
 
   const [deleteAccount] = useMutation(mutations.DELETE_ACCOUNT, {
     variables: {
-      password,
+      handle,
     },
     onError({ graphQLErrors }) {
       graphQLErrors.forEach(err => {
@@ -42,15 +42,20 @@ export default function ConfirmDelete({ onCancel }) {
         <Title s4>Are you sure?</Title>
         <Text strong>
           This action <Text bold>cannot</Text> be undone. Your account{' '}
-          <Text underlined>{user.email}</Text> will be permanently deleted.
+          <Text underlined>{me.email}</Text> will be permanently deleted.
         </Text>
-        <Text strong>Please enter your password to confirm.</Text>
-        <Input type="password" onChange={setPassword} value={password} />
+        <Text strong>Please enter your username to confirm.</Text>
+        <Input autoComplete="off" onChange={setHandle} value={handle} />
         <div className={styles.btWrap}>
           <Button onClick={onCancel} type="cancel">
             Cancel
           </Button>
-          <Button onClick={deleteAccount} warn type="submit">
+          <Button
+            onClick={deleteAccount}
+            warn
+            type="submit"
+            disabled={me.handle !== handle}
+          >
             Delete Account
           </Button>
         </div>

@@ -23,6 +23,10 @@
   margin-bottom: 0;
   height: 0.8rem;
 
+  *[data-type='error'] > & {
+    color: var(--cl-error);
+  }
+
   p,
   span,
   a {

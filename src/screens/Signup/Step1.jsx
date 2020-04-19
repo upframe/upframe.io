@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Page, Labeled, Input, Button, Divider } from '../../components'
 import Google from './Google'
 import styled from 'styled-components'
 import { gql, useMutation } from '../../gql'
+import { hasError } from '../../api'
+import { notify } from '../../notification'
 
 const SIGNUP_GOOGLE = gql`
-  mutation SignupWithGoogle($token: ID!, $code: ID!) {
-    signUpGoogle(token: $token, code: $code)
+  mutation SignupWithGoogle($token: ID!, $code: ID!, $redirect: String!) {
+    signUpGoogle(token: $token, code: $code, redirect: $redirect)
   }
 `
 
@@ -14,18 +17,27 @@ export default function Step1({ info, token }) {
   const [email, setEmail] = useState(info.email)
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState({ email: true, password: false })
-  const [signUpGoogle] = useMutation(SIGNUP_GOOGLE)
+
+  const [signUpGoogle, { error }] = useMutation(SIGNUP_GOOGLE, {
+    onError(err) {
+      if (!hasError(err, 'INVALID_GRANT')) return
+      notify('Invalid grant. Try connecting Google again')
+    },
+  })
+  const redirect = `${window.location.origin}/signup`
 
   useEffect(() => {
-    if (!signUpGoogle || !token) return
+    if (!signUpGoogle || !token || !redirect) return
     const code = new URLSearchParams(window.location.search).get('code')
     if (!code) return
-    signUpGoogle({ variables: { code, token } })
-  }, [signUpGoogle, token])
+    signUpGoogle({ variables: { code, token, redirect } })
+  }, [signUpGoogle, token, redirect])
 
+  if (error && hasError(error, 'INVALID_GRANT'))
+    return <Redirect to={window.location.pathname} />
   return (
     <Page title="Signup" style={S.Step1} defaultStyle>
-      <Google type="button" state={token} />
+      <Google type="button" state={token} redirect={redirect} />
       <Divider />
       <Labeled
         label="Email"

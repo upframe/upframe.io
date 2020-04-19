@@ -137,12 +137,6 @@ export const SLOTS = gql`
   }
 `
 
-export const CONNECT_CALENDAR_URL = gql`
-  query GetCalendarConnectUrl {
-    calendarConnectUrl
-  }
-`
-
 export const GCAL_EVENTS = gql`
   query GoogleCalendarEvents($calendarIds: [ID!]!, $id: ID) {
     user(id: $id) {
@@ -169,11 +163,12 @@ export const VERIFY_TOKEN = gql`
   }
 `
 
-export const SIGNUP_INFO = gql`
-  query SignUpInfo($token: ID!) {
-    signUpInfo(token: $token) {
-      email
-      role
+export const CHECK_VALIDITY = gql`
+  query CheckValidity($name: String, $handle: String) {
+    checkValidity(name: $name, handle: $handle) {
+      field
+      valid
+      reason
     }
   }
 `

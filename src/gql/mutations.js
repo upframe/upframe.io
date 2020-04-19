@@ -50,8 +50,8 @@ export const REQUEST_PASSWORD_CHANGE = gql`
 `
 
 export const DELETE_ACCOUNT = gql`
-  mutation DeleteAccount($password: String!) {
-    deleteAccount(password: $password)
+  mutation DeleteAccount($handle: String!) {
+    deleteAccount(handle: $handle)
   }
 `
 

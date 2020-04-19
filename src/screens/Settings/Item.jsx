@@ -18,6 +18,7 @@ export default function Item({
   inputType,
   className,
   linkTo,
+  ...props
 }) {
   const [value, setValue] = useState(input || text)
 
@@ -35,7 +36,10 @@ export default function Item({
 
   const id = label.replace(/\s/g, '')
   return (
-    <div className={classes(style.item, className)}>
+    <div
+      className={classes(style.item, className)}
+      {...(error && { ['data-type']: 'error' })}
+    >
       <label htmlFor={id}>
         {label}
         {!required ? '' : <span> *</span>}
@@ -47,6 +51,7 @@ export default function Item({
           onChange={handleChange}
           error={error}
           {...(inputType && { type: inputType })}
+          {...props}
         />
       )}
       {(button || custom) && (
