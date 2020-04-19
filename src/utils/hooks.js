@@ -3,6 +3,7 @@ import context from '../context'
 import debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
 import { useQuery, queries } from '../gql'
+import isEqual from 'lodash/isEqual'
 
 export function useScrollAtTop() {
   const [atTop, setAtTop] = useState(window.scrollY === 0)
@@ -101,6 +102,7 @@ export function useDebouncedInputCall(
   input,
   { initial = input, inputDelay = 1.7, maxDelay = 200 } = {}
 ) {
+  const [lastInput, setLastInput] = useState(input)
   const [inputStamps, setInputStamps] = useReducer(
     (c, v) => (v === undefined ? [] : [...c, ...(Array.isArray(v) ? v : [v])]),
     []
@@ -116,8 +118,10 @@ export function useDebouncedInputCall(
   inputRef.current = input
 
   useEffect(() => {
+    if (isEqual(input, lastInput)) return
     setInputStamps(performance.now())
-  }, [input])
+    setLastInput(input)
+  }, [input, lastInput])
 
   useEffect(() => {
     if (cancelGo) clearTimeout(cancelGo)
