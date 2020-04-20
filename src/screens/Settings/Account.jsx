@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Text, Title, Checkbox, Button, GoogleSignin, Modal } from 'components'
 import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
 import { useMe } from '../../utils/hooks'
 import { gql, mutations, useQuery, useMutation } from '../../gql'
 import { classes } from '../../utils/css'
+import { hasError } from '../../api'
+import { notify } from '../../notification'
 
 const GOOGLE_CONNECTED = gql`
   query GoogleConnected($id: ID!) {
@@ -20,6 +23,7 @@ const GOOGLE_CONNECTED = gql`
 `
 
 export default function Account() {
+  const history = useHistory()
   const { me } = useMe()
   const [deleteRequested, setDeleteRequested] = useState(false)
   const [disconnectRequested, setDisconnectRequested] = useState(false)
@@ -34,6 +38,32 @@ export default function Account() {
   const [setVisibility, { loading }] = useMutation(
     mutations.SET_PROFILE_VISIBILITY
   )
+  const [disconnectGoogle] = useMutation(mutations.DISCONNECT_GOOGLE, {
+    onCompleted() {
+      setDisconnectRequested(false)
+    },
+  })
+  const [connectGoogle] = useMutation(mutations.CONNECT_GOOGLE, {
+    onError(err) {
+      if (hasError(err, 'INVALID_GRANT'))
+        notify('Invalid grant. Try connecting Google again.')
+      history.push(window.location.pathname)
+    },
+    onCompleted() {
+      history.push(window.location.pathname)
+    },
+  })
+
+  const code = new URLSearchParams(window.location.search).get('code')
+  useEffect(() => {
+    if (!code || !connectGoogle) return
+    connectGoogle({
+      variables: {
+        code,
+        redirect: window.location.origin + window.location.pathname,
+      },
+    })
+  }, [code, connectGoogle])
 
   return (
     <div className={styles.account}>
@@ -136,10 +166,15 @@ export default function Account() {
                 text:
                   "Are you sure? You won't be able to sign in using your Google account anymore.",
                 actions: [
-                  <Button onClick={() => setDisconnectRequested(false)}>
+                  <Button
+                    key="disc_cancel"
+                    onClick={() => setDisconnectRequested(false)}
+                  >
                     Cancel
                   </Button>,
-                  <Button warn>Disconnect</Button>,
+                  <Button key="disc_disc" warn onClick={disconnectGoogle}>
+                    Disconnect
+                  </Button>,
                 ],
               }
             : {

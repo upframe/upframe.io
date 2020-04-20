@@ -191,3 +191,31 @@ export const CHANGE_EMAIL = gql`
   }
   ${person.base}
 `
+
+export const CONNECT_GOOGLE = gql`
+  mutation ConnectGoogle($code: ID!, $redirect: String!) {
+    connectGoogle(code: $code, redirect: $redirect) {
+      ...PersonBase
+      google {
+        connected
+        email
+        canDisconnect
+      }
+    }
+  }
+  ${person.base}
+`
+
+export const DISCONNECT_GOOGLE = gql`
+  mutation DisconnectGoogle {
+    disconnectGoogle {
+      ...PersonBase
+      google {
+        connected
+        email
+        canDisconnect
+      }
+    }
+  }
+  ${person.base}
+`
