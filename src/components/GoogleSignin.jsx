@@ -11,6 +11,7 @@ const SIGNIN_URL = gql`
 
 export default function Google({
   verb = 'Sign in',
+  text = `${verb} with Google`,
   state,
   redirect = window.location.origin + window.location.pathname,
   ...props
@@ -23,7 +24,7 @@ export default function Google({
     <S.Google>
       <Button {...props} linkTo={googleSigninUrl}>
         <Icon icon="google" />
-        <span>{verb} with Google</span>
+        <span>{text}</span>
       </Button>
     </S.Google>
   )
@@ -48,6 +49,7 @@ const S = {
       svg {
         height: 1.5rem;
         width: 1.5rem;
+        margin-right: 0.75rem;
       }
 
       span {

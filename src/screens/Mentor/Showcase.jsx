@@ -20,10 +20,12 @@ export default function Showcase({ user }) {
           {user.title}
           {user.company ? ` at ${user.company}` : ''}
         </p>
-        <p className={styles.location}>
-          <Icon icon="location" />
-          {user.location}
-        </p>
+        {user.location && (
+          <p className={styles.location}>
+            <Icon icon="location" />
+            {user.location}
+          </p>
+        )}
         <div className={styles.social}>
           {(user.social || []).map(({ name, url, handle }) => (
             <SocialIcon
