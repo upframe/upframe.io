@@ -88,10 +88,10 @@ export default function Profile() {
               .filter(
                 ({ id }) =>
                   typeof id !== 'string' &&
-                  !user.tags.find(tag => tag.id === id)
+                  !(user.tags || []).find(tag => tag.id === id)
               )
               .map(({ id }) => id),
-            removedIds: user.tags
+            removedIds: (user.tags || [])
               .filter(({ id }) => !tags.find(tag => tag.id === id))
               .map(({ id }) => id),
             addedName: tags

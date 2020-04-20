@@ -73,6 +73,10 @@ const S = {
       input:not(:first-of-type) + input {
         margin-top: 0;
       }
+
+      hr {
+        margin: 2rem 0;
+      }
     }
   `,
 

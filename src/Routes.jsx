@@ -21,7 +21,7 @@ export default function Routes() {
       <Route exact path="/(list|tag)/:list" component={List} />
       <Route exact path="/search" component={List} />
       <Route exact path="/login" component={Login} />
-      <Route exact path="/(register|signup)/:token?" component={Register} />
+      <Route exact path="/signup/:token?" component={Register} />
       <Route exact path="/settings" component={Settings} />
       <Route exact path="/settings/:page" component={Settings} />
       <Route exact path="/404" component={ErrorPage} />

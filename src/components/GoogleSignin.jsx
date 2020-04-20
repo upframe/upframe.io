@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Icon } from '../../components'
-import { gql, useQuery } from '../../gql'
+import { Button, Icon } from '.'
+import { gql, useQuery } from '../gql'
 
 const SIGNIN_URL = gql`
   query GoogleSignInUrl($redirect: String!, $state: String) {
@@ -9,7 +9,12 @@ const SIGNIN_URL = gql`
   }
 `
 
-export default function Google({ state, redirect, ...props }) {
+export default function Google({
+  verb = 'Sign in',
+  state,
+  redirect = window.location.origin + window.location.pathname,
+  ...props
+}) {
   const { data: { googleSigninUrl } = {} } = useQuery(SIGNIN_URL, {
     variables: { state, redirect },
   })
@@ -18,7 +23,7 @@ export default function Google({ state, redirect, ...props }) {
     <S.Google>
       <Button {...props} linkTo={googleSigninUrl}>
         <Icon icon="google" />
-        <span>Sign up with Google</span>
+        <span>{verb} with Google</span>
       </Button>
     </S.Google>
   )

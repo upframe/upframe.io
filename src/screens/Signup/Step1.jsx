@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
-import { Page, Labeled, Input, Button, Divider } from '../../components'
-import Google from './Google'
+import {
+  Page,
+  Labeled,
+  Input,
+  Button,
+  Divider,
+  GoogleSignin,
+} from '../../components'
 import styled from 'styled-components'
 import { gql, useMutation } from '../../gql'
 import { hasError } from '../../api'
@@ -43,7 +49,12 @@ export default function Step1({ info, token }) {
     return <Redirect to={window.location.pathname} />
   return (
     <Page title="Signup" style={S.Step1} defaultStyle>
-      <Google type="button" state={token} redirect={redirect} />
+      <GoogleSignin
+        verb="Sign up"
+        type="button"
+        state={token}
+        redirect={redirect}
+      />
       <Divider />
       <Labeled
         label="Email"
