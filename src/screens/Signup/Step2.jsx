@@ -5,16 +5,16 @@ import Item from '../Settings/Item'
 import { queries, useQuery } from '../../gql'
 import { useDebouncedInputCall } from '../../utils/hooks'
 
-export default function Step2() {
-  const [name, _setName] = useState('')
-  const [handle, _setHandle] = useState('')
+export default function Step2({ name: initialName }) {
+  const [name, _setName] = useState(initialName || '')
+  const [handle, _setHandle] = useState(handleFromName(name))
+  const [biography, setBiography] = useState('')
   const [cstHandle, setCstHandle] = useState(false)
-  const checkData = useDebouncedInputCall({ name, handle })
+  const checkData = useDebouncedInputCall({ name, handle, biography })
   const [invalid, setInvalid] = useState({})
 
   useQuery(queries.CHECK_VALIDITY, {
     variables: checkData,
-    skip: !checkData.name && !checkData.handle,
     onCompleted({ checkValidity }) {
       setInvalid(
         Object.fromEntries(
@@ -28,15 +28,18 @@ export default function Step2() {
     },
   })
 
+  function handleFromName(v) {
+    return v
+      .replace(/\s\w/g, v => v[1].toUpperCase())
+      .normalize('NFKD')
+      .replace(/[^\w\-.]/g, '')
+      .slice(0, 20)
+  }
+
   function setName(v) {
     _setName(v)
     if (cstHandle) return
-    _setHandle(
-      v
-        .replace(/\s\w/g, v => v[1].toUpperCase())
-        .normalize('NFKD')
-        .replace(/[^\w\-.]/g, '')
-    )
+    _setHandle(handleFromName(v))
   }
 
   function setHandle(v) {
@@ -61,6 +64,7 @@ export default function Step2() {
         {...(handle.length &&
           'handle' in invalid && { hint: invalid.handle, error: true })}
       />
+      <Item label="Biography" text={biography} onChange={setBiography} />
       <Button accent type="submit" disabled={Object.keys(invalid).length > 0}>
         Finish signup
       </Button>
@@ -78,10 +82,16 @@ const S = {
     grid-template-columns: 1fr 1fr;
     grid-gap: 2rem;
     padding-bottom: 2rem;
+    width: 50rem;
+    max-width: 95vw;
 
     & > button {
       grid-column: 2;
       margin: 0;
+    }
+
+    *[data-action='textbox'] {
+      grid-column: 1 / span 2;
     }
   `,
 }

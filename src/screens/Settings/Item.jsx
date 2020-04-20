@@ -31,14 +31,16 @@ export default function Item({
     if (onChange) onChange(v)
   }
 
-  const Action =
-    input !== undefined ? Input : text !== undefined ? Textbox : undefined
+  const action =
+    input !== undefined ? 'input' : text !== undefined ? 'textbox' : undefined
+  const Action = { input: Input, textbox: Textbox }[action]
 
   const id = label.replace(/\s/g, '')
   return (
     <div
       className={classes(style.item, className)}
       {...(error && { ['data-type']: 'error' })}
+      {...(action && { ['data-action']: action })}
     >
       <label htmlFor={id}>
         {label}
