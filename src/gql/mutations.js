@@ -170,6 +170,11 @@ export const CHANGE_PASSWORD = gql`
       ... on Mentor {
         calendarConnected
       }
+      google {
+        connected
+        email
+        canDisconnect
+      }
     }
   }
   ${person.base}

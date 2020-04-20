@@ -58,9 +58,13 @@ export default function Account() {
         Password
       </Title>
       <Text>
-        You’ll receive an email in your inbox so you can reset your password.
+        {!google.connected || google.canDisconnect
+          ? 'Set a new password for your account.'
+          : 'Set a password so you can sign in using your email.'}
       </Text>
-      <Button linkTo="/reset/password">Send reset link</Button>
+      <Button linkTo="/reset/password">
+        {!google.connected || google.canDisconnect ? 'Change' : 'Set'} password
+      </Button>
 
       <Title s2 className={styles.span2}>
         Connections
