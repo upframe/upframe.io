@@ -9,6 +9,7 @@ import Step2 from './Step2'
 export const SIGNUP_INFO = gql`
   query SignUpInfo($token: ID!) {
     signUpInfo(token: $token) {
+      id
       email
       role
       authComplete
@@ -36,6 +37,7 @@ export default function Signup({ match }) {
       <Redirect to="/" />
     )
   if (error) return <Redirect to="/" />
-  if (signUpInfo.authComplete) return <Step2 name={signUpInfo.name} />
+  if (signUpInfo.authComplete)
+    return <Step2 token={match.params.token} name={signUpInfo.name} />
   return <Step1 info={signUpInfo} token={match.params.token} />
 }

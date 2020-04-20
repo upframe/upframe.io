@@ -1,17 +1,48 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button } from '../../components'
 import Item from '../Settings/Item'
-import { queries, useQuery } from '../../gql'
+import { gql, queries, fragments, useQuery, useMutation } from '../../gql'
 import { useDebouncedInputCall } from '../../utils/hooks'
 
-export default function Step2({ name: initialName }) {
+const COMPLETE_SIGNUP = gql`
+  mutation CompleteSignUp(
+    $token: ID!
+    $name: String!
+    $handle: String!
+    $biography: String!
+  ) {
+    completeSignup(
+      token: $token
+      name: $name
+      handle: $handle
+      biography: $biography
+    ) {
+      ...PersonBase
+      ... on Mentor {
+        calendarConnected
+      }
+    }
+  }
+  ${fragments.person.base}
+`
+
+export default function Step2({ token, name: initialName }) {
   const [name, _setName] = useState(initialName || '')
   const [handle, _setHandle] = useState(handleFromName(name))
   const [biography, setBiography] = useState('')
   const [cstHandle, setCstHandle] = useState(false)
   const checkData = useDebouncedInputCall({ name, handle, biography })
   const [invalid, setInvalid] = useState({})
+  const history = useHistory()
+
+  const [completeSignup] = useMutation(COMPLETE_SIGNUP, {
+    variables: { name, handle, biography, token },
+    onCompleted() {
+      history.push('/settings/public')
+    },
+  })
 
   useQuery(queries.CHECK_VALIDITY, {
     variables: checkData,
@@ -65,8 +96,13 @@ export default function Step2({ name: initialName }) {
           'handle' in invalid && { hint: invalid.handle, error: true })}
       />
       <Item label="Biography" text={biography} onChange={setBiography} />
-      <Button accent type="submit" disabled={Object.keys(invalid).length > 0}>
-        Finish signup
+      <Button
+        accent
+        type="submit"
+        disabled={Object.keys(invalid).length > 0}
+        onClick={completeSignup}
+      >
+        Create Account
       </Button>
     </S.Step2>
   )

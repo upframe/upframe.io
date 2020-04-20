@@ -9,7 +9,13 @@ import { notify } from '../../notification'
 
 const SIGNUP_GOOGLE = gql`
   mutation SignupWithGoogle($token: ID!, $code: ID!, $redirect: String!) {
-    signUpGoogle(token: $token, code: $code, redirect: $redirect)
+    signUpGoogle(token: $token, code: $code, redirect: $redirect) {
+      id
+      email
+      role
+      authComplete
+      name
+    }
   }
 `
 
