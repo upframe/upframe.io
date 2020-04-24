@@ -9,7 +9,8 @@ import GoogleSync from './GoogleSync'
 import CalendarList from './CalendarList'
 import styles from './calendarTab.module.scss'
 import { queries, mutations, useQuery, useMutation } from '../../gql'
-import { useCalendars } from '../../utils/hooks'
+import { useCalendars, useHistory } from '../../utils/hooks'
+import { notify } from '../../notification'
 
 export default function CalendarTab() {
   const [remoteSlots, setRemoteSlots] = useState([])
@@ -18,6 +19,7 @@ export default function CalendarTab() {
   const [showCalendars, setShowCalendars] = useState([])
   const [calendars, loading] = useCalendars(showCalendars)
   const [extEvents, setExtEvents] = useState([])
+  const history = useHistory()
 
   const { data: { mentor: user = {} } = {} } = useQuery(
     queries.SETTINGS_CALENDAR,
@@ -25,6 +27,22 @@ export default function CalendarTab() {
       variables: { id: currentUser },
     }
   )
+
+  const [connect, { loading: connecting }] = useMutation(
+    mutations.CONNECT_CALENDAR
+  )
+
+  const code = new URLSearchParams(window.location.search).get('code')
+  useEffect(() => {
+    if (!code || !history || !connect) return
+    connect({
+      variables: {
+        code,
+        redirect: window.location.origin + window.location.pathname,
+      },
+    })
+    history.replace(window.location.pathname)
+  }, [code, history, connect])
 
   useEffect(() => {
     if (!Array.isArray(user.slots)) return
@@ -75,7 +93,12 @@ export default function CalendarTab() {
 
   return (
     <div className={styles.calendarTab}>
-      <CalendarList user={user} onChange={setShowCalendars} loading={loading} />
+      <CalendarList
+        user={user}
+        onChange={setShowCalendars}
+        loading={loading}
+        connecting={connecting}
+      />
       <Calendar
         slots={slots}
         onAddSlot={slot => setSlots([...slots, slot])}
@@ -89,7 +112,10 @@ export default function CalendarTab() {
         Spend less time here and focus on what really matters by syncing your
         calendar with Upframe.
       </Text>
-      <Item label="Google Calendar" custom={<GoogleSync />}>
+      <Item
+        label="Google Calendar"
+        custom={<GoogleSync loading={connecting} />}
+      >
         {user.calendarConnected ? (
           <Text>
             <Text underlined>{user.email}</Text> is connected to your Upframe

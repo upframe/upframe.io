@@ -9,12 +9,12 @@ const CONNECT_CALENDAR_URL = gql`
   }
 `
 
-export default function GoogleSync() {
+export default function GoogleSync({ loading = false }) {
   const { data: { calendarConnectUrl: url } = {} } = useQuery(
     CONNECT_CALENDAR_URL,
     {
       variables: {
-        redirect: `${window.location.origin}/sync`,
+        redirect: `${window.location.origin}/settings/calendar`,
       },
     }
   )
@@ -29,6 +29,7 @@ export default function GoogleSync() {
 
   return (
     <Button
+      loading={loading}
       accent
       {...(me.calendarConnected
         ? { onClick: disconnect }
