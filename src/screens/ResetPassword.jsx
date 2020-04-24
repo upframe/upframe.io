@@ -11,7 +11,7 @@ export default function ResetPassword({ match }) {
   const { me, loading } = useMe()
   const history = useHistory()
   const { setCurrentUser } = useCtx()
-  const token = match && match.params && match.params.token
+  const token = match?.params?.token
 
   const { loading: tokenLoading } = useQuery(queries.VERIFY_TOKEN, {
     variables: { token },
@@ -77,7 +77,7 @@ export default function ResetPassword({ match }) {
       <Title s3>Reset Password</Title>
       <Input
         type="email"
-        value={me && me.email}
+        value={me?.email}
         autoComplete="off"
         disabled
         hidden

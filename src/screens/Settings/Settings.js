@@ -37,7 +37,7 @@ export default function Settings() {
             <Route path="/settings/account" component={Account} />
             <Route path="/settings/notifications" component={Notifications} />
             <Route path="/settings/invite" component={Invite} />
-            {me && me.role !== 'USER' && (
+            {me?.role !== 'USER' && (
               <>
                 <Route path="/settings/calendar" component={CalendarTab} />
                 <Redirect exact from="/settings/sync" to="/settings/calendar" />

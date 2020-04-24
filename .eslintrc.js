@@ -5,5 +5,6 @@ module.exports = {
     'prettier/prettier': 'error',
     'no-duplicate-imports': 'error',
     'no-console': 'warn',
+    'no-useless-computed-key': 'off',
   },
 }

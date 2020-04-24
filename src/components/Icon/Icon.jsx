@@ -13,7 +13,7 @@ export default function Icon({ icon = 'info', onClick }) {
       {...{ onClick }}
     >
       {'path' in svg[icon] && <path d={svg[icon].path} {...svg[icon].props} />}
-      {'markup' in svg[icon] && svg[icon].markup}
+      {'markup' in (svg[icon]?.markup ?? {})}
     </svg>
   )
 }

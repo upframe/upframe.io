@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { Logo, SearchBar, Button } from 'components'
 import UserIcon from './UserIcon'
 import Dropdown from './Dropdown'
@@ -9,29 +8,13 @@ import styles from './navbar.module.scss'
 
 export default function Navbar() {
   const ctx = useCtx()
-  const [searchQuery, setSearchQuery] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
   const atTop = useScrollAtTop()
-  const history = useHistory()
-
-  function search() {
-    ctx.setSearchQuery(searchQuery)
-    if (window.location !== '/') history.push('/')
-  }
-
-  function resetSearch() {
-    setSearchQuery('')
-    ctx.setSearchQuery('')
-  }
 
   return (
     <header className={classes(styles.navbar, { [styles.shadow]: !atTop })}>
-      <Logo home onClick={resetSearch} />
-      <SearchBar
-        searchQuery={searchQuery}
-        onChange={setSearchQuery}
-        onSubmit={search}
-      />
+      <Logo home />
+      <SearchBar />
       <div className={styles.right}>
         {ctx.currentUser && (
           <UserIcon

@@ -105,7 +105,7 @@ export default function Invite() {
         }.`}</S.Invalid>
       )}
       <S.Actions>
-        {me && me.role !== 'USER' && (
+        {me?.role !== 'USER' && (
           <>
             <label htmlFor="role">Invite as</label>
             <select
