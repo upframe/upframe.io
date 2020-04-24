@@ -54,6 +54,7 @@ export default function Step1({ info, token }) {
         type="button"
         state={token}
         redirect={redirect}
+        signup={true}
       />
       <Divider />
       <Labeled

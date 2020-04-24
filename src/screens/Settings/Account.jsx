@@ -24,14 +24,14 @@ const GOOGLE_CONNECTED = gql`
 
 export default function Account() {
   const history = useHistory()
-  const { me } = useMe()
+  const { me = {} } = useMe()
   const [deleteRequested, setDeleteRequested] = useState(false)
   const [disconnectRequested, setDisconnectRequested] = useState(false)
   const { data: { user: { google = {} } = {} } = {} } = useQuery(
     GOOGLE_CONNECTED,
     {
       variables: { id: me.id },
-      skip: !me || !me.id,
+      skip: !me.id,
     }
   )
 

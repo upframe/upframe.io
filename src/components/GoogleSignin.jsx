@@ -8,21 +8,30 @@ const SIGNIN_URL = gql`
     googleSigninUrl(redirect: $redirect, state: $state)
   }
 `
+const SIGNUP_URL = gql`
+  query GoogleSignUpUrl($redirect: String!, $state: String) {
+    googleSignupUrl(redirect: $redirect, state: $state)
+  }
+`
 
 export default function Google({
   verb = 'Sign in',
   text = `${verb} with Google`,
   state,
   redirect = window.location.origin + window.location.pathname,
+  signup = false,
   ...props
 }) {
-  const { data: { googleSigninUrl } = {} } = useQuery(SIGNIN_URL, {
+  const { data = {} } = useQuery(signup ? SIGNUP_URL : SIGNIN_URL, {
     variables: { state, redirect },
   })
 
   return (
     <S.Google>
-      <Button {...props} linkTo={googleSigninUrl}>
+      <Button
+        {...props}
+        linkTo={data[signup ? 'googleSignupUrl' : 'googleSigninUrl']}
+      >
         <Icon icon="google" />
         <span>{text}</span>
       </Button>

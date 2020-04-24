@@ -39,16 +39,12 @@ export default function Settings() {
             <Route path="/settings/invite" component={Invite} />
             {me && me.role !== 'USER' && (
               <>
-                <Route path="/settings/mycalendar" component={CalendarTab} />
+                <Route path="/settings/calendar" component={CalendarTab} />
+                <Redirect exact from="/settings/sync" to="/settings/calendar" />
                 <Redirect
                   exact
-                  from="/settings/sync"
-                  to="/settings/mycalendar"
-                />
-                <Redirect
-                  exact
-                  from="/settings/calendar"
-                  to="/settings/mycalendar"
+                  from="/settings/mycalendar"
+                  to="/settings/calendar"
                 />
               </>
             )}

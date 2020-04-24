@@ -12,7 +12,7 @@ export default function Navigation() {
     { title: 'Account Settings', url: 'account' },
     { title: 'Notifications', url: 'notifications' },
     ...(me && me.role !== 'USER'
-      ? [{ title: 'My Calendar', url: 'mycalendar' }]
+      ? [{ title: 'My Calendar', url: 'calendar' }]
       : []),
     { title: 'Invite', url: 'invite' },
   ]

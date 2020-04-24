@@ -14,6 +14,12 @@ export const SIGNUP_INFO = gql`
       role
       authComplete
       name
+      picture {
+        url
+      }
+      defaultPicture {
+        url
+      }
     }
   }
 `
@@ -38,6 +44,6 @@ export default function Signup({ match }) {
     )
   if (error) return <Redirect to="/" />
   if (signUpInfo.authComplete)
-    return <Step2 token={match.params.token} name={signUpInfo.name} />
+    return <Step2 token={match.params.token} info={signUpInfo} />
   return <Step1 info={signUpInfo} token={match.params.token} />
 }

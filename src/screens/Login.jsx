@@ -35,8 +35,9 @@ export default function Login() {
 
   const [signInGoogle] = useMutation(SIGNIN_GOOGLE, {
     onError(err) {
-      if (!hasError(err, 'INVALID_GRANT')) return
-      notify('Invalid grant. Try logging in again')
+      if (hasError(err, 'INVALID_GRANT'))
+        notify('Invalid grant. Try logging in again')
+      history.push(window.location.pathname)
     },
     onCompleted({ signInGoogle: user }) {
       if (!user) return

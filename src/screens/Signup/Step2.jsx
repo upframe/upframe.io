@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button } from '../../components'
+import { Button, Text, ProfilePicture, Title } from '../../components'
 import Item from '../Settings/Item'
 import { gql, queries, fragments, useQuery, useMutation } from '../../gql'
 import { useDebouncedInputCall } from '../../utils/hooks'
@@ -28,14 +28,20 @@ const COMPLETE_SIGNUP = gql`
   ${fragments.person.base}
 `
 
-export default function Step2({ token, name: initialName }) {
+export default function Step2({
+  token,
+  info: { name: initialName, picture, defaultPicture },
+}) {
   const [name, _setName] = useState(initialName || '')
   const [handle, _setHandle] = useState(handleFromName(name))
+  const [location, setLocation] = useState('')
+  const [headline, setHeadline] = useState('')
   const [biography, setBiography] = useState('')
   const [cstHandle, setCstHandle] = useState(false)
   const checkData = useDebouncedInputCall({ name, handle, biography })
   const [invalid, setInvalid] = useState({})
   const history = useHistory()
+  const fileInput = useRef(null)
 
   const [completeSignup] = useMutation(COMPLETE_SIGNUP, {
     variables: { name, handle, biography, token },
@@ -80,6 +86,33 @@ export default function Step2({ token, name: initialName }) {
 
   return (
     <S.Step2 onSubmit={e => e.preventDefault()}>
+      <S.Head>
+        <ProfilePicture imgs={[picture || defaultPicture]} size="11.125rem" />
+        <div>
+          <Title s2>Profile Picture</Title>
+          <Text>
+            We're big on pictures here.
+            <br />
+            Add an updated picture so you don't look like a&nbsp;
+            <span role="img" aria-label="robot">
+              🤖
+            </span>
+          </Text>
+          <div>
+            <Button accent onClick={() => fileInput.current.click()}>
+              Upload photo
+            </Button>
+            {picture && <Button onClick={() => {}}>Remove</Button>}
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInput}
+            onChange={() => {}}
+            hidden
+          />
+        </div>
+      </S.Head>
       <Item
         label="Name"
         input={name}
@@ -95,6 +128,8 @@ export default function Step2({ token, name: initialName }) {
         {...(handle.length &&
           'handle' in invalid && { hint: invalid.handle, error: true })}
       />
+      <Item label="Location" input={location} onChange={setLocation} />
+      <Item label="Headline" input={headline} onChange={setHeadline} />
       <Item label="Biography" text={biography} onChange={setBiography} />
       <Button
         accent
@@ -126,8 +161,38 @@ const S = {
       margin: 0;
     }
 
-    *[data-action='textbox'] {
+    *[data-action='textbox'],
+    *[data-label='location'],
+    *[data-label='headline'] {
       grid-column: 1 / span 2;
+    }
+  `,
+
+  Head: styled.div`
+    display: flex;
+    justify-content: flex-start;
+    grid-column: 1 / span 2;
+    margin-bottom: 1rem;
+
+    img {
+      height: 11.125rem;
+      border-radius: 0.3rem;
+    }
+
+    & > div {
+      margin-left: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      * {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      p {
+        margin-bottom: 1rem;
+      }
     }
   `,
 }

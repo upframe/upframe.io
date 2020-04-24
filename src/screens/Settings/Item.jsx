@@ -41,6 +41,7 @@ export default function Item({
       className={classes(style.item, className)}
       {...(error && { ['data-type']: 'error' })}
       {...(action && { ['data-action']: action })}
+      data-label={label?.toLowerCase()}
     >
       <label htmlFor={id}>
         {label}
