@@ -12,6 +12,9 @@
     .rbc-time-content {
       overscroll-behavior: none;
     }
+    .rbc-time-header-cell {
+      line-height: 50px;
+    }
     .rbc-time-slot {
       font-family: Poppins;
       color: #bdbdbd;
@@ -25,6 +28,10 @@
       font-weight: bold;
       font-size: 16px;
       line-height: 16px;
+    }
+
+    .rbc-row.rbc-time-header-cell .span {
+      padding-top: 100px;
     }
     .rbc-day-slot .rbc-time-slot {
       border-top: none;
