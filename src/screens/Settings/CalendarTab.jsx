@@ -10,7 +10,6 @@ import CalendarList from './CalendarList'
 import styles from './calendarTab.module.scss'
 import { queries, mutations, useQuery, useMutation } from '../../gql'
 import { useCalendars, useHistory } from '../../utils/hooks'
-import { notify } from '../../notification'
 
 export default function CalendarTab() {
   const [remoteSlots, setRemoteSlots] = useState([])
