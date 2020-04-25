@@ -11,6 +11,13 @@ export default function Navbar() {
   const [showDropdown, setShowDropdown] = useState(false)
   const atTop = useScrollAtTop()
 
+  if (
+    window.location.pathname
+      .toLowerCase()
+      .split('/')
+      .filter(Boolean)[0] === 'signup'
+  )
+    return null
   return (
     <header className={classes(styles.navbar, { [styles.shadow]: !atTop })}>
       <Logo home />

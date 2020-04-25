@@ -164,8 +164,20 @@ export const VERIFY_TOKEN = gql`
 `
 
 export const CHECK_VALIDITY = gql`
-  query CheckValidity($name: String, $handle: String, $biography: String) {
-    checkValidity(name: $name, handle: $handle, biography: $biography) {
+  query CheckValidity(
+    $name: String
+    $handle: String
+    $biography: String
+    $location: String
+    $headline: String
+  ) {
+    checkValidity(
+      name: $name
+      handle: $handle
+      biography: $biography
+      location: $location
+      headline: $headline
+    ) {
       field
       valid
       reason

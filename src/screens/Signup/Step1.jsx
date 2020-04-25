@@ -13,6 +13,22 @@ import { gql, useMutation } from '../../gql'
 import { hasError } from '../../api'
 import { notify } from '../../notification'
 
+const SIGNUP_PASSWORD = gql`
+  mutation SignupWithPassword(
+    $token: ID!
+    $email: String!
+    $password: String!
+  ) {
+    signUpPassword(token: $token, email: $email, password: $password) {
+      id
+      email
+      role
+      authComplete
+      name
+    }
+  }
+`
+
 const SIGNUP_GOOGLE = gql`
   mutation SignupWithGoogle($token: ID!, $code: ID!, $redirect: String!) {
     signUpGoogle(token: $token, code: $code, redirect: $redirect) {
@@ -30,14 +46,18 @@ export default function Step1({ info, token }) {
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState({ email: true, password: false })
 
+  const [signupPassword] = useMutation(SIGNUP_PASSWORD, {
+    variables: { token, email, password },
+  })
+
   const [signUpGoogle, { error }] = useMutation(SIGNUP_GOOGLE, {
     onError(err) {
       if (!hasError(err, 'INVALID_GRANT')) return
       notify('Invalid grant. Try connecting Google again')
     },
   })
-  const redirect = `${window.location.origin}/signup`
 
+  const redirect = `${window.location.origin}/signup`
   useEffect(() => {
     if (!signUpGoogle || !token || !redirect) return
     const code = new URLSearchParams(window.location.search).get('code')
@@ -48,7 +68,7 @@ export default function Step1({ info, token }) {
   if (error && hasError(error, 'INVALID_GRANT'))
     return <Redirect to={window.location.pathname} />
   return (
-    <Page title="Signup" style={S.Step1} defaultStyle>
+    <Page title="Signup" style={S.Step1} defaultStyle onSubmit={signupPassword}>
       <GoogleSignin
         verb="Sign up"
         type="button"
