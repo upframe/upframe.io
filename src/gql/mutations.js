@@ -50,8 +50,8 @@ export const REQUEST_PASSWORD_CHANGE = gql`
 `
 
 export const DELETE_ACCOUNT = gql`
-  mutation DeleteAccount($password: String!) {
-    deleteAccount(password: $password)
+  mutation DeleteAccount($handle: String!) {
+    deleteAccount(handle: $handle)
   }
 `
 
@@ -146,8 +146,8 @@ export const CANCEL_MEETING = gql`
 `
 
 export const CONNECT_CALENDAR = gql`
-  mutation ConnectCalendar($code: ID!) {
-    connectCalendar(code: $code) {
+  mutation ConnectCalendar($code: ID!, $redirect: String!) {
+    connectCalendar(code: $code, redirect: $redirect) {
       id
       calendarConnected
     }
@@ -170,6 +170,11 @@ export const CHANGE_PASSWORD = gql`
       ... on Mentor {
         calendarConnected
       }
+      google {
+        connected
+        email
+        canDisconnect
+      }
     }
   }
   ${person.base}
@@ -181,6 +186,34 @@ export const CHANGE_EMAIL = gql`
       ...PersonBase
       ... on Mentor {
         calendarConnected
+      }
+    }
+  }
+  ${person.base}
+`
+
+export const CONNECT_GOOGLE = gql`
+  mutation ConnectGoogle($code: ID!, $redirect: String!) {
+    connectGoogle(code: $code, redirect: $redirect) {
+      ...PersonBase
+      google {
+        connected
+        email
+        canDisconnect
+      }
+    }
+  }
+  ${person.base}
+`
+
+export const DISCONNECT_GOOGLE = gql`
+  mutation DisconnectGoogle {
+    disconnectGoogle {
+      ...PersonBase
+      google {
+        connected
+        email
+        canDisconnect
       }
     }
   }

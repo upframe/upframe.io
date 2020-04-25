@@ -36,14 +36,12 @@
   color: var(--cl-text-light) !important;
   font-size: 1.1rem;
   white-space: nowrap;
+  user-select: none;
+  text-decoration: none;
 
   &:first-child {
     margin-top: 0;
   }
-
-  // a {
-  text-decoration: none;
-  // }
 }
 
 .active {

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import { TagInput, Icon, ProfilePicture } from '.'
 import { useQuery, gql } from '../gql'
 import { Link, useHistory } from 'react-router-dom'
+import { useDebouncedInputCall } from '../utils/hooks'
 
 const SEARCH = gql`
   query Search($term: String!, $withTags: [Int!]) {
@@ -29,11 +30,9 @@ const SEARCH = gql`
 `
 
 export default function SearchBar() {
-  const [input, _setInput] = useState('')
-  const [inputFinal, setInputFinal] = useState('')
+  const [input, setInput] = useState('')
+  const inputFinal = useDebouncedInputCall(input)
   const [focus, setFocus] = useState(false)
-  const [inputStamps, setInputStamps] = useState([])
-  const [cancelGo, setCancelGo] = useState()
   const [searchTags, setSearchTags] = useState([])
   const history = useHistory()
 
@@ -50,36 +49,8 @@ export default function SearchBar() {
 
   const inputRef = useRef(input)
   inputRef.current = input
-  const setInputStampsRef = useRef(setInputStamps)
-  setInputStampsRef.current = setInputStamps
-  const setInputFinalRef = useRef(setInputFinal)
-  setInputFinalRef.current = setInputFinal
   const setFocusRef = useRef(setFocus)
   setFocusRef.current = setFocus
-
-  function setInput(v) {
-    _setInput(v)
-    setInputStamps([...inputStamps, performance.now()])
-  }
-
-  useEffect(() => {
-    if (cancelGo) clearTimeout(cancelGo)
-    if (!inputStamps.length) return
-
-    const inputDelta = inputStamps.slice(1).map((v, i) => v - inputStamps[i])
-    const inputAvg = inputDelta.reduce((a, c) => a + c, 0) / inputDelta.length
-
-    setCancelGo(
-      setTimeout(
-        () => {
-          setInputStampsRef.current([])
-          setInputFinalRef.current(inputRef.current)
-        },
-        isNaN(inputAvg) ? 200 : Math.min(inputAvg * 1.7, 200)
-      )
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inputStamps])
 
   function submit(e) {
     e.preventDefault()

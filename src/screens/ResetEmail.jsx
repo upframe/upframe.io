@@ -6,7 +6,7 @@ import { useHistory } from '../utils/hooks'
 
 export default function ResetEmail({ match }) {
   const [email, setEmail] = useState()
-  const token = match && match.params && match.params.token
+  const token = match?.params?.token
   const history = useHistory()
 
   const [requestChange] = useMutation(mutations.REQUEST_EMAIL_CHANGE, {

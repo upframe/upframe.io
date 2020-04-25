@@ -12,10 +12,6 @@ export default function App() {
     currentUser: null,
   })
 
-  function setSearchQuery(searchQuery) {
-    setCtx({ ...ctx, searchQuery })
-  }
-
   function setCurrentUser(currentUser) {
     setCtx({ ...ctx, currentUser })
   }
@@ -60,7 +56,6 @@ export default function App() {
         <Context.Provider
           value={{
             ...ctx,
-            setSearchQuery,
             setCurrentUser,
           }}
         >

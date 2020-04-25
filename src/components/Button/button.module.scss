@@ -75,3 +75,17 @@
 .linkWrap {
   display: contents !important;
 }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+
+  & > svg {
+    height: 2.8rem;
+    width: 2.8rem;
+    margin-left: -2rem;
+    margin-right: 0.5rem;
+  }
+}

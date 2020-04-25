@@ -62,5 +62,9 @@ const S = {
     display: flex;
     justify-content: flex-end;
     margin-top: 2.5rem;
+
+    & > * {
+      margin-right: 1rem;
+    }
   `,
 }

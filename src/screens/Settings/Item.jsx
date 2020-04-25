@@ -18,6 +18,7 @@ export default function Item({
   inputType,
   className,
   linkTo,
+  ...props
 }) {
   const [value, setValue] = useState(input || text)
 
@@ -30,12 +31,18 @@ export default function Item({
     if (onChange) onChange(v)
   }
 
-  const Action =
-    input !== undefined ? Input : text !== undefined ? Textbox : undefined
+  const action =
+    input !== undefined ? 'input' : text !== undefined ? 'textbox' : undefined
+  const Action = { input: Input, textbox: Textbox }[action]
 
   const id = label.replace(/\s/g, '')
   return (
-    <div className={classes(style.item, className)}>
+    <div
+      className={classes(style.item, className)}
+      data-type={error ? 'error' : undefined}
+      data-action={action}
+      data-label={label?.toLowerCase()}
+    >
       <label htmlFor={id}>
         {label}
         {!required ? '' : <span> *</span>}
@@ -47,6 +54,7 @@ export default function Item({
           onChange={handleChange}
           error={error}
           {...(inputType && { type: inputType })}
+          {...props}
         />
       )}
       {(button || custom) && (

@@ -2,6 +2,7 @@ import React from 'react'
 import { Link as InternalLink } from 'react-router-dom'
 import { classes } from 'utils/css'
 import styles from './button.module.scss'
+import { Spinner } from '..'
 
 export default function Button({
   children,
@@ -14,7 +15,8 @@ export default function Button({
   filled = false,
   text = false,
   type,
-  disabled = false,
+  loading = false,
+  disabled = loading,
   hidden = false,
 }) {
   const Button = (
@@ -24,12 +26,14 @@ export default function Button({
         [styles.warn]: warn,
         [styles.filled]: filled,
         [styles.text]: text,
+        [styles.loading]: loading,
       })}
       onClick={onClick}
       {...(type && { type })}
       disabled={disabled}
       hidden={hidden}
     >
+      {loading && <Spinner />}
       {children}
     </button>
   )

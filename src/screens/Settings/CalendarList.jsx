@@ -4,7 +4,12 @@ import GoogleSync from './GoogleSync'
 import { classes } from 'utils/css'
 import styles from './calendarList.module.scss'
 
-export default function CalendarList({ onChange, user, loading = [] }) {
+export default function CalendarList({
+  onChange,
+  user,
+  loading = [],
+  connecting = false,
+}) {
   const [selection, setSelection] = useState([])
 
   useEffect(() => {
@@ -62,7 +67,7 @@ export default function CalendarList({ onChange, user, loading = [] }) {
             <Text strong small>
               Check your availability before adding free slots.
             </Text>
-            <GoogleSync />
+            <GoogleSync loading={connecting} />
           </>
         )}
       </div>

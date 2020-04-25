@@ -1,9 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Redirect, Link } from 'react-router-dom'
-import { Labeled, Input, Button, Page } from '../components'
+import {
+  Labeled,
+  Input,
+  Button,
+  Page,
+  GoogleSignin,
+  Divider,
+} from '../components'
 import { useCtx, useHistory, useMe } from '../utils/hooks'
-import { mutations, useMutation } from '../gql'
+import { gql, fragments, mutations, useMutation } from '../gql'
 import styled from 'styled-components'
+import { hasError } from '../api'
+import { notify } from '../notification'
+
+const SIGNIN_GOOGLE = gql`
+  mutation SigninWithGoogle($code: ID!, $redirect: String!) {
+    signInGoogle(code: $code, redirect: $redirect) {
+      ...PersonBase
+      ... on Mentor {
+        calendarConnected
+      }
+    }
+  }
+  ${fragments.person.base}
+`
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -12,12 +33,40 @@ export default function Login() {
   const history = useHistory()
   const { me } = useMe()
 
+  const [signInGoogle] = useMutation(SIGNIN_GOOGLE, {
+    onError(err) {
+      if (hasError(err, 'INVALID_GRANT'))
+        notify('Invalid grant. Try logging in again')
+      history.push(window.location.pathname)
+    },
+    onCompleted({ signInGoogle: user }) {
+      if (!user) return
+      afterLogin(user)
+    },
+  })
+
+  const code = new URLSearchParams(window.location.search).get('code')
+
+  function afterLogin(user) {
+    setCurrentUser(user.id)
+    localStorage.setItem('loggedin', true)
+    history.push('/')
+  }
+
+  useEffect(() => {
+    if (!code || !signInGoogle) return
+    signInGoogle({
+      variables: {
+        code,
+        redirect: window.location.origin + window.location.pathname,
+      },
+    })
+  }, [code, signInGoogle])
+
   const [signIn] = useMutation(mutations.SIGN_IN, {
     onCompleted: ({ signIn: user }) => {
       if (!user) return
-      setCurrentUser(user.id)
-      localStorage.setItem('loggedin', true)
-      history.push('/')
+      afterLogin(user)
     },
   })
 
@@ -29,6 +78,8 @@ export default function Login() {
   if (me) return <Redirect to="/" />
   return (
     <Page form title="Login" onSubmit={handleSubmit}>
+      <GoogleSignin type="button" />
+      <Divider />
       <Labeled
         label="Email"
         action={

@@ -1,8 +1,9 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useReducer, useRef } from 'react'
 import context from '../context'
 import debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
 import { useQuery, queries } from '../gql'
+import isEqual from 'lodash/isEqual'
 
 export function useScrollAtTop() {
   const [atTop, setAtTop] = useState(window.scrollY === 0)
@@ -96,3 +97,50 @@ export function useMe() {
 }
 
 export { useHistory }
+
+export function useDebouncedInputCall(
+  input,
+  { initial = input, inputDelay = 1.7, maxDelay = 200 } = {}
+) {
+  const [lastInput, setLastInput] = useState(input)
+  const [inputStamps, setInputStamps] = useReducer(
+    (c, v) => (v === undefined ? [] : [...c, ...(Array.isArray(v) ? v : [v])]),
+    []
+  )
+  const [cancelGo, setCancelGo] = useState()
+  const [debounced, setDebounced] = useState(initial)
+
+  const setInputStampsRef = useRef(setInputStamps)
+  setInputStampsRef.current = setInputStamps
+  const setDebouncedRef = useRef(setDebounced)
+  setDebouncedRef.current = setDebounced
+  const inputRef = useRef(input)
+  inputRef.current = input
+
+  useEffect(() => {
+    if (isEqual(input, lastInput)) return
+    setInputStamps(performance.now())
+    setLastInput(input)
+  }, [input, lastInput])
+
+  useEffect(() => {
+    if (cancelGo) clearTimeout(cancelGo)
+    if (!inputStamps.length) return
+
+    const inputDelta = inputStamps.slice(1).map((v, i) => v - inputStamps[i])
+    const inputAvg = inputDelta.reduce((a, c) => a + c, 0) / inputDelta.length
+
+    setCancelGo(
+      setTimeout(
+        () => {
+          setInputStampsRef.current()
+          setDebouncedRef.current(inputRef.current)
+        },
+        isNaN(inputAvg) ? maxDelay : Math.min(inputAvg * inputDelay, maxDelay)
+      )
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inputStamps])
+
+  return debounced
+}

@@ -1,11 +1,22 @@
 import React from 'react'
 import { Button } from 'components'
-import { queries, useQuery, mutations, useMutation } from '../../gql'
+import { gql, useQuery, mutations, useMutation } from '../../gql'
 import { useMe } from '../../utils/hooks'
 
-export default function GoogleSync() {
+const CONNECT_CALENDAR_URL = gql`
+  query GetCalendarConnectUrl($redirect: String!) {
+    calendarConnectUrl(redirect: $redirect)
+  }
+`
+
+export default function GoogleSync({ loading = false }) {
   const { data: { calendarConnectUrl: url } = {} } = useQuery(
-    queries.CONNECT_CALENDAR_URL
+    CONNECT_CALENDAR_URL,
+    {
+      variables: {
+        redirect: `${window.location.origin}/settings/calendar`,
+      },
+    }
   )
 
   const { me } = useMe()
@@ -18,6 +29,7 @@ export default function GoogleSync() {
 
   return (
     <Button
+      loading={loading}
       accent
       {...(me.calendarConnected
         ? { onClick: disconnect }
