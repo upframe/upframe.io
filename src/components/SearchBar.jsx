@@ -30,7 +30,9 @@ const SEARCH = gql`
 `
 
 export default function SearchBar() {
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState(
+    new URLSearchParams(window.location.search).get('q') ?? ''
+  )
   const inputFinal = useDebouncedInputCall(input)
   const [focus, setFocus] = useState(false)
   const [searchTags, setSearchTags] = useState([])
@@ -123,6 +125,21 @@ export default function SearchBar() {
 
 const IMG_SIZE = '2.8rem'
 
+const Item = styled.li`
+  width: 100%;
+  height: ${IMG_SIZE};
+  padding: 0.25rem 1rem;
+  cursor: pointer;
+
+  & > span {
+    font-weight: 300;
+  }
+
+  &:hover {
+    background-color: #feeef2;
+  }
+`
+
 const S = {
   Wrap: styled.form`
     max-width: 35rem;
@@ -158,24 +175,22 @@ const S = {
     position: absolute;
     box-sizing: border-box;
     width: 100%;
-    margin: 0;
-    margin-top: 0.5rem;
     background: #fff;
     box-shadow: 0px 1px 6px #0004;
     border-radius: 0.3rem;
     list-style: none;
-    padding: 0 1rem;
+    margin: 0;
+    margin-top: 0.5rem;
+    padding: 0.25rem 0;
+    padding: 0;
     max-height: min(200rem, calc(100vh - 5rem));
     overflow-y: auto;
-    padding: 0 1rem;
   `,
 
-  User: styled.li`
+  User: styled(Item)`
     & > a {
       display: flex;
-      padding: 0;
       align-items: center;
-      margin: 0.5rem 0;
 
       img {
         width: ${IMG_SIZE};
@@ -186,16 +201,8 @@ const S = {
     }
   `,
 
-  Tag: styled.li`
-    margin: 0.5rem 0;
-    width: 100%;
-    height: ${IMG_SIZE};
+  Tag: styled(Item)`
     display: block;
     line-height: ${IMG_SIZE};
-    cursor: pointer;
-
-    span {
-      font-weight: 300;
-    }
   `,
 }
