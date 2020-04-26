@@ -7,9 +7,10 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import client from './api'
 import * as Sentry from '@sentry/browser'
 
-Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DSN,
-})
+if (process.env.NODE_ENV !== 'development')
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_DSN,
+  })
 
 ReactDOM.render(
   <ApolloProvider client={client}>
