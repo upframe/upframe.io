@@ -4,6 +4,7 @@ import { TagInput, Icon, ProfilePicture } from '.'
 import { useQuery, gql } from '../gql'
 import { Link, useHistory } from 'react-router-dom'
 import { useDebouncedInputCall } from '../utils/hooks'
+import { useSpring, animated } from 'react-spring'
 
 const SEARCH = gql`
   query Search($term: String!, $withTags: [Int!]) {
@@ -51,6 +52,10 @@ export default function SearchBar() {
       term: inputFinal.trim().replace(/\s{2,}/g, ' '),
       withTags: searchTags.map(({ id }) => id),
     },
+  })
+
+  const height = useSpring({
+    height: `${(users.length + tags.length) * 3.3}rem`,
   })
 
   useEffect(() => {
@@ -143,10 +148,17 @@ export default function SearchBar() {
           {...(willDelete &&
             searchTags.length && { highlight: searchTags.slice(-1)[0]?.id })}
         />
-        <Icon icon="search" />
+        <Icon
+          icon="search"
+          onClick={({ target }) =>
+            target.parentNode.querySelector('input').focus()
+          }
+        />
       </S.Search>
-      {focus && users.length + tags.length > 0 && (
+      {(true || focus) && (
         <S.Preview
+          style={height}
+          items={tags.length + users.length}
           tabIndex={0}
           onFocus={e => {
             const inputNode = e.target.parentNode.querySelector('input')
@@ -190,9 +202,10 @@ const IMG_SIZE = '2.8rem'
 
 const Item = styled.li`
   width: 100%;
-  height: ${IMG_SIZE};
+  height: calc(${IMG_SIZE} + 0.5rem);
   padding: 0.25rem 1rem;
   cursor: pointer;
+  box-sizing: border-box;
 
   & > span {
     font-weight: 300;
@@ -234,7 +247,7 @@ const S = {
     }
   `,
 
-  Preview: styled.ul`
+  Preview: styled(animated.ul)`
     position: absolute;
     box-sizing: border-box;
     width: 100%;
@@ -248,6 +261,8 @@ const S = {
     padding: 0;
     max-height: min(200rem, calc(100vh - 5rem));
     overflow-y: auto;
+    background-color: #fff;
+    display: block;
   `,
 
   User: styled(Item)`
@@ -258,6 +273,7 @@ const S = {
       img {
         width: ${IMG_SIZE};
         height: ${IMG_SIZE};
+        display: block;
         border-radius: 50%;
         margin-right: 1rem;
       }
