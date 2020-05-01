@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { TagInput, Icon, ProfilePicture } from '.'
 import { useQuery, gql } from '../gql'
@@ -37,19 +37,28 @@ export default function SearchBar() {
   )
   const inputFinal = useDebouncedInputCall(input)
   const [focus, setFocus] = useState(false)
+  const [selected, setSelected] = useState()
+  const [selectionList, setSelectionList] = useState([])
   const [searchTags, setSearchTags] = useState([])
+  const [willDelete, setWillDelete] = useState(false)
   const history = useHistory()
 
-  const { data: { search: { users = [], tags = [] } = {} } = {} } = useQuery(
-    SEARCH,
-    {
-      skip: !/\w/.test(inputFinal),
-      variables: {
-        term: inputFinal.trim().replace(/\s{2,}/g, ' '),
-        withTags: searchTags.map(({ id }) => id),
-      },
-    }
-  )
+  const {
+    data: { search: { users = empty, tags = empty } = {} } = {},
+  } = useQuery(SEARCH, {
+    skip: !/\w/.test(inputFinal),
+    variables: {
+      term: inputFinal.trim().replace(/\s{2,}/g, ' '),
+      withTags: searchTags.map(({ id }) => id),
+    },
+  })
+
+  useEffect(() => {
+    setSelectionList([
+      ...tags.map(({ tag }) => tag.id),
+      ...users.map(({ user }) => user.id),
+    ])
+  }, [users, tags])
 
   const inputRef = useRef(input)
   inputRef.current = input
@@ -72,8 +81,52 @@ export default function SearchBar() {
     )
   }
 
+  function handleKey(e) {
+    setWillDelete(false)
+
+    switch (e.key) {
+      case 'Enter':
+      case 'Tab': {
+        e.preventDefault()
+        const tag = tags.find(({ tag }) => tag.id === selected)
+        const user = tag ?? users.find(({ user }) => user.id === selected)
+        if (tag) {
+          setInput('')
+          setSearchTags([...searchTags, tag.tag])
+        } else if (user && e.key === 'Enter') {
+          setInput('')
+          history.push(`/${user.user.handle}`)
+        }
+        break
+      }
+      case 'Backspace':
+        if (input.length === 0 && searchTags.length)
+          willDelete
+            ? setSearchTags(searchTags.slice(0, -1))
+            : setWillDelete(true)
+        break
+      case 'ArrowUp':
+      case 'ArrowDown': {
+        if (selectionList.length === 0) break
+        const selectIndex = selectionList.indexOf(selected)
+        const dir = e.key.replace('Arrow', '').toLowerCase()
+        if (dir === 'down') {
+          if (selectIndex >= selectionList.length - 1) break
+          if (selectIndex === -1) setSelected(selectionList[0])
+          else setSelected(selectionList[selectIndex + 1])
+        } else {
+          if (selectIndex === 0) break
+          if (selectIndex === -1) setSelected(selectionList.slice(-1)[0])
+          else setSelected(selectionList[selectIndex - 1])
+        }
+        break
+      }
+      default:
+    }
+  }
+
   return (
-    <S.Wrap onSubmit={submit}>
+    <S.Wrap onSubmit={submit} onKeyDown={handleKey}>
       <S.Search>
         <TagInput
           value={input}
@@ -87,6 +140,8 @@ export default function SearchBar() {
             setSearchTags(searchTags.filter(tag => tag.id !== id))
           }
           placeholder="What are you looking for?"
+          {...(willDelete &&
+            searchTags.length && { highlight: searchTags.slice(-1)[0]?.id })}
         />
         <Icon icon="search" />
       </S.Search>
@@ -108,11 +163,17 @@ export default function SearchBar() {
                 setSearchTags([...searchTags, tag])
                 setInput('')
               }}
+              data-selected={tag.id === selected}
+              onMouseEnter={() => setSelected(tag.id)}
               dangerouslySetInnerHTML={{ __html: markup }}
             />
           ))}
           {users.map(({ user: { id, handle, profilePictures }, markup }) => (
-            <S.User key={id}>
+            <S.User
+              key={id}
+              data-selected={id === selected}
+              onMouseEnter={() => setSelected(id)}
+            >
               <Link to={`/${handle}`} onClick={() => setInput('')}>
                 <ProfilePicture size={IMG_SIZE} imgs={profilePictures} />
                 <span dangerouslySetInnerHTML={{ __html: markup }} />
@@ -137,7 +198,7 @@ const Item = styled.li`
     font-weight: 300;
   }
 
-  &:hover {
+  &[data-selected='true'] {
     background-color: #feeef2;
   }
 `
@@ -208,3 +269,5 @@ const S = {
     line-height: ${IMG_SIZE};
   `,
 }
+
+const empty = []
