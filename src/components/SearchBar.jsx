@@ -9,14 +9,16 @@ const SEARCH = gql`
   query Search($term: String!, $withTags: [Int!]) {
     search(term: $term, withTags: $withTags) {
       users {
-        id
-        name
-        handle
-        profilePictures {
-          size
-          type
-          url
+        user {
+          id
+          handle
+          profilePictures {
+            size
+            type
+            url
+          }
         }
+        markup
       }
       tags {
         tag {
@@ -109,11 +111,11 @@ export default function SearchBar() {
               dangerouslySetInnerHTML={{ __html: markup }}
             />
           ))}
-          {users.map(({ id, name, handle, profilePictures }) => (
+          {users.map(({ user: { id, handle, profilePictures }, markup }) => (
             <S.User key={id}>
               <Link to={`/${handle}`} onClick={() => setInput('')}>
                 <ProfilePicture size={IMG_SIZE} imgs={profilePictures} />
-                <span>{name}</span>
+                <span dangerouslySetInnerHTML={{ __html: markup }} />
               </Link>
             </S.User>
           ))}
