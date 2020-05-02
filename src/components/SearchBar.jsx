@@ -59,11 +59,13 @@ export default function SearchBar() {
   })
 
   useEffect(() => {
-    setSelectionList([
+    const list = [
       ...tags.map(({ tag }) => tag.id),
       ...users.map(({ user }) => user.id),
-    ])
-  }, [users, tags])
+    ]
+    setSelectionList(list)
+    if (!list.includes(selected)) setSelected()
+  }, [users, tags, selected])
 
   const inputRef = useRef(input)
   inputRef.current = input
@@ -88,11 +90,10 @@ export default function SearchBar() {
 
   function handleKey(e) {
     setWillDelete(false)
-
     switch (e.key) {
       case 'Enter':
       case 'Tab': {
-        e.preventDefault()
+        if (selected) e.preventDefault()
         const tag = tags.find(({ tag }) => tag.id === selected)
         const user = tag ?? users.find(({ user }) => user.id === selected)
         if (tag) {

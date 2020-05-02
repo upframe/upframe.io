@@ -20,7 +20,7 @@ export default function List({ match }) {
               new URLSearchParams(window.location.search).get('t') || ''
             ).split(','),
           }
-        : { name: name.toLowerCase() },
+        : { name: name?.toLowerCase() },
   })
   const list =
     type === 'list' ? data.list : type === 'tag' ? data.tag : data.search
@@ -31,7 +31,9 @@ export default function List({ match }) {
   if (!loading && !list) return <Redirect to="/404" />
   return (
     <Home>
-      <MentorList mentors={list.users} />
+      <MentorList
+        mentors={list.users.map(user => ('user' in user ? user.user : user))}
+      />
     </Home>
   )
 }

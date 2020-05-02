@@ -147,6 +147,7 @@ export default function NotFound() {
 
     let lastStep = performance.now()
     function step() {
+      if (!canvasRef.current) return
       const dt = run ? performance.now() - lastStep : 0
       if (run) update(dt)
       render(canvasRef.current, vp, ctx, obstacles, player, run)
