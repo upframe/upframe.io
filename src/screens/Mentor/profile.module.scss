@@ -18,6 +18,7 @@
 .showcase {
   display: flex;
   overflow-x: hidden;
+  border-radius: 8px;
 
   @media (orientation: portrait) {
     flex-direction: column;
@@ -115,6 +116,7 @@
 }
 
 .meetup {
+  border-radius: 8px;
   h3:first-of-type {
     margin-top: 0;
   }
