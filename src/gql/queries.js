@@ -39,7 +39,9 @@ export const SEARCH = gql`
   query SearchList($query: String, $tags: [String!]) {
     search(term: $query, withTagNames: $tags) {
       users {
-        ...MentorDetails
+        user {
+          ...MentorDetails
+        }
       }
     }
   }
