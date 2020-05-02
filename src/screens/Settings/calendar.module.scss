@@ -30,8 +30,9 @@
       line-height: 16px;
     }
 
-    .rbc-row.rbc-time-header-cell .span {
-      padding-top: 100px;
+    .rbc-row.rbc-time-header-cell {
+      line-height: 50px;
+      font-weight: 500;
     }
     .rbc-day-slot .rbc-time-slot {
       border-top: none;
@@ -55,6 +56,7 @@
 
     .rbc-header {
       border-bottom: none;
+      font-weight: bolder;
     }
 
     .rbc-active {
@@ -80,7 +82,9 @@
 
         &:hover,
         &:focus,
-        &:active {
+        &:active 
+        &:target
+        &:enabled{
           font-weight: bold;
           color: #ff205c;
           background: #fff4f7;
