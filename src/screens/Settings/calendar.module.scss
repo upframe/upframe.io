@@ -12,6 +12,9 @@
     .rbc-time-content {
       overscroll-behavior: none;
     }
+    .rbc-time-header-cell {
+      line-height: 50px;
+    }
     .rbc-time-slot {
       font-family: Poppins;
       color: #bdbdbd;
@@ -25,6 +28,10 @@
       font-weight: bold;
       font-size: 16px;
       line-height: 16px;
+    }
+
+    .rbc-row.rbc-time-header-cell .span {
+      padding-top: 100px;
     }
     .rbc-day-slot .rbc-time-slot {
       border-top: none;
@@ -43,12 +50,17 @@
       border-radius: 4px;
     }
     .rbc-today {
-      background-color: #feeef2;
-      opacity: 0.7 !important;
+      background-color: #fff4f7;
     }
 
     .rbc-header {
       border-bottom: none;
+    }
+
+    .rbc-active {
+      color: #ff205c;
+      background: #fff4f7;
+      border: 1px solid #dddddd;
     }
     .rbc-toolbar-label,
     .rbc-toolbar,
@@ -56,12 +68,12 @@
       button {
         font-family: Poppins;
         font-style: normal;
-        font-weight: 600;
+        font-weight: normal;
         font-size: 13px;
         line-height: 16px;
         align-items: center;
         text-align: center;
-        color: #a5a6a9;
+        color: #000000;
         border: 1px solid #dddddd;
         box-sizing: border-box;
         border-radius: 5px 5px 5px 5px;
@@ -69,8 +81,10 @@
         &:hover,
         &:focus,
         &:active {
+          font-weight: bold;
           color: #ff205c;
           background: #fff4f7;
+          border: 1px solid #dddddd;
         }
       }
     }

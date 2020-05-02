@@ -150,6 +150,11 @@ export const CONNECT_CALENDAR = gql`
     connectCalendar(code: $code, redirect: $redirect) {
       id
       calendarConnected
+      calendars {
+        id
+        name
+        color
+      }
     }
   }
 `
