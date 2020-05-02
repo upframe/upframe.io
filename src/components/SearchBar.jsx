@@ -147,7 +147,9 @@ const S = {
 
     input {
       margin-left: 0.5rem;
-
+      &:focus,
+      &:hover {
+        background-color: #f1f3f4;
       &::placeholder {
         color: var(--cl-text-medium);
       }
