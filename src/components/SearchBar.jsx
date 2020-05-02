@@ -155,7 +155,7 @@ export default function SearchBar() {
           }
         />
       </S.Search>
-      {(true || focus) && (
+      {focus && (
         <S.Preview
           style={height}
           items={tags.length + users.length}

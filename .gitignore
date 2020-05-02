@@ -27,3 +27,4 @@ yarn-error.log*
 _fragmentTypes.json
 
 /*.txt
+tests
