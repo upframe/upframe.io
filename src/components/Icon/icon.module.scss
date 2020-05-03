@@ -2,6 +2,10 @@
   & > path {
     fill: var(--cl-text-strong);
   }
+
+  * {
+    pointer-events: none;
+  }
 }
 
 .clickable {

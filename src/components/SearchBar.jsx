@@ -73,9 +73,9 @@ export default function SearchBar() {
   setFocusRef.current = setFocus
 
   function submit(e) {
-    e.preventDefault()
+    if (e) e.preventDefault()
     if (!inputFinal.length && !searchTags.length) return
-    e.target.querySelector('input').blur()
+    if (e) e.target.querySelector('input').blur()
     setInput('')
     history.push(
       `/search?${Object.entries({
@@ -152,7 +152,9 @@ export default function SearchBar() {
         <Icon
           icon="search"
           onClick={({ target }) =>
-            target.parentNode.querySelector('input').focus()
+            input || searchTags.length
+              ? submit()
+              : target.parentNode.querySelector('input')?.focus()
           }
         />
       </S.Search>
