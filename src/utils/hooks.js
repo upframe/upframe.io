@@ -88,12 +88,8 @@ export function useCalendars(requested) {
 }
 
 export function useMe() {
-  const { currentUser } = useCtx()
-  const { data: { user } = {}, loading } = useQuery(queries.ME, {
-    variables: { id: currentUser },
-    skip: !currentUser,
-  })
-  return { me: user, loading }
+  const { data: { me } = {}, loading, called } = useQuery(queries.ME, {})
+  return { me, loading, called }
 }
 
 export { useHistory }

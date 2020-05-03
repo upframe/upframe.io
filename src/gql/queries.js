@@ -64,15 +64,15 @@ export const PROFILE = gql`
 `
 
 export const ME_ID = gql`
-  query CurrentUser {
+  query MeId {
     me {
       id
     }
   }
 `
 export const ME = gql`
-  query CurrentUser2($id: ID) {
-    user(id: $id) {
+  query Me {
+    me {
       ...PersonBase
       role
       email
