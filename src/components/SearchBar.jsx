@@ -150,6 +150,7 @@ const S = {
       &:focus,
       &:hover {
         background-color: #f1f3f4;
+      }
       &::placeholder {
         color: var(--cl-text-medium);
       }

@@ -1,106 +1,96 @@
 @import 'styles/layout.scss';
-
 .calendar {
-  :global {
-    .rbc-calendar {
-      height: $calendar-height;
-    }
-    .rbc-event {
-      color: white !important;
-    }
-
-    .rbc-time-content {
-      overscroll-behavior: none;
-    }
-    .rbc-time-header-cell {
-      line-height: 50px;
-    }
-    .rbc-time-slot {
-      font-family: Poppins;
-      color: #bdbdbd;
-    }
-    .rbc-time-gutter .rbc-timeslot-group {
-      border-bottom: none !important;
-    }
-    .rbc-time-header-content {
-      font-family: Poppins;
-      font-style: normal;
-      font-weight: bolder;
-      font-size: 16px;
-      line-height: 16px;
-    }
-
-    .rbc-row.rbc-time-header-cell {
-      line-height: 30px;
-      font-weight: 800;
-    }
-    .rbc-day-slot .rbc-time-slot {
-      border-top: none;
-    }
-
-    .rbc-current-time-indicator {
-      background-color: #ff004b;
-    }
-
-    .rbc-time-slot {
-      border-top: none;
-    }
-    .rbc-time-view {
-      border-radius: 5px;
-      border: 1px solid #dddddd;
-      border-radius: 4px;
-    }
-    .rbc-today {
-      background-color: #fff4f7;
-    }
-
-    .rbc-header {
-      border-bottom: none;
-      font-weight: bolder;
-    }
-
-    .rbc-active {
-      color: #ff205c;
-      background: #fff4f7;
-      border: 1px solid #dddddd;
-    }
-    .rbc-toolbar-label,
-    .rbc-toolbar,
-    .rbc-btn-group {
-      button {
-        font-family: Poppins;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 13px;
-        line-height: 16px;
-        align-items: center;
-        text-align: center;
-        color: #000000;
-        border: 1px solid #dddddd;
-        box-sizing: border-box;
-        border-radius: 5px 5px 5px 5px;
-
-        &:hover,
-        &:focus,
-        &:active 
-        &:target
-        &:enabled{
-          font-weight: bold;
-          color: #ff205c;
-          background: #fff4f7;
-          border: 1px solid #dddddd;
+     :global {
+        .rbc-calendar {
+            height: $calendar-height;
         }
-      }
+        .rbc-event {
+            color: white !important;
+        }
+        .rbc-time-content {
+            overscroll-behavior: none;
+        }
+        .rbc-time-header-cell {
+            line-height: 50px;
+        }
+        .rbc-time-slot {
+            font-family: Poppins;
+            color: #bdbdbd;
+        }
+        .rbc-time-gutter .rbc-timeslot-group {
+            border-bottom: none !important;
+        }
+        .rbc-time-header-content {
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: bolder;
+            font-size: 16px;
+            line-height: 16px;
+        }
+        .rbc-row.rbc-time-header-cell {
+            line-height: 30px;
+            font-weight: 800;
+        }
+        .rbc-day-slot .rbc-time-slot {
+            border-top: none;
+        }
+        .rbc-current-time-indicator {
+            background-color: #ff004b;
+        }
+        .rbc-time-slot {
+            border-top: none;
+        }
+        .rbc-time-view {
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+            border-radius: 4px;
+        }
+        .rbc-today {
+            background-color: #fff4f7;
+        }
+        .rbc-header {
+            border-bottom: none;
+            font-weight: bolder;
+        }
+        .rbc-active {
+            color: #ff205c;
+            background: #fff4f7;
+            border: 1px solid #dddddd;
+        }
+        .rbc-toolbar-label,
+        .rbc-toolbar,
+        .rbc-btn-group {
+            button {
+                font-family: Poppins;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 13px;
+                line-height: 16px;
+                align-items: center;
+                text-align: center;
+                color: #000000;
+                border: 1px solid #dddddd;
+                box-sizing: border-box;
+                border-radius: 5px 5px 5px 5px;
+                &:hover,
+                &:focus,
+                &:active &:target &:enabled &:checked {
+                    font-weight: bold;
+                    color: #ff205c;
+                    background: #fff4f7;
+                    border: 1px solid #dddddd;
+                }
+            }
+        }
     }
-  }
 }
 
 .internalEvent {
-  background-color: var(--cl-primary) !important;
-  border: none !important;
+    background-color: var(--cl-primary) !important;
+    border: none !important;
 }
 
 .externalEvent {
-  background-color: var(--cl-secondary);
-  border: 1px solid #fff !important;
+    background-color: var(--cl-secondary);
+    border: 1px solid #fff !important;
 }
