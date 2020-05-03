@@ -1,23 +1,23 @@
  .input {
-     border-radius: 0.3rem;
-     padding: 0.7rem 1rem;
-     color: var(--cl-text-medium);
-     font: inherit;
-     font-size: 1.2rem;
-     box-sizing: border-box;
-     background-color: #f1f3f4;
-     border: none;
-     &::placeholder {
-         color: var(--cl-text-light);
-     }
-     &:focus,
-     &:hover {
-         outline: none;
-         background-color: rgba(0, 0, 0, 0.08);
-         transition: background-color 0.25s ease;
-     }
+   border-radius: 0.3rem;
+   padding: 0.7rem 1rem;
+   color: var(--cl-text-medium);
+   font: inherit;
+   font-size: 1.2rem;
+   box-sizing: border-box;
+   background-color: #f1f3f4;
+   border: none;
+   &::placeholder {
+     color: var(--cl-text-light);
+   }
+   &:focus,
+   &:hover {
+     outline: none;
+     background-color: rgba(0, 0, 0, 0.08);
+     transition: background-color 0.25s ease;
+   }
  }
  
  .error {
-     border-color: var(--cl-error);
+   border-color: var(--cl-error);
  }
