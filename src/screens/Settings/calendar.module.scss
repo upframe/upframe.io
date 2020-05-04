@@ -74,7 +74,10 @@
         border-radius: 5px 5px 5px 5px;
         &:hover,
         &:focus,
-        &:active &:target &:enabled &:checked {
+        &:active,
+        &:target,
+        &:enabled,
+        &:checked {
           font-weight: bold;
           color: #ff205c;
           background: #fff4f7;
