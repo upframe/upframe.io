@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useCtx } from 'utils/hooks'
+import { useCtx, useSignOut } from 'utils/hooks'
 import { haveSameContent } from 'utils/array'
 import { Title, Text } from 'components'
 import Item from './Item'
@@ -10,6 +10,8 @@ import CalendarList from './CalendarList'
 import styles from './calendarTab.module.scss'
 import { queries, mutations, useQuery, useMutation } from '../../gql'
 import { useCalendars, useHistory } from '../../utils/hooks'
+import { hasError } from 'api'
+import { notify } from 'notification'
 
 export default function CalendarTab() {
   const [remoteSlots, setRemoteSlots] = useState([])
@@ -19,11 +21,18 @@ export default function CalendarTab() {
   const [calendars, loading] = useCalendars(showCalendars)
   const [extEvents, setExtEvents] = useState([])
   const history = useHistory()
+  const signOut = useSignOut()
 
   const { data: { mentor: user = {} } = {} } = useQuery(
     queries.SETTINGS_CALENDAR,
     {
       variables: { id: currentUser },
+      onError(err) {
+        if (hasError(err, 'GOOGLE_ERROR')) {
+          notify("couldn't access google calendar")
+          signOut()
+        }
+      },
     }
   )
 
