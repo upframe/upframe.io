@@ -79,6 +79,7 @@ export const ME = gql`
       ... on Mentor {
         calendarConnected
         visibility
+        searchable
       }
     }
   }

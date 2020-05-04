@@ -38,6 +38,9 @@ export default function Account() {
   const [setVisibility, { loading }] = useMutation(
     mutations.SET_PROFILE_VISIBILITY
   )
+  const [setSearchability, { loading: searchableLoading }] = useMutation(
+    mutations.SET_PROFILE_SEARCHABILITY
+  )
   const [disconnectGoogle] = useMutation(mutations.DISCONNECT_GOOGLE, {
     onCompleted() {
       setDisconnectRequested(false)
@@ -152,6 +155,16 @@ export default function Account() {
               loading={loading}
             />
             <Text>Hide my profile from the homepage.</Text>
+          </div>
+          <div className={classes(styles.privacyCheck, styles.span2)}>
+            <Checkbox
+              checked={me.searchable}
+              onChange={searchable =>
+                setSearchability({ variables: { searchable } })
+              }
+              loading={searchableLoading}
+            />
+            <Text>Hide my profile from search results.</Text>
           </div>
         </>
       )}

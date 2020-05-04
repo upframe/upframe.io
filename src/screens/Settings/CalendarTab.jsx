@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCalendars, useHistory } from 'react'
-import { useCtx, useSignOut } from 'utils/hooks'
+import React, { useState, useEffect } from 'react'
+import { useCtx, useSignOut, useCalendars, useHistory } from 'utils/hooks'
 import { haveSameContent } from 'utils/array'
 import { Title, Text } from 'components'
 import Item from './Item'
