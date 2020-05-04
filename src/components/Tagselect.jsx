@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { TagInput } from '.'
-import { useQuery, gql } from '../gql'
+import { useQuery, gql } from 'gql'
 
 const TAG_SEARCH = gql`
   query TagSearch($input: String!) {

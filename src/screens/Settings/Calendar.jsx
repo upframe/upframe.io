@@ -1,7 +1,7 @@
 import React from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
-import { notify } from '../../notification'
+import { notify } from 'notification'
 
 import styles from './calendar.module.scss'
 import 'react-big-calendar/lib/css/react-big-calendar.css'

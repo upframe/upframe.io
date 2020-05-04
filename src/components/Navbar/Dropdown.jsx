@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './dropdown.module.scss'
-import { useMe, useSignOut } from '../../utils/hooks'
-import { mutations, useMutation } from '../../gql'
+import { useMe, useSignOut } from 'utils/hooks'
+import { mutations, useMutation } from 'gql'
 
 export default function Dropdown({ onBlur }) {
   const ref = useRef()

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'components'
-import { gql, useQuery, mutations, useMutation } from '../../gql'
-import { useMe } from '../../utils/hooks'
+import { gql, useQuery, mutations, useMutation } from 'gql'
+import { useMe } from 'utils/hooks'
 
 const CONNECT_CALENDAR_URL = gql`
   query GetCalendarConnectUrl($redirect: String!) {

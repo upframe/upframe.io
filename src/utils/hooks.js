@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useReducer, useRef } from 'react'
 import context from '../context'
 import debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
-import { useQuery, queries } from '../gql'
+import { useQuery, queries } from 'gql'
 import isEqual from 'lodash/isEqual'
 import api from 'api'
 

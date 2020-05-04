@@ -7,7 +7,7 @@ import Navigation from './Navigation'
 import Notifications from './Notifications'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import styles from './Settings.module.scss'
-import { useMe } from '../../utils/hooks'
+import { useMe } from 'utils/hooks'
 import { Spinner } from '../../components'
 import Invite from './Invite'
 

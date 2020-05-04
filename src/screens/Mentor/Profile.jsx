@@ -5,7 +5,7 @@ import styles from './profile.module.scss'
 import Showcase from './Showcase'
 import Meetup from './Meetup'
 import Request from './Request'
-import { useQuery, queries, hasError } from '../../gql'
+import { useQuery, queries, hasError } from 'gql'
 
 const recommend = {
   malik: ['pf', 'hugo.franca'],

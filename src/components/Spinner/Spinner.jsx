@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './spinner.module.scss'
-import { classes } from '../../utils/css'
+import { classes } from 'utils/css'
 
 export default function Spinner({ centered = false, color, className }) {
   return (

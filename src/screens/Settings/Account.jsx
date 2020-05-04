@@ -3,11 +3,11 @@ import { useHistory } from 'react-router-dom'
 import { Text, Title, Checkbox, Button, GoogleSignin, Modal } from 'components'
 import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
-import { useMe } from '../../utils/hooks'
-import { gql, mutations, useQuery, useMutation } from '../../gql'
-import { classes } from '../../utils/css'
-import { hasError } from '../../api'
-import { notify } from '../../notification'
+import { useMe } from 'utils/hooks'
+import { gql, mutations, useQuery, useMutation } from 'gql'
+import { classes } from 'utils/css'
+import { hasError } from 'api'
+import { notify } from 'notification'
 
 const GOOGLE_CONNECTED = gql`
   query GoogleConnected($id: ID!) {

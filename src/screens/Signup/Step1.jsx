@@ -9,9 +9,9 @@ import {
   GoogleSignin,
 } from '../../components'
 import styled from 'styled-components'
-import { gql, useMutation } from '../../gql'
-import { hasError } from '../../api'
-import { notify } from '../../notification'
+import { gql, useMutation } from 'gql'
+import { hasError } from 'api'
+import { notify } from 'notification'
 
 const SIGNUP_PASSWORD = gql`
   mutation SignupWithPassword(

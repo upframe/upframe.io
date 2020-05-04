@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { TagInput, Icon, ProfilePicture } from '.'
-import { useQuery, gql } from '../gql'
+import { useQuery, gql } from 'gql'
 import { Link, useHistory } from 'react-router-dom'
-import { useDebouncedInputCall } from '../utils/hooks'
+import { useDebouncedInputCall } from 'utils/hooks'
 import { useSpring, animated } from 'react-spring'
 
 const SEARCH = gql`

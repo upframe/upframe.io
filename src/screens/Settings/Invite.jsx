@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Title, Labeled, Tagarea, Text, Button } from '../../components'
-import { isEmail } from '../../utils/validate'
-import { useMe } from '../../utils/hooks'
-import { gql, useQuery, useMutation, fragments } from '../../gql'
+import { isEmail } from 'utils/validate'
+import { useMe } from 'utils/hooks'
+import { gql, useQuery, useMutation, fragments } from 'gql'
 
 const INVITE = gql`
   mutation Invite($emails: [String!]!, $role: Role) {

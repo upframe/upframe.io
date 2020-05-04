@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './icon.module.scss'
-import { classes } from '../../utils/css'
+import { classes } from 'utils/css'
 
 export default function Icon({ icon = 'info', onClick }) {
   return (

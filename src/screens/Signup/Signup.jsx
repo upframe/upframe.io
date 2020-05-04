@@ -1,8 +1,8 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { Spinner } from '../../components'
-import { gql, useQuery } from '../../gql'
-import { useMe } from '../../utils/hooks'
+import { gql, useQuery } from 'gql'
+import { useMe } from 'utils/hooks'
 import Step1 from './Step1'
 import Step2 from './Step2'
 

@@ -4,7 +4,7 @@ import ChangeBanner from './ChangeBanner'
 import { useCtx } from 'utils/hooks'
 import { haveSameContent } from 'utils/array'
 import styles from './profile.module.scss'
-import { useQuery, queries, mutations, useMutation } from '../../gql'
+import { useQuery, queries, mutations, useMutation } from 'gql'
 import {
   Text,
   Title,

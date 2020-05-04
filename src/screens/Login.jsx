@@ -8,11 +8,11 @@ import {
   GoogleSignin,
   Divider,
 } from '../components'
-import { useHistory, useMe, useSignIn } from '../utils/hooks'
-import { gql, fragments, mutations, useMutation } from '../gql'
+import { useHistory, useMe, useSignIn } from 'utils/hooks'
+import { gql, fragments, mutations, useMutation } from 'gql'
 import styled from 'styled-components'
-import { hasError } from '../api'
-import { notify } from '../notification'
+import { hasError } from 'api'
+import { notify } from 'notification'
 
 const SIGNIN_GOOGLE = gql`
   mutation SigninWithGoogle($code: ID!, $redirect: String!) {

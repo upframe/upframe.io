@@ -1,6 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import { queries, useQuery } from '../gql'
+import { queries, useQuery } from 'gql'
 import { Spinner } from '../components'
 import MentorList from './Main/MentorList'
 import Home from './Home'

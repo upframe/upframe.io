@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { queries } from '../../gql'
-import Api from '../../api'
+import { queries } from 'gql'
+import Api from 'api'
 import { ProfilePicture } from '../../components'
 
 import './RecommendationCard.scss'
