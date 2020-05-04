@@ -4,7 +4,8 @@
   grid-template-columns: 1fr 1fr;
   grid-gap: 2rem;
   padding-bottom: 2rem;
-  &>p {
+
+  & > p {
     margin: 0;
   }
   h2 {
@@ -22,7 +23,8 @@
     height: 11.125rem;
     border-radius: 0.3rem;
   }
-  &>div {
+  
+  & > div {
     margin-left: 2rem;
     display: flex;
     flex-direction: column;
@@ -42,7 +44,8 @@
   margin: 0 -0.5rem;
   width: 100%;
   flex-wrap: wrap;
-  &>* {
+  
+  & > * {
     margin: 0.5rem 0.5rem;
   }
 }

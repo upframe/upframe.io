@@ -8,11 +8,13 @@
   background-color: #f1f3f4;
   border: none;
   transition: background-color 1.25s ease;
+  
   &::placeholder {
     color: var(--cl-text-light);
   }
-  & :focus,
-  & :hover {
+  
+  &:focus,
+  &:hover {
     outline: none;
     background-color: rgba(0, 0, 0, 0.08);
   }
