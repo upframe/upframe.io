@@ -8,10 +8,10 @@ import {
   GoogleSignin,
   Divider,
 } from '../components'
-import { useCtx, useHistory, useMe } from '../utils/hooks'
-import { gql, fragments, queries, mutations, useMutation } from '../gql'
+import { useHistory, useMe, useSignIn } from '../utils/hooks'
+import { gql, fragments, mutations, useMutation } from '../gql'
 import styled from 'styled-components'
-import api, { hasError } from '../api'
+import { hasError } from '../api'
 import { notify } from '../notification'
 
 const SIGNIN_GOOGLE = gql`
@@ -29,9 +29,9 @@ const SIGNIN_GOOGLE = gql`
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { setCurrentUser } = useCtx()
   const history = useHistory()
   const { me } = useMe()
+  const afterLogin = useSignIn()
 
   const [signInGoogle] = useMutation(SIGNIN_GOOGLE, {
     onError(err) {
@@ -53,13 +53,6 @@ export default function Login() {
   })
 
   const code = new URLSearchParams(window.location.search).get('code')
-
-  function afterLogin(user) {
-    api.writeQuery({ query: queries.ME, data: { me: user } })
-    setCurrentUser(user.id)
-    localStorage.setItem('loggedin', true)
-    history.push('/')
-  }
 
   useEffect(() => {
     if (!code || !signInGoogle) return

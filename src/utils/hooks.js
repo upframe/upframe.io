@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
 import { useQuery, queries } from '../gql'
 import isEqual from 'lodash/isEqual'
+import api from 'api'
 
 export function useScrollAtTop() {
   const [atTop, setAtTop] = useState(window.scrollY === 0)
@@ -88,7 +89,7 @@ export function useCalendars(requested) {
 }
 
 export function useMe() {
-  const { data: { me } = {}, loading, called } = useQuery(queries.ME, {})
+  const { data: { me } = {}, loading, called } = useQuery(queries.ME)
   return { me, loading, called }
 }
 
@@ -139,4 +140,28 @@ export function useDebouncedInputCall(
   }, [inputStamps])
 
   return debounced
+}
+
+export function useSignIn() {
+  const history = useHistory()
+  const { setCurrentUser } = useCtx()
+
+  return user => {
+    api.writeQuery({ query: queries.ME, data: { me: user } })
+    setCurrentUser(user.id)
+    localStorage.setItem('loggedin', true)
+    history.push('/')
+  }
+}
+
+export function useSignOut() {
+  const history = useHistory()
+  const { setCurrentUser } = useCtx()
+
+  return () => {
+    api.writeQuery({ query: queries.ME, data: { me: null } })
+    setCurrentUser(null)
+    history.push('/login')
+    localStorage.setItem('loggedin', false)
+  }
 }
