@@ -9,9 +9,9 @@ import {
   Divider,
 } from '../components'
 import { useCtx, useHistory, useMe } from '../utils/hooks'
-import { gql, fragments, mutations, useMutation } from '../gql'
+import { gql, fragments, queries, mutations, useMutation } from '../gql'
 import styled from 'styled-components'
-import { hasError } from '../api'
+import api, { hasError } from '../api'
 import { notify } from '../notification'
 
 const SIGNIN_GOOGLE = gql`
@@ -45,9 +45,17 @@ export default function Login() {
     },
   })
 
+  const [signIn] = useMutation(mutations.SIGN_IN, {
+    onCompleted: ({ signIn: user }) => {
+      if (!user) return
+      afterLogin(user)
+    },
+  })
+
   const code = new URLSearchParams(window.location.search).get('code')
 
   function afterLogin(user) {
+    api.writeQuery({ query: queries.ME, data: { me: user } })
     setCurrentUser(user.id)
     localStorage.setItem('loggedin', true)
     history.push('/')
@@ -62,13 +70,6 @@ export default function Login() {
       },
     })
   }, [code, signInGoogle])
-
-  const [signIn] = useMutation(mutations.SIGN_IN, {
-    onCompleted: ({ signIn: user }) => {
-      if (!user) return
-      afterLogin(user)
-    },
-  })
 
   function handleSubmit(e) {
     e.preventDefault()

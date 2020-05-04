@@ -2,7 +2,8 @@ import React, { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './dropdown.module.scss'
 import { useCtx, useHistory, useMe } from '../../utils/hooks'
-import { mutations, useMutation } from '../../gql'
+import { queries, mutations, useMutation } from '../../gql'
+import api from 'api'
 
 export default function Dropdown({ onBlur }) {
   const ref = useRef()
@@ -12,6 +13,7 @@ export default function Dropdown({ onBlur }) {
 
   const [signOut] = useMutation(mutations.SIGN_OUT, {
     onCompleted() {
+      api.writeQuery({ query: queries.ME, data: { me: null } })
       setCurrentUser(null)
       localStorage.setItem('loggedin', false)
       setTimeout(() => history.push('/login'), 500)
