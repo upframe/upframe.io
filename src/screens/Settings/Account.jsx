@@ -158,9 +158,9 @@ export default function Account() {
           </div>
           <div className={classes(styles.privacyCheck, styles.span2)}>
             <Checkbox
-              checked={me.searchable}
-              onChange={searchable =>
-                setSearchability({ variables: { searchable } })
+              checked={!me.searchable}
+              onChange={v =>
+                setSearchability({ variables: { searchable: !v } })
               }
               loading={searchableLoading}
             />
