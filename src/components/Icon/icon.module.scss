@@ -1,8 +1,4 @@
 .icon {
-  & > path {
-    fill: var(--cl-text-strong);
-  }
-
   * {
     pointer-events: none;
   }
@@ -18,5 +14,11 @@
       fill: var(--cl-accent);
     }
     background-color: #feeef2;
+  }
+}
+
+.color {
+  & > path {
+    fill: var(--cl-text-strong);
   }
 }

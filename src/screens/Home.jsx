@@ -10,6 +10,7 @@ const S = {
     width: 55rem;
     margin: initial;
     margin-left: 15vw;
+    min-height: 100vh;
 
     @media (max-width: 1020px) {
       margin: auto;
