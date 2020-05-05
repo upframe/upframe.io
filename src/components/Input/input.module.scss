@@ -15,6 +15,12 @@
   &:focus {
     outline: none;
   }
+  transition: background-color 0.25s ease;
+
+  &:focus,
+  &:hover {
+    background-color:rgba(0, 0, 0, 0.08)
+  }
 }
 
 .error {
