@@ -58,10 +58,13 @@
     }
 
     .rbc-active {
-      color: #ff205c;
-      background: #fff4f7;
-      border: 1px solid #dddddd;
-    }
+      font-weight: bold !important;
+      color: #ff205c !important;
+      background: #fff4f7 !important;
+      border: 1px solid #dddddd !important;
+      box-shadow: none !important;
+      }
+   
     .rbc-toolbar-label,
     .rbc-toolbar,
     .rbc-btn-group {
