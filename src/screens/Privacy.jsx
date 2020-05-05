@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Spinner } from 'components'
+import { Spinner, Page } from 'components'
 
 export default function Privacy() {
   const [content, setContent] = useState()
@@ -12,7 +12,13 @@ export default function Privacy() {
   }, [])
 
   if (!content) return <Spinner centered />
-  return <S.Privacy dangerouslySetInnerHTML={{ __html: content }} />
+  return (
+    <Page
+      title="Privacy"
+      style={S.Privacy}
+      dangerouslySetInnerHTML={{ __html: content }}
+    />
+  )
 }
 
 const S = {
@@ -21,5 +27,71 @@ const S = {
     padding: 1rem;
     max-width: 60rem;
     margin: auto;
+
+    h2,
+    h3 {
+      margin-top: 2em;
+    }
+
+    hr + h2 {
+      margin-top: 0;
+    }
+
+    hr {
+      margin: 2rem 0;
+      border: none;
+      height: 1px;
+      background-color: var(--border-lightgray);
+    }
+
+    a {
+      text-decoration: underline;
+    }
+
+    table {
+      display: grid;
+      grid-template-columns: auto auto;
+      grid-gap: 1rem;
+      overflow: hidden;
+    }
+
+    thead,
+    tbody,
+    tr {
+      display: contents;
+    }
+
+    th:first-of-type {
+      position: relative;
+      display: block;
+
+      &::before,
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        pointer-events: none;
+        top: 0;
+        left: 0;
+        border-color: var(--border-lightgray);
+        border-width: 1px;
+      }
+
+      &::before {
+        width: 200%;
+        height: 100%;
+        border-bottom-style: solid;
+      }
+
+      &::after {
+        width: 100%;
+        height: 1000%;
+        border-right-style: solid;
+      }
+    }
+
+    tr {
+      text-align: left;
+    }
   `,
 }
