@@ -25,7 +25,7 @@ const S = {
   Privacy: styled.div`
     box-sizing: border-box;
     padding: 1rem;
-    max-width: 60rem;
+    max-width: 51rem;
     margin: auto;
 
     h2,
@@ -59,6 +59,10 @@ const S = {
     tbody,
     tr {
       display: contents;
+    }
+
+    colgroup {
+      display: none;
     }
 
     th:first-of-type {

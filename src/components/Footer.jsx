@@ -5,8 +5,8 @@ import { Link } from 'components'
 export default function Footer() {
   return (
     <S.Footer>
-      <p>Upframe™ {new Date().getFullYear()}</p>
-      <Link to="/privacy">Privacy</Link>
+      <p>{new Date().getFullYear()} Upframe™</p>
+      <Link to="/privacy">Privacy policy</Link>
     </S.Footer>
   )
 }
