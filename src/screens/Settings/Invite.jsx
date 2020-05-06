@@ -80,14 +80,12 @@ export default function Invite() {
 
   return (
     <S.Invite>
-      <Title s2>Invite</Title>
+      <Title s2>Invite People to join Upframe</Title>
       <Text>
-        Invite new users to Upframe by writing their email here. You can also
-        paste multiple emails at once if they are separated by a space, comma,
-        semicolon or newline.
+        Know any like-minded people who would be thrilled to be here? Invite them so they can create an account.
       </Text>
       <Labeled
-        label="Emails"
+        label="Invite People"
         action={
           <Tagarea
             input={input}
@@ -114,7 +112,7 @@ export default function Invite() {
               onChange={({ target }) => setRole(target.value)}
             >
               <option value="USER" name="role">
-                User
+                Founder
               </option>
               <option value="MENTOR">Mentor</option>
             </select>

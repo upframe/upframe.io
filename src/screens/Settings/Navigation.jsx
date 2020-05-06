@@ -11,7 +11,7 @@ export default function Navigation() {
     { title: 'Public Profile', url: 'public' },
     { title: 'Account Settings', url: 'account' },
     { title: 'Notifications', url: 'notifications' },
-    { title: 'Invite', url: 'invite' },
+    { title: 'Invite People', url: 'invite' },
     ...(me?.role !== 'USER' ? [{ title: 'My Calendar', url: 'calendar' }] : []),
   ]
 
