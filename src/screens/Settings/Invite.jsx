@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Title, Labeled, Tagarea, Text, Button } from '../../components'
+import { Title, Labeled, Tagarea, Text, Button, } from '../../components'
+import Item from './Item'
 import { isEmail } from '../../utils/validate'
 import { useMe } from '../../utils/hooks'
 import { gql, useQuery, useMutation, fragments } from '../../gql'
@@ -85,7 +86,8 @@ export default function Invite() {
         Know any like-minded people who would be thrilled to be here? Invite them so they can create an account.
       </Text>
       <Labeled
-        label="Invite People"
+        label={ <Title s4>
+        Invite People</Title> }
         action={
           <Tagarea
             input={input}
@@ -94,7 +96,8 @@ export default function Invite() {
             onTagClick={removeTag}
           />
         }
-      />
+      /> 
+      <Item label={"Tip:"} hint={"Tip: You can also paste multiple emails at once if they are seperated by a space, comma, semicolon or newline."}></Item>
       {invalid.length > 0 && (
         <S.Invalid>{`${invalid.map(v => `"${v}"`).join(', ')} ${
           invalid.length > 1
@@ -119,7 +122,7 @@ export default function Invite() {
           </>
         )}
         <Button filled disabled={!inputValid()} onClick={invite}>
-          Send invitations
+          Invite
         </Button>
       </S.Actions>
       {invites.length > 0 && (

@@ -44,6 +44,11 @@ const S = {
     input {
       flex-grow: 1;
       padding-left: 0;
+      
+      &:focus,
+      &:hover {
+        background-color: #f1f3f4;
+        }
     }
 
     & > div {
