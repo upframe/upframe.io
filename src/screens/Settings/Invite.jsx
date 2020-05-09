@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Title, Labeled, Tagarea, Text, Button, } from '../../components'
+import { Title, Labeled, Tagarea, Text, Button } from '../../components'
 import Item from './Item'
 import { isEmail } from '../../utils/validate'
 import { useMe } from '../../utils/hooks'
@@ -83,11 +83,11 @@ export default function Invite() {
     <S.Invite>
       <Title s2>Invite People to join Upframe</Title>
       <Text>
-        Know any like-minded people who would be thrilled to be here? Invite them so they can create an account.
+        Know any like-minded people who would be thrilled to be here? Invite
+        them so they can create an account.
       </Text>
       <Labeled
-        label={ <Title s4>
-        Invite People</Title> }
+        label={<Title s4>Invite People</Title>}
         action={
           <Tagarea
             input={input}
@@ -96,8 +96,13 @@ export default function Invite() {
             onTagClick={removeTag}
           />
         }
-      /> 
-      <Item label={"Tip:"} hint={"Tip: You can also paste multiple emails at once if they are seperated by a space, comma, semicolon or newline."}></Item>
+      />
+      <Item
+        label={'Tip:'}
+        hint={
+          'Tip: You can also paste multiple emails at once if they are seperated by a space, comma, semicolon or newline.'
+        }
+      ></Item>
       {invalid.length > 0 && (
         <S.Invalid>{`${invalid.map(v => `"${v}"`).join(', ')} ${
           invalid.length > 1
