@@ -12,4 +12,11 @@
   &:focus {
     outline: none;
   }
+
+  &:hover, 
+  &:focus {
+    background-color:rgba(0, 0, 0, 0.08)
+  }
+
+  transition: background-color 0.25s ease;
 }

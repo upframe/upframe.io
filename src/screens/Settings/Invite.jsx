@@ -4,6 +4,7 @@ import { Title, Labeled, Tagarea, Text, Button } from '../../components'
 import { isEmail } from 'utils/validate'
 import { useMe } from 'utils/hooks'
 import { gql, useQuery, useMutation, fragments } from 'gql'
+import Item from './Item'
 
 const INVITE = gql`
   mutation Invite($emails: [String!]!, $role: Role) {
@@ -80,14 +81,13 @@ export default function Invite() {
 
   return (
     <S.Invite>
-      <Title s2>Invite</Title>
+      <Title s2>Invite People to join Upframe</Title>
       <Text>
-        Invite new users to Upframe by writing their email here. You can also
-        paste multiple emails at once if they are separated by a space, comma,
-        semicolon or newline.
+        Know any like-minded people who would be thrilled to be here? Invite
+        them so they can create an account.
       </Text>
       <Labeled
-        label="Emails"
+        label={<Title s4>Invite People</Title>}
         action={
           <Tagarea
             input={input}
@@ -97,6 +97,12 @@ export default function Invite() {
           />
         }
       />
+      <Item
+        label={'Tip:'}
+        hint={
+          'Tip: You can also paste multiple emails at once if they are seperated by a space, comma, semicolon or newline.'
+        }
+      ></Item>
       {invalid.length > 0 && (
         <S.Invalid>{`${invalid.map(v => `"${v}"`).join(', ')} ${
           invalid.length > 1
@@ -114,14 +120,14 @@ export default function Invite() {
               onChange={({ target }) => setRole(target.value)}
             >
               <option value="USER" name="role">
-                User
+                Founder
               </option>
               <option value="MENTOR">Mentor</option>
             </select>
           </>
         )}
         <Button filled disabled={!inputValid()} onClick={invite}>
-          Send invitations
+          Invite
         </Button>
       </S.Actions>
       {invites.length > 0 && (
