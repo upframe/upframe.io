@@ -3,11 +3,11 @@ import { useHistory } from 'react-router-dom'
 import { Text, Title, Checkbox, Button, GoogleSignin, Modal } from 'components'
 import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
-import { useMe } from '../../utils/hooks'
-import { gql, mutations, useQuery, useMutation } from '../../gql'
-import { classes } from '../../utils/css'
-import { hasError } from '../../api'
-import { notify } from '../../notification'
+import { useMe } from 'utils/hooks'
+import { gql, mutations, useQuery, useMutation } from 'gql'
+import { classes } from 'utils/css'
+import { hasError } from 'api'
+import { notify } from 'notification'
 
 const GOOGLE_CONNECTED = gql`
   query GoogleConnected($id: ID!) {
@@ -37,6 +37,9 @@ export default function Account() {
 
   const [setVisibility, { loading }] = useMutation(
     mutations.SET_PROFILE_VISIBILITY
+  )
+  const [setSearchability, { loading: searchableLoading }] = useMutation(
+    mutations.SET_PROFILE_SEARCHABILITY
   )
   const [disconnectGoogle] = useMutation(mutations.DISCONNECT_GOOGLE, {
     onCompleted() {
@@ -152,6 +155,16 @@ export default function Account() {
               loading={loading}
             />
             <Text>Hide my profile from the homepage.</Text>
+          </div>
+          <div className={classes(styles.privacyCheck, styles.span2)}>
+            <Checkbox
+              checked={!me.searchable}
+              onChange={v =>
+                setSearchability({ variables: { searchable: !v } })
+              }
+              loading={searchableLoading}
+            />
+            <Text>Hide my profile from search results.</Text>
           </div>
         </>
       )}

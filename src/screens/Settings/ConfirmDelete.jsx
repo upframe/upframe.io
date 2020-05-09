@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Title, Text, Input, Button } from 'components'
 import { useCtx, useHistory, useMe } from 'utils/hooks'
 import styles from './confirmDelete.module.scss'
-import { notify } from '../../notification'
-import { mutations, useMutation } from '../../gql'
+import { notify } from 'notification'
+import { mutations, useMutation } from 'gql'
 
 export default function ConfirmDelete({ onCancel }) {
   const { setCurrentUser } = useCtx()

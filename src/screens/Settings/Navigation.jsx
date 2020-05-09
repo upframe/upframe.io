@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from './navigation.module.scss'
-import { useMe } from '../../utils/hooks'
+import { useMe } from 'utils/hooks'
 
 export default function Navigation() {
   const current = window.location.href.split('/').pop()

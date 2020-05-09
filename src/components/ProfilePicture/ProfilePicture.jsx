@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { parseSize } from '../../utils/css'
+import { parseSize } from 'utils/css'
 import styles from './picture.module.scss'
 
 export default function ProfilePicture({ imgs, size = '13rem' }) {

@@ -33,8 +33,22 @@ export const SET_PROFILE_VISIBILITY = gql`
     setProfileVisibility(visibility: $visibility) {
       id
       visibility
+      searchable
     }
   }
+`
+
+export const SET_PROFILE_SEARCHABILITY = gql`
+  mutation SetProfileSearchability($searchable: Boolean!) {
+    setProfileSearchability(searchable: $searchable) {
+      ...PersonBase
+      searchable
+      ... on Mentor {
+        visibility
+      }
+    }
+  }
+  ${person.base}
 `
 
 export const REQUEST_EMAIL_CHANGE = gql`

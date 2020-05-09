@@ -1,7 +1,7 @@
 import React from 'react'
 import { ProfilePicture } from 'components'
 import styles from './userIcon.module.scss'
-import { gql, useQuery, fragments } from '../../gql'
+import { gql, useQuery, fragments } from 'gql'
 
 const IMG_QUERY = gql`
   query ProfilePicture($userId: ID) {

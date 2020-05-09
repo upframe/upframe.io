@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Landing from './Landing'
 import MentorList from './MentorList'
-import { Title, Text } from '../../components'
+import { Title, Text, Footer } from '../../components'
 import Categories from './Categories'
-import { useCtx } from '../../utils/hooks'
-import { queries, useQuery } from '../../gql'
+import { useCtx } from 'utils/hooks'
+import { queries, useQuery } from 'gql'
 import Home from '../Home'
 
 export default function Main() {
@@ -49,6 +49,7 @@ export default function Main() {
 
         <MentorList mentors={filtered} />
       </Home>
+      <Footer />
     </>
   )
 }

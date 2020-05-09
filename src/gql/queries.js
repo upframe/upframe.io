@@ -39,7 +39,9 @@ export const SEARCH = gql`
   query SearchList($query: String, $tags: [String!]) {
     search(term: $query, withTagNames: $tags) {
       users {
-        ...MentorDetails
+        user {
+          ...MentorDetails
+        }
       }
     }
   }
@@ -62,21 +64,22 @@ export const PROFILE = gql`
 `
 
 export const ME_ID = gql`
-  query CurrentUser {
+  query MeId {
     me {
       id
     }
   }
 `
 export const ME = gql`
-  query CurrentUser2($id: ID) {
-    user(id: $id) {
+  query Me {
+    me {
       ...PersonBase
       role
       email
       ... on Mentor {
         calendarConnected
         visibility
+        searchable
       }
     }
   }

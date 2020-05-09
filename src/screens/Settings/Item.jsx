@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Input, Textbox, Text, Button } from 'components'
 import style from './item.module.scss'
-import { classes } from '../../utils/css'
+import { classes } from 'utils/css'
 
 export default function Item({
   label,

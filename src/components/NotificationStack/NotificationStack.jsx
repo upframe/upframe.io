@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styles from './stack.module.scss'
 import { Toast } from '..'
-import { subscribe, unsubscribe, setPad } from '../../notification'
+import { subscribe, unsubscribe, setPad } from 'notification'
 
 export default function NotificationStack() {
   const [notifications, setNotifications] = useState([])

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import styles from './changeBanner.module.scss'
 import { Button } from 'components'
-import { pad } from '../../notification'
+import { pad } from 'notification'
 
 export default function ChangeBanner({ onSave, accent = true }) {
   useEffect(() => {

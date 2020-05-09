@@ -1,22 +1,25 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { TagInput, Icon, ProfilePicture } from '.'
-import { useQuery, gql } from '../gql'
+import { useQuery, gql } from 'gql'
 import { Link, useHistory } from 'react-router-dom'
-import { useDebouncedInputCall } from '../utils/hooks'
+import { useDebouncedInputCall } from 'utils/hooks'
+import { useSpring, animated } from 'react-spring'
 
 const SEARCH = gql`
   query Search($term: String!, $withTags: [Int!]) {
     search(term: $term, withTags: $withTags) {
       users {
-        id
-        name
-        handle
-        profilePictures {
-          size
-          type
-          url
+        user {
+          id
+          handle
+          profilePictures {
+            size
+            type
+            url
+          }
         }
+        markup
       }
       tags {
         tag {
@@ -30,22 +33,39 @@ const SEARCH = gql`
 `
 
 export default function SearchBar() {
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState(
+    new URLSearchParams(window.location.search).get('q') ?? ''
+  )
   const inputFinal = useDebouncedInputCall(input)
   const [focus, setFocus] = useState(false)
+  const [selected, setSelected] = useState()
+  const [selectionList, setSelectionList] = useState([])
   const [searchTags, setSearchTags] = useState([])
+  const [willDelete, setWillDelete] = useState(false)
   const history = useHistory()
 
-  const { data: { search: { users = [], tags = [] } = {} } = {} } = useQuery(
-    SEARCH,
-    {
-      skip: !/\w/.test(inputFinal),
-      variables: {
-        term: inputFinal.trim().replace(/\s{2,}/g, ' '),
-        withTags: searchTags.map(({ id }) => id),
-      },
-    }
-  )
+  const {
+    data: { search: { users = empty, tags = empty } = {} } = {},
+  } = useQuery(SEARCH, {
+    skip: !/\w/.test(inputFinal),
+    variables: {
+      term: inputFinal.trim().replace(/\s{2,}/g, ' '),
+      withTags: searchTags.map(({ id }) => id),
+    },
+  })
+
+  const height = useSpring({
+    height: `${(users.length + tags.length) * 3.3}rem`,
+  })
+
+  useEffect(() => {
+    const list = [
+      ...tags.map(({ tag }) => tag.id),
+      ...users.map(({ user }) => user.id),
+    ]
+    setSelectionList(list)
+    if (!list.includes(selected)) setSelected()
+  }, [users, tags, selected])
 
   const inputRef = useRef(input)
   inputRef.current = input
@@ -53,9 +73,9 @@ export default function SearchBar() {
   setFocusRef.current = setFocus
 
   function submit(e) {
-    e.preventDefault()
+    if (e) e.preventDefault()
     if (!inputFinal.length && !searchTags.length) return
-    e.target.querySelector('input').blur()
+    if (e) e.target.querySelector('input').blur()
     setInput('')
     history.push(
       `/search?${Object.entries({
@@ -68,8 +88,51 @@ export default function SearchBar() {
     )
   }
 
+  function handleKey(e) {
+    setWillDelete(false)
+    switch (e.key) {
+      case 'Enter':
+      case 'Tab': {
+        if (selected) e.preventDefault()
+        const tag = tags.find(({ tag }) => tag.id === selected)
+        const user = tag ?? users.find(({ user }) => user.id === selected)
+        if (tag) {
+          setInput('')
+          setSearchTags([...searchTags, tag.tag])
+        } else if (user && e.key === 'Enter') {
+          setInput('')
+          history.push(`/${user.user.handle}`)
+        }
+        break
+      }
+      case 'Backspace':
+        if (input.length === 0 && searchTags.length)
+          willDelete
+            ? setSearchTags(searchTags.slice(0, -1))
+            : setWillDelete(true)
+        break
+      case 'ArrowUp':
+      case 'ArrowDown': {
+        if (selectionList.length === 0) break
+        const selectIndex = selectionList.indexOf(selected)
+        const dir = e.key.replace('Arrow', '').toLowerCase()
+        if (dir === 'down') {
+          if (selectIndex >= selectionList.length - 1) break
+          if (selectIndex === -1) setSelected(selectionList[0])
+          else setSelected(selectionList[selectIndex + 1])
+        } else {
+          if (selectIndex === 0) break
+          if (selectIndex === -1) setSelected(selectionList.slice(-1)[0])
+          else setSelected(selectionList[selectIndex - 1])
+        }
+        break
+      }
+      default:
+    }
+  }
+
   return (
-    <S.Wrap onSubmit={submit}>
+    <S.Wrap onSubmit={submit} onKeyDown={handleKey}>
       <S.Search>
         <TagInput
           value={input}
@@ -83,11 +146,22 @@ export default function SearchBar() {
             setSearchTags(searchTags.filter(tag => tag.id !== id))
           }
           placeholder="What are you looking for?"
+          {...(willDelete &&
+            searchTags.length && { highlight: searchTags.slice(-1)[0]?.id })}
         />
-        <Icon icon="search" />
+        <Icon
+          icon="search"
+          onClick={({ target }) =>
+            input || searchTags.length
+              ? submit()
+              : target.parentNode.querySelector('input')?.focus()
+          }
+        />
       </S.Search>
-      {focus && users.length + tags.length > 0 && (
+      {focus && (
         <S.Preview
+          style={height}
+          items={tags.length + users.length}
           tabIndex={0}
           onFocus={e => {
             const inputNode = e.target.parentNode.querySelector('input')
@@ -104,14 +178,20 @@ export default function SearchBar() {
                 setSearchTags([...searchTags, tag])
                 setInput('')
               }}
+              data-selected={tag.id === selected}
+              onMouseEnter={() => setSelected(tag.id)}
               dangerouslySetInnerHTML={{ __html: markup }}
             />
           ))}
-          {users.map(({ id, name, handle, profilePictures }) => (
-            <S.User key={id}>
+          {users.map(({ user: { id, handle, profilePictures }, markup }) => (
+            <S.User
+              key={id}
+              data-selected={id === selected}
+              onMouseEnter={() => setSelected(id)}
+            >
               <Link to={`/${handle}`} onClick={() => setInput('')}>
                 <ProfilePicture size={IMG_SIZE} imgs={profilePictures} />
-                <span>{name}</span>
+                <span dangerouslySetInnerHTML={{ __html: markup }} />
               </Link>
             </S.User>
           ))}
@@ -122,6 +202,22 @@ export default function SearchBar() {
 }
 
 const IMG_SIZE = '2.8rem'
+
+const Item = styled.li`
+  width: 100%;
+  height: calc(${IMG_SIZE} + 0.5rem);
+  padding: 0.25rem 1rem;
+  cursor: pointer;
+  box-sizing: border-box;
+
+  & > span {
+    font-weight: 300;
+  }
+
+  &[data-selected='true'] {
+    background-color: #feeef2;
+  }
+`
 
 const S = {
   Wrap: styled.form`
@@ -158,48 +254,43 @@ const S = {
     }
   `,
 
-  Preview: styled.ul`
+  Preview: styled(animated.ul)`
     position: absolute;
     box-sizing: border-box;
     width: 100%;
-    margin: 0;
-    margin-top: 0.5rem;
     background: #fff;
     box-shadow: 0px 1px 6px #0004;
     border-radius: 0.3rem;
     list-style: none;
-    padding: 0 1rem;
+    margin: 0;
+    margin-top: 0.5rem;
+    padding: 0.25rem 0;
+    padding: 0;
     max-height: min(200rem, calc(100vh - 5rem));
     overflow-y: auto;
-    padding: 0 1rem;
+    background-color: #fff;
+    display: block;
   `,
 
-  User: styled.li`
+  User: styled(Item)`
     & > a {
       display: flex;
-      padding: 0;
       align-items: center;
-      margin: 0.5rem 0;
 
       img {
         width: ${IMG_SIZE};
         height: ${IMG_SIZE};
+        display: block;
         border-radius: 50%;
         margin-right: 1rem;
       }
     }
   `,
 
-  Tag: styled.li`
-    margin: 0.5rem 0;
-    width: 100%;
-    height: ${IMG_SIZE};
+  Tag: styled(Item)`
     display: block;
     line-height: ${IMG_SIZE};
-    cursor: pointer;
-
-    span {
-      font-weight: 300;
-    }
   `,
 }
+
+const empty = []

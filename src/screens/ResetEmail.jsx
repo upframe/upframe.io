@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Page, Title, Input, Button, Text, Spinner } from '../components'
-import { mutations, useMutation } from '../gql'
-import { notify } from '../notification'
-import { useHistory } from '../utils/hooks'
+import { mutations, useMutation } from 'gql'
+import { notify } from 'notification'
+import { useHistory } from 'utils/hooks'
 
 export default function ResetEmail({ match }) {
   const [email, setEmail] = useState()

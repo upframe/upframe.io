@@ -9,8 +9,8 @@ import {
   PhotoCrop,
 } from '../../components'
 import Item from '../Settings/Item'
-import { gql, queries, fragments, useQuery, useMutation } from '../../gql'
-import { useDebouncedInputCall, useCtx } from '../../utils/hooks'
+import { gql, queries, fragments, useQuery, useMutation } from 'gql'
+import { useDebouncedInputCall, useCtx } from 'utils/hooks'
 
 const COMPLETE_SIGNUP = gql`
   mutation CompleteSignUp(

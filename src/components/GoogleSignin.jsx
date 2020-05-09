@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button, Icon } from '.'
-import { gql, useQuery } from '../gql'
+import { gql, useQuery } from 'gql'
 
 const SIGNIN_URL = gql`
   query GoogleSignInUrl($redirect: String!, $state: String) {

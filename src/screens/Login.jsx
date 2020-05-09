@@ -8,11 +8,11 @@ import {
   GoogleSignin,
   Divider,
 } from '../components'
-import { useCtx, useHistory, useMe } from '../utils/hooks'
-import { gql, fragments, mutations, useMutation } from '../gql'
+import { useHistory, useMe, useSignIn } from 'utils/hooks'
+import { gql, fragments, mutations, useMutation } from 'gql'
 import styled from 'styled-components'
-import { hasError } from '../api'
-import { notify } from '../notification'
+import { hasError } from 'api'
+import { notify } from 'notification'
 
 const SIGNIN_GOOGLE = gql`
   mutation SigninWithGoogle($code: ID!, $redirect: String!) {
@@ -29,9 +29,9 @@ const SIGNIN_GOOGLE = gql`
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { setCurrentUser } = useCtx()
   const history = useHistory()
   const { me } = useMe()
+  const afterLogin = useSignIn()
 
   const [signInGoogle] = useMutation(SIGNIN_GOOGLE, {
     onError(err) {
@@ -45,13 +45,14 @@ export default function Login() {
     },
   })
 
-  const code = new URLSearchParams(window.location.search).get('code')
+  const [signIn] = useMutation(mutations.SIGN_IN, {
+    onCompleted: ({ signIn: user }) => {
+      if (!user) return
+      afterLogin(user)
+    },
+  })
 
-  function afterLogin(user) {
-    setCurrentUser(user.id)
-    localStorage.setItem('loggedin', true)
-    history.push('/')
-  }
+  const code = new URLSearchParams(window.location.search).get('code')
 
   useEffect(() => {
     if (!code || !signInGoogle) return
@@ -62,13 +63,6 @@ export default function Login() {
       },
     })
   }, [code, signInGoogle])
-
-  const [signIn] = useMutation(mutations.SIGN_IN, {
-    onCompleted: ({ signIn: user }) => {
-      if (!user) return
-      afterLogin(user)
-    },
-  })
 
   function handleSubmit(e) {
     e.preventDefault()

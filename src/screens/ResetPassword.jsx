@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Input, Title, Button, Spinner, Page, Text } from '../components'
-import { useMe, useHistory, useCtx } from '../utils/hooks'
-import { queries, mutations, useQuery, useMutation } from '../gql'
-import { notify } from '../notification'
+import { useMe, useHistory, useCtx } from 'utils/hooks'
+import { queries, mutations, useQuery, useMutation } from 'gql'
+import { notify } from 'notification'
 
 export default function ResetPassword({ match }) {
   const [password, setPassword] = useState('')

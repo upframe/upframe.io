@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styles from './request.module.scss'
-import { isEmail } from '../../utils/validate'
-import { mutations, useMutation } from '../../gql'
+import { isEmail } from 'utils/validate'
+import { mutations, useMutation } from 'gql'
 import {
   Shade,
   Title,
@@ -12,8 +12,8 @@ import {
   Divider,
   Icon,
 } from '../../components/'
-import { notify } from '../../notification'
-import { useCtx } from '../../utils/hooks'
+import { notify } from 'notification'
+import { useCtx } from 'utils/hooks'
 
 export default function Request({ mentor, onClose, slot }) {
   const [msg, setMsg] = useState('')

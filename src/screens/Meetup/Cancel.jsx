@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { mutations, useMutation } from '../../gql'
+import { mutations, useMutation } from 'gql'
 import { Spinner, Text } from '../../components'
 import styles from './meetup.module.scss'
-import { notify } from '../../notification'
+import { notify } from 'notification'
 
 export default function MeetupCancel({ match }) {
   const [cancel, { loading, data }] = useMutation(mutations.CANCEL_MEETING, {
