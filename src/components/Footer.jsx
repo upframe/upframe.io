@@ -29,6 +29,7 @@ const S = {
     align-items: center;
     padding: 0 max(5vw, 3rem);
     user-select: none;
+    overflow: hidden;
 
     & > * {
       margin-left: 2rem;
