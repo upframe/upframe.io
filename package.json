@@ -2,6 +2,25 @@
   "name": "connect",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "npx graphql-codegen && react-scripts start",
+    "build": "npx graphql-codegen && react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "gql:check": "npx apollo client:check",
+    "format:check": "stylelint 'src/**/*.{css,scss}' && prettier --check \"./**/*.{js,jsx}\"",
+    "format:fix": "stylelint --fix 'src/**/*.{css,scss}' && prettier --write \"./**/*.{js,jsx}\"",
+    "lint:check": "eslint . --ext .js,.jsx",
+    "lint:fix": "eslint . --ext .js,.tsx --fix",
+    "lint": "yarn lint:check && yarn format:check",
+    "format": "yarn lint:fix && yarn format:fix"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "dependencies": {
     "@apollo/react-hooks": "^3.1.3",
     "@sentry/browser": "^5.15.5",
@@ -31,27 +50,27 @@
     "react-tag-input": "6.2.0",
     "styled-components": "^5.0.1"
   },
-  "scripts": {
-    "start": "npx graphql-codegen && react-scripts start",
-    "build": "npx graphql-codegen && react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "format": "prettier --write \"./**/*.{js,jsx}\"",
-    "gql:check": "npx apollo client:check"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
   "devDependencies": {
     "@graphql-codegen/cli": "^1.12.2",
     "@graphql-codegen/fragment-matcher": "^1.12.2",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-flowtype": "^4.7.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^4.0.0",
     "prettier": "^1.18.2",
     "puppeteer": "^3.0.2",
     "react-testing-library": "^8.0.1",
-    "stylelint": "^9.9.0"
+    "stylelint": "^13.3.3",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.17.2",
+    "typescript": "^3.8.3"
   }
 }
