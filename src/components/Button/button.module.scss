@@ -8,7 +8,7 @@
 
   background-color: var(--cl-background);
   border: 1px solid var(--cl-text-medium);
-  border-radius: 8px;
+  border-radius: var(--border-radius);
 
   font-weight: bold;
   color: var(--cl-text-medium);

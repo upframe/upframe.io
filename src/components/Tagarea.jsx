@@ -73,18 +73,17 @@ const S = {
   Wrap: styled.div`
     position: relative;
     background-color: #f1f3f4;
-    border-radius: 8px;
     transition: background-color 0.25s ease;
 
     &:focus,
     &:hover {
-      background-color:rgba(0, 0, 0, 0.08)
+      background-color: rgba(0, 0, 0, 0.08);
     }
   `,
 
   Textarea: styled.textarea`
     padding: 0.7rem 1rem;
-    border-radius: 0.3rem;
+    border-radius: var(--border-radius);
     color: var(--cl-text-medium);
     font: inherit;
     font-size: 1.2rem;

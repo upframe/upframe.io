@@ -251,7 +251,7 @@ const S = {
 
     img {
       height: 11.125rem;
-      border-radius: 0.3rem;
+      border-radius: var(--border-radius);
     }
 
     & > div {

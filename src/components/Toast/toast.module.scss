@@ -4,7 +4,7 @@
   box-sizing: border-box;
   display: block;
   background-color: var(--cl-accent);
-  border-radius: 0.25rem;
+  border-radius: var(--border-radius);
   padding: 1rem;
   transition: transform 0.3s ease;
   margin-bottom: 1rem;

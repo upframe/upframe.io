@@ -310,7 +310,7 @@ const S = {
   PreviewImgWrap: styled.div`
     width: 3.5rem;
     height: 3.5rem;
-    border-radius: 0.25rem;
+    border-radius: calc(var(--border-radius) / 2);
     overflow: hidden;
   `,
 

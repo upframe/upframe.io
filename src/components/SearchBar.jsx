@@ -246,7 +246,7 @@ const S = {
       &:focus,
       &:hover {
         background-color: #f1f3f4;
-        }
+      }
 
       &::placeholder {
         color: var(--cl-text-medium);
@@ -260,7 +260,7 @@ const S = {
     width: 100%;
     background: #fff;
     box-shadow: 0px 1px 6px #0004;
-    border-radius: 0.3rem;
+    border-radius: var(--border-radius);
     list-style: none;
     margin: 0;
     margin-top: 0.5rem;

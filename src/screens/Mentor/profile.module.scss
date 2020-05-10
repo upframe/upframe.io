@@ -18,7 +18,6 @@
 .showcase {
   display: flex;
   overflow-x: hidden;
-  border-radius: 8px;
 
   @media (orientation: portrait) {
     flex-direction: column;
@@ -45,7 +44,7 @@
 
   picture,
   picture > img {
-    border-radius: 0.45rem;
+    border-radius: var(--border-radius);
     width: 13rem;
     height: 13rem;
   }
@@ -116,8 +115,6 @@
 }
 
 .meetup {
-  border-radius: 8px;
-  
   h3:first-of-type {
     margin-top: 0;
   }
@@ -155,7 +152,7 @@
   color: #000;
   height: 4rem;
   width: 11rem;
-  border-radius: 0.25rem;
+  border-radius: calc(var(--border-radius) / 2);
   cursor: pointer;
   transition: border-color 0.25s ease;
 

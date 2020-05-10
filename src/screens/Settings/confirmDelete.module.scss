@@ -20,7 +20,7 @@
   max-height: 100vh;
   background-color: var(--cl-background);
   padding: 1rem;
-  border-radius: 0.25rem;
+  border-radius: var(--border-radius);
 
   h4 {
     margin-top: 0;

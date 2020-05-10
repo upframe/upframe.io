@@ -5,7 +5,7 @@
   transform: translateX(-50%) translateY(-50%);
   background-color: #fff;
   padding: 1rem 2rem;
-  border-radius: 0.25rem;
+  border-radius: var(--border-radius);
   width: 28rem;
   box-sizing: border-box;
   color: var(--cl-text-medium);

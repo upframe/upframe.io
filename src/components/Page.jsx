@@ -44,7 +44,7 @@ const S = {
     transform: translateX(-50%) translateY(-50%);
     display: block;
     padding: 1.5rem 3rem;
-    border-radius: 0.25rem;
+    border-radius: var(--border-radius);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-sizing: border-box;

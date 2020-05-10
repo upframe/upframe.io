@@ -178,7 +178,7 @@ const S = {
     margin-top: 0.5rem;
     background: #fff;
     box-shadow: 0px 1px 6px #0004;
-    border-radius: 0.3rem;
+    border-radius: var(--border-radius);
     list-style: none;
     padding: 0;
     --item-height: 2.8rem;

@@ -36,7 +36,7 @@ const S = {
     box-sizing: border-box;
     background-color: #fff;
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: var(--border-radius);
     user-select: none;
 
     &[data-size='default'] {

@@ -45,7 +45,6 @@
       border-top: none;
     }
     .rbc-time-view {
-      border-radius: 5px;
       border: 1px solid #dddddd;
       border-radius: 4px;
     }
@@ -63,7 +62,7 @@
       background: #fff4f7 !important;
       border: 1px solid #dddddd !important;
       box-shadow: none !important;
-      }
+    }
 
     .rbc-toolbar button:active:hover {
       font-weight: bold !important;
@@ -72,7 +71,7 @@
       border: 1px solid #dddddd !important;
       box-shadow: none !important;
     }
-   
+
     .rbc-toolbar-label,
     .rbc-toolbar,
     .rbc-btn-group {
@@ -84,10 +83,10 @@
         line-height: 16px;
         align-items: center;
         text-align: center;
-        color: #000000;
-        border: 1px solid #dddddd;
+        color: #000;
+        border: 1px solid #ddd;
         box-sizing: border-box;
-        border-radius: 5px 5px 5px 5px;
+        border-radius: 5px;
 
         &:hover,
         &:focus,

@@ -37,18 +37,18 @@ const S = {
     width: 100%;
     box-sizing: border-box;
     padding-left: 1rem;
-    border-radius: 0.3rem;
+    border-radius: var(--border-radius);
     background-color: #f1f3f4;
     overflow-x: auto;
 
     input {
       flex-grow: 1;
       padding-left: 0;
-      
+
       &:focus,
       &:hover {
         background-color: #f1f3f4;
-        }
+      }
     }
 
     & > div {
