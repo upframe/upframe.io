@@ -42,7 +42,9 @@ const Recommendation = props => {
           variables: { handle, slotsAfter: new Date().toISOString() },
         })
       )
-    ).then(results => setMentorsList(results.map(({ data }) => data.mentor)))
+    ).then(results => {
+      setMentorsList(results.map(({ data }) => data.user))
+    })
   }, [props.recommendations])
 
   const mentorComponent = mentorsList.map((mentor, key) => {
