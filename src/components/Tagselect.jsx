@@ -177,11 +177,13 @@ const S = {
     margin: 0;
     margin-top: 0.5rem;
     background: #fff;
-    box-shadow: 0px 1px 6px #0004;
+    box-shadow: 0 1px 6px #0004;
     border-radius: var(--border-radius);
     list-style: none;
     padding: 0;
+
     --item-height: 2.8rem;
+
     max-height: calc(5 * var(--item-height));
     overflow-y: auto;
 
@@ -200,7 +202,7 @@ const S = {
   Add: styled.li`
     font-weight: bold;
 
-    &:before {
+    &::before {
       content: 'ADD ';
       color: #ff205c;
     }

@@ -287,15 +287,18 @@ const S = {
     &:nth-child(1) {
       cursor: nwse-resize;
     }
+
     &:nth-child(2) {
       left: 100%;
       cursor: nesw-resize;
     }
+
     &:nth-child(3) {
       left: 100%;
       top: 100%;
       cursor: nwse-resize;
     }
+
     &:nth-child(4) {
       top: 100%;
       cursor: nesw-resize;

@@ -2,8 +2,7 @@
   display: flex;
 
   button {
-    -moz-appearance: none;
-    -webkit-appearance: none;
+    appearance: none;
     display: block;
     width: 5.5rem;
     height: 2.5rem;

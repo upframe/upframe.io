@@ -1,5 +1,17 @@
 {
-  "extends": ["stylelint-config-standard", "stylelint-config-css-modules"],
+  "processors": [
+    [
+      "stylelint-processor-styled-components",
+      {
+        "ignoreFiles": ["**/*.{css,scss}"]
+      }
+    ]
+  ],
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-css-modules",
+    "stylelint-config-styled-components"
+  ],
   "plugins": ["stylelint-scss"],
   "rules": {
     "max-empty-lines": 1,

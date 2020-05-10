@@ -8,8 +8,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "gql:check": "npx apollo client:check",
-    "format:check": "stylelint 'src/**/*.{css,scss}' && prettier --check \"./**/*.{js,jsx}\"",
-    "format:fix": "stylelint --fix 'src/**/*.{css,scss}' && prettier --write \"./**/*.{js,jsx}\"",
+    "format:check": "stylelint 'src/**/*.{css,scss,js,jsx}' && prettier --check \"./**/*.{js,jsx}\"",
+    "format:fix": "stylelint --fix 'src/**/*.{css,scss,js,jsx}' && prettier --write \"./**/*.{js,jsx}\"",
     "lint:check": "eslint . --ext .js,.jsx",
     "lint:fix": "eslint . --ext .js,.tsx --fix",
     "lint": "yarn lint:check && yarn format:check",
@@ -71,6 +71,8 @@
     "stylelint": "^13.3.3",
     "stylelint-config-css-modules": "^2.2.0",
     "stylelint-config-standard": "^20.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
+    "stylelint-processor-styled-components": "^1.10.0",
     "stylelint-scss": "^3.17.2",
     "typescript": "^3.8.3"
   }

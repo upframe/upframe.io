@@ -13,7 +13,6 @@ export default function Footer() {
 
 const S = {
   Footer: styled.footer`
-    display: block;
     box-sizing: border-box;
     width: 100vw;
     height: 5rem;
@@ -22,7 +21,6 @@ const S = {
     background: #fff;
     position: relative;
     z-index: 10000;
-
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-start;

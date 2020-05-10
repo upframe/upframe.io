@@ -229,10 +229,8 @@ const S = {
 
   Search: styled.div`
     width: 100%;
-    display: block;
     border-radius: 1000rem;
     overflow: hidden;
-
     display: flex;
     align-items: center;
     background-color: #f1f3f4;
@@ -243,6 +241,7 @@ const S = {
 
     input {
       margin-left: 0.5rem;
+
       &:focus,
       &:hover {
         background-color: #f1f3f4;
@@ -259,7 +258,7 @@ const S = {
     box-sizing: border-box;
     width: 100%;
     background: #fff;
-    box-shadow: 0px 1px 6px #0004;
+    box-shadow: 0 1px 6px #0004;
     border-radius: var(--border-radius);
     list-style: none;
     margin: 0;

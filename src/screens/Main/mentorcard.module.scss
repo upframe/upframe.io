@@ -61,10 +61,12 @@
 .biography {
   margin-top: 0.6rem;
   text-overflow: ellipsis;
+  overflow: hidden;
+  /* stylelint-disable */
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  overflow: hidden;
+  /* stylelint-enable */
 }
 
 .skills {
