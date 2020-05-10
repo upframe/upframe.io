@@ -9,6 +9,14 @@
   @media (orientation: portrait) {
     padding: 1rem;
   }
+
+  *:first-child {
+    margin-top: 0;
+  }
+
+  *:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .hoverEffect {

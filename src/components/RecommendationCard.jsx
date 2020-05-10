@@ -21,6 +21,7 @@ export default function RecommendationCard({ recommendations: handles }) {
 
   return (
     <Card>
+      <Title s3>Other mentors who can help</Title>
       <S.List>
         {users.map(
           ({ id, name, handle, profilePictures: imgs, title, company }) => (
@@ -45,6 +46,7 @@ const S = {
   List: styled.div`
     display: flex;
     justify-content: space-between;
+    margin-top: 2.5rem;
 
     @media (max-width: 1200px) {
       flex-direction: column;
