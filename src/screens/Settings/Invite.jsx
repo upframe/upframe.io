@@ -100,7 +100,7 @@ export default function Invite() {
       <Item
         label={'Tip:'}
         hint={
-          'Tip: You can also paste multiple emails at once if they are seperated by a space, comma, semicolon or newline.'
+          'You can also paste multiple emails at once if they are seperated by a space, comma, semicolon or newline.'
         }
       ></Item>
       {invalid.length > 0 && (
