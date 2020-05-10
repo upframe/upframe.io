@@ -1,6 +1,3 @@
-export {
-  default as RecommendationCard,
-} from './RecommendationCard/RecommendationCard'
 export { default as ProfilePicture } from './ProfilePicture/ProfilePicture'
 export { default as Navbar } from './Navbar/Navbar'
 export { default as Breadcrumbs } from './Breadcrumbs/Breadcrumbs'
@@ -20,9 +17,7 @@ export { default as Icon } from './Icon/Icon'
 export { default as Card } from './Card/Card'
 export { default as Spinner } from './Spinner/Spinner'
 export { default as Toast } from './Toast/Toast'
-export {
-  default as NotificationStack,
-} from './NotificationStack/NotificationStack'
+export { default as NotificationStack } from './NotificationStack/NotificationStack'
 export { default as Tagselect } from './Tagselect'
 export { default as PhotoCrop } from './PhotoCrop'
 export { default as Modal } from './Modal'
@@ -32,4 +27,5 @@ export { default as TagInput } from './TagInput'
 export { default as Tagarea } from './Tagarea'
 export { default as GoogleSignin } from './GoogleSignin'
 export { default as Footer } from './Footer'
+export { default as RecommendationCard } from './RecommendationCard'
 export { Link } from 'react-router-dom'

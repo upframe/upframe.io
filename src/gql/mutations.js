@@ -19,15 +19,6 @@ export const SIGN_OUT = gql`
   }
 `
 
-export const SIGN_UP = gql`
-  mutation SignUp($name: String!, $email: String!, $password: String!) {
-    createAccount(input: { name: $name, email: $email, password: $password }) {
-      ...PersonBase
-    }
-  }
-  ${person.base}
-`
-
 export const SET_PROFILE_VISIBILITY = gql`
   mutation SetProfileVisibility($visibility: Visibility!) {
     setProfileVisibility(visibility: $visibility) {
