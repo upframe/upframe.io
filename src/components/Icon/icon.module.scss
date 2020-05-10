@@ -4,6 +4,12 @@
   }
 }
 
+.color {
+  & > path {
+    fill: var(--cl-text-strong);
+  }
+}
+
 .clickable {
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -13,12 +19,7 @@
     path {
       fill: var(--cl-accent);
     }
-    background-color: #feeef2;
-  }
-}
 
-.color {
-  & > path {
-    fill: var(--cl-text-strong);
+    background-color: #feeef2;
   }
 }

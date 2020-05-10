@@ -3,13 +3,54 @@
 
 .wrap {
   @include sidenav-layout;
+
   position: absolute;
   top: 0;
   height: calc(7rem + #{$calendar-height});
-
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+}
+
+.calendarToggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+
+  * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  input,
+  svg {
+    margin: 0;
+    margin-right: 1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  svg {
+    margin-right: calc(var(--off) + 1rem) !important;
+  }
+}
+
+.synced {
+  border: none;
+  overflow-x: hidden;
+  padding-bottom: 0;
+
+  & > * {
+    text-align: left !important;
+  }
 }
 
 .calendarList {
@@ -37,48 +78,6 @@
 
   button {
     width: 100%;
-  }
-}
-
-.synced {
-  border: none;
-  overflow-x: hidden;
-  padding-bottom: 0;
-
-  & > * {
-    text-align: left !important;
-  }
-}
-
-.calendarToggle {
-  display: flex;
-  margin-bottom: 0 !important;
-  align-items: center;
-  width: 100%;
-  margin-top: 1rem !important;
-  margin-bottom: 1rem !important;
-
-  * {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-
-  p {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  input,
-  svg {
-    margin: 0;
-    margin-right: 1rem;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  svg {
-    margin-right: calc(var(--off) + 1rem) !important;
   }
 }
 

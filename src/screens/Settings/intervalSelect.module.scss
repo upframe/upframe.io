@@ -4,7 +4,6 @@
   button {
     -moz-appearance: none;
     -webkit-appearance: none;
-
     display: block;
     width: 5.5rem;
     height: 2.5rem;
@@ -16,6 +15,7 @@
       border-top-left-radius: 0.3rem;
       border-bottom-left-radius: 0.3rem;
     }
+
     &:last-child {
       border-top-right-radius: 0.3rem;
       border-bottom-right-radius: 0.3rem;

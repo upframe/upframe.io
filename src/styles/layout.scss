@@ -11,9 +11,11 @@ $calendar-height: 80vh;
   top: 7rem;
   left: 0;
   width: $settings-nav-min-width;
-  margin-left: calc(
-    (#{$settings-left-column-width} - #{$settings-nav-min-width}) / 2
-  );
+  margin-left:
+    calc(
+      (#{$settings-left-column-width} - #{$settings-nav-min-width}) / 2
+    );
+
   @media (max-width: calc(#{$settings-nav-min-width} / #{(strip-unit($settings-left-column-width) / 100)})) {
     width: $settings-nav-min-width;
     margin-left: 0;

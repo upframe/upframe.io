@@ -5,11 +5,9 @@
   box-sizing: border-box;
   width: 100vw;
   height: 5rem !important;
-
   display: flex;
   align-items: center;
   padding: 0 2.5vw;
-
   background: var(--cl-background);
   transition: box-shadow 0.25s ease;
 
@@ -40,6 +38,7 @@
     a:last-of-type {
       display: none !important;
     }
+
     margin-left: 0;
   }
 

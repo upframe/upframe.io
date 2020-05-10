@@ -3,6 +3,7 @@
 
 .navigation {
   @include sidenav-layout;
+
   padding-left: 1rem;
   padding-top: 0;
   background-color: var(--cl-background);

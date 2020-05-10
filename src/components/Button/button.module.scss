@@ -5,20 +5,13 @@
   height: 2.8rem;
   padding: 0 1.5rem;
   margin-right: 1rem;
-
   background-color: var(--cl-background);
   border: 1px solid var(--cl-text-medium);
   border-radius: var(--border-radius);
-
   font-weight: bold;
   color: var(--cl-text-medium);
   font-size: 0.8rem;
   transition: background-color 0.2s ease;
-
-  &:hover:not([disabled]) {
-    background-color: var(--cl-text-medium);
-    color: var(--cl-background);
-  }
 
   &:disabled {
     cursor: default;
@@ -27,6 +20,11 @@
 
   &:focus {
     outline: none;
+  }
+
+  &:hover:not([disabled]) {
+    background-color: var(--cl-text-medium);
+    color: var(--cl-background);
   }
 }
 

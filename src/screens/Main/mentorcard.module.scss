@@ -22,6 +22,7 @@
       height: 18rem;
     }
   }
+
   transition: transform 0.125s ease;
 
   &:hover {
@@ -33,7 +34,6 @@
 .info {
   flex-grow: 1;
   padding: 1rem 2rem;
-  display: block;
   height: 100%;
   box-sizing: border-box;
   overflow: hidden;
