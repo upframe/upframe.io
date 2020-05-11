@@ -42,10 +42,11 @@ export default function SearchBar() {
   const [selectionList, setSelectionList] = useState([])
   const [searchTags, setSearchTags] = useState([])
   const [willDelete, setWillDelete] = useState(false)
+  const [tags, setTags] = useState([])
   const history = useHistory()
 
   const {
-    data: { search: { users = empty, tags = empty } = {} } = {},
+    data: { search: { users = empty, tags: _tags = empty } = {} } = {},
   } = useQuery(SEARCH, {
     skip: !/\w/.test(inputFinal),
     variables: {
@@ -53,6 +54,12 @@ export default function SearchBar() {
       withTags: searchTags.map(({ id }) => id),
     },
   })
+
+  useEffect(() => {
+    setTags(
+      _tags.filter(({ tag }) => !searchTags.find(({ id }) => tag.id === id))
+    )
+  }, [_tags, searchTags])
 
   const height = useSpring({
     height: `${(users.length + tags.length) * 3.3}rem`,
