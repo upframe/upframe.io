@@ -24,15 +24,12 @@ export default function RecommendationCard({ recommendations: handles }) {
       <Title s3>Other mentors who can help</Title>
       <S.List>
         {users.map(
-          ({ id, name, handle, profilePictures: imgs, title, company }) => (
+          ({ id, name, handle, profilePictures: imgs, headline, company }) => (
             <S.User key={id} to={`/${handle}`}>
               <ProfilePicture imgs={imgs} size="6.5rem" />
               <div>
                 <Title s3>{name}</Title>
-                <Text>
-                  {title}
-                  {company ? ` at ${company}` : ''}
-                </Text>
+                <Text>{headline}</Text>
               </div>
             </S.User>
           )

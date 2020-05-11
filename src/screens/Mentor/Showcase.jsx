@@ -16,10 +16,7 @@ export default function Showcase({ user }) {
       <div className={styles.leftColumn}>
         <ProfilePicture imgs={user.profilePictures} size="13rem" />
         <p className={styles.name}>{user.name}</p>
-        <p className={styles.role}>
-          {user.title}
-          {user.company ? ` at ${user.company}` : ''}
-        </p>
+        <p className={styles.role}>{user.headline}</p>
         {user.location && (
           <p className={styles.location}>
             <Icon icon="location" />

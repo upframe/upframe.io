@@ -36,7 +36,7 @@ export const person = {
           name
         }
         ... on Mentor {
-          title
+          headline
           company
         }
       }
@@ -83,7 +83,7 @@ export const person = {
           name
         }
         ... on Mentor {
-          title
+          headline
           company
         }
       }

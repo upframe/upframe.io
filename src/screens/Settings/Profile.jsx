@@ -38,7 +38,7 @@ export default function Profile() {
     reader.readAsDataURL(e.target.files[0])
   }
 
-  const required = ['name', 'handle', 'title', 'biography']
+  const required = ['name', 'handle', 'headline', 'biography']
   const requiredMet = required.every(field => user[field])
 
   const [updateProfile] = useMutation(mutations.UPDATE_PROFILE, {
@@ -216,7 +216,7 @@ export default function Profile() {
       })}
       {user.role !== 'USER' && (
         <>
-          {item({ label: 'Headline', field: 'title' })}
+          {item({ label: 'Headline', field: 'headline' })}
           {item({ label: 'Companies', field: 'company' })}
         </>
       )}
