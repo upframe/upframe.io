@@ -18,6 +18,7 @@ export default function Item({
   inputType,
   className,
   linkTo,
+  action,
   ...props
 }) {
   const [value, setValue] = useState(input || text)
@@ -31,9 +32,9 @@ export default function Item({
     if (onChange) onChange(v)
   }
 
-  const action =
+  const actionTag =
     input !== undefined ? 'input' : text !== undefined ? 'textbox' : undefined
-  const Action = { input: Input, textbox: Textbox }[action]
+  const Action = { input: Input, textbox: Textbox }[actionTag]
 
   const id = label.replace(/\s/g, '')
   return (
@@ -47,16 +48,17 @@ export default function Item({
         {label}
         {!required ? '' : <span> *</span>}
       </label>
-      {Action && !button && (
-        <Action
-          id={id}
-          value={value}
-          onChange={handleChange}
-          error={error}
-          {...(inputType && { type: inputType })}
-          {...props}
-        />
-      )}
+      {action ??
+        (Action && !button && (
+          <Action
+            id={id}
+            value={value}
+            onChange={handleChange}
+            error={error}
+            {...(inputType && { type: inputType })}
+            {...props}
+          />
+        ))}
       {(button || custom) && (
         <div className={style.btWrap}>
           <Text>{children}</Text>
