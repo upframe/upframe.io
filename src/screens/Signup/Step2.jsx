@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react'
-import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import {
   Button,
@@ -10,7 +9,7 @@ import {
 } from '../../components'
 import Item from '../Settings/Item'
 import { gql, queries, fragments, useQuery, useMutation } from 'gql'
-import { useDebouncedInputCall, useCtx } from 'utils/hooks'
+import { useDebouncedInputCall, useSignIn } from 'utils/hooks'
 
 const COMPLETE_SIGNUP = gql`
   mutation CompleteSignUp(
@@ -62,9 +61,8 @@ export default function Step2({
     }),
   })
   const [invalid, setInvalid] = useState({})
-  const history = useHistory()
   const fileInput = useRef(null)
-  const { setCurrentUser } = useCtx()
+  const signIn = useSignIn()
 
   const [completeSignup] = useMutation(COMPLETE_SIGNUP, {
     variables: {
@@ -76,10 +74,8 @@ export default function Step2({
       headline,
       ...(photo !== defaultPicture?.url && { photo }),
     },
-    onCompleted({ completeSignup: { id } }) {
-      setCurrentUser(id)
-      localStorage.setItem('loggedin', true)
-      history.push('/settings/public')
+    onCompleted({ completeSignup: user }) {
+      signIn(user)
     },
   })
 

@@ -37,6 +37,12 @@ const SIGNUP_GOOGLE = gql`
       role
       authComplete
       name
+      picture {
+        url
+      }
+      defaultPicture {
+        url
+      }
     }
   }
 `
