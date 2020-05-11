@@ -159,6 +159,7 @@ export default function Step2({
         onChange={setName}
         {...(name.length &&
           'name' in invalid && { hint: invalid.name, error: true })}
+        required
       />
       <Item
         label="Username"
@@ -168,12 +169,14 @@ export default function Step2({
         {...(handle && { hint: `https://upframe.io/${handle}` })}
         {...(handle.length &&
           'handle' in invalid && { hint: invalid.handle, error: true })}
+        required
       />
       <Item
         label="Location"
         autoComplete="address-level2"
         input={location}
         onChange={setLocation}
+        required
       />
       {role === 'MENTOR' && (
         <Item
@@ -181,9 +184,15 @@ export default function Step2({
           autoComplete="organization-title"
           input={headline}
           onChange={setHeadline}
+          required
         />
       )}
-      <Item label="Biography" text={biography} onChange={setBiography} />
+      <Item
+        label="Biography"
+        text={biography}
+        onChange={setBiography}
+        required
+      />
       <Button
         accent
         type="submit"
