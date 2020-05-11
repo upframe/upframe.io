@@ -238,7 +238,8 @@ const S = {
 
     *[data-action='textbox'],
     *[data-label='location'],
-    *[data-label='headline'] {
+    *[data-label='headline'],
+    *[data-label='biography'] {
       grid-column: 1 / span 2;
     }
   `,
