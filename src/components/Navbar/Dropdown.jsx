@@ -18,13 +18,18 @@ export default function Dropdown({ onBlur }) {
     ref.current.focus()
   }, [ref])
 
+  const onClick = () => {
+    window.addEventListener(
+      'mouseup',
+      () => {
+        setTimeout(onBlur, 100)
+      },
+      { once: true }
+    )
+  }
+
   return (
-    <nav
-      className={styles.dropdown}
-      tabIndex={0}
-      ref={ref}
-      onBlur={() => setTimeout(onBlur, 100)}
-    >
+    <nav className={styles.dropdown} tabIndex={0} ref={ref} onBlur={onClick}>
       <Link to={`/${me ? me.handle : ''}`}>My Profile</Link>
       <Link to={`/settings/public`}>Settings</Link>
       <p onClick={signOut}>Sign out</p>
