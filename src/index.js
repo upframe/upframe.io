@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import './styles/master.scss'
 import './styles/variables.css'
 import App from './App'
-import { ApolloProvider } from '@apollo/react-hooks'
+import { ApolloProvider } from '@apollo/client'
 import client from './api'
 import * as Sentry from '@sentry/browser'
 
