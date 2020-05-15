@@ -11,7 +11,7 @@ export default function Notifications() {
   const { me } = useMe()
   const [mail, setMail] = useState(false)
 
-  const { data: { mentor: user = {} } = {} } = useQuery(
+  const { data: { user = {} } = {} } = useQuery(
     queries.SETTINGS_NOTIFICATIONS,
     {
       variables: { id: currentUser },

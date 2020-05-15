@@ -5,7 +5,7 @@ import { gql, useQuery, fragments } from 'gql'
 
 const IMG_QUERY = gql`
   query ProfilePicture($userId: ID) {
-    mentor(id: $userId) {
+    user(id: $userId) {
       id
       ...ProfilePictures
     }
@@ -14,7 +14,7 @@ const IMG_QUERY = gql`
 `
 
 export default function UserIcon({ userId, onClick }) {
-  const { data: { mentor: user = {} } = {} } = useQuery(IMG_QUERY, {
+  const { data: { user = {} } = {} } = useQuery(IMG_QUERY, {
     variables: { userId },
   })
 

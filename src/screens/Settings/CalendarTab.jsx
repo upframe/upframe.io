@@ -22,18 +22,15 @@ export default function CalendarTab() {
   const history = useHistory()
   const signOut = useSignOut()
 
-  const { data: { mentor: user = {} } = {} } = useQuery(
-    queries.SETTINGS_CALENDAR,
-    {
-      variables: { id: currentUser },
-      onError(err) {
-        if (hasError(err, 'GOOGLE_ERROR')) {
-          notify("couldn't access google calendar")
-          signOut()
-        }
-      },
-    }
-  )
+  const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_CALENDAR, {
+    variables: { id: currentUser },
+    onError(err) {
+      if (hasError(err, 'GOOGLE_ERROR')) {
+        notify("couldn't access google calendar")
+        signOut()
+      }
+    },
+  })
 
   const [connect, { loading: connecting }] = useMutation(
     mutations.CONNECT_CALENDAR

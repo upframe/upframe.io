@@ -107,7 +107,6 @@ export const UPDATE_SLOTS = gql`
       slots(includeBooked: true) {
         id
         start
-        end
       }
     }
   }

@@ -97,11 +97,18 @@ export const SETTINGS_PROFILE = gql`
 
 export const SETTINGS_NOTIFICATIONS = gql`
   query SettingsNotifications($id: ID!) {
-    mentor(id: $id) {
+    user(id: $id) {
       id
-      notificationPrefs {
-        receiveEmails
-        slotReminder
+      ... on Person {
+        notificationPrefs {
+          receiveEmails
+        }
+      }
+      ... on Mentor {
+        notificationPrefs {
+          receiveEmails
+          slotReminder
+        }
       }
     }
   }
@@ -109,24 +116,26 @@ export const SETTINGS_NOTIFICATIONS = gql`
 
 export const SETTINGS_CALENDAR = gql`
   query SettingsCalendar($id: ID!) {
-    mentor(id: $id) {
+    user(id: $id) {
       id
-      calendarConnected
       email
-      slots(includeBooked: true) {
-        id
-        start
-        end
-      }
-      calendars {
-        id
-        name
-        color
-      }
-      google {
-        connected
-        email
-        canDisconnect
+      ... on Mentor {
+        calendarConnected
+        slots(includeBooked: true) {
+          id
+          start
+          end
+        }
+        calendars {
+          id
+          name
+          color
+        }
+        google {
+          connected
+          email
+          canDisconnect
+        }
       }
     }
   }
@@ -134,12 +143,14 @@ export const SETTINGS_CALENDAR = gql`
 
 export const SLOTS = gql`
   query GetMentorSlots($id: ID!) {
-    mentor(id: $id) {
+    user(id: $id) {
       id
-      slots {
-        id
-        start
-        end
+      ... on Mentor {
+        slots {
+          id
+          start
+          end
+        }
       }
     }
   }
