@@ -125,8 +125,8 @@ export default function CalendarTab() {
       >
         {user.calendarConnected ? (
           <Text>
-            <Text underlined>{user.email}</Text> is connected to your Upframe
-            account
+            <Text underlined>{user.google?.email}</Text> is connected to your
+            Upframe account
           </Text>
         ) : (
           'Connect your calendar to check your availability before adding free slots and see new events directly in your google calendar.'

@@ -123,6 +123,11 @@ export const SETTINGS_CALENDAR = gql`
         name
         color
       }
+      google {
+        connected
+        email
+        canDisconnect
+      }
     }
   }
 `
