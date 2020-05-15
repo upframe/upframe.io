@@ -1,7 +1,7 @@
 import React, { Suspense, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { Navbar, Spinner, NotificationStack } from './components'
+import { Navbar, Spinner, NotificationStack, ScrollToTop } from './components'
 import Routes from './Routes'
 import Context from './context'
 import styles from './styles/app.module.scss'
@@ -62,6 +62,7 @@ export default function App() {
           <div className={styles.app}>
             <Navbar />
             <Suspense fallback={<Spinner centered />}>
+              <ScrollToTop />
               <Routes />
             </Suspense>
             <NotificationStack />
