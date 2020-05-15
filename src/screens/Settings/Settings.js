@@ -38,14 +38,14 @@ export default function Settings() {
               <>
                 <Route path="/settings/invite" component={Invite} />
                 <Route path="/settings/calendar" component={CalendarTab} />
-                <Redirect exact from="/settings/sync" to="/settings/calendar" />
-                <Redirect
-                  exact
-                  from="/settings/mycalendar"
-                  to="/settings/calendar"
-                />
               </>
             )}
+            <Redirect exact from="/settings/sync" to="/settings/calendar" />
+            <Redirect
+              exact
+              from="/settings/mycalendar"
+              to="/settings/calendar"
+            />
 
             <Redirect exact from="/settings" to="/settings/public" />
             <Route>
