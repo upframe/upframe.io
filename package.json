@@ -22,7 +22,7 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "@apollo/client": "^3.0.0-beta.48",
+    "@apollo/client": "3.0.0-beta.30",
     "@sentry/browser": "^5.15.5",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-link": "^1.2.13",
