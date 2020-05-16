@@ -1,26 +1,77 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useReducer } from 'react'
 import styled from 'styled-components'
+import { useSpring, animated, config } from 'react-spring'
 
 let animFrame = 0
 let lastAnimFrame = performance.now()
+let theme = false
+
+const cot = n => 1 / Math.tan(n)
+
 function render(canvas, vp, ctx, obstacles, player, running = true) {
   vp.h = (canvas.height / canvas.width) * 50
   ctx.lineWidth = devicePixelRatio * 2
+  ctx.strokeStyle = canvas.style.color
+  ctx.fillStyle = '#ff004b44'
 
   ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+  ctx.beginPath()
   ctx.moveTo(0, vp.transformY(0))
-  ctx.lineTo(canvas.width, vp.transformY(0))
+  ctx.lineTo(vp.transformX(obstacles[0].x), vp.transformY(0))
   ctx.stroke()
-  obstacles.forEach(rect => {
+
+  const floor = vp.transformY(0)
+  const obstY = vp.transformY(1.5)
+
+  const sun = theme
+    ? 0
+    : Math.max(0.05, Math.min(0.95, (player.x % 1000) / 1000)) * Math.PI
+  let shadow = theme ? 0 : Math.abs(obstacles[0].h * cot(sun))
+  if (!theme && sun / Math.PI <= 0.5) shadow *= -1
+
+  for (let i = 0; i < obstacles.length; i++) {
+    const left = vp.transformX(obstacles[i].x)
+    const right = vp.transformX(obstacles[i].x + obstacles[i].w)
+
+    if (!theme) {
+      ctx.beginPath()
+      ctx.lineWidth = 0
+      if (shadow < 0) {
+        ctx.moveTo(left, obstY)
+        ctx.lineTo(vp.transformX(obstacles[i].x + shadow), floor)
+        ctx.lineTo(left, floor)
+      } else {
+        ctx.moveTo(right, obstY)
+        ctx.lineTo(
+          vp.transformX(obstacles[i].x + obstacles[i].w + shadow),
+          floor
+        )
+        ctx.lineTo(right, floor)
+      }
+      ctx.fill()
+      ctx.lineWidth = devicePixelRatio * 2
+    }
+
+    if (left >= canvas.width) break
+
     ctx.beginPath()
-    ctx.rect(
-      vp.transformX(rect.x),
-      vp.transformY(rect.y),
-      vp.transformW(rect.w),
-      vp.transformH(rect.h)
-    )
+    ctx.moveTo(left, floor)
+    ctx.lineTo(left, obstY)
+    ctx.lineTo(right, obstY)
+    ctx.lineTo(right, floor)
+    ctx.lineWidth = devicePixelRatio * 2 * 3
     ctx.stroke()
-  })
+
+    if (i < obstacles.length - 1)
+      ctx.lineTo(
+        vp.transformX(obstacles[i + 1].x),
+        vp.transformY(obstacles[i + 1].y)
+      )
+    ctx.lineWidth = devicePixelRatio * 2
+    ctx.stroke()
+  }
+
   const transform = new DOMMatrix()
     .translate(vp.transformX(player.x - 0.5), vp.transformY(player.y + 1.8))
     .scale((((1 / vp.h) * canvas.height) / 1000) * 1.5)
@@ -45,6 +96,20 @@ export default function NotFound() {
   const canvasRef = useRef()
   const [started, setStarted] = useState(false)
   const progRef = useRef()
+  const [_theme, toggleTheme] = useReducer(v => (theme = !v), theme)
+
+  const color = useSpring({
+    backgroundColor: _theme ? '#000' : '#fff',
+    '--color': _theme ? '#000' : '#fff',
+    '--op': _theme ? 1 : 0,
+    color: _theme ? '#ff004b' : '#000000',
+    config: config.molasses,
+  })
+
+  useEffect(() => {
+    document.querySelector('header').style.backgroundColor = 'transparent'
+    return () => (document.querySelector('header').style.backgroundColor = '')
+  }, [])
 
   useEffect(() => {
     if (started) return
@@ -133,7 +198,10 @@ export default function NotFound() {
 
       progRef.current.textContent = Math.round(player.x)
 
-      while (obstacles[0].x + obstacles[0].w <= vp.x) obstacles.shift()
+      if (!(((player.x / 1000) | 0) % 2) === theme) toggleTheme()
+
+      while (obstacles[0].x + obstacles[0].w <= vp.x - vp.w / 3)
+        obstacles.shift()
       generateObstacles()
     }
 
@@ -179,10 +247,14 @@ export default function NotFound() {
         <h1>404</h1>
       </S.NotFound>
     )
+
   return (
     <>
-      <S.Canvas ref={canvasRef} />
-      <S.Progress ref={progRef}></S.Progress>
+      <S.BackgroundWrap style={color}>
+        <S.Background />
+      </S.BackgroundWrap>
+      <S.Canvas ref={canvasRef} style={color} />
+      <S.Progress ref={progRef} style={color}></S.Progress>
     </>
   )
 }
@@ -207,14 +279,87 @@ const swan = {
 }
 
 const S = {
-  Canvas: styled.canvas`
+  Canvas: styled(animated.canvas)`
     position: absolute;
     top: 5rem;
     width: 100vw;
     height: calc(100vh - 5rem);
+    background-color: transparent !important;
   `,
 
-  Progress: styled.pre`
+  BackgroundWrap: styled(animated.div)`
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: block;
+    overflow: hidden;
+    z-index: -1;
+    opacity: var(--op);
+
+    --color: red;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 80vh;
+      width: 100%;
+      height: 20vh;
+      background-color: inherit;
+    }
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 60vh;
+      width: 100%;
+      height: 20vh;
+      z-index: 1000;
+      background: linear-gradient(transparent, var(--color));
+    }
+  `,
+
+  Background: styled.div`
+    position: absolute;
+
+    --size: 400vmax;
+
+    width: var(--size);
+    height: var(--size);
+    top: calc(200vh - var(--size) / 2);
+    left: calc(50vw - var(--size) / 2);
+    display: block;
+    pointer-events: none;
+    /* stylelint-disable */
+    background: radial-gradient(#fffa 0.5px, transparent 1px),
+      radial-gradient(#fffa 0.5px, transparent 2px),
+      radial-gradient(#fffd 1px, transparent 2px);
+    background-size: 10rem 10rem;
+    background-position: 0 0, 3.5rem 1.5rem, 7rem 5rem;
+    /* stylelint-enable */
+
+    animation-duration: 300s;
+    animation-name: cycle;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+
+    @keyframes cycle {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+  `,
+
+  Progress: styled(animated.pre)`
     position: absolute;
     right: 8vmin;
     top: 8vmin;
