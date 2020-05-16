@@ -8,7 +8,7 @@ import Notifications from './Notifications'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import styles from './Settings.module.scss'
 import { useMe } from 'utils/hooks'
-import { Spinner } from '../../components'
+import { Spinner, MentorRoute } from '../../components'
 import Invite from './Invite'
 
 export default function Settings() {
@@ -34,19 +34,14 @@ export default function Settings() {
             <Route path="/settings/public" component={Profile} />
             <Route path="/settings/account" component={Account} />
             <Route path="/settings/notifications" component={Notifications} />
-            {me?.role !== 'USER' && (
-              <>
-                <Route path="/settings/invite" component={Invite} />
-                <Route path="/settings/calendar" component={CalendarTab} />
-              </>
-            )}
+            <MentorRoute path="/settings/invite" component={Invite} />
+            <MentorRoute path="/settings/calendar" component={CalendarTab} />
             <Redirect exact from="/settings/sync" to="/settings/calendar" />
             <Redirect
               exact
               from="/settings/mycalendar"
               to="/settings/calendar"
             />
-
             <Redirect exact from="/settings" to="/settings/public" />
             <Route>
               <Redirect to="/404" />
