@@ -23,8 +23,10 @@ export const SET_PROFILE_VISIBILITY = gql`
   mutation SetProfileVisibility($visibility: Visibility!) {
     setProfileVisibility(visibility: $visibility) {
       id
-      visibility
       searchable
+      ... on Mentor {
+        visibility
+      }
     }
   }
 `
@@ -91,9 +93,16 @@ export const UPDATE_NOTIICATION_PREFERENCES = gql`
   mutation UpdateNotificationSettings($diff: NotificationSettingsInput!) {
     updateNotificationPreferences(input: $diff) {
       ...PersonBase
-      notificationPrefs {
-        receiveEmails
-        slotReminder
+      ... on User {
+        notificationPrefs {
+          receiveEmails
+        }
+      }
+      ... on Mentor {
+        notificationPrefs {
+          receiveEmails
+          slotReminder
+        }
       }
     }
   }
@@ -104,9 +113,12 @@ export const UPDATE_SLOTS = gql`
   mutation UpdateSlots($added: [SlotInput!], $deleted: [ID!]) {
     updateSlots(slots: { added: $added, deleted: $deleted }) {
       id
-      slots(includeBooked: true) {
-        id
-        start
+      ... on Mentor {
+        slots(includeBooked: true) {
+          id
+          start
+          end
+        }
       }
     }
   }
@@ -153,11 +165,13 @@ export const CONNECT_CALENDAR = gql`
   mutation ConnectCalendar($code: ID!, $redirect: String!) {
     connectCalendar(code: $code, redirect: $redirect) {
       id
-      calendarConnected
-      calendars {
-        id
-        name
-        color
+      ... on Mentor {
+        calendarConnected
+        calendars {
+          id
+          name
+          color
+        }
       }
     }
   }
@@ -167,7 +181,9 @@ export const DISCONNECT_CALENDAR = gql`
   mutation DisconnectCalendar {
     disconnectCalendar {
       id
-      calendarConnected
+      ... on Mentor {
+        calendarConnected
+      }
     }
   }
 `

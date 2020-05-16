@@ -236,7 +236,7 @@ const S = {
 
   Search: styled.div`
     width: 100%;
-    border-radius: var(--border-radius);
+    border-radius: 1000px;
     overflow: hidden;
     display: flex;
     align-items: center;
