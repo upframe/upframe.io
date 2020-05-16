@@ -241,6 +241,7 @@ const S = {
     display: flex;
     align-items: center;
     background-color: #f1f3f4;
+    transition: background-color 0.25s ease;
 
     &:focus,
     &:hover {
