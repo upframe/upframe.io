@@ -12,14 +12,11 @@
     color: var(--cl-text-light);
   }
 
-  &:focus {
-    outline: none;
-  }
-
   transition: background-color 0.25s ease;
 
   &:focus,
   &:hover {
+    outline: none;
     background-color: rgba(0, 0, 0, 0.08);
   }
 }

@@ -236,26 +236,36 @@ const S = {
 
   Search: styled.div`
     width: 100%;
-    border-radius: 1000rem;
+    border-radius: var(--border-radius);
     overflow: hidden;
     display: flex;
     align-items: center;
     background-color: #f1f3f4;
 
+    &:focus,
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+
     svg {
       margin-right: 1rem;
     }
 
-    input {
-      margin-left: 0.5rem;
+    & > div {
+      background-color: transparent;
 
-      &:focus,
-      &:hover {
-        background-color: #f1f3f4;
-      }
+      input {
+        margin-left: 0.5rem;
+        background-color: transparent;
 
-      &::placeholder {
-        color: var(--cl-text-medium);
+        &:focus,
+        &:hover {
+          background-color: transparent;
+        }
+
+        &::placeholder {
+          color: var(--cl-text-medium);
+        }
       }
     }
   `,
