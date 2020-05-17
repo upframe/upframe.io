@@ -52,6 +52,7 @@ export default function SearchBar() {
     variables: {
       term: inputFinal.trim().replace(/\s{2,}/g, ' '),
       withTags: searchTags.map(({ id }) => id),
+      focus,
     },
   })
 

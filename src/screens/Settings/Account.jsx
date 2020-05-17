@@ -6,7 +6,7 @@ import styles from './account.module.scss'
 import { useMe } from 'utils/hooks'
 import { gql, mutations, useQuery, useMutation } from 'gql'
 import { classes } from 'utils/css'
-import { hasError } from 'api'
+import apollo, { hasError } from 'api'
 import { notify } from 'notification'
 
 const GOOGLE_CONNECTED = gql`
@@ -39,7 +39,14 @@ export default function Account() {
     mutations.SET_PROFILE_VISIBILITY
   )
   const [setSearchability, { loading: searchableLoading }] = useMutation(
-    mutations.SET_PROFILE_SEARCHABILITY
+    mutations.SET_PROFILE_SEARCHABILITY,
+    {
+      onCompleted() {
+        Object.keys(apollo.cache.data.data).forEach(k => {
+          if (k.includes('search')) delete apollo.cache.data.delete(k)
+        })
+      },
+    }
   )
   const [disconnectGoogle] = useMutation(mutations.DISCONNECT_GOOGLE, {
     onCompleted() {
