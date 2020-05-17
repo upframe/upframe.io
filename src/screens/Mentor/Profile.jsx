@@ -6,6 +6,7 @@ import Showcase from './Showcase'
 import Meetup from './Meetup'
 import Request from './Request'
 import { useQuery, queries, hasError } from 'gql'
+import { Helmet } from 'react-helmet'
 
 const recommend = {
   malik: ['pf', 'hugo.franca'],
@@ -33,6 +34,33 @@ export default function Profile({ match }) {
   if (loading) return <Spinner centered />
   return (
     <main className={styles.profile}>
+      <Helmet>
+        <title>{user.name} | Upframe</title>
+        <meta
+          property="og:url"
+          content={`${window.location.origin}/${user.handle}`}
+        ></meta>
+        <meta property="og:title" content={`${user.name} | Upframe`}></meta>
+        <meta
+          property="og:description"
+          content={`Set up a meetup with ${user.name}. ${user.biography.substr(
+            0,
+            128
+          )}...`}
+        ></meta>
+        <meta
+          property="og:image"
+          content={
+            user.profilePictures?.find(
+              ({ size, type }) =>
+                size ===
+                  Math.max(...user.profilePictures.map(({ size }) => size)) &&
+                type === 'jpeg'
+            )?.url
+          }
+        ></meta>
+        <meta name="twitter:card" content="summary_large_image"></meta>
+      </Helmet>
       <Breadcrumbs name={user.name} />
       <Showcase user={user} />
       {user.role !== 'USER' && (
