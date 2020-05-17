@@ -17,7 +17,7 @@ const TAG_SEARCH = gql`
   }
 `
 
-export default function TagSelect({ selection, onChange }) {
+export default function TagSelect({ selection, onChange, placeholder }) {
   const [input, setInput] = useState('')
   const [selected, setSelected] = useState()
   const [newSelected, setNewSelected] = useState(false)
@@ -126,6 +126,7 @@ export default function TagSelect({ selection, onChange }) {
         highlight={toDelete}
         onKeyDown={handleKey}
         onTagClick={id => onChange(selection.filter(tag => tag.id !== id))}
+        {...(selection.length === 0 && { placeholder })}
       />
       {input.length > 0 && (
         <S.List ref={listRef}>

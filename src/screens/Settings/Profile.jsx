@@ -145,6 +145,7 @@ export default function Profile() {
     hint,
     inputType,
     span1 = false,
+    ...props
   }) => {
     field = field || label.toLowerCase()
     const value = user[field]
@@ -160,6 +161,7 @@ export default function Profile() {
         error={invalid.includes(field)}
         {...(!span1 && { className: styles.span2 })}
         key={label}
+        {...props}
       />
     )
   }
@@ -225,6 +227,8 @@ export default function Profile() {
         field: 'biography',
         type: 'text',
         hint: 'URLs are hyperlinked',
+        placeholder:
+          'Help people understand how you can help them by describing what you built or achieved.',
       })}
       {user.role !== 'USER' && (
         <>
@@ -244,6 +248,7 @@ export default function Profile() {
                 setTags(v)
                 handleChange('tags', v)
               }}
+              placeholder="Add up to 6 skills to display in your profile"
             />
           </div>
         </>

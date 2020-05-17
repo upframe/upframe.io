@@ -192,6 +192,7 @@ export default function Step2({
         text={biography}
         onChange={setBiography}
         required
+        placeholder="Help people understand how you can help them by describing what you built or achieved."
       />
       <Button
         accent
