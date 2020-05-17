@@ -139,35 +139,31 @@ export default function Account() {
         irreversible, please proceed with caution.
       </Text>
       <Button onClick={() => setDeleteRequested(true)}>Delete Account</Button>
+      <Title s2 className={styles.span2}>
+        Privacy
+      </Title>
       {me.role && me.role !== 'USER' && (
-        <>
-          <Title s2 className={styles.span2}>
-            Privacy
-          </Title>
-          <div className={classes(styles.privacyCheck, styles.span2)}>
-            <Checkbox
-              checked={me.visibility === 'UNLISTED'}
-              onChange={v =>
-                setVisibility({
-                  variables: { visibility: v ? 'UNLISTED' : 'LISTED' },
-                })
-              }
-              loading={loading}
-            />
-            <Text>Hide my profile from the homepage.</Text>
-          </div>
-          <div className={classes(styles.privacyCheck, styles.span2)}>
-            <Checkbox
-              checked={!me.searchable}
-              onChange={v =>
-                setSearchability({ variables: { searchable: !v } })
-              }
-              loading={searchableLoading}
-            />
-            <Text>Hide my profile from search results.</Text>
-          </div>
-        </>
+        <div className={classes(styles.privacyCheck, styles.span2)}>
+          <Checkbox
+            checked={me.visibility === 'UNLISTED'}
+            onChange={v =>
+              setVisibility({
+                variables: { visibility: v ? 'UNLISTED' : 'LISTED' },
+              })
+            }
+            loading={loading}
+          />
+          <Text>Hide my profile from the homepage.</Text>
+        </div>
       )}
+      <div className={classes(styles.privacyCheck, styles.span2)}>
+        <Checkbox
+          checked={!me.searchable}
+          onChange={v => setSearchability({ variables: { searchable: !v } })}
+          loading={searchableLoading}
+        />
+        <Text>Hide my profile from search results.</Text>
+      </div>
       {deleteRequested && (
         <ConfirmDelete onCancel={() => setDeleteRequested(false)} />
       )}

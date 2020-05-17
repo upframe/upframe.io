@@ -76,10 +76,10 @@ export const ME = gql`
       ...PersonBase
       role
       email
+      searchable
       ... on Mentor {
         calendarConnected
         visibility
-        searchable
       }
     }
   }
