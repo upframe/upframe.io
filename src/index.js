@@ -1,11 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import './styles/master.scss'
 import './styles/variables.css'
-import './index.css'
 import App from './App'
+import { ApolloProvider } from '@apollo/client'
+import client from './api'
+import * as Sentry from '@sentry/browser'
 
-import mixpanel from 'mixpanel-browser'
+if (process.env.NODE_ENV !== 'development')
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_DSN,
+  })
 
-mixpanel.init('993a3d7a78434079b7a9bec245dbaec2')
-
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById('root')
+)

@@ -1,17 +1,7 @@
-.account {
-  & > h2:first-child {
-    margin-top: 0;
-  }
-
-  & > div:first-of-type {
-    margin-bottom: -1.5rem;
-  }
-}
-
 .privacyCheck {
   display: flex;
-  margin-top: 2rem;
   align-items: center;
+  margin-top: 1rem;
 
   * {
     margin-top: 0;
@@ -21,4 +11,52 @@
   p {
     margin-left: 1rem;
   }
+}
+
+.disconnectGoogle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  p {
+    margin: 0;
+    font-size: 90%;
+  }
+
+  button {
+    color: var(--cl-text-medium);
+    padding: 0;
+    margin-right: 0;
+  }
+}
+
+.account {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 1rem 2rem;
+
+  h4 {
+    margin-top: 1rem;
+  }
+
+  h2 {
+    margin-top: 2rem;
+  }
+
+  & > * {
+    margin: 0;
+  }
+
+  & > *:first-child {
+    margin-top: 0;
+  }
+
+  & > button,
+  & > a > button {
+    margin-right: 0;
+  }
+}
+
+.span2 {
+  grid-column: 1 / span 2;
 }

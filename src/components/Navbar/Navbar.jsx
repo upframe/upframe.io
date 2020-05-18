@@ -1,50 +1,37 @@
-import React, { useContext, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useState } from 'react'
 import { Logo, SearchBar, Button } from 'components'
-import Context from '../AppContext'
 import UserIcon from './UserIcon'
 import Dropdown from './Dropdown'
 import { classes } from 'utils/css'
-import { useScrollAtTop } from 'utils/Hooks'
+import { useScrollAtTop, useCtx } from 'utils/hooks'
 import styles from './navbar.module.scss'
 
 export default function Navbar() {
-  const ctx = useContext(Context)
-  const [searchQuery, setSearchQuery] = useState('')
+  const ctx = useCtx()
   const [showDropdown, setShowDropdown] = useState(false)
   const atTop = useScrollAtTop()
-  const history = useHistory()
 
-  function search() {
-    ctx.setSearchQuery(searchQuery)
-    ctx.startSearchQuery(true)
-    if (window.location !== '/') history.push('/')
-  }
-
-  function resetSearch() {
-    ctx.searchQuery = ''
-    ctx.isSearchQuery = false
-    setSearchQuery('')
-  }
-
+  if (
+    window.location.pathname
+      .toLowerCase()
+      .split('/')
+      .filter(Boolean)[0] === 'signup'
+  )
+    return null
   return (
-    <nav className={classes(styles.navbar, { [styles.shadow]: !atTop })}>
-      <Logo home onClick={resetSearch} />
-      <SearchBar
-        searchQuery={searchQuery}
-        onChange={setSearchQuery}
-        onSubmit={search}
-      />
+    <header className={classes(styles.navbar, { [styles.shadow]: !atTop })}>
+      <Logo home />
+      <SearchBar />
       <div className={styles.right}>
-        {ctx.loggedIn && (
+        {ctx.currentUser && (
           <UserIcon
-            user={ctx.user}
+            userId={ctx.currentUser}
             onClick={() => {
               if (!showDropdown) setShowDropdown(true)
             }}
           />
         )}
-        {!ctx.loggedIn && (
+        {!ctx.currentUser && (
           <>
             <Button text linkTo="/login">
               Sign in
@@ -59,9 +46,7 @@ export default function Navbar() {
           </>
         )}
       </div>
-      {showDropdown && (
-        <Dropdown ctx={ctx} onBlur={() => setShowDropdown(false)} />
-      )}
-    </nav>
+      {showDropdown && <Dropdown onBlur={() => setShowDropdown(false)} />}
+    </header>
   )
 }

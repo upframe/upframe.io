@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input, Textbox, Text, Button } from 'components'
 import style from './item.module.scss'
+import { classes } from 'utils/css'
 
 export default function Item({
   label,
@@ -14,39 +15,67 @@ export default function Item({
   onChange,
   required = false,
   error = false,
+  inputType,
+  className,
+  linkTo,
+  action,
+  ...props
 }) {
   const [value, setValue] = useState(input || text)
+
+  useEffect(() => {
+    setValue(input || text)
+  }, [input, text])
 
   function handleChange(v) {
     setValue(v)
     if (onChange) onChange(v)
   }
 
-  const Action =
-    input !== undefined ? Input : text !== undefined ? Textbox : undefined
+  const actionTag =
+    input !== undefined ? 'input' : text !== undefined ? 'textbox' : undefined
+  const Action = { input: Input, textbox: Textbox }[actionTag]
 
   const id = label.replace(/\s/g, '')
   return (
-    <div className={style.item}>
+    <div
+      className={classes(style.item, className)}
+      data-type={error ? 'error' : undefined}
+      data-action={action}
+      data-label={label?.toLowerCase()}
+    >
       <label htmlFor={id}>
         {label}
         {!required ? '' : <span> *</span>}
       </label>
-      {Action && !button && (
-        <Action id={id} value={value} onChange={handleChange} error={error} />
-      )}
+      {action ??
+        (Action && !button && (
+          <Action
+            id={id}
+            value={value}
+            onChange={handleChange}
+            error={error}
+            {...(inputType && { type: inputType })}
+            {...props}
+          />
+        ))}
       {(button || custom) && (
         <div className={style.btWrap}>
           <Text>{children}</Text>
           {button && (
-            <Button onClick={onChange} accent={accent}>
+            <Button
+              {...(linkTo ? { linkTo } : { onClick: onChange })}
+              accent={accent}
+            >
               {button}
             </Button>
           )}
           {custom}
         </div>
       )}
-      {hint && <p className={style.hint}>{hint}</p>}
+      {(hint || typeof hint === 'string') && (
+        <p className={style.hint}>{hint}</p>
+      )}
     </div>
   )
 }

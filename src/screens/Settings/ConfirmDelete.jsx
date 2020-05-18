@@ -1,31 +1,34 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { Title, Text, Input, Button } from 'components'
-import context from 'components/AppContext'
-import Api from 'utils/Api'
-import { useToast } from 'utils/Hooks'
+import { useCtx, useHistory, useMe } from 'utils/hooks'
 import styles from './confirmDelete.module.scss'
+import { notify } from 'notification'
+import { mutations, useMutation } from 'gql'
 
 export default function ConfirmDelete({ onCancel }) {
-  const ctx = useContext(context)
-  const [password, setPassword] = useState('')
-  const showToast = useToast()
+  const { setCurrentUser } = useCtx()
+  const { me } = useMe()
+  const [handle, setHandle] = useState('')
+  const history = useHistory()
 
-  function deleteAccount() {
-    Api.deleteAccount(password)
-      .then(res => {
-        if (res.status !== 200) throw Error('UNAUTHORIZED')
-        showToast('account deleted successfully')
-        setTimeout(() => window.open('/', '_self'), 2000)
+  const [deleteAccount] = useMutation(mutations.DELETE_ACCOUNT, {
+    variables: {
+      handle,
+    },
+    onError({ graphQLErrors }) {
+      graphQLErrors.forEach(err => {
+        if (err.extensions.code !== 'FORBIDDEN') throw err
+        notify(err.message)
       })
-      .catch(err => {
-        showToast(
-          err.message === 'UNAUTHORIZED'
-            ? 'wrong password'
-            : "couldn't delete account"
-        )
-        onCancel()
-      })
-  }
+    },
+    onCompleted() {
+      notify('account deleted')
+      setTimeout(() => {
+        setCurrentUser(null)
+        history.push('/')
+      }, 2000)
+    },
+  })
 
   return (
     <div className={styles.overlay} onClick={onCancel}>
@@ -39,15 +42,20 @@ export default function ConfirmDelete({ onCancel }) {
         <Title s4>Are you sure?</Title>
         <Text strong>
           This action <Text bold>cannot</Text> be undone. Your account{' '}
-          <Text underlined>{ctx.user.email}</Text> will be permanently deleted.
+          <Text underlined>{me.email}</Text> will be permanently deleted.
         </Text>
-        <Text strong>Please enter your password to confirm.</Text>
-        <Input password onChange={setPassword} value={password} />
+        <Text strong>Please enter your username to confirm.</Text>
+        <Input autoComplete="off" onChange={setHandle} value={handle} />
         <div className={styles.btWrap}>
           <Button onClick={onCancel} type="cancel">
             Cancel
           </Button>
-          <Button onClick={deleteAccount} warn type="submit">
+          <Button
+            onClick={deleteAccount}
+            warn
+            type="submit"
+            disabled={me.handle !== handle}
+          >
             Delete Account
           </Button>
         </div>

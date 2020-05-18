@@ -1,37 +1,33 @@
-import MainPopularTags from './MainPopularTags'
-import OnboardingAllDoneTab from './OnboardingAllDoneTab'
-import OnboardingWelcomeTab from './OnboardingWelcomeTab'
-import RecommendationCard from './RecommendationCard/RecommendationCard'
-import ProfilePicture from './ProfilePicture/ProfilePicture'
-import Navbar from './Navbar/Navbar'
-import SearchBar from './MainSearchBar/MainSearchBar'
-import Breadcrumbs from './Breadcrumbs/Breadcrumbs'
-import Button from './Button/Button'
-import Title from './Title/Title'
-import Text from './Text/Text'
-import Input from './Input/Input'
-import Textbox from './Textbox/Textbox'
-import Chip from './Chip/Chip'
-import Checkbox from './Checkbox/Checkbox'
-import SocialIcon from './SocialIcon/SocialIcon'
-import Logo from './Logo/Logo'
-
-export {
-  MainPopularTags,
-  OnboardingAllDoneTab,
-  OnboardingWelcomeTab,
-  RecommendationCard,
-  ProfilePicture,
-  Navbar,
-  Breadcrumbs,
-  SearchBar,
-  Button,
-  Title,
-  Text,
-  Input,
-  Textbox,
-  Chip,
-  Checkbox,
-  SocialIcon,
-  Logo,
-}
+export { default as ProfilePicture } from './ProfilePicture/ProfilePicture'
+export { default as Navbar } from './Navbar/Navbar'
+export { default as Breadcrumbs } from './Breadcrumbs/Breadcrumbs'
+export { default as Button } from './Button/Button'
+export { default as Title } from './Title/Title'
+export { default as Text } from './Text/Text'
+export { default as Input } from './Input/Input'
+export { default as Textbox } from './Textbox/Textbox'
+export { default as Chip } from './Chip/Chip'
+export { default as Checkbox } from './Checkbox/Checkbox'
+export { default as SocialIcon } from './SocialIcon/SocialIcon'
+export { default as Logo } from './Logo/Logo'
+export { default as Shade } from './Shade/Shade'
+export { default as Labeled } from './Labeled/Labeled'
+export { default as Divider } from './Divider/Divider'
+export { default as Icon } from './Icon/Icon'
+export { default as Card } from './Card/Card'
+export { default as Spinner } from './Spinner/Spinner'
+export { default as Toast } from './Toast/Toast'
+export { default as NotificationStack } from './NotificationStack/NotificationStack'
+export { default as Tagselect } from './Tagselect'
+export { default as PhotoCrop } from './PhotoCrop'
+export { default as Modal } from './Modal'
+export { default as Page } from './Page'
+export { default as SearchBar } from './SearchBar'
+export { default as TagInput } from './TagInput'
+export { default as Tagarea } from './Tagarea'
+export { default as GoogleSignin } from './GoogleSignin'
+export { default as Footer } from './Footer'
+export { default as RecommendationCard } from './RecommendationCard'
+export { default as ScrollToTop } from './ScrollToTop'
+export { default as MentorRoute } from './MentorRoute'
+export { Link } from 'react-router-dom'

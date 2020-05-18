@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react'
-import AppContext from 'components/AppContext'
-import { useToast, useGoogleCalendars } from 'utils/Hooks'
-import Api from 'utils/Api'
-import { haveSameContent } from 'utils/Array'
+import React, { useState, useEffect } from 'react'
+import { useCtx, useSignOut, useCalendars, useHistory } from 'utils/hooks'
+import { haveSameContent } from 'utils/array'
 import { Title, Text } from 'components'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
@@ -10,66 +8,121 @@ import Calendar from './Calendar'
 import GoogleSync from './GoogleSync'
 import CalendarList from './CalendarList'
 import styles from './calendarTab.module.scss'
+import { queries, mutations, useQuery, useMutation } from 'gql'
+import { hasError } from 'api'
+import { notify } from 'notification'
 
 export default function CalendarTab() {
-  const [oldSlots, setOldSlots] = useState([])
-  const [slots, setSlots] = useState(oldSlots)
-  const ctx = useContext(AppContext)
-  const gCals = useGoogleCalendars(
-    ctx && ctx.user && ctx.user.googleAccessToken
+  const [remoteSlots, setRemoteSlots] = useState([])
+  const [slots, setSlots] = useState(remoteSlots)
+  const { currentUser } = useCtx()
+  const [showCalendars, setShowCalendars] = useState([])
+  const [calendars, loading] = useCalendars(showCalendars)
+  const [extEvents, setExtEvents] = useState([])
+  const history = useHistory()
+  const signOut = useSignOut()
+
+  const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_CALENDAR, {
+    variables: { id: currentUser },
+    onError(err) {
+      if (hasError(err, 'GOOGLE_ERROR')) {
+        notify("couldn't access google calendar")
+        signOut()
+      }
+    },
+  })
+
+  const [connect, { loading: connecting }] = useMutation(
+    mutations.CONNECT_CALENDAR
   )
-  const [showCals, setShowCals] = useState([])
-  const slotsChanged = !haveSameContent(oldSlots, slots, slotComp)
-  const showToast = useToast()
+
+  const code = new URLSearchParams(window.location.search).get('code')
+  useEffect(() => {
+    if (!code || !history || !connect) return
+    connect({
+      variables: {
+        code,
+        redirect: window.location.origin + window.location.pathname,
+      },
+    })
+    history.replace(window.location.pathname)
+  }, [code, history, connect])
 
   useEffect(() => {
-    async function getSlots() {
-      const now = new Date()
-      let { slots } = await Api.getFreeSlots(
-        now.toDateString(),
-        new Date(now.setMonth(now.getMonth() + 1)).toDateString()
-      )
-      slots = (slots || []).map(({ start, end, sid: id }) => ({
-        id,
+    if (!Array.isArray(user.slots)) return
+    setRemoteSlots(
+      user.slots.map(({ start, end, id }) => ({
         start: new Date(start),
         end: new Date(end),
+        id,
       }))
-      setOldSlots(slots)
-      setSlots(slots)
-    }
-    getSlots()
-  }, [])
+    )
+  }, [user.slots])
+
+  useEffect(() => {
+    setSlots(remoteSlots)
+  }, [remoteSlots])
+
+  useEffect(() => {
+    setExtEvents(
+      calendars.flatMap(({ events, id }) =>
+        events.map(({ start, end, name }) => ({
+          start: new Date(start),
+          end: new Date(end),
+          title: name,
+          external: true,
+          color: (user.calendars || []).find(cal => cal.id === id).color,
+        }))
+      )
+    )
+  }, [calendars, user.calendars])
+
+  const slotsChanged = !haveSameContent(remoteSlots, slots, slotComp)
+
+  const [updateSlots] = useMutation(mutations.UPDATE_SLOTS)
 
   async function saveChanges() {
-    if (haveSameContent(oldSlots, slots)) return
-    const added = slots.filter(slot => !oldSlots.find(slotCompTo(slot)))
-    const deleted = oldSlots.filter(slot => !slots.find(slotCompTo(slot)))
-    const { ok } = await Api.addFreeSlots(added, deleted)
-    if (ok) setOldSlots(slots)
-    else showToast('something went wrong')
+    if (haveSameContent(remoteSlots, slots)) return
+    updateSlots({
+      variables: {
+        added: slots
+          .filter(slot => !remoteSlots.find(slotCompTo(slot)))
+          .map(({ start }) => ({ start })),
+        deleted: remoteSlots
+          .filter(slot => !slots.find(slotCompTo(slot)))
+          .map(({ id }) => id),
+      },
+    })
   }
 
   return (
     <div className={styles.calendarTab}>
-      <CalendarList gCals={gCals} onChange={setShowCals} />
+      <CalendarList
+        user={user}
+        onChange={setShowCalendars}
+        loading={loading}
+        connecting={connecting}
+      />
       <Calendar
         slots={slots}
         onAddSlot={slot => setSlots([...slots, slot])}
         onDeleteSlot={deleted =>
           setSlots(slots.filter(slot => slot !== deleted))
         }
-        gCals={gCals.filter(({ summary }) => showCals.includes(summary))}
-        gToken={ctx && ctx.user && ctx.user.googleAccessToken}
+        external={extEvents}
       />
       <Title s2>Calendar Connections</Title>
       <Text>
         Spend less time here and focus on what really matters by syncing your
         calendar with Upframe.
       </Text>
-      <Item label="Google Calendar" custom={<GoogleSync />}>
-        {ctx.user.googleAccessToken ? (
+      <Item
+        label="Google Calendar"
+        custom={<GoogleSync loading={connecting} />}
+      >
+        {user.calendarConnected ? (
           <Text>
-            <Text underlined>{ctx.user.email}</Text> is connected to your
+            <Text underlined>{user.google?.email}</Text> is connected to your
             Upframe account
           </Text>
         ) : (

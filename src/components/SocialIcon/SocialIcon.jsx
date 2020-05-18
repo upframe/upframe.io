@@ -42,7 +42,7 @@ export default function SocialIcon({ link, ...props }) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={styles.socialIcon}
+      className={styles.icon}
     >
       <img src={platforms[name].icon} alt={name} />
     </a>

@@ -1,35 +1,36 @@
-[![Build Status](https://travis-ci.com/upframe/connect.svg?branch=master)](https://travis-ci.com/upframe/connect)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5b6e96c455814101aa74c017ee1b173f)](https://www.codacy.com/app/Upframe/connect?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=upframe/connect&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.com/upframe/upframe.io.svg?branch=staging)](https://travis-ci.com/upframe/upframe.io)
 
-# 🦄 Connect
+# 🦄 Upframe
 
-Our mission at Upframe involves bringing students and mentors together in a whole new way. We want to revolutionize the way an entrepreneurial individual can contact more experienced peers and unlock the full potential of mentorship. For this reason we decided to develop **Connect**.
+Our mission at Upframe involves bringing students and mentors together in a whole new way. We want to revolutionize the way an entrepreneurial individual can contact more experienced peers and unlock the full potential of mentorship. For this reason we decided to develop [**Upframe**](https://upframe.io).
 
-# Installation
+# Setup
 
-Quick and easy install thanks to Yarn
+To setup the project locally run
 
-```
-git clone https://github.com/upframe/connect.git
+```sh
+git clone https://github.com/upframe/upframe.io
 cd connect
 yarn install
 ```
 
-After this you have all the front end dependencies ready to rock. Now it's time for the backend. Go to our backend repository and learn how to get it up and running then come back. If you already have a backend instance running you can now set the following environment variables (no " or ' needed):
+You will also need to set up the [API](https://github.com/upframe/graphapi) locally.
 
-**REACT_APP_APIHOST** - 127.0.0.1  
-**REACT_APP_APIPORT** - 80  
-**REACT_APP_APISCHEMA** - http  
+Create a `.env` file in the project's root directory with the content
 
-We use this to make sure our production deployment uses different settings but we can still try everything out locally. We are now ready to run! Fingers crossed and ...
-
-# Running
-
+```sh
+REACT_APP_GRAPHAPI=http://localhost:5000
+SKIP_PREFLIGHT_CHECK=true
+EXTEND_ESLINT=true
 ```
+
+to connect the frontend to your locally running API.
+
+You can now start the frontend by running
+
+```sh
 yarn start
 ```
-
-Your default browser will automatically open a running version of Connect.
 
 # Code Structure
 
@@ -39,7 +40,7 @@ We try to stay in line with most of these rules: [https://github.com/airbnb/java
 
 # Issues
 
-Signaling issues is import for us developers to know what to fix. Here is a brief explanation on what to do when adding issues here.
+Signaling issues is important for us developers to know what to fix. Here is a brief explanation on what to do when adding issues here.
 
 - Short and concise title, use information regarding where the issue is located. Example: "Navbar: distorted picture when logged in".
 
@@ -48,7 +49,7 @@ Signaling issues is import for us developers to know what to fix. Here is a brie
 - If possible, a picture with the issue.
 
 - Label the issue accordingly. All the labels have a small explanation of what they mean.
-  
+
 # License
 
 [GPL © Upframe](../master/LICENSE)

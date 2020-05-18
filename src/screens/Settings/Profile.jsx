@@ -1,143 +1,175 @@
-import React, { useState, useContext, useRef } from 'react'
-import AppContext from 'components/AppContext'
-import { Text, Title, Button, Input, Chip, ProfilePicture } from 'components'
+import React, { useState, useRef, useEffect } from 'react'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
-import { useToast } from 'utils/Hooks'
-import Api from 'utils/Api'
-import { haveSameContent } from 'utils/Array'
+import { useCtx } from 'utils/hooks'
+import { haveSameContent } from 'utils/array'
 import styles from './profile.module.scss'
+import { useQuery, queries, mutations, useMutation } from 'gql'
+import {
+  Text,
+  Title,
+  Button,
+  ProfilePicture,
+  Tagselect,
+  PhotoCrop,
+  Modal,
+} from 'components'
 
 export default function Profile() {
-  const ctx = useContext(AppContext)
-  const ctxUser = {
-    ...ctx.user,
-    tags: JSON.parse(ctx.user.tags || '[]'),
-  }
-  const [user, setUser] = useState(ctxUser)
-  const [skill, setSkill] = useState('')
   const fileInput = useRef(null)
-  const showToast = useToast()
-  const [triedSubmit, setTriedSubmit] = useState(false)
+  const { currentUser } = useCtx()
+  const [diff, setDiff] = useState({})
+  const [invalid, setInvalid] = useState([])
+  const [tags, setTags] = useState([])
+  const [photo, setPhoto] = useState(localStorage.getItem('photo'))
+  const [showRemove, setShowRemove] = useState(false)
 
-  function uploadPhoto(e) {
-    const file = e.currentTarget.files[0]
-    if (file.size > 2 ** 20) return showToast('Please select a smaller file')
-    Api.uploadPhoto(file)
-      .then(({ ok, url }) => {
-        if (ok !== 1) throw Error()
-        ctx.setProfilePic(url)
-      })
-      .catch(() => showToast('Could not update picture'))
+  const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_PROFILE, {
+    variables: { id: currentUser, skip: !currentUser },
+  })
+
+  useEffect(() => {
+    if (Array.isArray(user.tags)) setTags(user.tags)
+  }, [user.tags])
+
+  function editPhoto(e) {
+    const reader = new FileReader()
+    reader.onload = e => setPhoto(e.target.result)
+    reader.readAsDataURL(e.target.files[0])
   }
 
-  function removePhoto() {
-    const profilePic =
-      'https://connect-api-profile-pictures.s3.amazonaws.com/default.png'
-    Api.updateUserInfo({ profilePic }).then(() => ctx.setProfilePic(profilePic))
-  }
+  const required = ['name', 'handle', 'headline', 'biography']
+  const requiredMet = required.every(field => user[field])
 
-  function addSkill(e) {
-    e.preventDefault()
-    if (skill.length === 0) return
-    let tags = user.tags
-    if (tags.length < 6) {
-      tags = Array.from(new Set([...tags.map(({ text }) => text), skill])).map(
-        skill => ({ id: skill, text: skill })
+  const [updateProfile] = useMutation(mutations.UPDATE_PROFILE, {
+    onCompleted() {
+      setInvalid([])
+    },
+    onError({ graphQLErrors }) {
+      if (!graphQLErrors) return
+      setInvalid(
+        graphQLErrors.map(({ extensions }) => extensions.field).filter(Boolean)
       )
-      if (JSON.stringify(tags).length > 255)
-        showToast('Please pick shorter tags')
-      else setUser({ ...user, tags })
-    } else showToast('You already added 6 skills')
-    setSkill('')
-  }
+    },
+  })
 
-  function removeSkill(name) {
-    setUser({
-      ...user,
-      tags: user.tags.filter(({ text }) => text !== name),
+  const [uploadPhoto] = useMutation(mutations.UPLOAD_PROFILE_PICTURE, {
+    onCompleted() {
+      setPhoto()
+    },
+  })
+
+  const [removePhoto] = useMutation(mutations.REMOVE_PROFILE_PICTURE, {
+    onCompleted() {
+      setShowRemove(false)
+    },
+  })
+
+  function update() {
+    updateProfile({
+      variables: {
+        diff: {
+          ...Object.entries(diff).reduce(
+            (a, [k, v]) => ({
+              ...a,
+              ...(!/\d+/.test(k)
+                ? { [k]: v }
+                : {
+                    social: [
+                      ...(a.social || []),
+                      { platform: parseInt(k), handle: v },
+                    ],
+                  }),
+            }),
+            {}
+          ),
+          tags: {
+            addedIds: tags
+              .filter(
+                ({ id }) =>
+                  typeof id !== 'string' &&
+                  !(user.tags || []).find(tag => tag.id === id)
+              )
+              .map(({ id }) => id),
+            removedIds: (user.tags || [])
+              .filter(({ id }) => !tags.find(tag => tag.id === id))
+              .map(({ id }) => id),
+            addedName: tags
+              .filter(({ id }) => typeof id === 'string')
+              .map(({ name }) => name),
+          },
+        },
+      },
     })
   }
 
-  const diff = Object.fromEntries(
-    Object.entries(user).flatMap(([k, v]) =>
-      (Array.isArray(v)
-      ? !haveSameContent(
-          ctxUser[k],
-          v,
-          ({ text: t1 }, { text: t2 }) => t1 === t2
-        )
-      : ctxUser[k] !== v)
-        ? [[k, v]]
-        : []
+  function handleChange(k, v) {
+    if (
+      !v &&
+      (!/\d+/.test(k)
+        ? !user[k]
+        : !user.social.find(({ id }) => id === parseInt(k)))
     )
-  )
-
-  const required = ['name', 'keycode', 'role', 'bio']
-  const requiredMet = required.every(field => user[field])
-
-  function saveChanges() {
-    setTriedSubmit(true)
-    if (!requiredMet) {
-      showToast('please fill in all required fields')
-      return
-    }
-    Api.updateUserInfo(diff)
-      .then(({ ok }) => {
-        if (ok !== 1) throw Error()
-        ctx.saveUserInfo({
-          ...ctx.user,
-          ...Object.fromEntries(
-            Object.entries(diff).map(([k, v]) =>
-              k !== 'tags' ? [k, v] : [k, JSON.stringify(v)]
-            )
-          ),
-        })
-      })
-      .catch(() => showToast('something went wrong'))
+      setDiff(Object.fromEntries(Object.entries(diff).filter(e => e[0] !== k)))
+    else setDiff({ ...diff, [k]: v })
   }
 
-  const setField = field => v => setUser({ ...user, ...{ [field]: v } })
-  const item = ({ label, field, type = 'input', hint, social = false }) => {
-    field = field || label.toLowerCase()
-    if (!hint && social && user[field]) {
-      let urlPredict = user[field]
-        .replace(/^http(s?):\/\//, '')
-        .replace(/\/$/, '')
-        .split('/')
-        .slice(0, -1)
-        .join('/')
-      if (urlPredict.length < 3) urlPredict = false
-      if (social.startsWith(urlPredict))
-        hint = `https://${user[field].replace(/^http(s?):\/\//, '')}`
-      else hint = `https://${social}${user[field]}`
-      hint = (
-        <a href={hint} target="_blank" rel="noopener noreferrer">
-          {hint}
-        </a>
+  useEffect(() => {
+    if (
+      Object.entries(diff).length &&
+      Object.entries(diff).every(([k, v]) =>
+        Array.isArray(v)
+          ? haveSameContent(
+              user.tags,
+              v,
+              (a, b) =>
+                a.id === b.id ||
+                (typeof a === 'string' &&
+                  a.name.toLowerCase() === b.name.toLowerCase())
+            )
+          : /\d+/.test(k)
+          ? (user.social.find(({ id }) => id.toString() === k).handle || '') ===
+            v
+          : user[k] === v
       )
+    ) {
+      setDiff({})
+      setInvalid([])
     }
+  }, [user, diff])
+
+  const item = ({
+    label,
+    field,
+    type = 'input',
+    hint,
+    inputType,
+    span1 = false,
+    ...props
+  }) => {
+    field = field || label.toLowerCase()
+    const value = user[field]
+
     return (
       <Item
         label={label}
         required={required.includes(field)}
-        {...{ [type]: ctx.user[field] || '' }}
-        onChange={setField(field)}
+        {...{ [type]: value || '' }}
+        {...(inputType && { inputType })}
+        onChange={v => handleChange(field, v)}
         hint={hint}
-        error={
-          required.includes(field) &&
-          !user[field] &&
-          Object.keys(diff).length &&
-          triedSubmit
-        }
+        error={invalid.includes(field)}
+        {...(!span1 && { className: styles.span2 })}
+        key={label}
+        {...props}
       />
     )
   }
 
   return (
-    <div>
+    <div className={styles.profile}>
       <div className={styles.head}>
-        <ProfilePicture imgs={ctx.user.profilePic} />
+        <ProfilePicture imgs={user.profilePictures} size="11.125rem" />
         <div>
           <Title s2>Profile Picture</Title>
           <Text>
@@ -152,73 +184,138 @@ export default function Profile() {
             <Button accent onClick={() => fileInput.current.click()}>
               Upload photo
             </Button>
-            <Button onClick={removePhoto}>Remove</Button>
+            {Array.isArray(user.profilePictures) &&
+              !user.profilePictures[0].url.endsWith('default.png') && (
+                <Button onClick={() => setShowRemove(true)}>Remove</Button>
+              )}
           </div>
           <input
             type="file"
             accept="image/*"
             ref={fileInput}
-            onChange={uploadPhoto}
+            onChange={editPhoto}
             hidden
           />
         </div>
       </div>
-      {item({ label: 'Your Name', field: 'name' })}
+      {item({ label: 'Your Name', field: 'name', span1: true })}
+      {item({ label: 'Location', span1: true })}
       {item({
         label: 'Username',
-        field: 'keycode',
+        field: 'handle',
         hint: (
           <span>
             Your personal URL is{' '}
             <a
-              href={`https://upframe.io/${user.keycode}`}
+              href={`https://upframe.io/${user.handle}`}
               target="_blank"
               rel="noopener noreferrer"
             >
-              upframe.io/<b>{user.keycode}</b>
+              upframe.io/<b>{user.handle}</b>
             </a>
           </span>
         ),
       })}
-      {item({ label: 'Location' })}
-      {item({ label: 'Your Position', field: 'role' })}
-      {item({ label: 'Company' })}
-      {item({ label: 'Website' })}
-      {item({ label: 'Biography', field: 'bio', type: 'text' })}
-      <Title s2>Social Profiles</Title>
-      {item({ label: 'Dribbble', social: 'dribbble.com/' })}
-      {item({ label: 'Facebook', social: 'facebook.com/' })}
-      {item({ label: 'Github', social: 'github.com/' })}
-      {item({ label: 'LinkedIn', social: 'linkedin.com/in/' })}
-      {item({ label: 'Twitter', social: 'twitter.com/' })}
-      {Object.keys(diff).length > 0 && (
-        <ChangeBanner onSave={saveChanges} accent={requiredMet} />
+      {user.role !== 'USER' && (
+        <>
+          {item({ label: 'Headline', field: 'headline' })}
+          {item({ label: 'Companies', field: 'company' })}
+        </>
       )}
-      <Title s2>Experience</Title>
-      <Text>
-        Add up to 6 skills to display in your profile. Other people will see
-        them under the section "I can advise you on".
-      </Text>
-      <form className={styles.skillInput} onSubmit={addSkill}>
-        <Input placeholder="add new tag" value={skill} onChange={setSkill} />
-        <Button accent type="submit">
-          Add tag
-        </Button>
-      </form>
-      <div className={styles.skillList}>
-        {user.tags.map(({ id, text }) => (
-          <Chip key={id} onClick={removeSkill}>
-            {text}
-          </Chip>
-        ))}
-      </div>
+      {item({
+        label: 'Biography',
+        field: 'biography',
+        type: 'text',
+        hint: 'URLs are hyperlinked',
+        placeholder:
+          'Help people understand how you can help them by describing what you built or achieved.',
+      })}
+      {user.role !== 'USER' && (
+        <>
+          <Title s2 className={styles.span2}>
+            Experience
+          </Title>
+          <Text className={styles.span2}>
+            What can you advise people on? Add up to 6 skills to display in your
+            profile. The more specific, the better (‘Event Marketing’ is easier
+            to picture than ‘Marketing).
+          </Text>
+
+          <div className={styles.span2}>
+            <Tagselect
+              selection={tags}
+              onChange={v => {
+                setTags(v)
+                handleChange('tags', v)
+              }}
+              placeholder="Add up to 6 skills to display in your profile"
+            />
+          </div>
+        </>
+      )}
+      <Title s2 className={styles.span2}>
+        Other Profiles
+      </Title>
+      {[
+        item({
+          label: 'Personal Website',
+          field: 'website',
+          inputType: 'url',
+          span1: true,
+        }),
+        ...(user.social || []).map(({ id, name, handle, url }) => (
+          <Item
+            key={id}
+            label={name}
+            required={false}
+            input={handle}
+            hint={
+              handle || diff[id] ? (
+                <span>
+                  <b>Preview: </b>
+                  {url + (diff[id] ? diff[id] : handle)}
+                </span>
+              ) : (
+                ''
+              )
+            }
+            onChange={v => handleChange(id, v)}
+          />
+        )),
+      ]}
+      {Object.keys(diff).length > 0 && (
+        <ChangeBanner onSave={update} accent={requiredMet} />
+      )}
       <Button
-        linkTo={`/${user.keycode}`}
+        linkTo={`/${user.handle}`}
         newTab
         className={styles.btViewProfile}
       >
         View Profile
       </Button>
+      {photo && (
+        <PhotoCrop
+          photo={photo}
+          name={user.name}
+          onSave={file => uploadPhoto({ variables: { file } })}
+          onCancel={() => setPhoto()}
+        />
+      )}
+      {showRemove && (
+        <Modal
+          title="Remove profile photo?"
+          text="Are you sure you want to remove your profile photo? We'll replace it with the default Upframe photo."
+          onClose={() => setShowRemove(false)}
+          actions={[
+            <Button key="cancel" onClick={() => setShowRemove(false)}>
+              Cancel
+            </Button>,
+            <Button filled key="remove" onClick={removePhoto}>
+              Remove Photo
+            </Button>,
+          ]}
+        />
+      )}
     </div>
   )
 }

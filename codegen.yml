@@ -1,0 +1,6 @@
+schema: https://dev.graphapi.upframe.io
+overwrite: true
+generates:
+  ./src/_fragmentTypes.json:
+    plugins:
+      - fragment-matcher

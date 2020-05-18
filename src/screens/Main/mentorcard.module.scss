@@ -1,0 +1,91 @@
+.mentorCard {
+  display: flex;
+  padding: 0;
+  height: 13rem;
+  text-decoration: none;
+  overflow: hidden;
+  border: none;
+
+  picture,
+  img {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 700px) {
+    flex-direction: column;
+    height: auto;
+    width: 18rem;
+    margin: 1.5rem auto;
+
+    picture,
+    img {
+      width: 18rem;
+      height: 18rem;
+    }
+  }
+
+  transition: transform 0.125s ease;
+
+  &:hover {
+    transform: scale(1.03);
+    transition: transform 0.25s ease 0s;
+  }
+}
+
+.info {
+  flex-grow: 1;
+  padding: 1rem 2rem;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  p,
+  h3 {
+    color: #000;
+  }
+
+  p {
+    font-size: 15.2px;
+  }
+
+  h3:first-of-type {
+    margin: 0;
+  }
+}
+
+.role {
+  margin-top: -0.25rem;
+}
+
+.biography {
+  margin-top: 0.6rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* stylelint-disable */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  /* stylelint-enable */
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: auto;
+
+  & > * {
+    margin-right: 0.5rem;
+  }
+
+  @media (max-width: 700px) {
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+
+    & > div {
+      margin-bottom: 0.5rem;
+    }
+  }
+}

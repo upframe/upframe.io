@@ -1,14 +1,13 @@
 .navbar {
   position: fixed;
+  top: 0;
   z-index: 1100;
   box-sizing: border-box;
   width: 100vw;
   height: 5rem !important;
-
   display: flex;
   align-items: center;
   padding: 0 2.5vw;
-
   background: var(--cl-background);
   transition: box-shadow 0.25s ease;
 
@@ -19,6 +18,11 @@
   img:first-child {
     margin-left: -0.8rem;
     margin-right: 1rem;
+
+    @media (max-width: 600px) {
+      margin-left: -1.3rem;
+      margin-right: -0.5rem;
+    }
   }
 }
 
@@ -29,8 +33,9 @@
 .right {
   margin-left: auto;
   flex-shrink: 0;
+  padding-left: 1rem;
 
-  button {
+  button:last-of-type {
     margin-right: 0;
     margin-left: 1rem;
   }
@@ -39,6 +44,7 @@
     a:last-of-type {
       display: none !important;
     }
+
     margin-left: 0;
   }
 

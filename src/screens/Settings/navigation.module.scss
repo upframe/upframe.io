@@ -3,6 +3,7 @@
 
 .navigation {
   @include sidenav-layout;
+
   padding-left: 1rem;
   padding-top: 0;
   background-color: var(--cl-background);
@@ -36,6 +37,8 @@
   color: var(--cl-text-light) !important;
   font-size: 1.1rem;
   white-space: nowrap;
+  user-select: none;
+  text-decoration: none;
 
   &:first-child {
     margin-top: 0;

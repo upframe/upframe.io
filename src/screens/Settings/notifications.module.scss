@@ -1,10 +1,10 @@
 .notifications {
-  & > h2:first-child {
-    margin-top: 0;
-  }
-
   & > h2 {
     margin-top: 2rem;
+  }
+
+  & > h2:first-child {
+    margin-top: 0;
   }
 }
 

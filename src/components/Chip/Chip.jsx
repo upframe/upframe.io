@@ -1,12 +1,25 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Text } from 'components'
 import styles from './chip.module.scss'
 
-export default function Chip({ children, onClick }) {
+export default function Chip({
+  children,
+  onClick = () => {},
+  removable = false,
+  highlight,
+  link = !removable,
+}) {
+  const Tag = link ? Link : 'div'
   return (
-    <div className={styles.chip} onClick={() => onClick(children)}>
+    <Tag
+      className={styles.chip}
+      onClick={() => onClick(children)}
+      {...(highlight && { 'data-highlight': true })}
+      {...(link && { to: `/tag/${children}` })}
+    >
       <Text>{children}</Text>
-      <span>×</span>
-    </div>
+      {removable && <span>×</span>}
+    </Tag>
   )
 }

@@ -7,16 +7,112 @@
     }
 
     .rbc-event {
-      border: none !important;
       color: white !important;
+    }
+
+    .rbc-time-content {
+      overscroll-behavior: none;
+    }
+
+    .rbc-time-header-cell {
+      line-height: 50px;
+    }
+
+    .rbc-time-slot {
+      font-family: Poppins, sans-serif;
+      color: #bdbdbd;
+      border-top: none;
+    }
+
+    .rbc-time-gutter .rbc-timeslot-group {
+      border-bottom: none !important;
+    }
+
+    .rbc-time-header-content {
+      font-family: Poppins, sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 16px;
+    }
+
+    .rbc-row.rbc-time-header-cell .span {
+      padding-top: 100px;
+    }
+
+    .rbc-day-slot .rbc-time-slot {
+      border-top: none;
+    }
+
+    .rbc-current-time-indicator {
+      background-color: #ff004b;
+    }
+
+    .rbc-time-view {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .rbc-today {
+      background-color: #fff4f7;
+    }
+
+    .rbc-header {
+      border-bottom: none;
+    }
+
+    .rbc-active {
+      font-weight: bold !important;
+      color: #ff205c !important;
+      background: #fff4f7 !important;
+      border: 1px solid #ddd !important;
+      box-shadow: none !important;
+    }
+
+    .rbc-toolbar-label,
+    .rbc-toolbar,
+    .rbc-btn-group {
+      button {
+        font-family: 'Poppins', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 16px;
+        align-items: center;
+        text-align: center;
+        color: #000;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        border-radius: 5px;
+
+        &:hover,
+        &:focus,
+        &:active {
+          font-weight: bold;
+          color: #ff205c;
+          background: #fff4f7;
+          border: 1px solid #ddd;
+          box-shadow: none;
+        }
+      }
+    }
+
+    .rbc-toolbar button:active:hover {
+      font-weight: bold !important;
+      color: #ff205c !important;
+      background: #fff4f7 !important;
+      border: 1px solid #ddd !important;
+      box-shadow: none !important;
     }
   }
 }
 
 .internalEvent {
   background-color: var(--cl-primary) !important;
+  border: none !important;
 }
 
 .externalEvent {
-  background-color: var(--cl-secondary) !important;
+  background-color: var(--cl-secondary);
+  border: 1px solid #fff !important;
 }

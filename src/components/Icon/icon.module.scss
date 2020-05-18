@@ -1,0 +1,25 @@
+.icon {
+  * {
+    pointer-events: none;
+  }
+}
+
+.color {
+  & > path {
+    fill: var(--cl-text-strong);
+  }
+}
+
+.clickable {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 50%;
+
+  &:hover {
+    path {
+      fill: var(--cl-accent);
+    }
+
+    background-color: #feeef2;
+  }
+}

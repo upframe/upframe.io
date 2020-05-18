@@ -1,6 +1,5 @@
 .checkbox {
-  -moz-appearance: none;
-  -webkit-appearance: none;
+  appearance: none;
   display: inline-block;
   position: relative;
   width: 1.375rem;
@@ -19,4 +18,25 @@
     background-repeat: no-repeat;
     background-size: 60%;
   }
+
+  &:focus {
+    outline: none;
+  }
+
+  &[data-colored] {
+    &:not(:checked) {
+      background-color: initial !important;
+    }
+  }
+}
+
+.spinner {
+  --size: 3rem;
+
+  width: var(--size) !important;
+  height: var(--size) !important;
+
+  --off: calc((var(--size) - 1.375rem) / 2 * -1);
+
+  margin: var(--off) !important;
 }

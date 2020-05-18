@@ -1,0 +1,45 @@
+.landing-component {
+  background: url('/media/landing-bg.svg') no-repeat;
+  background-size: cover;
+  background-color: #1b3371;
+  padding: 50px 7vw 50px 7vw;
+  margin-bottom: 30px;
+  margin-top: -1rem;
+
+  .landing-above {
+    z-index: 2;
+  }
+
+  h1 {
+    color: white;
+    margin: 0;
+    line-height: 50px;
+    font-weight: bold;
+    font-size: 48px;
+  }
+
+  p {
+    color: white;
+    margin: 20px 0 20px 0;
+    line-height: 25px;
+    font-size: 22px;
+  }
+
+  button {
+    background-color: #ff205c;
+    color: white;
+    border-radius: var(--border-radius);
+    border: none;
+    padding: 15px 40px 15px 40px;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 21px;
+    cursor: pointer;
+    outline: none;
+
+    &:hover {
+      transform: scale(1.03);
+      transition: transform ease 0.125s;
+    }
+  }
+}

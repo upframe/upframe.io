@@ -1,10 +1,27 @@
-.item {
-  margin: 2rem 0;
+.hint {
+  font-size: 0.8rem;
+  color: var(--cl-text-medium);
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  height: 0.8rem;
 
+  *[data-type='error'] > & {
+    color: var(--cl-error);
+  }
+
+  p,
+  span,
+  a {
+    display: inline;
+  }
+}
+
+.item {
   label {
     font-size: 1rem;
     font-weight: bold;
     color: var(--cl-text-strong);
+    margin-top: 0;
 
     span {
       color: var(--cl-primary);
@@ -14,18 +31,6 @@
   input,
   textarea {
     width: 100%;
-  }
-}
-
-.hint {
-  font-size: 0.875rem;
-  color: var(--cl-text-medium);
-  margin-top: 0.5rem;
-
-  p,
-  span,
-  a {
-    display: inline;
   }
 }
 

@@ -1,13 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react'
-import AppContext from 'components/AppContext'
+import React, { useState, useEffect } from 'react'
 import { Title, Text, Checkbox } from 'components'
 import GoogleSync from './GoogleSync'
 import { classes } from 'utils/css'
 import styles from './calendarList.module.scss'
 
-export default function CalendarList({ onChange, gCals }) {
-  const ctx = useContext(AppContext)
-  const isSynced = ctx.user && ctx.user.googleAccessToken
+export default function CalendarList({
+  onChange,
+  user,
+  loading = [],
+  connecting = false,
+}) {
   const [selection, setSelection] = useState([])
 
   useEffect(() => {
@@ -19,9 +21,9 @@ export default function CalendarList({ onChange, gCals }) {
     }
   }, [onChange])
 
-  function toggleCalendar(name, v) {
-    if (v === undefined) v = !selection.includes(name)
-    const select = v ? [...selection, name] : selection.filter(n => n !== name)
+  function toggleCalendar(id, v) {
+    if (v === undefined) v = !selection.includes(id)
+    const select = v ? [...selection, id] : selection.filter(n => n !== id)
     localStorage.setItem('calendars', JSON.stringify(select))
     setSelection(select)
     onChange(select)
@@ -30,35 +32,33 @@ export default function CalendarList({ onChange, gCals }) {
   return (
     <div className={styles.wrap}>
       <div
-        className={classes(styles.calendarList, { [styles.synced]: isSynced })}
+        className={classes(styles.calendarList, {
+          [styles.synced]: user.calendarConnected,
+        })}
       >
-        {isSynced && (
+        {user.calendarConnected && (
           <>
             <Title s3>Calendars</Title>
             <div className={styles.list}>
-              {gCals.map(({ summary }, i) => (
-                <div
-                  className={styles.calendarToggle}
-                  key={
-                    summary +
-                    (gCals.findIndex(({ summary: v }) => v === summary) !== i
-                      ? i
-                      : '')
-                  }
-                >
-                  <Checkbox
-                    onChange={v => toggleCalendar(summary, v)}
-                    checked={selection.includes(summary)}
-                  />
-                  <Text small strong>
-                    {summary}
-                  </Text>
-                </div>
-              ))}
+              {(user.calendars || []).map(({ id, name, color }, i) => {
+                return (
+                  <div className={styles.calendarToggle} key={id}>
+                    <Checkbox
+                      onChange={v => toggleCalendar(id, v)}
+                      checked={selection.includes(id)}
+                      color={color}
+                      loading={loading.includes(id)}
+                    />
+                    <Text small strong>
+                      {name}
+                    </Text>
+                  </div>
+                )
+              })}
             </div>
           </>
         )}
-        {!isSynced && (
+        {!user.calendarConnected && (
           <>
             <Title s3>Connect your Google&nbsp;Calendar</Title>
             <Text strong small mark>
@@ -67,7 +67,7 @@ export default function CalendarList({ onChange, gCals }) {
             <Text strong small>
               Check your availability before adding free slots.
             </Text>
-            <GoogleSync />
+            <GoogleSync loading={connecting} />
           </>
         )}
       </div>

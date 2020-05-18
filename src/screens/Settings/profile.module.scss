@@ -1,12 +1,41 @@
 @import 'styles/layout.scss';
 
+.profile {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 2rem;
+  padding-bottom: 2rem;
+
+  & > p {
+    margin: 0;
+  }
+
+  h2 {
+    margin: 0;
+    margin-top: 1rem;
+  }
+}
+
+.skillList {
+  display: flex;
+  margin: 0 -0.5rem;
+  width: 100%;
+  flex-wrap: wrap;
+
+  & > * {
+    margin: 0.5rem 0.5rem;
+  }
+}
+
 .head {
   display: flex;
   justify-content: flex-start;
+  grid-column: 1 / span 2;
+  margin-bottom: 1rem;
 
   img {
     height: 11.125rem;
-    border-radius: 0.3rem;
+    border-radius: var(--border-radius);
   }
 
   & > div {
@@ -26,31 +55,13 @@
   }
 }
 
-.skillInput {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  margin: 2rem 0;
-
-  input {
-    flex-grow: 1;
-    margin-right: 1rem;
-  }
-}
-
-.skillList {
-  display: flex;
-  margin: 0 -0.5rem;
-  width: 100%;
-  flex-wrap: wrap;
-
-  & > * {
-    margin: 0.5rem 0.5rem;
-  }
+.span2 {
+  grid-column: 1 / span 2;
 }
 
 .btViewProfile {
   @include sidenav-layout;
+
   max-width: 10rem;
-  transform: translateX(1rem) translateY(11.2rem);
+  transform: translateX(1rem) translateY(14.2rem);
 }

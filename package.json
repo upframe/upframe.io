@@ -2,35 +2,18 @@
   "name": "connect",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@types/mixpanel-browser": "^2.23.0",
-    "aos": "^2.3.4",
-    "browserslist": "^4.6.3",
-    "caniuse-lite": "^1.0.30000979",
-    "classnames": "^2.2.6",
-    "core-js": "3",
-    "lodash": "^4.17.15",
-    "mixpanel-browser": "^2.26.0",
-    "moment": "^2.24.0",
-    "node-sass": "^4.12.0",
-    "react": "^16.7.0",
-    "react-big-calendar": "^0.20.2",
-    "react-confetti": "^2.3.0",
-    "react-dom": "^16.7.0",
-    "react-easy-crop": "^1.10.0",
-    "react-helmet": "^5.2.1",
-    "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.0",
-    "react-tag-input": "6.2.0",
-    "react-window": "^1.8.5"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "bundle": "bundlesize",
-    "build": "react-scripts build",
+    "start": "npx graphql-codegen && react-scripts start",
+    "build": "npx graphql-codegen && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write \"./**/*.{js,jsx}\""
+    "gql:check": "npx apollo client:check",
+    "format:check": "stylelint 'src/**/*.{css,scss,js,jsx}' && prettier --check \"./**/*.{js,jsx}\"",
+    "format:fix": "prettier --write \"./**/*.{js,jsx}\"",
+    "lint:check": "eslint . --ext .js,.jsx --cache",
+    "lint:fix": "eslint . --ext .js,.tsx --fix --cache",
+    "lint": "yarn lint:check && yarn format:check",
+    "format": "yarn lint:fix && yarn format:fix"
   },
   "browserslist": [
     ">0.2%",
@@ -38,18 +21,54 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "devDependencies": {
-    "bundlesize": "^0.18.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "jest-dom": "^4.0.0",
-    "prettier": "^1.18.2",
-    "react-testing-library": "^8.0.1",
-    "stylelint": "^9.9.0"
+  "dependencies": {
+    "@apollo/client": "3.0.0-beta.30",
+    "@sentry/browser": "^5.15.5",
+    "apollo-cache-inmemory": "^1.6.5",
+    "apollo-link": "^1.2.13",
+    "apollo-link-error": "^1.1.12",
+    "apollo-link-http": "^1.5.16",
+    "fuse.js": "^5.0.7-beta",
+    "graphql": "^14.6.0",
+    "graphql-tag": "^2.10.3",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "react": "^16.7.0",
+    "react-big-calendar": "^0.20.2",
+    "react-dom": "^16.7.0",
+    "react-helmet": "^5.2.1",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "3.4.1",
+    "react-spring": "^8.0.27",
+    "styled-components": "^5.0.1"
   },
-  "bundlesize": [
-    {
-      "path": "./build/static/js/*.js",
-      "maxSize": "1 MB"
-    }
-  ]
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.12.2",
+    "@graphql-codegen/fragment-matcher": "^1.12.2",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
+    "babel-eslint": "^10.1.0",
+    "browserslist": "^4.12.0",
+    "caniuse-lite": "^1.0.30001054",
+    "eslint": "^7.0.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-react-app": "^5.2.1",
+    "eslint-plugin-flowtype": "^4.7.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "husky": "^4.2.5",
+    "node-sass": "^4.14.1",
+    "prettier": "^1.18.2",
+    "puppeteer": "^3.0.2",
+    "stylelint": "^13.3.3",
+    "stylelint-config-css-modules": "^2.2.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
+    "stylelint-processor-styled-components": "^1.10.0",
+    "stylelint-scss": "^3.17.2",
+    "typescript": "^3.8.3"
+  }
 }
