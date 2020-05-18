@@ -11,13 +11,11 @@ const S = {
     margin: initial;
     margin-left: 15vw;
     min-height: 100vh;
+    box-sizing: border-box;
+    max-width: 95%;
 
     @media (max-width: 1020px) {
       margin: auto;
-    }
-
-    @media (max-width: 720px) {
-      max-width: 95%;
     }
 
     p {
