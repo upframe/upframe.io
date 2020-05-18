@@ -18,6 +18,11 @@
   img:first-child {
     margin-left: -0.8rem;
     margin-right: 1rem;
+
+    @media (max-width: 600px) {
+      margin-left: -1.3rem;
+      margin-right: -0.5rem;
+    }
   }
 }
 
@@ -28,8 +33,9 @@
 .right {
   margin-left: auto;
   flex-shrink: 0;
+  padding-left: 1rem;
 
-  button {
+  button:last-of-type {
     margin-right: 0;
     margin-left: 1rem;
   }

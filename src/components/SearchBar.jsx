@@ -253,6 +253,10 @@ const S = {
       margin-right: 1rem;
     }
 
+    input {
+      width: 0;
+    }
+
     & > div {
       background-color: transparent;
 
