@@ -47,7 +47,7 @@ export default function Main() {
           </>
         )}
 
-        <MentorList mentors={filtered} />
+        {mentors.length > 0 && <MentorList mentors={filtered} />}
       </Home>
       <Footer />
     </>

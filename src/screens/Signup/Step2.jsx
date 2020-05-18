@@ -1,15 +1,16 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
+import Item from '../Settings/Item'
+import { gql, queries, fragments, useQuery, useMutation } from 'gql'
+import { useDebouncedInputCall, useSignIn } from 'utils/hooks'
 import {
   Button,
   Text,
   ProfilePicture,
   Title,
   PhotoCrop,
+  Tagselect,
 } from '../../components'
-import Item from '../Settings/Item'
-import { gql, queries, fragments, useQuery, useMutation } from 'gql'
-import { useDebouncedInputCall, useSignIn } from 'utils/hooks'
 
 const COMPLETE_SIGNUP = gql`
   mutation CompleteSignUp(
@@ -20,6 +21,7 @@ const COMPLETE_SIGNUP = gql`
     $location: String
     $headline: String
     $photo: String
+    $tags: [String]
   ) {
     completeSignup(
       token: $token
@@ -29,6 +31,7 @@ const COMPLETE_SIGNUP = gql`
       location: $location
       headline: $headline
       photo: $photo
+      tags: $tags
     ) {
       ...PersonBase
       ... on Mentor {
@@ -51,6 +54,7 @@ export default function Step2({
   const [photo, setPhoto] = useState(picture?.url ?? defaultPicture?.url)
   const [rawPhoto, setRawPhoto] = useState()
   const [cstHandle, setCstHandle] = useState(false)
+  const [tags, setTags] = useState([])
   const checkData = useDebouncedInputCall({
     name,
     handle,
@@ -73,6 +77,7 @@ export default function Step2({
       location,
       headline,
       ...(photo !== defaultPicture?.url && { photo }),
+      tags: tags.map(({ name }) => name),
     },
     onCompleted({ completeSignup: user }) {
       signIn(user)
@@ -194,6 +199,21 @@ export default function Step2({
         required
         placeholder="Help people understand how you can help them by describing what you built or achieved."
       />
+      {role === 'MENTOR' && (
+        <>
+          <Title s2>Experience</Title>
+          <Text>
+            What can you advise people on? Add up to 6 skills to display in your
+            profile. The more specific, the better ('Event Marketing' is easier
+            to picture than 'Marketing').
+          </Text>
+          <Tagselect
+            selection={tags}
+            onChange={setTags}
+            placeholder="Add up to 6 skills to display in your profile"
+          />
+        </>
+      )}
       <Button
         accent
         type="submit"
@@ -240,13 +260,24 @@ const S = {
     & > button {
       grid-column: 2;
       margin: 0;
+      margin: 3rem 0;
     }
 
     *[data-action='textbox'],
     *[data-label='location'],
     *[data-label='headline'],
-    *[data-label='biography'] {
+    *[data-label='biography'],
+    & > div:last-of-type,
+    & > p {
       grid-column: 1 / span 2;
+    }
+
+    & > h2 {
+      margin-bottom: 0;
+    }
+
+    & > p {
+      margin-top: 0;
     }
   `,
 

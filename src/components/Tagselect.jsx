@@ -169,6 +169,7 @@ export default function TagSelect({ selection, onChange, placeholder }) {
 const S = {
   Wrap: styled.div`
     position: relative;
+    z-index: 1000;
   `,
 
   List: styled.ul`
@@ -177,11 +178,11 @@ const S = {
     width: 100%;
     margin: 0;
     margin-top: 0.5rem;
-    background: #fff;
     box-shadow: 0 1px 6px #0004;
     border-radius: var(--border-radius);
     list-style: none;
     padding: 0;
+    background-color: #fff;
 
     --item-height: 2.8rem;
 
