@@ -153,7 +153,9 @@ export default function SearchBar() {
           onTagClick={id =>
             setSearchTags(searchTags.filter(tag => tag.id !== id))
           }
-          placeholder="What are you looking for?"
+          {...(searchTags.length === 0 && {
+            placeholder: 'What are you looking for?',
+          })}
           {...(willDelete &&
             searchTags.length && { highlight: searchTags.slice(-1)[0]?.id })}
         />
