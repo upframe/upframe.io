@@ -23,17 +23,15 @@ export default function RecommendationCard({ recommendations: handles }) {
     <Card>
       <Title s3>Other mentors who can help</Title>
       <S.List>
-        {users.map(
-          ({ id, name, handle, profilePictures: imgs, headline, company }) => (
-            <S.User key={id} to={`/${handle}`}>
-              <ProfilePicture imgs={imgs} size="6.5rem" />
-              <div>
-                <Title s3>{name}</Title>
-                <Text>{headline}</Text>
-              </div>
-            </S.User>
-          )
-        )}
+        {users.map(({ id, name, handle, profilePictures: imgs, headline }) => (
+          <S.User key={id} to={`/${handle}`}>
+            <ProfilePicture imgs={imgs} size="6.5rem" />
+            <div>
+              <Title s3>{name}</Title>
+              <Text>{headline}</Text>
+            </div>
+          </S.User>
+        ))}
       </S.List>
     </Card>
   )

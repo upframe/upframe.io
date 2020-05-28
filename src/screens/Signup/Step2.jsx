@@ -60,9 +60,7 @@ export default function Step2({
     handle,
     biography,
     location,
-    ...(role === 'MENTOR' && {
-      headline,
-    }),
+    headline,
   })
   const [invalid, setInvalid] = useState({})
   const fileInput = useRef(null)
@@ -183,15 +181,13 @@ export default function Step2({
         onChange={setLocation}
         required
       />
-      {role === 'MENTOR' && (
-        <Item
-          label="Headline"
-          autoComplete="organization-title"
-          input={headline}
-          onChange={setHeadline}
-          required
-        />
-      )}
+      <Item
+        label="Headline"
+        autoComplete="organization-title"
+        input={headline}
+        onChange={setHeadline}
+        required
+      />
       <Item
         label="Biography"
         text={biography}

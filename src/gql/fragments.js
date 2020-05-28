@@ -35,8 +35,8 @@ export const person = {
           id
           name
         }
+        headline
         ... on Mentor {
-          headline
           company
         }
       }
@@ -82,8 +82,8 @@ export const person = {
           id
           name
         }
+        headline
         ... on Mentor {
-          headline
           company
         }
       }
