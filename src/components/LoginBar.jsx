@@ -32,6 +32,7 @@ const S = {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     padding: 0 5vw;
+    z-index: 5001;
 
     @media (min-width: 751px) {
       display: none;
