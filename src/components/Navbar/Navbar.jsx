@@ -19,7 +19,10 @@ export default function Navbar() {
   )
     return null
   return (
-    <header className={classes(styles.navbar, { [styles.shadow]: !atTop })}>
+    <header
+      className={classes(styles.navbar, { [styles.shadow]: !atTop })}
+      data-signedin={!!ctx.currentUser}
+    >
       <Logo home />
       <SearchBar />
       <div className={styles.right}>
