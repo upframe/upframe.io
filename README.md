@@ -10,7 +10,7 @@ To setup the project locally run
 
 ```sh
 git clone https://github.com/upframe/upframe.io
-cd connect
+cd upframe.io
 yarn install
 ```
 

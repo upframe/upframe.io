@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import { notify } from 'notification'
@@ -20,6 +20,8 @@ export default function Calendar({
   onDeleteSlot,
   external = [],
 }) {
+  const [clicked, setClicked] = useState(false)
+
   function addSlot(newSlot) {
     if (
       newSlot.start.getTime() < Date.now() ||
@@ -45,7 +47,7 @@ export default function Calendar({
   }
 
   return (
-    <div className={styles.calendar}>
+    <div className={styles.calendar} onMouseDown={setClicked}>
       <BigCalendar
         localizer={localizer}
         selectable
@@ -62,7 +64,7 @@ export default function Calendar({
             style: { backgroundColor: event.color },
           }
         }}
-        scrollToTime={new Date(new Date().setHours(7))}
+        {...(!clicked && { scrollToTime: new Date(new Date().setHours(7)) })}
       />
     </div>
   )

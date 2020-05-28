@@ -40,17 +40,9 @@
     margin-left: 1rem;
   }
 
-  @media (max-width: 650px) {
-    a:last-of-type {
-      display: none !important;
-    }
-
-    margin-left: 0;
-  }
-
-  @media (max-width: 500px) {
-    a {
-      display: none !important;
+  [data-signedin='false'] > & {
+    @media (max-width: 750px) {
+      display: none;
     }
   }
 }

@@ -1,10 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'components'
+import { useMe } from 'utils/hooks'
 
 export default function Footer() {
+  const { me } = useMe()
+
   return (
-    <S.Footer>
+    <S.Footer data-singedin={!!me}>
       <p>{new Date().getFullYear()} Upframe™</p>
       <Link to="/privacy">Privacy policy</Link>
     </S.Footer>
@@ -20,7 +23,7 @@ const S = {
     margin-top: 3rem;
     background: #fff;
     position: relative;
-    z-index: 10000;
+    z-index: 5000;
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-start;
@@ -50,6 +53,10 @@ const S = {
 
     *:not([data-type='social']) + a[data-type='social'] {
       margin-right: auto;
+    }
+
+    &[data-singedin='false'] {
+      margin-bottom: -1rem;
     }
   `,
 }

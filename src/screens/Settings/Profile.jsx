@@ -216,12 +216,8 @@ export default function Profile() {
           </span>
         ),
       })}
-      {user.role !== 'USER' && (
-        <>
-          {item({ label: 'Headline', field: 'headline' })}
-          {item({ label: 'Companies', field: 'company' })}
-        </>
-      )}
+      {item({ label: 'Headline', field: 'headline' })}
+      {user.role !== 'USER' && item({ label: 'Companies', field: 'company' })}
       {item({
         label: 'Biography',
         field: 'biography',
