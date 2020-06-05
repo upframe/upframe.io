@@ -28,6 +28,7 @@
     "apollo-link": "^1.2.13",
     "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.16",
+    "d3": "^5.16.0",
     "fuse.js": "^5.0.7-beta",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
@@ -40,7 +41,9 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.4.1",
     "react-spring": "^8.0.27",
-    "styled-components": "^5.0.1"
+    "spacetime-informal": "^0.3.0",
+    "styled-components": "^5.0.1",
+    "topojson-client": "^3.1.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.12.2",

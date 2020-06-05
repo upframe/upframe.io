@@ -15,7 +15,7 @@ export default function Text({
 }) {
   if (children)
     children = (Array.isArray(children) ? children : [children]).map(child =>
-      child.type === Text
+      child?.type === Text
         ? {
             ...child,
             props: {

@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useReducer } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Text, Title, Checkbox, Button, GoogleSignin, Modal } from 'components'
+import {
+  Text,
+  Title,
+  Checkbox,
+  Button,
+  GoogleSignin,
+  Modal,
+  TzSelect,
+} from 'components'
 import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
 import { useMe } from 'utils/hooks'
@@ -8,6 +16,7 @@ import { gql, mutations, useQuery, useMutation } from 'gql'
 import { classes } from 'utils/css'
 import apollo, { hasError } from 'api'
 import { notify } from 'notification'
+import informal from 'spacetime-informal'
 
 const GOOGLE_CONNECTED = gql`
   query GoogleConnected($id: ID!) {
@@ -22,11 +31,32 @@ const GOOGLE_CONNECTED = gql`
   }
 `
 
+const tzReducer = (_, { id, off }) => {
+  if (Math.abs(off) < 60) off *= -60
+  try {
+    return { id, abbr: informal.display(id)?.standard?.abbrev, off }
+  } catch (e) {
+    return { id, off }
+  }
+}
+
 export default function Account() {
   const history = useHistory()
   const { me = {} } = useMe()
   const [deleteRequested, setDeleteRequested] = useState(false)
   const [disconnectRequested, setDisconnectRequested] = useState(false)
+  const [tz, setTz] = useReducer(
+    tzReducer,
+    tzReducer(
+      {},
+      {
+        id: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        off: nonDstOffset(),
+      }
+    )
+  )
+  const [tzInspect, setTzInspect] = useState('')
+
   const { data: { user: { google = {} } = {} } = {} } = useQuery(
     GOOGLE_CONNECTED,
     {
@@ -129,6 +159,22 @@ export default function Account() {
       )}
 
       <Title s2 className={styles.span2}>
+        Time
+      </Title>
+      <Text>
+        Your timezone is {tz.id}
+        {tz.abbr ? ` (${tz.abbr})` : undefined}
+      </Text>
+      <Text className={styles.alignRight}>{tzInspect}</Text>
+      <TzSelect
+        currentTz={tz.id}
+        currentOffset={tz.off}
+        className={styles.span2}
+        onSelect={setTz}
+        onInspect={setTzInspect}
+      />
+
+      <Title s2 className={styles.span2}>
         Your Data
       </Title>
       <Text className={styles.span2}>
@@ -203,3 +249,11 @@ export default function Account() {
     </div>
   )
 }
+
+const nonDstOffset = () =>
+  Math.max(
+    ...[
+      new Date(new Date().getFullYear(), 0, 1),
+      new Date(new Date().getFullYear(), 6, 1),
+    ].map(date => date.getTimezoneOffset())
+  )
