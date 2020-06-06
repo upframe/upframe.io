@@ -67,8 +67,11 @@ export const ME_ID = gql`
   query MeId {
     me {
       id
+      ...Timezone
+      inferTz
     }
   }
+  ${person.timezone}
 `
 export const ME = gql`
   query Me {
@@ -81,9 +84,12 @@ export const ME = gql`
         calendarConnected
         visibility
       }
+      ...Timezone
+      inferTz
     }
   }
   ${person.base}
+  ${person.timezone}
 `
 
 export const SETTINGS_PROFILE = gql`

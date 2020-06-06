@@ -71,6 +71,24 @@ export const UPDATE_PROFILE = gql`
   ${person.profileSettings}
 `
 
+export const SET_TIMEZONE = gql`
+  mutation SetTimezone($tz: String!) {
+    setTimezone(tz: $tz) {
+      ...ProfileSettings
+    }
+  }
+  ${person.profileSettings}
+`
+
+export const SET_INFER_TZ = gql`
+  mutation SetInferTz($infer: Boolean!) {
+    setInferTz(infer: $infer) {
+      ...ProfileSettings
+    }
+  }
+  ${person.profileSettings}
+`
+
 export const UPLOAD_PROFILE_PICTURE = gql`
   mutation UploadProfilePicture($file: Upload!) {
     uploadProfilePicture(file: $file) {

@@ -11981,11 +11981,6 @@ source-map@^0.5.0, source-map@^0.5.6:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
 
-spacetime-informal@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/spacetime-informal/-/spacetime-informal-0.3.0.tgz#6d0feffe291697f686b737b678b59ee2dcef3297"
-  integrity sha512-HtFTwtkzDl7gswCfeWPQAxvQ+Fmrdt7WqoDT0Lq2FX7RVZKZ/+zmgBOAVAuH8oVcf4uXza9NvdX9QppGRiG8oQ==
-
 spdx-correct@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/spdx-correct/-/spdx-correct-3.1.0.tgz#fb83e504445268f154b074e218c87c003cd31df4"

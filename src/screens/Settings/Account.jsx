@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import {
   Text,
@@ -16,7 +16,6 @@ import { gql, mutations, useQuery, useMutation } from 'gql'
 import { classes } from 'utils/css'
 import apollo, { hasError } from 'api'
 import { notify } from 'notification'
-import informal from 'spacetime-informal'
 
 const GOOGLE_CONNECTED = gql`
   query GoogleConnected($id: ID!) {
@@ -31,31 +30,45 @@ const GOOGLE_CONNECTED = gql`
   }
 `
 
-const tzReducer = (_, { id, off }) => {
-  if (Math.abs(off) < 60) off *= -60
-  try {
-    return { id, abbr: informal.display(id)?.standard?.abbrev, off }
-  } catch (e) {
-    return { id, off }
-  }
-}
-
 export default function Account() {
   const history = useHistory()
   const { me = {} } = useMe()
   const [deleteRequested, setDeleteRequested] = useState(false)
   const [disconnectRequested, setDisconnectRequested] = useState(false)
-  const [tz, setTz] = useReducer(
-    tzReducer,
-    tzReducer(
-      {},
-      {
-        id: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        off: nonDstOffset(),
-      }
-    )
-  )
   const [tzInspect, setTzInspect] = useState('')
+  const [utcTime, setUtcTime] = useState()
+
+  const [setTz] = useMutation(mutations.SET_TIMEZONE, {
+    onCompleted() {
+      if (
+        me.inferTz &&
+        me.timezone.iana !== Intl.DateTimeFormat().resolvedOptions().timeZone
+      )
+        setInferTz({ variables: { infer: false } })
+    },
+  })
+  const [setInferTz, { loading: inferLoading }] = useMutation(
+    mutations.SET_INFER_TZ,
+    {
+      onCompleted() {
+        if (
+          !me.inferTz ||
+          me.timezone.iana === Intl.DateTimeFormat().resolvedOptions().timeZone
+        )
+          return
+        setTz({
+          variables: { tz: Intl.DateTimeFormat().resolvedOptions().timeZone },
+        })
+      },
+    }
+  )
+
+  useEffect(() => {
+    if (!me.timezone) return
+    setUtcTime(
+      `UTC ${`+${me.timezone.utcOffset.toString() / 60}`.replace(/^\+-/, '-')}`
+    )
+  }, [me.timezone])
 
   const { data: { user: { google = {} } = {} } = {} } = useQuery(
     GOOGLE_CONNECTED,
@@ -159,20 +172,52 @@ export default function Account() {
       )}
 
       <Title s2 className={styles.span2}>
-        Time
+        Time Zone
       </Title>
+      <Text className={styles.span2}>
+        This setting is used to convert meetup times mentioned in emails we send
+        to you into your local time zone. All dates and times you see on
+        upframe.io are displayed in your browser's time zone.
+      </Text>
       <Text>
-        Your timezone is {tz.id}
-        {tz.abbr ? ` (${tz.abbr})` : undefined}
+        Your timezone is {me.timezone.iana.replace(/_/g, ' ')} (
+        {me.timezone.informal ? (
+          <Text
+            abbr={[
+              me.timezone.informal.current.name,
+              utcTime,
+              ...(me.timezone.hasDst
+                ? [
+                    `currently${
+                      me.timezone.isDst ? '' : ' not'
+                    } in daylight savings time`,
+                  ]
+                : []),
+            ].join('\n')}
+          >
+            {me.timezone.informal.current.abbr}
+          </Text>
+        ) : (
+          utcTime
+        )}
+        )
       </Text>
       <Text className={styles.alignRight}>{tzInspect}</Text>
       <TzSelect
-        currentTz={tz.id}
-        currentOffset={tz.off}
+        currentTz={me.timezone.iana}
+        currentOffset={me.timezone.nonDstOff}
         className={styles.span2}
         onSelect={setTz}
         onInspect={setTzInspect}
       />
+      <div className={classes(styles.privacyCheck, styles.span2)}>
+        <Checkbox
+          checked={me.inferTz}
+          onChange={infer => setInferTz({ variables: { infer } })}
+          loading={inferLoading}
+        />
+        <Text>Automatically set to system time zone.</Text>
+      </div>
 
       <Title s2 className={styles.span2}>
         Your Data
@@ -249,11 +294,3 @@ export default function Account() {
     </div>
   )
 }
-
-const nonDstOffset = () =>
-  Math.max(
-    ...[
-      new Date(new Date().getFullYear(), 0, 1),
-      new Date(new Date().getFullYear(), 6, 1),
-    ].map(date => date.getTimezoneOffset())
-  )

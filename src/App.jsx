@@ -5,12 +5,14 @@ import { Navbar, Spinner, NotificationStack, ScrollToTop } from './components'
 import Routes from './Routes'
 import Context from './context'
 import styles from './styles/app.module.scss'
-import { queries, useQuery } from './gql'
+import { queries, mutations, useQuery, useMutation } from './gql'
 
 export default function App() {
   const [ctx, setCtx] = useState({
     currentUser: null,
   })
+
+  const [setTz] = useMutation(mutations.SET_TIMEZONE)
 
   function setCurrentUser(currentUser) {
     setCtx({ ...ctx, currentUser })
@@ -23,6 +25,13 @@ export default function App() {
       if (!me) return
       setCurrentUser(me.id)
       localStorage.setItem('loggedin', true)
+      if (
+        !me.inferTz ||
+        me.timezone?.iana === Intl.DateTimeFormat().resolvedOptions().timeZone
+      )
+        return
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
+      if (tz) setTz({ variables: { tz } })
     },
     onError() {
       localStorage.setItem('loggedin', false)

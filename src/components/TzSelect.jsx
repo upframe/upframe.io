@@ -39,10 +39,7 @@ export default function TzSelect({
           'active-tz'
         )
         if (!e.id) return
-        if (
-          parseFloat(e.id.slice(1).replace(/_/g, '.')) * -60 ===
-          currentOffset
-        )
+        if (parseFloat(e.id.slice(1).replace(/_/g, '.')) * 60 === currentOffset)
           e.classList.add('current-slice')
         else if (e.id === currentTz) e.classList.add('current-tz')
       })
@@ -70,7 +67,7 @@ export default function TzSelect({
       .append('path')
       .attr('d', path)
       .attr('class', d =>
-        d3.select(d)._groups[0][0].properties.ZONE === -currentOffset / 60
+        d3.select(d)._groups[0][0].properties.ZONE === currentOffset / 60
           ? 'current-slice'
           : undefined
       )
@@ -91,9 +88,6 @@ export default function TzSelect({
       .on('mouseout', function() {
         onInspect()
         d3.select(this).classed('active-slice', false)
-      })
-      .on('click', d => {
-        onSelect({ id: `UTC ${d.properties.ZONE}`, off: d.properties.ZONE })
       })
 
     svg
@@ -132,7 +126,7 @@ export default function TzSelect({
         if (tz) tz.classed('active-slice', false)
       })
       .on('click', d => {
-        onSelect(d.properties)
+        onSelect({ variables: { tz: d.properties.id } })
       })
   }, [mapData, currentTz, currentOffset, onInspect, onSelect])
 
