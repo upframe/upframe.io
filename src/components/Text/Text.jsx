@@ -9,13 +9,14 @@ export default function Text({
   bold = false,
   mark,
   underlined = false,
+  abbr = false,
   inline = false,
   className,
   ...props
 }) {
   if (children)
     children = (Array.isArray(children) ? children : [children]).map(child =>
-      child.type === Text
+      child?.type === Text
         ? {
             ...child,
             props: {
@@ -35,7 +36,7 @@ export default function Text({
         : child
     )
 
-  const Tag = inline ? 'span' : 'p'
+  const Tag = abbr ? 'abbr' : inline ? 'span' : 'p'
   return (
     <Tag
       className={classes(styles.text, className, {
@@ -45,6 +46,7 @@ export default function Text({
         [styles.bold]: bold,
       })}
       {...props}
+      {...(abbr && { title: abbr })}
     >
       {mark && <mark>{children}</mark>}
       {!mark && children}

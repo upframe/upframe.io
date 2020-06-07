@@ -2,8 +2,13 @@ import React from 'react'
 import styles from './profile.module.scss'
 import { Card, Title, Text, Button } from '../../components'
 import Slot from './Slot'
+import { useMe } from 'utils/hooks'
+
+const phUrl = 'https://www.producthunt.com/upcoming/upframe'
 
 export default function Meetup({ mentor, onSlot, onMsg }) {
+  const { me } = useMe()
+
   return (
     <Card className={styles.meetup}>
       <Title s3>Book a meetup with me</Title>
@@ -18,12 +23,15 @@ export default function Meetup({ mentor, onSlot, onMsg }) {
             <Slot
               key={start}
               start={start}
-              onClick={v =>
-                onSlot(mentor.slots.find(({ start }) => start === v).id)
-              }
+              {...(me
+                ? {
+                    onClick: v =>
+                      onSlot(mentor.slots.find(({ start }) => start === v).id),
+                  }
+                : { linkTo: phUrl })}
             />
           ))}
-        <Button filled onClick={onMsg}>
+        <Button filled {...(me ? { onClick: onMsg } : { linkTo: phUrl })}>
           Message
         </Button>
       </div>

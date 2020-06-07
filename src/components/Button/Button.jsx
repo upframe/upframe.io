@@ -11,7 +11,7 @@ export default function Button({
   warn = false,
   className,
   linkTo,
-  newTab = false,
+  newTab = typeof linkTo === 'string' && /^https?:\/\//.test(linkTo),
   filled = false,
   text = false,
   type,

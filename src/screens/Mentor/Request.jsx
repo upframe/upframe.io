@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styles from './request.module.scss'
-import { isEmail } from 'utils/validate'
 import { mutations, useMutation } from 'gql'
 import {
   Shade,
   Title,
   Labeled,
-  Input,
   Textbox,
   Button,
   Divider,
@@ -17,20 +15,18 @@ import { useCtx } from 'utils/hooks'
 
 export default function Request({ mentor, onClose, slot }) {
   const [msg, setMsg] = useState('')
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
   const [valid, setValid] = useState(true)
   const { currentUser } = useCtx()
 
   const [sendMessage] = useMutation(mutations.SEND_MESSAGE_EXT, {
-    variables: { msg, to: mentor.id, ...(!currentUser && { email, name }) },
+    variables: { msg, to: mentor.id },
     onCompleted() {
       onClose()
     },
   })
 
   const [requestSlot] = useMutation(mutations.REQUEST_MEETUP, {
-    variables: { msg, email, name, slotId: slot },
+    variables: { msg, slotId: slot },
     onCompleted() {
       notify('Meetup was requested. Now wait for the mentor to confirm.')
       onClose()
@@ -38,8 +34,8 @@ export default function Request({ mentor, onClose, slot }) {
   })
 
   useEffect(() => {
-    setValid(msg.length && (currentUser || (isEmail(email) && name.length)))
-  }, [email, msg, name, currentUser])
+    setValid(msg.length && currentUser)
+  }, [msg, currentUser])
 
   async function submit() {
     if (slot) requestSlot()
@@ -64,19 +60,6 @@ export default function Request({ mentor, onClose, slot }) {
             />
           }
         />
-        {!currentUser && (
-          <>
-            <Labeled
-              label="Your name"
-              action={<Input value={name} onChange={setName} />}
-            />
-            <Labeled
-              label="Your email"
-              action={<Input value={email} onChange={setEmail} />}
-            />
-          </>
-        )}
-
         <Button disabled={!valid} filled onClick={submit}>
           Send
         </Button>
