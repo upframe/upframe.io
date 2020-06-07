@@ -143,26 +143,14 @@ export const UPDATE_SLOTS = gql`
 `
 
 export const SEND_MESSAGE_EXT = gql`
-  mutation SendMessageExt(
-    $to: ID!
-    $msg: String!
-    $name: String
-    $email: String
-  ) {
-    messageExt(input: { to: $to, name: $name, email: $email, message: $msg })
+  mutation SendMessageExt($to: ID!, $msg: String!) {
+    messageExt(input: { to: $to, message: $msg })
   }
 `
 
 export const REQUEST_MEETUP = gql`
-  mutation RequestMeetup(
-    $slotId: ID!
-    $name: String!
-    $email: String!
-    $msg: String!
-  ) {
-    requestSlot(
-      input: { slotId: $slotId, name: $name, email: $email, message: $msg }
-    )
+  mutation RequestMeetup($slotId: ID!, $msg: String!) {
+    requestSlot(input: { slotId: $slotId, message: $msg })
   }
 `
 
