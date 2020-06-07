@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './profile.module.scss'
 
-export default function Slot({ start, onClick }) {
+export default function Slot({ start, onClick = () => {}, linkTo }) {
   const date = new Date(start)
   const month = date.toLocaleString('en-US', { month: 'short' })
   const day = date.toLocaleString('en-US', { day: 'numeric' })
@@ -12,8 +12,18 @@ export default function Slot({ start, onClick }) {
     minute: 'numeric',
   })
 
+  let Tag = linkTo ? 'a' : 'div'
+
   return (
-    <div className={styles.slot} onClick={() => onClick(start)}>
+    <Tag
+      className={styles.slot}
+      onClick={() => onClick(start)}
+      {...(linkTo && {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        href: linkTo,
+      })}
+    >
       <div>
         <span>{month}</span>
         <span>{day}</span>
@@ -23,6 +33,6 @@ export default function Slot({ start, onClick }) {
           {weekday} {time}
         </span>
       </div>
-    </div>
+    </Tag>
   )
 }

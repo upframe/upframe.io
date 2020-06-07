@@ -179,37 +179,41 @@ export default function Account() {
         to you into your local time zone. All dates and times you see on
         upframe.io are displayed in your browser's time zone.
       </Text>
-      <Text>
-        Your timezone is {me.timezone.iana.replace(/_/g, ' ')} (
-        {me.timezone.informal ? (
-          <Text
-            abbr={[
-              me.timezone.informal.current.name,
-              utcTime,
-              ...(me.timezone.hasDst
-                ? [
-                    `currently${
-                      me.timezone.isDst ? '' : ' not'
-                    } in daylight savings time`,
-                  ]
-                : []),
-            ].join('\n')}
-          >
-            {me.timezone.informal.current.abbr}
+      {me.timezone?.iana && (
+        <>
+          <Text>
+            Your timezone is {me.timezone.iana.replace(/_/g, ' ')} (
+            {me.timezone.informal ? (
+              <Text
+                abbr={[
+                  me.timezone.informal.current.name,
+                  utcTime,
+                  ...(me.timezone.hasDst
+                    ? [
+                        `currently${
+                          me.timezone.isDst ? '' : ' not'
+                        } in daylight savings time`,
+                      ]
+                    : []),
+                ].join('\n')}
+              >
+                {me.timezone.informal.current.abbr}
+              </Text>
+            ) : (
+              utcTime
+            )}
+            )
           </Text>
-        ) : (
-          utcTime
-        )}
-        )
-      </Text>
-      <Text className={styles.alignRight}>{tzInspect}</Text>
-      <TzSelect
-        currentTz={me.timezone.iana}
-        currentOffset={me.timezone.nonDstOff}
-        className={styles.span2}
-        onSelect={setTz}
-        onInspect={setTzInspect}
-      />
+          <Text className={styles.alignRight}>{tzInspect}</Text>
+          <TzSelect
+            currentTz={me.timezone.iana}
+            currentOffset={me.timezone.nonDstOff}
+            className={styles.span2}
+            onSelect={setTz}
+            onInspect={setTzInspect}
+          />
+        </>
+      )}
       <div className={classes(styles.privacyCheck, styles.span2)}>
         <Checkbox
           checked={me.inferTz}
