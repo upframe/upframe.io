@@ -172,17 +172,21 @@ export default function Account() {
       )}
 
       <Title s2 className={styles.span2}>
-        Time Zone
+        Change Your Time Zone
       </Title>
       <Text className={styles.span2}>
-        This setting is used to convert meetup times mentioned in emails we send
-        to you into your local time zone. All dates and times you see on
-        upframe.io are displayed in your browser's time zone.
+        The video call times in your email notifications are displayed in{' '}
+        {me.timezone?.informal?.current?.name ??
+          `${me.timezone?.iana?.split('/')?.pop()} time`}
+        . You can change your timezone here.
+        <br />
+        All dates and times you see on Upframe are displayed in your current
+        time zone by default.
       </Text>
       {me.timezone?.iana && (
         <>
           <Text>
-            Your timezone is {me.timezone.iana.replace(/_/g, ' ')} (
+            Your time zone is {me.timezone.iana.replace(/_/g, ' ')} (
             {me.timezone.informal ? (
               <Text
                 abbr={[
