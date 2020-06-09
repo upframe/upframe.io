@@ -2,14 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ordNum, isSameDay, isPreviousDay } from 'utils/date'
 
-export default function Time({ children }) {
-  let date
-  try {
-    date = new Date(children)
-  } catch (e) {
-    return null
-  }
-
+function Time({ children: date }) {
   let suffix = 'AM'
   let hour = date.getHours()
   if (hour >= 12) {
@@ -40,6 +33,8 @@ export default function Time({ children }) {
 const S = {
   Date: styled.abbr`
     text-decoration: none;
+    color: #0004;
+    font-size: 14px;
 
     &:hover {
       text-decoration: underline;
@@ -47,3 +42,5 @@ const S = {
     }
   `,
 }
+
+export default Object.assign(Time, { sc: S.Date })

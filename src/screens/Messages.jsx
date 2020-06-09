@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useMutation, useSubscription, gql } from '@apollo/client'
 import { Input, Button } from 'components'
-import Message from './messages/Message'
+import Chat from './messages/Chat'
 
 const SUB = gql`
   subscription Message($channel: ID!) {
@@ -43,9 +43,7 @@ export default function Messages({ match }) {
         sendMessage()
       }}
     >
-      {msgs.map(msg => (
-        <Message key={msg.time} {...msg} />
-      ))}
+      <Chat messages={msgs} />
       <Input value={input} onChange={setInput} />
       <Button type="submit">send</Button>
     </form>
