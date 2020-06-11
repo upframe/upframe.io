@@ -16,7 +16,7 @@ export default function Chat({ messages = [] }) {
   return (
     <S.Chat>
       {msgs.map(msg => (
-        <Message key={msg.time.getTime() + msg.author} {...msg} />
+        <Message key={msg.id} {...msg} />
       ))}
     </S.Chat>
   )

@@ -48,12 +48,12 @@ const S = {
   Wrap: styled.article`
     display: flex;
     flex-direction: row;
-    padding: 0.1rem;
+    padding: 0.2rem;
     padding-top: 0.5rem;
     align-items: center;
 
     &[data-stacked='true'] {
-      padding-top: 0.1rem;
+      padding-top: 0.2rem;
     }
 
     picture,
@@ -98,5 +98,6 @@ const S = {
   Name: styled.span`
     margin-right: 1.1rem;
     color: #000;
+    font-weight: 500;
   `,
 }

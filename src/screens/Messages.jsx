@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { useMutation, useSubscription, gql } from '@apollo/client'
+import { useQuery, useMutation, useSubscription, gql } from '@apollo/client'
 import { Input, Button } from 'components'
 import Chat from './messages/Chat'
 
 const SUB = gql`
   subscription Message($channel: ID!) {
     message(channel: $channel) {
+      id
       content
       author
       time
@@ -19,9 +20,34 @@ const SEND_MESSAGE = gql`
   }
 `
 
+const MESSGAGES = gql`
+  query Messages($channel: ID!) {
+    channel(channelId: $channel) {
+      id
+      messages {
+        edges {
+          node {
+            id
+            author
+            content
+            time
+          }
+        }
+      }
+    }
+  }
+`
+
 export default function Messages({ match }) {
   const [input, setInput] = useState('')
   const [msgs, setMsgs] = useState([])
+
+  useQuery(MESSGAGES, {
+    variables: { channel: match.params.channel },
+    onCompleted({ channel }) {
+      setMsgs([...channel.messages.edges.map(({ node }) => node, ...msgs)])
+    },
+  })
 
   useSubscription(SUB, {
     variables: { channel: match.params.channel },

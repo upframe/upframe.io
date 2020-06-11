@@ -35,6 +35,7 @@ const S = {
     text-decoration: none;
     color: #0004;
     font-size: 14px;
+    white-space: nowrap;
 
     &:hover {
       text-decoration: underline;
