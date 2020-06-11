@@ -3,6 +3,7 @@ import { useQuery, useMutation, useSubscription, gql } from '@apollo/client'
 import { Input, Button } from 'components'
 import Chat from './messages/Chat'
 import { useMe } from 'utils/hooks'
+import styled from 'styled-components'
 
 const SUB = gql`
   subscription Message($channel: ID!) {
@@ -88,16 +89,33 @@ export default function Messages({ match }) {
   }
 
   return (
-    <form
-      style={{ padding: '5rem' }}
+    <S.Conversation
       onSubmit={e => {
         e.preventDefault()
         send()
       }}
     >
       <Chat messages={msgs} />
-      <Input value={input} onChange={setInput} />
-      <Button type="submit">send</Button>
-    </form>
+      <S.Submit>
+        <Input value={input} onChange={setInput} />
+        <Button type="submit">send</Button>
+      </S.Submit>
+    </S.Conversation>
   )
+}
+
+const S = {
+  Conversation: styled.form`
+    border: 1px dotted red;
+    width: 80vw;
+    margin: 0 auto;
+    height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  `,
+
+  Submit: styled.div`
+    flex-shrink: 0;
+  `,
 }

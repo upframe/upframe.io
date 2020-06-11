@@ -5,13 +5,13 @@ import Message from './Message'
 export default function Chat({ messages = [] }) {
   const msgs = messages
     .map(msg => ({ ...msg, time: new Date(msg.time) }))
-    .sort((a, b) => a.time.getTime() - b.time.getTime())
     .map((v, i, msgs) =>
       msgs[i - 1]?.author === v.author &&
-      msgs[i - 1]?.time.getTime() - v.time.getTime() < 1000 * 60 ** 2 * 10
+      v.time.getTime() - msgs[i - 1]?.time.getTime() < 1000 * 60 * 5
         ? { ...v, stacked: true }
         : v
     )
+    .reverse()
 
   return (
     <S.Chat>
@@ -24,6 +24,9 @@ export default function Chat({ messages = [] }) {
 
 const S = {
   Chat: styled.div`
-    margin: 3rem 0;
+    overflow: auto;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column-reverse;
   `,
 }
