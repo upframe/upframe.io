@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useQuery, useMutation, useSubscription, gql } from '@apollo/client'
 import { Input, Button } from 'components'
 import Chat from './messages/Chat'
+import { useMe } from 'utils/hooks'
 
 const SUB = gql`
   subscription Message($channel: ID!) {
@@ -41,6 +42,7 @@ const MESSGAGES = gql`
 export default function Messages({ match }) {
   const [input, setInput] = useState('')
   const [msgs, setMsgs] = useState([])
+  const { me } = useMe()
 
   useQuery(MESSGAGES, {
     variables: { channel: match.params.channel },
@@ -52,21 +54,45 @@ export default function Messages({ match }) {
   useSubscription(SUB, {
     variables: { channel: match.params.channel },
     onSubscriptionData({ subscriptionData }) {
-      setMsgs([...msgs, subscriptionData.data.message])
-      setInput('')
+      let i = msgs.findIndex(
+        ({ local, content }) =>
+          local && content === subscriptionData.data.message.content
+      )
+      if (i < 0) i = Infinity
+      setMsgs([
+        ...msgs.slice(0, i),
+        subscriptionData.data.message,
+        ...msgs.slice(i + 1),
+      ])
     },
   })
 
-  const [sendMessage] = useMutation(SEND_MESSAGE, {
-    variables: { content: input, channel: match.params.channel },
-  })
+  const [sendMessage] = useMutation(SEND_MESSAGE)
+
+  function send() {
+    const content = input
+    setInput('')
+    setMsgs([
+      ...msgs,
+      {
+        id: Date.now(),
+        content,
+        author: me.id,
+        time: new Date().toISOString(),
+        local: true,
+      },
+    ])
+    sendMessage({
+      variables: { content, channel: match.params.channel },
+    })
+  }
 
   return (
     <form
       style={{ padding: '5rem' }}
       onSubmit={e => {
         e.preventDefault()
-        sendMessage()
+        send()
       }}
     >
       <Chat messages={msgs} />
