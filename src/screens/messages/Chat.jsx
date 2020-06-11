@@ -14,7 +14,11 @@ export default function Chat({ messages = [] }) {
     .reverse()
 
   return (
-    <S.Chat>
+    <S.Chat
+      {...(navigator.userAgent.toLowerCase().includes('firefox') && {
+        'data-browser': 'firefox',
+      })}
+    >
       {msgs.map(msg => (
         <Message key={msg.id} {...msg} />
       ))}
@@ -24,9 +28,30 @@ export default function Chat({ messages = [] }) {
 
 const S = {
   Chat: styled.div`
-    overflow: auto;
-    flex-grow: 1;
     display: flex;
     flex-direction: column-reverse;
+    flex-grow: 1;
+    overflow-y: auto;
+
+    /* fix for firefox reverse flex scroll bug https://bugzilla.mozilla.org/show_bug.cgi?id=1042151
+    ...that still hasn't been fixed after 6 years */
+    &[data-browser='firefox'] {
+      flex-direction: column;
+      transform: rotate(180deg);
+      direction: rtl;
+
+      ${Message.Wrap} {
+        transform: rotate(180deg);
+        flex-direction: row-reverse;
+      }
+
+      ${Message.Head} {
+        flex-direction: row-reverse;
+      }
+
+      ${Message.Body} {
+        text-align: left;
+      }
+    }
   `,
 }

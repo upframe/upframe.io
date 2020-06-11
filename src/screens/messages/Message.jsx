@@ -17,7 +17,7 @@ const USER_QUERY = gql`
 
 const picSize = '3.2rem'
 
-export default function Message({ content, author, time, stacked = false }) {
+function Message({ content, author, time, stacked = false }) {
   const { data: { user = {} } = {} } = useQuery(USER_QUERY, {
     variables: { id: author },
   })
@@ -101,3 +101,5 @@ const S = {
     font-weight: 500;
   `,
 }
+
+export default Object.assign(Message, S)
