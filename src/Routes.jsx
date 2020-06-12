@@ -14,6 +14,7 @@ const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
 const ResetEmail = React.lazy(() => import('./screens/ResetEmail'))
 const Privacy = React.lazy(() => import('./screens/Privacy'))
 const Messages = React.lazy(() => import('./screens/Messages'))
+const Conversations = React.lazy(() => import('./screens/Conversations'))
 
 export default function Routes() {
   return (
@@ -27,6 +28,7 @@ export default function Routes() {
       <Route exact path="/settings" component={Settings} />
       <Route exact path="/settings/:page" component={Settings} />
       <Route exact path="/messages/:channel" component={Messages} />
+      <Route exact path="/conversations" component={Conversations} />
       <Route exact path="/meetup/confirm/:meetupid" component={MeetupConfirm} />
       <Route exact path="/meetup/cancel/:meetupid" component={MeetupCancel} />
       <Route exact path="/404" component={ErrorPage} />
