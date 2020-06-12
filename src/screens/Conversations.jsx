@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import EmptyRoom from './messages/EmtpyRoom'
 import ConversationList from './messages/ConversationList'
 
 export default function Conversations() {
+  const [select, setSelect] = useState(true)
+
   return (
     <S.Conversations>
       <S.Left>
-        <ConversationList />
+        <ConversationList select={select} onToggleSelect={setSelect} />
       </S.Left>
-      <S.Right>
-        <EmptyRoom />
-      </S.Right>
+      <S.Right>{!select && <EmptyRoom onToggleSelect={setSelect} />}</S.Right>
     </S.Conversations>
   )
 }
