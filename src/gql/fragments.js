@@ -86,8 +86,11 @@ export const person = {
         ... on Mentor {
           company
         }
+        ...Timezone
+        inferTz
       }
       ${this.base}
+      ${this.timezone}
     `
   },
 
@@ -98,6 +101,26 @@ export const person = {
           email
           role
           status
+        }
+      }
+    `
+  },
+
+  get timezone() {
+    return gql`
+      fragment Timezone on Person {
+        timezone {
+          iana
+          utcOffset
+          nonDstOff
+          informal {
+            current {
+              name
+              abbr
+            }
+          }
+          hasDst
+          isDst
         }
       }
     `

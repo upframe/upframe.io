@@ -43,7 +43,7 @@ export default function Profile({ match }) {
         <meta property="og:title" content={`${user.name} | Upframe`}></meta>
         <meta
           property="og:description"
-          content={`Set up a meetup with ${user.name}. ${user.biography.substr(
+          content={`Set up a meetup with ${user.name}. ${user.biography?.substr(
             0,
             128
           )}...`}

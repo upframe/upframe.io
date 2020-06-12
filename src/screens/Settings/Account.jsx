@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { Text, Title, Checkbox, Button, GoogleSignin, Modal } from 'components'
+import {
+  Text,
+  Title,
+  Checkbox,
+  Button,
+  GoogleSignin,
+  Modal,
+  TzSelect,
+} from 'components'
 import ConfirmDelete from './ConfirmDelete'
 import styles from './account.module.scss'
 import { useMe } from 'utils/hooks'
@@ -27,6 +35,41 @@ export default function Account() {
   const { me = {} } = useMe()
   const [deleteRequested, setDeleteRequested] = useState(false)
   const [disconnectRequested, setDisconnectRequested] = useState(false)
+  const [tzInspect, setTzInspect] = useState('')
+  const [utcTime, setUtcTime] = useState()
+
+  const [setTz] = useMutation(mutations.SET_TIMEZONE, {
+    onCompleted() {
+      if (
+        me.inferTz &&
+        me.timezone.iana !== Intl.DateTimeFormat().resolvedOptions().timeZone
+      )
+        setInferTz({ variables: { infer: false } })
+    },
+  })
+  const [setInferTz, { loading: inferLoading }] = useMutation(
+    mutations.SET_INFER_TZ,
+    {
+      onCompleted() {
+        if (
+          !me.inferTz ||
+          me.timezone.iana === Intl.DateTimeFormat().resolvedOptions().timeZone
+        )
+          return
+        setTz({
+          variables: { tz: Intl.DateTimeFormat().resolvedOptions().timeZone },
+        })
+      },
+    }
+  )
+
+  useEffect(() => {
+    if (!me.timezone) return
+    setUtcTime(
+      `UTC ${`+${me.timezone.utcOffset.toString() / 60}`.replace(/^\+-/, '-')}`
+    )
+  }, [me.timezone])
+
   const { data: { user: { google = {} } = {} } = {} } = useQuery(
     GOOGLE_CONNECTED,
     {
@@ -127,6 +170,62 @@ export default function Account() {
       ) : (
         <GoogleSignin text="Connect to Google" />
       )}
+
+      <Title s2 className={styles.span2}>
+        Change Your Time Zone
+      </Title>
+      <Text className={styles.span2}>
+        The video call times in your email notifications are displayed in{' '}
+        {me.timezone?.informal?.current?.name ??
+          `${me.timezone?.iana?.split('/')?.pop()} time`}
+        . You can change your timezone here.
+        <br />
+        All dates and times you see on Upframe are displayed in your current
+        time zone by default.
+      </Text>
+      {me.timezone?.iana && (
+        <>
+          <Text>
+            Your time zone is {me.timezone.iana.replace(/_/g, ' ')} (
+            {me.timezone.informal ? (
+              <Text
+                abbr={[
+                  me.timezone.informal.current.name,
+                  utcTime,
+                  ...(me.timezone.hasDst
+                    ? [
+                        `currently${
+                          me.timezone.isDst ? '' : ' not'
+                        } in daylight savings time`,
+                      ]
+                    : []),
+                ].join('\n')}
+              >
+                {me.timezone.informal.current.abbr}
+              </Text>
+            ) : (
+              utcTime
+            )}
+            )
+          </Text>
+          <Text className={styles.alignRight}>{tzInspect}</Text>
+          <TzSelect
+            currentTz={me.timezone.iana}
+            currentOffset={me.timezone.nonDstOff}
+            className={styles.span2}
+            onSelect={setTz}
+            onInspect={setTzInspect}
+          />
+        </>
+      )}
+      <div className={classes(styles.privacyCheck, styles.span2)}>
+        <Checkbox
+          checked={me.inferTz}
+          onChange={infer => setInferTz({ variables: { infer } })}
+          loading={inferLoading}
+        />
+        <Text>Automatically set to system time zone.</Text>
+      </div>
 
       <Title s2 className={styles.span2}>
         Your Data
