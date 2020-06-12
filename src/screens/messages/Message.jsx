@@ -17,13 +17,13 @@ const USER_QUERY = gql`
 
 const picSize = '3.2rem'
 
-function Message({ content, author, time, stacked = false }) {
+function Message({ id, content, author, time, stacked = false }) {
   const { data: { user = {} } = {} } = useQuery(USER_QUERY, {
     variables: { id: author },
   })
 
   return (
-    <S.Wrap {...(stacked && { 'data-stacked': true })}>
+    <S.Wrap {...(stacked && { 'data-stacked': true })} data-id={id}>
       {!stacked ? (
         <ProfilePicture imgs={user.profilePictures} size={picSize} />
       ) : (
@@ -51,6 +51,7 @@ const S = {
     padding: 0.2rem;
     padding-top: 0.5rem;
     align-items: center;
+    flex-shrink: 0;
 
     &[data-stacked='true'] {
       padding-top: 0.2rem;

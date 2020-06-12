@@ -18,6 +18,7 @@ export default function Chat({ messages = [] }) {
       {...(navigator.userAgent.toLowerCase().includes('firefox') && {
         'data-browser': 'firefox',
       })}
+      data-type="chat"
     >
       {msgs.map(msg => (
         <Message key={msg.id} {...msg} />
@@ -30,7 +31,6 @@ const S = {
   Chat: styled.div`
     display: flex;
     flex-direction: column-reverse;
-    flex-grow: 1;
     overflow-y: auto;
 
     /* fix for firefox reverse flex scroll bug https://bugzilla.mozilla.org/show_bug.cgi?id=1042151
