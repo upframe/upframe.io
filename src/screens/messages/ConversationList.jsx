@@ -3,14 +3,19 @@ import styled from 'styled-components'
 import { Title, Icon } from 'components'
 import SelectPerson from './SelectPerson'
 
-export default function ConversationList({ select, onToggleSelect }) {
+export default function ConversationList({
+  select,
+  onToggleSelect,
+  selected,
+  onSelection,
+}) {
   return (
     <S.Conversations>
       <S.Head select={select}>
         <Title s2>{select ? 'Select people' : 'Conversations'}</Title>
         <Icon icon="add" onClick={() => onToggleSelect(!select)} />
       </S.Head>
-      {select && <SelectPerson />}
+      {select && <SelectPerson selected={selected} onSelection={onSelection} />}
     </S.Conversations>
   )
 }

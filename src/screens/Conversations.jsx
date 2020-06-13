@@ -2,16 +2,34 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import EmptyRoom from './messages/EmtpyRoom'
 import ConversationList from './messages/ConversationList'
+import { useHistory } from 'react-router-dom'
+import Room from './messages/Room'
 
-export default function Conversations() {
-  const [select, setSelect] = useState(true)
+export default function Conversations({ match }) {
+  const select = match.params[0] === 'new'
+  const history = useHistory()
+  const [selected, setSelected] = useState([])
+
+  function toggleSelect(v = !select) {
+    if (v !== select) history.push(`/conversations${select ? '' : '/new'}`)
+  }
 
   return (
     <S.Conversations>
       <S.Left>
-        <ConversationList select={select} onToggleSelect={setSelect} />
+        <ConversationList
+          select={select}
+          onToggleSelect={toggleSelect}
+          selected={selected}
+          onSelection={setSelected}
+        />
       </S.Left>
-      <S.Right>{!select && <EmptyRoom onToggleSelect={setSelect} />}</S.Right>
+      <S.Right>
+        {!select && <EmptyRoom onToggleSelect={toggleSelect} />}
+        {selected.length > 0 && (
+          <Room participants={selected.map(({ id }) => id)} />
+        )}
+      </S.Right>
     </S.Conversations>
   )
 }

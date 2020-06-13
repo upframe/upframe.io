@@ -24,12 +24,12 @@ const SEARCH = gql`
   }
 `
 
-export default function SelectPerson() {
+export default function SelectPerson({ selected, onSelection }) {
   const [searchValue, setSearchValue] = useState('')
   const inputFinal = useDebouncedInputCall(searchValue)
 
   const { data: { search: { users = [] } = {} } = {} } = useQuery(SEARCH, {
-    variables: { term: inputFinal },
+    variables: { term: inputFinal, skip: true },
   })
 
   return (
@@ -40,8 +40,26 @@ export default function SelectPerson() {
         placeholder="Search"
       />
       <S.ResultList>
-        {users.map(({ user }) => (
-          <User key={user.id} {...user} />
+        {[
+          ...selected,
+          ...(inputFinal.length === 0
+            ? []
+            : users.flatMap(({ user }) =>
+                selected.find(({ id }) => id === user.id) ? [] : [user]
+              )),
+        ].map(user => (
+          <User
+            key={user.id}
+            {...user}
+            selected={selected.find(({ id }) => id === user.id)}
+            onSelect={v =>
+              onSelection(
+                v
+                  ? [...selected, user]
+                  : selected.filter(({ id }) => id !== user.id)
+              )
+            }
+          />
         ))}
       </S.ResultList>
     </S.Select>

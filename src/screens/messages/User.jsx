@@ -1,15 +1,28 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ProfilePicture, Title, Text } from 'components'
+import { ProfilePicture, Title, Text, Checkbox } from 'components'
 
-export default function User({ name, headline, profilePictures }) {
+export default function User({
+  name,
+  headline,
+  profilePictures,
+  selected,
+  onSelect,
+}) {
   return (
-    <S.User>
+    <S.User
+      {...(typeof onSelect === 'function' && {
+        onClick: () => onSelect(!selected),
+      })}
+    >
       <ProfilePicture imgs={profilePictures} size="3rem" />
       <S.TextSec>
         <Title s4>{name}</Title>
         <Text>{headline ?? '\u00a0'}</Text>
       </S.TextSec>
+      {typeof onSelect === 'function' && (
+        <Checkbox checked={selected} onChange={onSelect} />
+      )}
     </S.User>
   )
 }
@@ -25,6 +38,7 @@ const S = {
     cursor: pointer;
     min-width: 0;
     box-sizing: border-box;
+    user-select: none;
 
     picture,
     img {
@@ -33,6 +47,11 @@ const S = {
 
     &:hover {
       background-color: #0000000c;
+    }
+
+    input {
+      flex-shrink: 0;
+      margin-left: 0.5rem;
     }
   `,
 
