@@ -28,7 +28,7 @@ export default function Routes() {
       <Route exact path="/settings" component={Settings} />
       <Route exact path="/settings/:page" component={Settings} />
       <Route exact path="/messages/:channel" component={Messages} />
-      <Route exact path="/conversations/(new)?" component={Conversations} />
+      <Route exact path="/(conversations|c)/:id?" component={Conversations} />
       <Route exact path="/meetup/confirm/:meetupid" component={MeetupConfirm} />
       <Route exact path="/meetup/cancel/:meetupid" component={MeetupCancel} />
       <Route exact path="/404" component={ErrorPage} />

@@ -4,14 +4,15 @@ import EmptyRoom from './messages/EmtpyRoom'
 import ConversationList from './messages/ConversationList'
 import { useHistory } from 'react-router-dom'
 import Room from './messages/Room'
+import { path } from 'utils/url'
 
 export default function Conversations({ match }) {
-  const select = match.params[0] === 'new'
+  const select = match.params.id === 'new'
   const history = useHistory()
   const [selected, setSelected] = useState([])
 
   function toggleSelect(v = !select) {
-    if (v !== select) history.push(`/conversations${select ? '' : '/new'}`)
+    if (v !== select) history.push(path(1) + (select ? '' : '/new'))
   }
 
   return (
@@ -25,7 +26,9 @@ export default function Conversations({ match }) {
         />
       </S.Left>
       <S.Right>
-        {!select && <EmptyRoom onToggleSelect={toggleSelect} />}
+        {!select && !match.params.id && (
+          <EmptyRoom onToggleSelect={toggleSelect} />
+        )}
         {selected.length > 0 && (
           <Room participants={selected.map(({ id }) => id)} />
         )}

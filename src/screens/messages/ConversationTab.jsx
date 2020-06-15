@@ -1,28 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
 import { ProfilePicture, Title, Text, Checkbox } from 'components'
+import { useMe } from 'utils/hooks'
+import { Link } from 'react-router-dom'
 
-export default function User({
-  name,
-  headline,
-  profilePictures,
-  selected,
-  onSelect,
-}) {
+export default function User({ id, selected, onSelect, users = [] }) {
+  const { me } = useMe()
+  users = users.filter(({ id }) => id !== me.id)
+
   return (
     <S.User
       {...(typeof onSelect === 'function' && {
         onClick: () => onSelect(!selected),
       })}
     >
-      <ProfilePicture imgs={profilePictures} size="3rem" />
-      <S.TextSec>
-        <Title s4>{name}</Title>
-        <Text>{headline ?? '\u00a0'}</Text>
-      </S.TextSec>
-      {typeof onSelect === 'function' && (
-        <Checkbox checked={selected} onChange={onSelect} />
-      )}
+      <Link to={`${window.location.pathname}/${id}`}>
+        <ProfilePicture imgs={users[0].profilePictures} size="3rem" />
+        <S.TextSec>
+          <Title s4>{users[0].name}</Title>
+          <Text>{users[0].headline ?? '\u00a0'}</Text>
+        </S.TextSec>
+        {typeof onSelect === 'function' && (
+          <Checkbox checked={selected} onChange={onSelect} />
+        )}
+      </Link>
     </S.User>
   )
 }
@@ -52,6 +53,10 @@ const S = {
     input {
       flex-shrink: 0;
       margin-left: 0.5rem;
+    }
+
+    & > a {
+      display: contents;
     }
   `,
 

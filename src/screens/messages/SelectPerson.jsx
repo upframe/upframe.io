@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useDebouncedInputCall } from 'utils/hooks'
 import { useQuery, gql } from 'gql'
 import { SearchInput } from 'components'
-import User from './User'
+import Tab from './ConversationTab'
 
 const SEARCH = gql`
   query Search($term: String!) {
@@ -48,9 +48,9 @@ export default function SelectPerson({ selected, onSelection }) {
                 selected.find(({ id }) => id === user.id) ? [] : [user]
               )),
         ].map(user => (
-          <User
+          <Tab
             key={user.id}
-            {...user}
+            users={[user]}
             selected={selected.find(({ id }) => id === user.id)}
             onSelect={v =>
               onSelection(
