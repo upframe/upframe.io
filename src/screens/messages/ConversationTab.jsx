@@ -3,10 +3,13 @@ import styled from 'styled-components'
 import { ProfilePicture, Title, Text, Checkbox } from 'components'
 import { useMe } from 'utils/hooks'
 import { Link } from 'react-router-dom'
+import { path } from 'utils/url'
 
 export default function User({ id, selected, onSelect, users = [] }) {
   const { me } = useMe()
   users = users.filter(({ id }) => id !== me.id)
+
+  const CondLink = id ? Link : React.Fragment
 
   return (
     <S.User
@@ -14,7 +17,7 @@ export default function User({ id, selected, onSelect, users = [] }) {
         onClick: () => onSelect(!selected),
       })}
     >
-      <Link to={`${window.location.pathname}/${id}`}>
+      <CondLink {...(id && { to: `${path(1)}/${id}` })}>
         <ProfilePicture imgs={users[0].profilePictures} size="3rem" />
         <S.TextSec>
           <Title s4>{users[0].name}</Title>
@@ -23,7 +26,7 @@ export default function User({ id, selected, onSelect, users = [] }) {
         {typeof onSelect === 'function' && (
           <Checkbox checked={selected} onChange={onSelect} />
         )}
-      </Link>
+      </CondLink>
     </S.User>
   )
 }

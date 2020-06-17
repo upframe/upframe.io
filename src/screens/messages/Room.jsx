@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { gql, useQuery, useMutation } from 'gql'
 import Thread from './ThreadCard'
+import Preview from './ConversationPreview'
+import { ReverseScroller } from 'components'
 
 const PARTICIPANTS = gql`
   query ChatParticipants($ids: [ID!]!) {
@@ -14,27 +16,51 @@ const PARTICIPANTS = gql`
 `
 
 const CREATE_ROOM = gql`
-  mutation createConversation($participants: [ID!]!) {
-    createMsgRoom(participants: $participants)
+  mutation createConversation($participants: [ID!]!, $msg: String) {
+    createMsgRoom(participants: $participants, msg: $msg) {
+      id
+      conversations {
+        id
+        participants {
+          id
+          name
+          profilePictures {
+            size
+            type
+            url
+          }
+        }
+      }
+    }
   }
 `
 
-export default function Room({ participants = [] }) {
+export default function Room({ participants, id }) {
+  const [createRoom] = useMutation(CREATE_ROOM)
+
+  return (
+    <S.Room>
+      {participants?.length && (
+        <ParticipantsPreview participants={participants} />
+      )}
+      <ReverseScroller>
+        {id && <Preview id={id} />}
+        <Thread
+          empty
+          onSend={msg => createRoom({ variables: { participants, msg } })}
+        />
+      </ReverseScroller>
+    </S.Room>
+  )
+}
+
+function ParticipantsPreview({ participants }) {
   const { data: { users = [] } = {} } = useQuery(PARTICIPANTS, {
     variables: { ids: participants },
   })
 
-  const [createRoom] = useMutation(CREATE_ROOM, { variables: { participants } })
-
   return (
-    <S.Room>
-      <S.Participants>
-        {users.map(({ name }) => name).join(', ')}
-      </S.Participants>
-      <S.Main>
-        <Thread empty onSend={createRoom} />
-      </S.Main>
-    </S.Room>
+    <S.Participants>{users.map(({ name }) => name).join(', ')}</S.Participants>
   )
 }
 
@@ -43,6 +69,14 @@ const S = {
     display: flex;
     flex-direction: column;
     height: 100%;
+
+    ${ReverseScroller.Scroller} {
+      flex-grow: 1;
+      overflow-y: auto;
+      box-sizing: border-box;
+      padding: 3rem 1rem;
+      align-items: center;
+    }
   `,
 
   Participants: styled.div`
@@ -54,15 +88,5 @@ const S = {
     box-sizing: border-box;
     padding-left: 1rem;
     flex-shrink: 0;
-  `,
-
-  Main: styled.div`
-    flex-grow: 1;
-    overflow-y: auto;
-    box-sizing: border-box;
-    padding: 3rem 1rem;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
   `,
 }

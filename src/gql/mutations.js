@@ -143,13 +143,8 @@ export const UPDATE_SLOTS = gql`
 `
 
 export const SEND_MESSAGE_EXT = gql`
-  mutation SendMessageExt(
-    $to: ID!
-    $msg: String!
-    $name: String
-    $email: String
-  ) {
-    messageExt(input: { to: $to, name: $name, email: $email, message: $msg })
+  mutation SendMessageExt($to: ID!, $msg: String!) {
+    messageExt(input: { to: $to, message: $msg })
   }
 `
 

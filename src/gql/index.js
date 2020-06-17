@@ -1,7 +1,11 @@
 import * as queries from './queries'
 import * as mutations from './mutations'
 import * as fragments from './fragments'
-import { useQuery as _useQuery, useMutation } from '@apollo/client'
+import {
+  useQuery as _useQuery,
+  useMutation,
+  useSubscription,
+} from '@apollo/client'
 import client, { hasError } from 'api'
 import gql from 'graphql-tag'
 
@@ -23,6 +27,7 @@ export {
   fragments,
   useQuery,
   useMutation,
+  useSubscription,
   hasError,
   gql,
   client,

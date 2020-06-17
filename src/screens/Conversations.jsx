@@ -32,6 +32,9 @@ export default function Conversations({ match }) {
         {selected.length > 0 && (
           <Room participants={selected.map(({ id }) => id)} />
         )}
+        {match.params.id && match.params.id !== 'new' && (
+          <Room id={match.params.id} />
+        )}
       </S.Right>
     </S.Conversations>
   )

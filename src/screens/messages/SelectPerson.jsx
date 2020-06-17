@@ -6,7 +6,7 @@ import { SearchInput } from 'components'
 import Tab from './ConversationTab'
 
 const SEARCH = gql`
-  query Search($term: String!) {
+  query SearchPerson($term: String!) {
     search(term: $term, maxUsers: 20) {
       users {
         user {
