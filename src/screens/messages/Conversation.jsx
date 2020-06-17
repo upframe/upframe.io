@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { gql, useQuery, useMutation } from 'gql'
-import Thread from './ThreadCard'
 import Preview from './ConversationPreview'
 import { ReverseScroller } from 'components'
+import StartThread from './StartThread'
 
 const PARTICIPANTS = gql`
   query ChatParticipants($ids: [ID!]!) {
@@ -17,7 +17,7 @@ const PARTICIPANTS = gql`
 
 const CREATE_ROOM = gql`
   mutation createConversation($participants: [ID!]!, $msg: String) {
-    createMsgRoom(participants: $participants, msg: $msg) {
+    createConversation(participants: $participants, msg: $msg) {
       id
       conversations {
         id
@@ -35,7 +35,7 @@ const CREATE_ROOM = gql`
   }
 `
 
-export default function Room({ participants, id }) {
+export default function Conversation({ participants, id }) {
   const [createRoom] = useMutation(CREATE_ROOM)
 
   return (
@@ -45,9 +45,11 @@ export default function Room({ participants, id }) {
       )}
       <ReverseScroller>
         {id && <Preview id={id} />}
-        <Thread
-          empty
-          onSend={msg => createRoom({ variables: { participants, msg } })}
+        <StartThread
+          {...(!id && {
+            onSend: msg => createRoom({ variables: { participants, msg } }),
+          })}
+          cardView={!id}
         />
       </ReverseScroller>
     </S.Room>

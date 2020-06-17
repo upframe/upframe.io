@@ -2,7 +2,7 @@ import { useState, useEffect, useContext, useReducer, useRef } from 'react'
 import context from '../context'
 import debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
-import { useQuery, queries } from 'gql'
+import { gql, queries, useQuery, useMutation, useSubscription } from 'gql'
 import isEqual from 'lodash/isEqual'
 import api from 'api'
 
@@ -164,4 +164,65 @@ export function useSignOut() {
     history.push('/login')
     localStorage.setItem('loggedin', false)
   }
+}
+
+const MSG_SUB = gql`
+  subscription MsgSubscription($channel: ID!) {
+    message(channel: $channel) {
+      id
+      content
+      author
+      time
+    }
+  }
+`
+
+const SEND_MESSAGE = gql`
+  mutation SendChatMsg($content: String!, $channel: ID!) {
+    sendMessage(content: $content, channel: $channel)
+  }
+`
+
+export function useChat(channel, messages) {
+  const [msgs, setMsgs] = useState(messages ?? [])
+  const [sendMessage] = useMutation(SEND_MESSAGE)
+  const { me } = useMe()
+
+  useSubscription(MSG_SUB, {
+    variables: { channel },
+    onSubscriptionData({ subscriptionData }) {
+      let i = msgs.findIndex(
+        ({ local, content }) =>
+          local && content === subscriptionData.data.message.content
+      )
+      if (i < 0) i = Infinity
+      setMsgs([
+        ...msgs.slice(0, i),
+        subscriptionData.data.message,
+        ...msgs.slice(i + 1),
+      ])
+    },
+  })
+
+  useEffect(() => {
+    setMsgs(messages ?? [])
+  }, [messages])
+
+  function send(content) {
+    setMsgs([
+      ...msgs,
+      {
+        id: Date.now(),
+        content,
+        author: me.id,
+        time: new Date().toISOString(),
+        local: true,
+      },
+    ])
+    sendMessage({
+      variables: { content, channel },
+    })
+  }
+
+  return [msgs, send]
 }

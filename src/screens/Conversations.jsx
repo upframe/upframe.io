@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import EmptyRoom from './messages/EmtpyRoom'
 import ConversationList from './messages/ConversationList'
 import { useHistory } from 'react-router-dom'
-import Room from './messages/Room'
+import Conversation from './messages/Conversation'
 import { path } from 'utils/url'
 
 export default function Conversations({ match }) {
@@ -30,10 +30,10 @@ export default function Conversations({ match }) {
           <EmptyRoom onToggleSelect={toggleSelect} />
         )}
         {selected.length > 0 && (
-          <Room participants={selected.map(({ id }) => id)} />
+          <Conversation participants={selected.map(({ id }) => id)} />
         )}
         {match.params.id && match.params.id !== 'new' && (
-          <Room id={match.params.id} />
+          <Conversation id={match.params.id} />
         )}
       </S.Right>
     </S.Conversations>
