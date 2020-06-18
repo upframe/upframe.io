@@ -197,7 +197,7 @@ export default function Redirects() {
               onChange={({ target }) => handleChange(key, fields[i], target)}
               {...(fields[i] === 'expires'
                 ? { type: 'number' }
-                : { pattern: '[a-zA-Z0-9:/_\\-.]+' })}
+                : { pattern: '[^\\s]+' })}
             />
           )),
           <Icon
