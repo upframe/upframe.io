@@ -1,13 +1,42 @@
-export default function Identicon({ ids }) {
-  const id = mergeIds(ids)
+import React, { useState, useEffect, useRef } from 'react'
+import styled from 'styled-components'
 
-  const grid = generate(id)
+export default function Identicon({ ids, size = 5 }) {
+  const [id, setId] = useState()
+  const [grid, setGrid] = useState()
+  const ref = useRef()
 
-  console.log(
-    grid.map(row => row.map(v => (v ? 'x' : ' ')).join(' ')).join('\n')
-  )
+  useEffect(() => {
+    setId(mergeIds(ids))
+  }, [ids])
 
-  return null
+  useEffect(() => {
+    if (!id) return
+    setGrid(generate(id, size))
+  }, [id, size])
+
+  useEffect(() => {
+    if (!ref.current || !grid) return
+
+    const ctx = ref.current.getContext('2d')
+    ctx.fillStyle = '#f00'
+
+    const clRange = 200
+    const n = (id.length / 3) | 0
+    ctx.fillStyle =
+      '#' +
+      id
+        .match(new RegExp(`.{${n}}`, 'g'))
+        .map(v =>
+          ((parseInt(v, 16) % clRange) + (256 - clRange) / 2).toString(16)
+        )
+        .join('')
+
+    for (const y in grid)
+      for (const x in grid[y]) if (grid[y][x]) ctx.fillRect(x, y, 1, 1)
+  }, [grid, ref, id])
+
+  return <S.Identicon width={size} height={size} ref={ref} />
 }
 
 const generate = (id, n = 5) => {
@@ -53,4 +82,12 @@ const mergeIds = (ids = []) => {
     tmp.pop()
   }
   return tmp[0]
+}
+
+const S = {
+  Identicon: styled.canvas`
+    width: 3rem;
+    height: 3rem;
+    image-rendering: pixelated;
+  `,
 }
