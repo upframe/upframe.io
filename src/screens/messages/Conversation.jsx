@@ -4,6 +4,8 @@ import { gql, useQuery, useMutation } from 'gql'
 import Preview from './ConversationPreview'
 import { ReverseScroller } from 'components'
 import StartThread from './StartThread'
+import { useHistory } from 'react-router-dom'
+import { path } from 'utils/url'
 
 const PARTICIPANTS = gql`
   query ChatParticipants($ids: [ID!]!) {
@@ -16,7 +18,7 @@ const PARTICIPANTS = gql`
 `
 
 const CREATE_ROOM = gql`
-  mutation createConversation($participants: [ID!]!, $msg: String) {
+  mutation CreateConversation($participants: [ID!]!, $msg: String) {
     createConversation(participants: $participants, msg: $msg) {
       id
       conversations {
@@ -30,13 +32,37 @@ const CREATE_ROOM = gql`
             url
           }
         }
+        channels {
+          id
+          messages {
+            edges {
+              node {
+                id
+                content
+                author
+                time
+              }
+            }
+          }
+        }
       }
     }
   }
 `
 
 export default function Conversation({ participants, id }) {
-  const [createRoom] = useMutation(CREATE_ROOM)
+  const history = useHistory()
+
+  const [createRoom] = useMutation(CREATE_ROOM, {
+    onCompleted({ createConversation: { conversations } }, ...rest) {
+      const conversation = conversations.find(
+        c =>
+          c.participants.length === participants.length &&
+          c.participants.every(({ id }) => participants.includes(id))
+      )
+      history.push(`${path(1)}/${conversation.id}`)
+    },
+  })
 
   return (
     <S.Room>
@@ -50,6 +76,7 @@ export default function Conversation({ participants, id }) {
             onSend: msg => createRoom({ variables: { participants, msg } }),
           })}
           cardView={!id}
+          conversationId={id}
         />
       </ReverseScroller>
     </S.Room>

@@ -5,6 +5,7 @@ import Thread from './ThreadCard'
 const CONVERSATION = gql`
   query ConversationPreview($conversationId: ID!) {
     conversation(conversationId: $conversationId) {
+      id
       channels {
         id
         messages {

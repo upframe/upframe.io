@@ -3,6 +3,28 @@ import styled from 'styled-components'
 import { Button, Title, Icon } from 'components'
 import Thread from './ThreadCard'
 import Input from './MsgInput'
+import { gql, useMutation } from 'gql'
+
+const START_THREAD = gql`
+  mutation StartThread($conversationId: ID!, $msg: String) {
+    createThread(conversationId: $conversationId, msg: $msg) {
+      id
+      channels {
+        id
+        messages {
+          edges {
+            node {
+              id
+              content
+              author
+              time
+            }
+          }
+        }
+      }
+    }
+  }
+`
 
 export default function StartThread({
   conversationId,
@@ -11,8 +33,15 @@ export default function StartThread({
 }) {
   const [card, setCard] = useState(cardView)
   const [input, setInput] = useState('')
+  const [startThread] = useMutation(START_THREAD, {
+    variables: { conversationId, msg: input },
+  })
 
-  function send() {}
+  function send() {
+    startThread()
+    setInput('')
+    setCard(false)
+  }
 
   return (
     <S.Start data-type={card ? 'card' : 'button'}>

@@ -192,8 +192,9 @@ export function useChat(channel, messages) {
     variables: { channel },
     onSubscriptionData({ subscriptionData }) {
       let i = msgs.findIndex(
-        ({ local, content }) =>
-          local && content === subscriptionData.data.message.content
+        ({ local, content, id }) =>
+          id === subscriptionData.data.message.id ||
+          (local && content === subscriptionData.data.message.content)
       )
       if (i < 0) i = Infinity
       setMsgs([

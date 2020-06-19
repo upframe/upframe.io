@@ -29,7 +29,7 @@ export default function Conversations({ match }) {
         {!select && !match.params.id && (
           <EmptyRoom onToggleSelect={toggleSelect} />
         )}
-        {selected.length > 0 && (
+        {select && selected.length > 0 && (
           <Conversation participants={selected.map(({ id }) => id)} />
         )}
         {match.params.id && match.params.id !== 'new' && (
