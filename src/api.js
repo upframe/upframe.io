@@ -31,7 +31,7 @@ const httpLink = ApolloLink.from([
 ])
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:3001/`,
+  uri: process.env.REACT_APP_WS_HOST,
   options: {
     reconnect: true,
   },
