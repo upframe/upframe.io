@@ -1,36 +1,7 @@
 import React from 'react'
-import { gql, useQuery } from 'gql'
 import Thread from './ThreadCard'
 
-const CONVERSATION = gql`
-  query ConversationPreview($conversationId: ID!) {
-    conversation(conversationId: $conversationId) {
-      id
-      channels {
-        id
-        messages {
-          edges {
-            node {
-              id
-              content
-              author
-              time
-            }
-          }
-        }
-      }
-    }
-  }
-`
-
-export default function ConversationPreview({ id }) {
-  const { data: { conversation: { channels = [] } = {} } = {} } = useQuery(
-    CONVERSATION,
-    {
-      variables: { conversationId: id },
-    }
-  )
-
+export default function ConversationPreview({ channels }) {
   return (
     <>
       {channels.map(({ id, messages }) => (

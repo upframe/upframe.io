@@ -18,6 +18,8 @@ const CONVERSATION_LIST = gql`
         participants {
           id
           name
+          handle
+          headline
           profilePictures {
             size
             type

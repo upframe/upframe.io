@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ProfilePicture, Title, Text, Checkbox } from 'components'
+import { ProfilePicture, Title, Text, Checkbox, Identicon } from 'components'
 import { useMe } from 'utils/hooks'
 import { Link } from 'react-router-dom'
 import { path } from 'utils/url'
@@ -18,10 +18,22 @@ export default function User({ id, selected, onSelect, users = [] }) {
       })}
     >
       <CondLink {...(id && { to: `${path(1)}/${id}` })}>
-        <ProfilePicture imgs={users[0].profilePictures} size="3rem" />
+        {users.length > 1 ? (
+          <Identicon ids={users.map(({ id }) => id)} />
+        ) : (
+          <ProfilePicture imgs={users[0].profilePictures} size="3rem" />
+        )}
         <S.TextSec>
-          <Title s4>{users[0].name}</Title>
-          <Text>{users[0].headline ?? '\u00a0'}</Text>
+          <Title s4>
+            {users.length === 1
+              ? users[0].name
+              : users.map(({ name }) => name.split(' ')[0]).join(', ')}
+          </Title>
+          <Text>
+            {users.length > 1
+              ? `${users.length + 1} participants`
+              : users[0].headline ?? '\u00a0'}
+          </Text>
         </S.TextSec>
         {typeof onSelect === 'function' && (
           <Checkbox checked={selected} onChange={onSelect} />
