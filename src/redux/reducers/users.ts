@@ -1,17 +1,10 @@
-import defaultState from '../defaultState'
-import { assemble as a } from '../actions'
+import { reducer } from '../actions'
 
-export default function(
-  state = defaultState.users,
-  action: a<'ADD_USER'>
-): State['users'] {
-  switch (action.type) {
+export default reducer('users')<'ADD_USER'>((state, { type, value }) => {
+  switch (type) {
     case 'ADD_USER':
-      return {
-        ...state,
-        [action.value.id]: action.value,
-      }
+      return { ...state, [value.id]: value }
     default:
       return state
   }
-}
+})
