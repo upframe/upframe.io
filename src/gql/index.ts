@@ -9,7 +9,10 @@ import {
 import client, { hasError } from 'api'
 import gql from 'graphql-tag'
 
-const useQuery = (query, { onCompleted: _onCompleted, ...opts } = {}) => {
+const useQuery: typeof _useQuery = (
+  query,
+  { onCompleted: _onCompleted, ...opts } = {}
+) => {
   const { networkStatus, ...rest } = _useQuery(query, {
     ...opts,
     ...(_onCompleted && {
