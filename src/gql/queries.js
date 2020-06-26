@@ -76,20 +76,10 @@ export const ME_ID = gql`
 export const ME = gql`
   query Me {
     me {
-      ...PersonBase
-      role
-      email
-      searchable
-      ... on Mentor {
-        calendarConnected
-        visibility
-      }
-      ...Timezone
-      inferTz
+      ...MeBase
     }
   }
-  ${person.base}
-  ${person.timezone}
+  ${person.meBase}
 `
 
 export const SETTINGS_PROFILE = gql`

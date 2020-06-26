@@ -125,4 +125,23 @@ export const person = {
       }
     `
   },
+
+  get meBase() {
+    return gql`
+      fragment MeBase on Person {
+        ...PersonBase
+        role
+        email
+        searchable
+        ... on Mentor {
+          calendarConnected
+          visibility
+        }
+        ...Timezone
+        inferTz
+      }
+      ${person.base}
+      ${person.timezone}
+    `
+  },
 }

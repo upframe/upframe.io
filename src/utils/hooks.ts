@@ -6,6 +6,16 @@ import { gql, queries, useQuery, useMutation, useSubscription } from 'gql'
 import isEqual from 'lodash/isEqual'
 import api from 'api'
 import { Me } from 'gql/types'
+import {
+  useSelector as useReduxSelector,
+  TypedUseSelectorHook,
+  useDispatch,
+} from 'react-redux'
+import action from 'redux/actions'
+
+export { useHistory }
+export const useSelector: TypedUseSelectorHook<State> = useReduxSelector
+export { useDispatch }
 
 export function useScrollAtTop() {
   const [atTop, setAtTop] = useState(window.scrollY === 0)
@@ -90,11 +100,29 @@ export function useCalendars(requested: string[]) {
 }
 
 export function useMe() {
-  const { data: { me } = {}, loading, called } = useQuery<Me>(queries.ME)
-  return { me, loading, called }
-}
+  const [loading, setLoading] = useState<boolean | null>(null)
 
-export { useHistory }
+  const me = useSelector(({ users, meId }) =>
+    meId === null ? null : users[meId]
+  )
+
+  const dispatch = useDispatch()
+
+  if (me && loading) setLoading(false)
+
+  if (!me && !loading) {
+    setLoading(true)
+    api
+      .query<Me>({ query: queries.ME })
+      .then(({ data }) => {
+        if (!data?.me) return
+        dispatch(action('ADD_USER', { value: data.me }))
+        dispatch(action('SET_ME_ID', { value: data.me.id }))
+      })
+  }
+
+  return { me, loading: loading ?? true }
+}
 
 export function useDebouncedInputCall(
   input: unknown,
