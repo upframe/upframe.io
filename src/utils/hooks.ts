@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { gql, queries, useQuery, useMutation, useSubscription } from 'gql'
 import isEqual from 'lodash/isEqual'
 import api from 'api'
+import { Me } from 'gql/types'
 
 export function useScrollAtTop() {
   const [atTop, setAtTop] = useState(window.scrollY === 0)
@@ -43,11 +44,11 @@ export function useScrollAtTop() {
   return atTop
 }
 
-export const useCtx = () => useContext(context)
+export const useCtx = () => useContext(context) as any
 
-export function useCalendars(requested) {
-  const [calNotFetched, setCalNotFetched] = useState([])
-  const [calendars, setCalendars] = useState([])
+export function useCalendars(requested: string[]) {
+  const [calNotFetched, setCalNotFetched] = useState<string[]>([])
+  const [calendars, setCalendars] = useState<any[]>([])
   const { currentUser } = useCtx()
 
   const {
@@ -89,14 +90,14 @@ export function useCalendars(requested) {
 }
 
 export function useMe() {
-  const { data: { me } = {}, loading, called } = useQuery(queries.ME)
+  const { data: { me } = {}, loading, called } = useQuery<Me>(queries.ME)
   return { me, loading, called }
 }
 
 export { useHistory }
 
 export function useDebouncedInputCall(
-  input,
+  input: unknown,
   { initial = input, inputDelay = 1.7, maxDelay = 200 } = {}
 ) {
   const [lastInput, setLastInput] = useState(input)
@@ -104,7 +105,7 @@ export function useDebouncedInputCall(
     (c, v) => (v === undefined ? [] : [...c, ...(Array.isArray(v) ? v : [v])]),
     []
   )
-  const [cancelGo, setCancelGo] = useState()
+  const [cancelGo, setCancelGo] = useState<ReturnType<typeof setTimeout>>()
   const [debounced, setDebounced] = useState(initial)
 
   const setInputStampsRef = useRef(setInputStamps)
@@ -130,7 +131,7 @@ export function useDebouncedInputCall(
     setCancelGo(
       setTimeout(
         () => {
-          setInputStampsRef.current()
+          setInputStampsRef.current(undefined)
           setDebouncedRef.current(inputRef.current)
         },
         isNaN(inputAvg) ? maxDelay : Math.min(inputAvg * inputDelay, maxDelay)
@@ -146,10 +147,10 @@ export function useSignIn() {
   const history = useHistory()
   const { setCurrentUser } = useCtx()
 
-  return user => {
+  return (user: any) => {
     api.writeQuery({ query: queries.ME, data: { me: user } })
     setCurrentUser(user.id)
-    localStorage.setItem('loggedin', true)
+    localStorage.setItem('loggedin', 'true')
     history.push('/')
   }
 }
@@ -162,7 +163,7 @@ export function useSignOut() {
     api.writeQuery({ query: queries.ME, data: { me: null } })
     setCurrentUser(null)
     history.push('/login')
-    localStorage.setItem('loggedin', false)
+    localStorage.setItem('loggedin', 'false')
   }
 }
 
@@ -183,7 +184,7 @@ const SEND_MESSAGE = gql`
   }
 `
 
-export function useChat(channel, messages) {
+export function useChat(channel: any, messages: any) {
   const [msgs, setMsgs] = useState(messages ?? [])
   const [sendMessage] = useMutation(SEND_MESSAGE)
   const { me } = useMe()
@@ -215,7 +216,7 @@ export function useChat(channel, messages) {
       {
         id: Date.now(),
         content,
-        author: me.id,
+        author: me?.id,
         time: new Date().toISOString(),
         local: true,
       },

@@ -25,6 +25,7 @@ yarn-error.log*
 .env
 
 _fragmentTypes.json
+src/gql/types
 
 /*.txt
 tests
