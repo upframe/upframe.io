@@ -1,43 +1,11 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense } from 'react'
 import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Navbar, Spinner, NotificationStack, ScrollToTop } from './components'
 import Routes from './Routes'
-import Context from './context'
 import styles from './styles/app.module.scss'
-import { queries, mutations, useQuery, useMutation } from './gql'
 
 export default function App() {
-  const [ctx, setCtx] = useState({
-    currentUser: null,
-  })
-
-  const [setTz] = useMutation(mutations.SET_TIMEZONE)
-
-  function setCurrentUser(currentUser) {
-    setCtx({ ...ctx, currentUser })
-  }
-
-  useQuery(queries.ME_ID, {
-    skip: ctx.currentUser,
-    errorPolicy: 'ignore',
-    onCompleted({ me } = {}) {
-      if (!me) return
-      setCurrentUser(me.id)
-      localStorage.setItem('loggedin', true)
-      if (
-        !me.inferTz ||
-        me.timezone?.iana === Intl.DateTimeFormat().resolvedOptions().timeZone
-      )
-        return
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
-      if (tz) setTz({ variables: { tz } })
-    },
-    onError() {
-      localStorage.setItem('loggedin', false)
-    },
-  })
-
   return (
     <>
       <Helmet>
@@ -62,21 +30,14 @@ export default function App() {
         <meta name="twitter:card" content="summary_large_image"></meta>
       </Helmet>
       <Router>
-        <Context.Provider
-          value={{
-            ...ctx,
-            setCurrentUser,
-          }}
-        >
-          <div className={styles.app}>
-            <Navbar />
-            <Suspense fallback={<Spinner centered />}>
-              <ScrollToTop />
-              <Routes />
-            </Suspense>
-            <NotificationStack />
-          </div>
-        </Context.Provider>
+        <div className={styles.app}>
+          <Navbar />
+          <Suspense fallback={<Spinner centered />}>
+            <ScrollToTop />
+            <Routes />
+          </Suspense>
+          <NotificationStack />
+        </div>
       </Router>
     </>
   )

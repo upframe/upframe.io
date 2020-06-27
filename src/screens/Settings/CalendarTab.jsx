@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useCtx, useSignOut, useCalendars, useHistory } from 'utils/hooks'
+import { useSelector, useSignOut, useCalendars, useHistory } from 'utils/hooks'
 import { haveSameContent } from 'utils/array'
 import { Title, Text } from 'components'
 import Item from './Item'
@@ -15,7 +15,7 @@ import { notify } from 'notification'
 export default function CalendarTab() {
   const [remoteSlots, setRemoteSlots] = useState([])
   const [slots, setSlots] = useState(remoteSlots)
-  const { currentUser } = useCtx()
+  const currentUser = useSelector(s => s.meId)
   const [showCalendars, setShowCalendars] = useState([])
   const [calendars, loading] = useCalendars(showCalendars)
   const [extEvents, setExtEvents] = useState([])

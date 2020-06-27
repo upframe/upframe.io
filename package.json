@@ -13,8 +13,8 @@
     "format:fix": "prettier --write \"./**/*.{js,ts,jsx,tsx}\"",
     "lint:check": "eslint . --ext .js,.jsx --cache",
     "lint:fix": "eslint . --ext .js,.tsx --fix --cache",
-    "lint": "yarn lint:check && yarn format:check",
-    "format": "yarn lint:fix && yarn format:fix",
+    "lint": "npm run lint:check && npm run format:check",
+    "format": "npm run lint:fix && npm run format:fix",
     "gql:types": "rm -rf src/gql/types/* && npx apollo client:download-schema src/gql/types/schema.json && npx apollo client:codegen --target typescript --outputFlat src/gql/types && npx graphql-codegen && node src/gql/bundleTypes && prettier --write \"./src/gql/types/*.ts\""
   },
   "browserslist": [

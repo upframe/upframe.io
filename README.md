@@ -11,7 +11,7 @@ To setup the project locally run
 ```sh
 git clone https://github.com/upframe/upframe.io
 cd upframe.io
-yarn install
+npm install
 ```
 
 You will also need to set up the [API](https://github.com/upframe/graphapi) locally.
@@ -29,7 +29,7 @@ to connect the frontend to your locally running API.
 You can now start the frontend by running
 
 ```sh
-yarn start
+npm start
 ```
 
 # Code Structure

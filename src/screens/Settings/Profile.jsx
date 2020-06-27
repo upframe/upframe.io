@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
-import { useCtx } from 'utils/hooks'
+import { useSelector } from 'utils/hooks'
 import { haveSameContent } from 'utils/array'
 import styles from './profile.module.scss'
 import { useQuery, queries, mutations, useMutation } from 'gql'
@@ -17,11 +17,11 @@ import {
 
 export default function Profile() {
   const fileInput = useRef(null)
-  const { currentUser } = useCtx()
+  const currentUser = useSelector(s => s.meId)
   const [diff, setDiff] = useState({})
   const [invalid, setInvalid] = useState([])
   const [tags, setTags] = useState([])
-  const [photo, setPhoto] = useState(localStorage.getItem('photo'))
+  const [photo, setPhoto] = useState()
   const [showRemove, setShowRemove] = useState(false)
 
   const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_PROFILE, {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Input, Title, Button, Spinner, Page, Text } from '../components'
-import { useMe, useHistory, useCtx } from 'utils/hooks'
+import { useMe, useHistory, useDispatch } from 'utils/hooks'
 import { queries, mutations, useQuery, useMutation } from 'gql'
 import { notify } from 'notification'
 
@@ -10,7 +10,7 @@ export default function ResetPassword({ match }) {
   const [email, setEmail] = useState()
   const { me, loading } = useMe()
   const history = useHistory()
-  const { setCurrentUser } = useCtx()
+  const dispatch = useDispatch()
   const token = match?.params?.token
 
   const { loading: tokenLoading } = useQuery(queries.VERIFY_TOKEN, {
@@ -25,7 +25,7 @@ export default function ResetPassword({ match }) {
   const [changePassword] = useMutation(mutations.CHANGE_PASSWORD, {
     variables: { password, token },
     onCompleted({ changePassword: user }) {
-      setCurrentUser(user.id)
+      dispatch('SET_ME_ID', user.id)
       localStorage.setItem('loggedin', true)
       history.push('/settings')
     },
