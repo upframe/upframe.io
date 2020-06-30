@@ -11,12 +11,12 @@ import {
   Icon,
 } from '../../components/'
 import { notify } from 'notification'
-import { useSelector } from 'utils/hooks'
+import { useMe } from 'utils/hooks'
 
 export default function Request({ mentor, onClose, slot }) {
   const [msg, setMsg] = useState('')
   const [valid, setValid] = useState(true)
-  const currentUser = useSelector(s => s.meId)
+  const { me } = useMe()
 
   const [sendMessage] = useMutation(mutations.SEND_MESSAGE_EXT, {
     variables: { msg, to: mentor.id },
@@ -34,8 +34,8 @@ export default function Request({ mentor, onClose, slot }) {
   })
 
   useEffect(() => {
-    setValid(msg.length && currentUser)
-  }, [msg, currentUser])
+    setValid(msg.length && me)
+  }, [msg, me])
 
   async function submit() {
     if (slot) requestSlot()

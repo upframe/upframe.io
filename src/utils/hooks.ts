@@ -10,31 +10,10 @@ import {
   useSubscription,
 } from 'gql'
 import isEqual from 'lodash/isEqual'
-import api, { hasError } from 'api'
+import api from 'api'
 import { Me } from 'gql/types'
-import {
-  useSelector as useReduxSelector,
-  TypedUseSelectorHook,
-  useDispatch as useDispatchOrg,
-} from 'react-redux'
-import action, { Actions } from 'redux/actions'
 
 export { useHistory }
-export const useSelector: TypedUseSelectorHook<State> = useReduxSelector
-
-export function useDispatch() {
-  const dispatch = useDispatchOrg()
-
-  return <
-    T extends keyof Actions,
-    K extends Actions[T] extends { value: any } ? Actions[T]['value'] : never
-  >(
-    type: T,
-    ...[payload]: CondOpt<Actions[T], K>
-  ) =>
-    // @ts-ignore
-    dispatch(action(type, payload))
-}
 
 export function useScrollAtTop() {
   const [atTop, setAtTop] = useState(window.scrollY === 0)
@@ -76,13 +55,13 @@ export function useScrollAtTop() {
 export function useCalendars(requested: string[]) {
   const [calNotFetched, setCalNotFetched] = useState<string[]>([])
   const [calendars, setCalendars] = useState<any[]>([])
-  const currentUser = useSelector(state => state.meId)
+  const { me } = useMe()
 
   const {
     data: { user: { calendars: gcals = [] } = {} } = {},
     loading,
   } = useQuery(queries.GCAL_EVENTS, {
-    variables: { calendarIds: calNotFetched, id: currentUser },
+    variables: { calendarIds: calNotFetched, id: me?.id, skip: !me },
   })
 
   // add to fetch list
@@ -117,42 +96,17 @@ export function useCalendars(requested: string[]) {
 }
 
 export function useMe() {
-  const [loading, setLoading] = useState<boolean | null>(null)
-  const [setTz] = useMutation(mutations.SET_TIMEZONE)
+  const [setTz, { loading: tzChanging }] = useMutation(mutations.SET_TIMEZONE)
 
-  const me = useSelector(({ users, meId }) =>
-    meId === null ? null : users[meId]
-  )
+  const { data, loading } = useQuery<Me>(queries.ME, {
+    onCompleted({ me }) {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
+      if (tzChanging || !tz || !me?.inferTz || me.timezone?.iana === tz) return
+      setTz({ variables: { tz } })
+    },
+  })
 
-  const dispatch = useDispatch()
-
-  if (me && loading) setLoading(false)
-
-  if (!me && !loading) {
-    setLoading(true)
-    api
-      .query<Me>({ query: queries.ME })
-      .then(({ data }) => {
-        if (!data?.me) return dispatch('TOGGLE_LOGGED_IN', false)
-        dispatch('ADD_USER', { value: data.me })
-        dispatch('SET_ME_ID', { value: data.me.id })
-        dispatch('TOGGLE_LOGGED_IN', true)
-
-        if (
-          !data.me.inferTz ||
-          data.me.timezone?.iana ===
-            Intl.DateTimeFormat().resolvedOptions().timeZone
-        )
-          return
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
-        if (tz) setTz({ variables: { tz } })
-      })
-      .catch(e => {
-        if (!hasError(e, 'NOT_LOGGED_IN')) throw e
-      })
-  }
-
-  return { me, loading: loading ?? true }
+  return { me: data?.me, loading: loading ?? true }
 }
 
 export function useDebouncedInputCall(
@@ -204,25 +158,19 @@ export function useDebouncedInputCall(
 
 export function useSignIn() {
   const history = useHistory()
-  const dispatch = useDispatch()
 
   return (user: any) => {
     api.writeQuery({ query: queries.ME, data: { me: user } })
-    dispatch('SET_ME_ID', user.id)
-    dispatch('TOGGLE_LOGGED_IN', true)
     history.push('/')
   }
 }
 
 export function useSignOut() {
   const history = useHistory()
-  const dispatch = useDispatch()
 
   return () => {
     api.writeQuery({ query: queries.ME, data: { me: null } })
-    dispatch('SET_ME_ID', { value: null })
     history.push('/login')
-    dispatch('TOGGLE_LOGGED_IN', false)
   }
 }
 

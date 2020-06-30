@@ -3,13 +3,12 @@ import Landing from './Landing'
 import MentorList from './MentorList'
 import { Title, Text, Footer, LoginBar } from '../../components'
 import Categories from './Categories'
-import { useSelector } from 'utils/hooks'
 import { queries, useQuery } from 'gql'
 import Home from '../Home'
 
 export default function Main() {
-  const { loggedIn } = useSelector(s => s)
   const { data: { mentors = [] } = {} } = useQuery(queries.MENTORS)
+  const loggedIn = localStorage.getItem('loggedIn') === 'true'
 
   return (
     <>

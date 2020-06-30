@@ -6,8 +6,6 @@ import App from './App'
 import { ApolloProvider } from '@apollo/client'
 import client from './api'
 import * as Sentry from '@sentry/browser'
-import { Provider } from 'react-redux'
-import { store } from './redux/store'
 
 if (process.env.NODE_ENV !== 'development')
   Sentry.init({
@@ -15,10 +13,8 @@ if (process.env.NODE_ENV !== 'development')
   })
 
 ReactDOM.render(
-  <Provider store={store}>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </Provider>,
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
   document.getElementById('root')
 )

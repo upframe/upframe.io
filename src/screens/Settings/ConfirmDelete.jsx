@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import { Title, Text, Input, Button } from 'components'
-import { useDispatch, useHistory, useMe } from 'utils/hooks'
+import { useMe, useSignOut } from 'utils/hooks'
 import styles from './confirmDelete.module.scss'
 import { notify } from 'notification'
 import { mutations, useMutation } from 'gql'
 
 export default function ConfirmDelete({ onCancel }) {
-  const dispatch = useDispatch()
   const { me } = useMe()
   const [handle, setHandle] = useState('')
-  const history = useHistory()
+  const signOut = useSignOut()
 
   const [deleteAccount] = useMutation(mutations.DELETE_ACCOUNT, {
     variables: {
@@ -23,10 +22,7 @@ export default function ConfirmDelete({ onCancel }) {
     },
     onCompleted() {
       notify('account deleted')
-      setTimeout(() => {
-        dispatch('SET_ME_ID', { value: null })
-        history.push('/')
-      }, 2000)
+      setTimeout(signOut, 1500)
     },
   })
 

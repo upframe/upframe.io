@@ -11,6 +11,7 @@ export default function User({ id, selected, onSelect, users = [] }) {
 
   const CondLink = id ? Link : React.Fragment
 
+  if (!users.length) return null
   return (
     <S.User
       {...(typeof onSelect === 'function' && {
@@ -21,7 +22,7 @@ export default function User({ id, selected, onSelect, users = [] }) {
         {users.length > 1 ? (
           <Identicon ids={users.map(({ id }) => id)} />
         ) : (
-          <ProfilePicture imgs={users[0].profilePictures} size="3rem" />
+          <ProfilePicture imgs={users[0]?.profilePictures} size="3rem" />
         )}
         <S.TextSec>
           <Title s4>
@@ -32,7 +33,7 @@ export default function User({ id, selected, onSelect, users = [] }) {
           <Text>
             {users.length > 1
               ? `${users.length + 1} participants`
-              : users[0].headline ?? '\u00a0'}
+              : users[0]?.headline ?? '\u00a0'}
           </Text>
         </S.TextSec>
         {typeof onSelect === 'function' && (

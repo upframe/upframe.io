@@ -15,7 +15,7 @@
     "lint:fix": "eslint . --ext .js,.tsx --fix --cache",
     "lint": "npm run lint:check && npm run format:check",
     "format": "npm run lint:fix && npm run format:fix",
-    "gql:types": "rm -rf src/gql/types/* && npx apollo client:download-schema src/gql/types/schema.json && npx apollo client:codegen --target typescript --outputFlat src/gql/types && npx graphql-codegen && node src/gql/bundleTypes && prettier --write \"./src/gql/types/*.ts\""
+    "gql:types": "rm -rf src/gql/types && mkdir src/gql/types && npx apollo client:download-schema src/gql/types/schema.json && npx apollo client:codegen --target typescript --outputFlat src/gql/types && npx graphql-codegen && node src/gql/bundleTypes && prettier --write \"./src/gql/types/*.ts\""
   },
   "browserslist": [
     ">0.2%",
@@ -42,12 +42,9 @@
     "react-big-calendar": "^0.20.2",
     "react-dom": "^16.7.0",
     "react-helmet": "^5.2.1",
-    "react-redux": "^7.2.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.4.1",
     "react-spring": "^8.0.27",
-    "redux": "^4.0.5",
-    "redux-saga": "^1.1.3",
     "styled-components": "^5.0.1",
     "subscriptions-transport-ws": "^0.9.16",
     "topojson-client": "^3.1.0"
@@ -63,7 +60,6 @@
     "@types/node": "^14.0.14",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
-    "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@typescript-eslint/eslint-plugin": "^2.31.0",
     "@typescript-eslint/parser": "^2.31.0",

@@ -3,18 +3,17 @@ import { Title, Text, Checkbox, Spinner } from 'components'
 import Item from './Item'
 import IntervalSelect from './IntervalSelect'
 import styles from './notifications.module.scss'
-import { useSelector, useMe } from 'utils/hooks'
+import { useMe } from 'utils/hooks'
 import { queries, mutations, useQuery, useMutation } from 'gql'
 
 export default function Notifications() {
-  const currentUser = useSelector(s => s.meId)
   const { me } = useMe()
   const [mail, setMail] = useState(false)
 
   const { data: { user = {} } = {} } = useQuery(
     queries.SETTINGS_NOTIFICATIONS,
     {
-      variables: { id: currentUser },
+      variables: { id: me.id, skip: !me },
     }
   )
 
