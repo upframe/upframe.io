@@ -1,42 +1,79 @@
 import React from 'react'
-import styles from './icon.module.scss'
-import { classes } from 'utils/css'
+import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-export default function Icon({ icon = 'info', onClick, linkTo }) {
+interface Props {
+  icon: keyof typeof svg
+  onClick?(): void
+  linkTo?: string
+}
+
+export default function Icon({ icon = 'info', onClick, linkTo }: Props) {
   const Wrap = linkTo ? Link : React.Fragment
 
+  const mods = [
+    ...(onClick ? ['clickable'] : []),
+    ...('color' in svg[icon] ? ['color'] : []),
+  ]
+
+  const sel: SvgIcon = svg[icon]
   return (
+    // @ts-ignore
     <Wrap
       {...(linkTo && {
-        href: linkTo,
+        to: linkTo,
         target: '_blank',
         rel: 'noopener noreferrer',
         'data-type': 'social',
       })}
     >
-      <svg
-        className={classes(styles.icon, {
-          [styles.clickable]: onClick,
-          [styles.color]: !('color' in svg[icon]),
-        })}
+      <S.Icon
+        {...(mods.length > 0 && { ['data-mod']: mods.join(' ') })}
         xmlns="http://www.w3.org/2000/svg"
-        width={svg[icon].size || '24'}
-        height={svg[icon].size || '24'}
-        viewBox={`0 0 ${svg[icon].size || '24'} ${svg[icon].size || '24'}`}
+        width={sel.size ?? '24'}
+        height={sel.size || '24'}
+        viewBox={`0 0 ${sel.size || '24'} ${sel.size || '24'}`}
         {...{ onClick }}
       >
-        {'path' in svg[icon] && (
-          <path
-            d={svg[icon].path}
-            {...svg[icon].props}
-            fill={svg[icon].color}
-          />
-        )}
-        {'markup' in svg[icon] && svg[icon].markup}
-      </svg>
+        {'path' in sel && <path d={sel.path} {...sel.props} fill={sel.color} />}
+        {'markup' in sel && sel.markup}
+      </S.Icon>
     </Wrap>
   )
+}
+
+const S = {
+  Icon: styled.svg`
+    * {
+      pointer-events: none;
+    }
+
+    &[data-mod~='color'] > path {
+      fill: var(--cl-text-strong);
+    }
+
+    &[data-mod~='clicakble'] {
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      border-radius: 50%;
+
+      &:hover {
+        path {
+          fill: var(--cl-accent);
+        }
+
+        background-color: #feeef2;
+      }
+    }
+  `,
+}
+
+type SvgIcon = {
+  path?: string
+  markup?: JSX.Element
+  size?: number
+  props?: { [k: string]: string }
+  color?: string
 }
 
 const svg = {

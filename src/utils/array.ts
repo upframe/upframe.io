@@ -6,3 +6,8 @@ export function haveSameContent(arr1, arr2, comp = (a, b) => a === b) {
     return i === -1 ? false : (arr2Cp.splice(i, 1), true)
   })
 }
+
+export const compose = (
+  input: [any, any][],
+  cond: (c: any, v?: any) => boolean = c => !!c
+): any[] => input.flatMap(([c, v]) => (cond(c, v) ? [v] : []))
