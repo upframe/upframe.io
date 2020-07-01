@@ -46,7 +46,7 @@ export default function ResetPassword({ match }) {
           requestReset()
         }}
       >
-        <Title s3>Reset your Password</Title>
+        <Title size={3}>Reset your Password</Title>
         <Text>
           Enter your account's email address and we will send you a password
           reset link.
@@ -72,7 +72,7 @@ export default function ResetPassword({ match }) {
         if (password.length >= 8 && password === control) changePassword()
       }}
     >
-      <Title s3>Reset Password</Title>
+      <Title size={3}>Reset Password</Title>
       <Input
         type="email"
         value={me?.email}

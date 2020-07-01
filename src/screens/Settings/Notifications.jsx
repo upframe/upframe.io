@@ -29,7 +29,7 @@ export default function Notifications() {
   if (!user.notificationPrefs) return <Spinner centered />
   return (
     <div className={styles.notifications}>
-      <Title s2>Email Notifications</Title>
+      <Title size={2}>Email Notifications</Title>
       <Text>Get emails to find out about what’s new on Upframe.</Text>
       {me.role !== 'USER' && (
         <>
@@ -51,7 +51,7 @@ export default function Notifications() {
           </Item>
         </>
       )}
-      <Title s2>Emails from Upframe</Title>
+      <Title size={2}>Emails from Upframe</Title>
       <div className={styles.emailCheck}>
         <Checkbox
           checked={user.notificationPrefs.receiveEmails}

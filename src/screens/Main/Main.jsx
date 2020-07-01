@@ -17,7 +17,7 @@ export default function Main() {
         {loggedIn && (
           <>
             <Categories />
-            <Title s2>Featured Mentors</Title>
+            <Title size={2}>Featured Mentors</Title>
             <Text>
               Our in-house curators work alongside with startup founders,
               community shapers and domain experts across Europe to make sure

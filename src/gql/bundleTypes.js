@@ -33,12 +33,6 @@ fs.writeFileSync(
   fs
     .readdirSync(typeDir)
     .filter(v => !/globalTypes/.test(v) && /\.ts$/.test(v))
-    .map(
-      file =>
-        `export * from './${file
-          .split('.')
-          .slice(0, -1)
-          .join('.')}'`
-    )
+    .map(file => `export * from './${file.split('.').slice(0, -1).join('.')}'`)
     .join('\n')
 )

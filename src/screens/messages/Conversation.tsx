@@ -1,121 +1,62 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Redirect, useHistory } from 'react-router-dom'
-import { gql, useQuery, useMutation } from 'gql'
 import Preview from './ConversationPreview'
 import { ReverseScroller, Spinner } from 'components'
 import StartThread from './StartThread'
 import { path } from 'utils/url'
 import Participants from './Participants'
 import { notify } from 'notification'
+import { Conversation, useConversation } from 'conversations'
 
-const CREATE_ROOM = gql`
-  mutation CreateConversation($participants: [ID!]!, $msg: String) {
-    createConversation(participants: $participants, msg: $msg) {
-      id
-      conversations {
-        id
-        participants {
-          id
-          name
-          profilePictures {
-            size
-            type
-            url
-          }
-        }
-        channels {
-          id
-          messages {
-            edges {
-              node {
-                id
-                content
-                author
-                time
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`
+type ExistProps = { id: string }
+type NewProps = { participants: string[] }
 
-const CONVERSATION = gql`
-  query Conversation($conversationId: ID!) {
-    conversation(conversationId: $conversationId) {
-      id
-      channels {
-        id
-        messages {
-          edges {
-            node {
-              id
-              content
-              author
-              time
-            }
-          }
-        }
-      }
-      participants {
-        id
-      }
-    }
-  }
-`
-
-export default function Conversation({ participants, id }) {
+export default function ConSwitch(props: ExistProps | NewProps) {
   return (
     <S.Room>
-      {id ? <Existing id={id} /> : <New participants={participants} />}
+      {'id' in props ? (
+        <Existing id={props.id} />
+      ) : (
+        <New participants={props.participants} />
+      )}
     </S.Room>
   )
 }
 
-function Existing({ id }) {
-  const { data: { conversation } = {}, loading } = useQuery(CONVERSATION, {
-    variables: { conversationId: id },
-  })
-  if (loading) return <Spinner />
+function Existing({ id }: ExistProps) {
+  const { conversation } = useConversation(id)
+
+  if (conversation === undefined) return <Spinner />
   if (conversation === null) {
     notify("conversation doesn't exist")
     return <Redirect to={path(1)} />
   }
   return (
     <>
-      <Participants ids={conversation.participants?.map(({ id }) => id)} />
+      <Participants ids={conversation.participants} />
       <ReverseScroller>
-        {id && <Preview channels={conversation.channels} />}
+        {id && <Preview conversationId={id} />}
         <StartThread cardView={false} conversationId={id} />
       </ReverseScroller>
     </>
   )
 }
 
-function New({ participants }) {
+function New({ participants }: NewProps) {
   const history = useHistory()
 
-  const [createRoom] = useMutation(CREATE_ROOM, {
-    onCompleted({ createConversation: { conversations } }) {
-      const conversation = conversations.find(
-        c =>
-          c.participants.length === participants.length &&
-          c.participants.every(({ id }) => participants.includes(id))
-      )
-      history.push(`${path(1)}/${conversation.id}`)
-    },
-  })
+  function createRoom(msg: string) {
+    Conversation.create(participants, msg).then(({ id }) => {
+      history.push(`${path(1)}/${id}`)
+    })
+  }
 
   return (
     <>
       <Participants ids={participants} />
       <ReverseScroller>
-        <StartThread
-          onSend={msg => createRoom({ variables: { participants, msg } })}
-          cardView={true}
-        />
+        <StartThread onSend={msg => createRoom(msg)} cardView={true} />
       </ReverseScroller>
     </>
   )

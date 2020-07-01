@@ -2,7 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { ordNum, isSameDay, isPreviousDay } from 'utils/date'
 
-function Time({ children: date }) {
+interface Props {
+  children: Date
+}
+
+function Time({ children: date }: Props) {
   let suffix = 'AM'
   let hour = date.getHours()
   if (hour >= 12) {

@@ -11,7 +11,7 @@ export default function Meetup({ mentor, onSlot, onMsg }) {
 
   return (
     <Card className={styles.meetup}>
-      <Title s3>Book a meetup with me</Title>
+      <Title size={3}>Book a meetup with me</Title>
       <Text>
         Upframe one-on-one mentoring sessions come in two flavours, video chats
         or in-person meetings. You can also send me a direct message.

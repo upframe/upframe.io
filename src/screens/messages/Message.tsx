@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { fragments, useQuery, gql } from 'gql'
 import { ProfilePicture } from 'components'
 import Time from './Time'
+import type { ChatUser, ChatUserVariables } from 'gql/types'
 
 const USER_QUERY = gql`
   query ChatUser($id: ID!) {
@@ -17,25 +18,33 @@ const USER_QUERY = gql`
 
 const picSize = '3.2rem'
 
-function Message({ id, content, author, time, stacked = false }) {
-  const { data: { user = {} } = {} } = useQuery(USER_QUERY, {
+interface Props {
+  id: string
+  content: string
+  author: string
+  date: Date
+  stacked?: boolean
+}
+
+function Message({ id, content, author, date, stacked = false }: Props) {
+  const { data } = useQuery<ChatUser, ChatUserVariables>(USER_QUERY, {
     variables: { id: author },
   })
 
   return (
     <S.Wrap {...(stacked && { 'data-stacked': true })} data-id={id}>
       {!stacked ? (
-        <ProfilePicture imgs={user.profilePictures} size={picSize} />
+        <ProfilePicture imgs={data?.user?.profilePictures} size={picSize} />
       ) : (
-        <Time>{time}</Time>
+        <Time>{date}</Time>
       )}
       <S.Main>
         {stacked ? (
           <div />
         ) : (
           <S.Head>
-            <S.Name>{user.name}</S.Name>
-            <Time>{time}</Time>
+            <S.Name>{data?.user?.name}</S.Name>
+            <Time>{date}</Time>
           </S.Head>
         )}
         <S.Body>{content}</S.Body>

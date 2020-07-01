@@ -1,17 +1,10 @@
 import { useState, useEffect, useReducer, useRef } from 'react'
 import debounce from 'lodash/debounce'
 import { useHistory } from 'react-router-dom'
-import {
-  gql,
-  queries,
-  mutations,
-  useQuery,
-  useMutation,
-  useSubscription,
-} from 'gql'
+import { queries, mutations, useQuery, useMutation } from 'gql'
 import isEqual from 'lodash/isEqual'
 import api from 'api'
-import { Me } from 'gql/types'
+import type { Me } from 'gql/types'
 
 export { useHistory }
 
@@ -172,66 +165,4 @@ export function useSignOut() {
     api.writeQuery({ query: queries.ME, data: { me: null } })
     history.push('/login')
   }
-}
-
-const MSG_SUB = gql`
-  subscription MsgSubscription($channel: ID!) {
-    message(channel: $channel) {
-      id
-      content
-      author
-      time
-    }
-  }
-`
-
-const SEND_MESSAGE = gql`
-  mutation SendChatMsg($content: String!, $channel: ID!) {
-    sendMessage(content: $content, channel: $channel)
-  }
-`
-
-export function useChat(channel: any, messages: any) {
-  const [msgs, setMsgs] = useState(messages ?? [])
-  const [sendMessage] = useMutation(SEND_MESSAGE)
-  const { me } = useMe()
-
-  useSubscription(MSG_SUB, {
-    variables: { channel },
-    onSubscriptionData({ subscriptionData }) {
-      let i = msgs.findIndex(
-        ({ local, content, id }) =>
-          id === subscriptionData.data.message.id ||
-          (local && content === subscriptionData.data.message.content)
-      )
-      if (i < 0) i = Infinity
-      setMsgs([
-        ...msgs.slice(0, i),
-        subscriptionData.data.message,
-        ...msgs.slice(i + 1),
-      ])
-    },
-  })
-
-  useEffect(() => {
-    setMsgs(messages ?? [])
-  }, [messages])
-
-  function send(content) {
-    setMsgs([
-      ...msgs,
-      {
-        id: Date.now(),
-        content,
-        author: me?.id,
-        time: new Date().toISOString(),
-        local: true,
-      },
-    ])
-    sendMessage({
-      variables: { content, channel },
-    })
-  }
-
-  return [msgs, send]
 }

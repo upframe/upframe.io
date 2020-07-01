@@ -46,7 +46,7 @@ export default function Request({ mentor, onClose, slot }) {
     <Shade onClick={onClose}>
       <div className={styles.request} onClick={e => e.stopPropagation()}>
         <Icon icon="close" onClick={onClose} />
-        <Title s1>
+        <Title size={1}>
           {slot ? 'Have a call with' : 'Message'} {mentor.name.split(' ')[0]}
         </Title>
         <Divider />

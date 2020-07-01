@@ -4,10 +4,42 @@ import { ProfilePicture, Title, Text, Checkbox, Identicon } from 'components'
 import { useMe } from 'utils/hooks'
 import { Link } from 'react-router-dom'
 import { path } from 'utils/url'
+import { gql, fragments, useQuery } from 'gql'
+import type { Participants, ParticipantsVariables } from 'gql/types'
 
-export default function User({ id, selected, onSelect, users = [] }) {
+const PARTICIPANTS = gql`
+  query Participants($ids: [ID!]!) {
+    users(ids: $ids) {
+      ...PersonBase
+    }
+  }
+  ${fragments.person.base}
+`
+
+interface Props {
+  id: string
+  selected?: boolean
+  onSelect(v: boolean): void
+  userIds?: string[]
+  users?: Participants['users']
+}
+
+export default function User({
+  id,
+  selected,
+  onSelect,
+  userIds = [],
+  users = [],
+}: Props) {
   const { me } = useMe()
-  users = users.filter(({ id }) => id !== me.id)
+  userIds = userIds?.filter(id => id !== me?.id)
+
+  const { data } = useQuery<Participants, ParticipantsVariables>(PARTICIPANTS, {
+    variables: { ids: userIds },
+    skip: !userIds?.length,
+  })
+
+  users = [...users, ...(data?.users ?? [])]
 
   const CondLink = id ? Link : React.Fragment
 
@@ -18,14 +50,15 @@ export default function User({ id, selected, onSelect, users = [] }) {
         onClick: () => onSelect(!selected),
       })}
     >
+      {/* @ts-ignore */}
       <CondLink {...(id && { to: `${path(1)}/${id}` })}>
         {users.length > 1 ? (
-          <Identicon ids={users.map(({ id }) => id)} />
+          <Identicon ids={users} />
         ) : (
           <ProfilePicture imgs={users[0]?.profilePictures} size="3rem" />
         )}
         <S.TextSec>
-          <Title s4>
+          <Title size={4}>
             {users.length === 1
               ? users[0].name
               : users.map(({ name }) => name.split(' ')[0]).join(', ')}
@@ -37,7 +70,7 @@ export default function User({ id, selected, onSelect, users = [] }) {
           </Text>
         </S.TextSec>
         {typeof onSelect === 'function' && (
-          <Checkbox checked={selected} onChange={onSelect} />
+          <Checkbox checked={selected as boolean} onChange={onSelect} />
         )}
       </CondLink>
     </S.User>

@@ -20,6 +20,7 @@ export const person = {
         name
         handle
         role
+        headline
         ...ProfilePictures
       }
       ${this.profilePictures}
@@ -139,6 +140,7 @@ export const person = {
         }
         ...Timezone
         inferTz
+        msgToken
       }
       ${person.base}
       ${person.timezone}

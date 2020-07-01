@@ -6,7 +6,7 @@ import { Title, Text } from '../../components'
 export default function Categories() {
   return (
     <>
-      <Title s2>Top Categories</Title>
+      <Title size={2}>Top Categories</Title>
       <Text>How can we help? Start by picking one of our main categories.</Text>
       <div className={styles.categories}>
         {['product', 'design', 'software'].map(v => (

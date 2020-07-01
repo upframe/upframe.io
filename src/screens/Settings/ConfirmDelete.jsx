@@ -35,7 +35,7 @@ export default function ConfirmDelete({ onCancel }) {
           e.preventDefault()
         }}
       >
-        <Title s4>Are you sure?</Title>
+        <Title size={4}>Are you sure?</Title>
         <Text strong>
           This action <Text bold>cannot</Text> be undone. Your account{' '}
           <Text underlined>{me.email}</Text> will be permanently deleted.

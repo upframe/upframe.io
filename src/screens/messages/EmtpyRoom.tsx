@@ -6,7 +6,7 @@ export default function EmptyRoom({ onToggleSelect }) {
   return (
     <S.Empty>
       <Icon icon="add" onClick={() => onToggleSelect(true)} />
-      <Title s2>We don't believe in dumb questions.</Title>
+      <Title size={2}>We don't believe in dumb questions.</Title>
       <Text>
         Message someone new to get advice on what you're working on. Or pick an
         existing conversation.

@@ -26,11 +26,17 @@ const START_THREAD = gql`
   }
 `
 
+interface Props {
+  conversationId?: string
+  onSend?(msg: any): void
+  cardView?: boolean
+}
+
 export default function StartThread({
   conversationId,
   onSend,
   cardView = false,
-}) {
+}: Require<Props, 'conversationId'> | Require<Props, 'onSend'>) {
   const [card, setCard] = useState(cardView)
   const [input, setInput] = useState('')
   const [startThread] = useMutation(START_THREAD, {
@@ -48,7 +54,7 @@ export default function StartThread({
       {card ? (
         <Thread.Card>
           <S.TitleRow>
-            <Title s3>Start a new topic</Title>
+            <Title size={2}>Start a new topic</Title>
             <Icon
               icon="close"
               onClick={() => {
@@ -65,7 +71,7 @@ export default function StartThread({
           />
         </Thread.Card>
       ) : (
-        <Button onClick={setCard}>Start a new Topic</Button>
+        <Button onClick={() => setCard(true)}>Start a new Topic</Button>
       )}
     </S.Start>
   )

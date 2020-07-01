@@ -1,24 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useQuery, useMutation, useSubscription, gql } from '@apollo/client'
+import { useQuery, useMutation, gql } from '@apollo/client'
 import { Input, Button, Spinner } from 'components'
 import Chat from './messages/Chat'
 import { useMe } from 'utils/hooks'
 import styled from 'styled-components'
 
-const SUB = gql`
-  subscription Message($channel: ID!) {
-    message(channel: $channel) {
-      id
-      content
-      author
-      time
-    }
-  }
-`
-
 const SEND_MESSAGE = gql`
   mutation SendMessage($content: String!, $channel: ID!) {
-    sendMessage(content: $content, channel: $channel)
+    sendMessage(content: $content, channel: $channel) {
+      id
+    }
   }
 `
 
@@ -62,21 +53,21 @@ export default function Messages({ match }) {
     },
   })
 
-  useSubscription(SUB, {
-    variables: { channel: match.params.channel },
-    onSubscriptionData({ subscriptionData }) {
-      let i = msgs.findIndex(
-        ({ local, content }) =>
-          local && content === subscriptionData.data.message.content
-      )
-      if (i < 0) i = Infinity
-      setMsgs([
-        ...msgs.slice(0, i),
-        subscriptionData.data.message,
-        ...msgs.slice(i + 1),
-      ])
-    },
-  })
+  // useSubscription(SUB, {
+  //   variables: { channel: match.params.channel },
+  //   onSubscriptionData({ subscriptionData }) {
+  //     let i = msgs.findIndex(
+  //       ({ local, content }) =>
+  //         local && content === subscriptionData.data.message.content
+  //     )
+  //     if (i < 0) i = Infinity
+  //     setMsgs([
+  //       ...msgs.slice(0, i),
+  //       subscriptionData.data.message,
+  //       ...msgs.slice(i + 1),
+  //     ])
+  //   },
+  // })
 
   const [sendMessage] = useMutation(SEND_MESSAGE)
 

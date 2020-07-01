@@ -28,7 +28,7 @@ export default function Icon({ icon = 'info', onClick, linkTo }: Props) {
       })}
     >
       <S.Icon
-        {...(mods.length > 0 && { ['data-mod']: mods.join(' ') })}
+        data-mode={mods.join(' ')}
         xmlns="http://www.w3.org/2000/svg"
         width={sel.size ?? '24'}
         height={sel.size || '24'}
@@ -48,11 +48,11 @@ const S = {
       pointer-events: none;
     }
 
-    &[data-mod~='color'] > path {
+    &[data-mode~='color'] > path {
       fill: var(--cl-text-strong);
     }
 
-    &[data-mod~='clicakble'] {
+    &[data-mode~='clickable'] {
       cursor: pointer;
       transition: background-color 0.2s ease, transform 0.2s ease;
       border-radius: 50%;

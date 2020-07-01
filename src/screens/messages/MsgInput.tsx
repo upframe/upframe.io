@@ -1,12 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 
+interface Props {
+  value: string
+  onChange: Function
+  onSubmit: Function
+  placeholder?: string
+}
+
 export default function MsgInput({
   value,
   onChange,
   onSubmit = () => {},
   placeholder,
-}) {
+}: Props) {
   const handleKey = e => {
     switch (e.key) {
       case 'Enter':

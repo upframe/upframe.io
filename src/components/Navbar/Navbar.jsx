@@ -12,10 +12,8 @@ export default function Navbar() {
   const atTop = useScrollAtTop()
 
   if (
-    window.location.pathname
-      .toLowerCase()
-      .split('/')
-      .filter(Boolean)[0] === 'signup'
+    window.location.pathname.toLowerCase().split('/').filter(Boolean)[0] ===
+    'signup'
   )
     return null
   return (

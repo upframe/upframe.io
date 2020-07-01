@@ -59,12 +59,7 @@ const generate = (id, n = 5) => {
 const mergeIds = (ids = []) => {
   const merge = (a, b) => {
     let combined = []
-    let segs = [a, b].map(v =>
-      v
-        .split('-')
-        .pop()
-        .match(/.{2}/g)
-    )
+    let segs = [a, b].map(v => v.split('-').pop().match(/.{2}/g))
     segs = Array(Math.min(segs[0].length, segs[1].length))
       .fill()
       .map((_, i) => [segs[0][i], segs[1][i]])

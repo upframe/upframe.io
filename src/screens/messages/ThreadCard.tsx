@@ -3,20 +3,24 @@ import styled from 'styled-components'
 import Input from './MsgInput'
 import MsgQueue from './MsgQueue'
 import Message from './Message'
-import { useChat } from 'utils/hooks'
+import { useChannel } from 'conversations'
 
-function ThreadCard({ id, messages }) {
+interface Props {
+  channelId: string
+}
+
+function ThreadCard({ channelId }: Props) {
   const [input, setInput] = useState('')
-  const [msgs, _send] = useChat(id, messages)
+  const { messages, sendMessage } = useChannel(channelId, { last: 20 })
 
   function send() {
-    _send(input)
+    if (sendMessage) sendMessage(input)
     setInput('')
   }
 
   return (
     <S.Card>
-      <MsgQueue messages={msgs} />
+      <MsgQueue messages={messages} />
       <Input
         placeholder="Reply"
         value={input}

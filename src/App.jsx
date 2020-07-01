@@ -4,8 +4,11 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { Navbar, Spinner, NotificationStack, ScrollToTop } from './components'
 import Routes from './Routes'
 import styles from './styles/app.module.scss'
+import { useMessaging } from './conversations'
 
 export default function App() {
+  useMessaging()
+
   return (
     <>
       <Helmet>

@@ -2,12 +2,19 @@ import React from 'react'
 import styled from 'styled-components'
 import Spinner from './Spinner'
 
+interface Props {
+  onChange(v: boolean): void
+  checked: boolean
+  color?: string
+  loading?: boolean
+}
+
 export default function Checkbox({
   onChange,
   checked,
   color,
   loading = false,
-}) {
+}: Props) {
   if (loading) return <Spinner color={color || '#2c3976'} />
   return (
     <S.Checkbox
@@ -16,7 +23,7 @@ export default function Checkbox({
       onChange={({ currentTarget }) => {
         onChange(currentTarget.checked)
       }}
-      style={color && { backgroundColor: color, borderColor: color }}
+      {...(color && { style: { backgroundColor: color, borderColor: color } })}
       data-colored={color}
     />
   )

@@ -34,14 +34,14 @@ export default function Showcase({ user }) {
         </div>
       </div>
       <div className={styles.rightColumn}>
-        <Title s3>About me</Title>
+        <Title size={3}>About me</Title>
         {user.biography &&
           user.biography
             .split('\n')
             .map((v, i) => <Text key={`biography${i}`}>{v}</Text>)}
         {user.role !== 'USER' && Array.isArray(user.tags) && (
           <>
-            <Title s3>I can advise you on</Title>
+            <Title size={3}>I can advise you on</Title>
             <div className={styles.skills}>
               {user.tags.map(({ id, name }) => (
                 <Chip key={id} removable={false}>

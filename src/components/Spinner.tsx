@@ -11,7 +11,8 @@ function Spinner({ centered = false, color }: Props) {
     <S.Spinner
       data-active={true}
       viewBox="0 0 100 100"
-      {...(centered && { ['data-align']: 'center' })}
+      data-align={centered ? 'center' : undefined}
+      data-foo={undefined}
     >
       <circle
         cx="50"

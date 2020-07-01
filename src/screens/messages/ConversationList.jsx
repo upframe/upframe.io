@@ -2,34 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { Title, Icon, Spinner } from 'components'
 import SelectPerson from './SelectPerson'
-import { gql, useQuery } from 'gql'
-import { useMe } from 'utils/hooks'
 import Tab from './ConversationTab'
 import { Link } from 'react-router-dom'
 import { path } from 'utils/url'
-import { spinner } from 'components/Spinner/spinner.module.scss'
-
-const CONVERSATION_LIST = gql`
-  query ConversationList($id: ID!) {
-    user(id: $id) {
-      id
-      conversations {
-        id
-        participants {
-          id
-          name
-          handle
-          headline
-          profilePictures {
-            size
-            type
-            url
-          }
-        }
-      }
-    }
-  }
-`
+import { useConversations } from 'conversations'
 
 export default function ConversationList({
   select,
@@ -37,19 +13,12 @@ export default function ConversationList({
   selected,
   onSelection,
 }) {
-  const { me } = useMe()
-  const {
-    data: { user: { conversations = [] } = {} } = {},
-    loading,
-  } = useQuery(CONVERSATION_LIST, {
-    variables: { id: me?.id },
-    skip: !me?.id,
-  })
+  const conversations = useConversations()
 
   return (
     <S.Conversations>
       <S.Head select={select}>
-        <Title s2>
+        <Title size={2}>
           {select ? 'Select people' : <Link to={path(1)}>Conversations</Link>}
         </Title>
         <Icon icon="add" onClick={() => onToggleSelect(!select)} />
@@ -57,15 +26,11 @@ export default function ConversationList({
       {select && <SelectPerson selected={selected} onSelection={onSelection} />}
       {!select && (
         <S.List>
-          {loading ? (
-            <Spinner />
-          ) : (
-            <>
-              {conversations.map(({ id, participants }) => (
-                <Tab key={id} id={id} users={participants} />
-              ))}
-            </>
-          )}
+          <>
+            {conversations.map(({ id, participants }) => (
+              <Tab key={id} id={id} userIds={participants} />
+            ))}
+          </>
         </S.List>
       )}
     </S.Conversations>
@@ -98,7 +63,7 @@ const S = {
         props.select &&
         `
         transform: rotate(45deg);
-      `} /* stylelint-enable value-keyword-case */
+      `}/* stylelint-enable value-keyword-case */
     }
   `,
 
@@ -109,7 +74,7 @@ const S = {
     margin: 0 calc(var(--side-margin) * -1);
     position: relative;
 
-    .${spinner} {
+    .${Spinner.sc} {
       width: 2.5rem;
       position: absolute;
       left: calc(50% - 1.25rem);

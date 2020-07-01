@@ -34,7 +34,7 @@ export default function ResetEmail({ match }) {
 
   return (
     <Page form title="Change Email" onSubmit={requestChange}>
-      <Title s3>Change Email</Title>
+      <Title size={3}>Change Email</Title>
       {token ? (
         <>{loading && <Spinner />}</>
       ) : (

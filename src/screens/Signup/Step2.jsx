@@ -127,7 +127,7 @@ export default function Step2({
       <S.Head>
         <ProfilePicture imgs={[{ url: photo }]} size="11.125rem" />
         <div>
-          <Title s2>Profile Picture</Title>
+          <Title size={2}>Profile Picture</Title>
           <Text>
             We're big on pictures here.
             <br />
@@ -197,7 +197,7 @@ export default function Step2({
       />
       {role === 'MENTOR' && (
         <>
-          <Title s2>Experience</Title>
+          <Title size={2}>Experience</Title>
           <Text>
             What can you advise people on? Add up to 6 skills to display in your
             profile. The more specific, the better ('Event Marketing' is easier

@@ -171,7 +171,7 @@ export default function Profile() {
       <div className={styles.head}>
         <ProfilePicture imgs={user.profilePictures} size="11.125rem" />
         <div>
-          <Title s2>Profile Picture</Title>
+          <Title size={2}>Profile Picture</Title>
           <Text>
             We're big on pictures here.
             <br />
@@ -228,7 +228,7 @@ export default function Profile() {
       })}
       {user.role !== 'USER' && (
         <>
-          <Title s2 className={styles.span2}>
+          <Title size={2} className={styles.span2}>
             Experience
           </Title>
           <Text className={styles.span2}>
@@ -249,7 +249,7 @@ export default function Profile() {
           </div>
         </>
       )}
-      <Title s2 className={styles.span2}>
+      <Title size={2} className={styles.span2}>
         Other Profiles
       </Title>
       {[

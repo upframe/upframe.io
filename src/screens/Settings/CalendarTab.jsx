@@ -111,7 +111,7 @@ export default function CalendarTab() {
         }
         external={extEvents}
       />
-      <Title s2>Calendar Connections</Title>
+      <Title size={2}>Calendar Connections</Title>
       <Text>
         Spend less time here and focus on what really matters by syncing your
         calendar with Upframe.
