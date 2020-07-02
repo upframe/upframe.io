@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { VirtualScroller } from 'components'
 
-function Item({ v }) {
+function Item({ v, ...rest }) {
   console.log('render', v)
   return (
-    <S.Item>
+    <S.Item {...rest}>
       <span>{v}</span>
     </S.Item>
   )
@@ -17,8 +17,9 @@ export default function Page() {
       <VirtualScroller
         itemHeight="5rem"
         Child={Item}
-        props={i => ({ v: i + 1 })}
-        numChildren={1e5}
+        props={i => ({ v: i })}
+        min={0}
+        max={10000}
       />
     </div>
   )
