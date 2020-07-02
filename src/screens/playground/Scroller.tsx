@@ -2,18 +2,24 @@ import React from 'react'
 import styled from 'styled-components'
 import { VirtualScroller } from 'components'
 
+function Item({ v }) {
+  console.log('render', v)
+  return (
+    <S.Item>
+      <span>{v}</span>
+    </S.Item>
+  )
+}
+
 export default function Page() {
   return (
     <div>
-      <VirtualScroller itemHeight="5rem">
-        {Array(1e4)
-          .fill(0)
-          .map((_, i) => (
-            <S.Item key={i}>
-              <span>{i + 1}</span>
-            </S.Item>
-          ))}
-      </VirtualScroller>
+      <VirtualScroller
+        itemHeight="5rem"
+        Child={Item}
+        props={i => ({ v: i + 1 })}
+        numChildren={1e5}
+      />
     </div>
   )
 }
