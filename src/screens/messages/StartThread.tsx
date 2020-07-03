@@ -38,14 +38,10 @@ export default function StartThread({
   cardView = false,
 }: Require<Props, 'conversationId'> | Require<Props, 'onSend'>) {
   const [card, setCard] = useState(cardView)
-  const [input, setInput] = useState('')
-  const [startThread] = useMutation(START_THREAD, {
-    variables: { conversationId, msg: input },
-  })
+  const [startThread] = useMutation(START_THREAD)
 
-  function send() {
-    startThread()
-    setInput('')
+  function send(msg: string) {
+    startThread({ variables: { conversationId, msg } })
     setCard(false)
   }
 
@@ -59,14 +55,11 @@ export default function StartThread({
               icon="close"
               onClick={() => {
                 setCard(false)
-                setInput('')
               }}
             />
           </S.TitleRow>
           <Input
             placeholder="Message"
-            value={input}
-            onChange={setInput}
             onSubmit={typeof onSend === 'function' ? onSend : send}
           />
         </Thread.Card>

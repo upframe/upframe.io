@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Input from './MsgInput'
 import MsgQueue from './MsgQueue'
@@ -11,7 +11,6 @@ interface Props {
 }
 
 function ThreadCard({ channelId }: Props) {
-  const [input, setInput] = useState('')
   const { messages, sendMessage } = useChannel(
     channelId,
     {
@@ -19,11 +18,6 @@ function ThreadCard({ channelId }: Props) {
     },
     { first: 1 }
   )
-
-  function send() {
-    if (sendMessage) sendMessage(input)
-    setInput('')
-  }
 
   return (
     <S.Card>
@@ -38,9 +32,9 @@ function ThreadCard({ channelId }: Props) {
       />
       <Input
         placeholder="Reply"
-        value={input}
-        onChange={setInput}
-        onSubmit={send}
+        onSubmit={v => {
+          if (sendMessage) sendMessage(v)
+        }}
       />
     </S.Card>
   )

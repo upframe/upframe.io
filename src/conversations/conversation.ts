@@ -39,6 +39,7 @@ export default class Conversation {
     public readonly participants: string[],
     channels: string[] = []
   ) {
+    if (Conversation.instances[id]) return Conversation.instances[id]
     Conversation.instances[id] = this
     Conversation.staticEventHandlers.added?.forEach(handler => handler(this))
     channels.forEach(id => this.addChannel(Channel.get(id)))

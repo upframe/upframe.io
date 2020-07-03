@@ -17,5 +17,9 @@ const S = {
     justify-content: space-around;
     align-items: center;
     padding: 1rem;
+
+    svg {
+      opacity: 0.7;
+    }
   `,
 }

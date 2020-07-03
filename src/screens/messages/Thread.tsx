@@ -10,7 +10,6 @@ interface Props {
 }
 
 export default function Thread({ id }: Props) {
-  const [input, setInput] = useState('')
   const [cursor] = useState()
   const [fetchBlock, setFetchBlock] = useState(false)
 
@@ -70,10 +69,7 @@ export default function Thread({ id }: Props) {
       <MsgQueue messages={messages} />
       <Input
         placeholder="Reply"
-        value={input}
-        onChange={setInput}
         onSubmit={v => {
-          setInput('')
           if (sendMessage) sendMessage(v)
         }}
       />
