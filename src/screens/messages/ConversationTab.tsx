@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ProfilePicture, Title, Text, Checkbox, Identicon } from 'components'
 import { useMe } from 'utils/hooks'
@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { path } from 'utils/url'
 import { gql, fragments, useQuery } from 'gql'
 import type { Participants, ParticipantsVariables } from 'gql/types'
+import { Conversation } from 'conversations'
 
 const PARTICIPANTS = gql`
   query Participants($ids: [ID!]!) {
@@ -31,6 +32,8 @@ export default function User({
   userIds = [],
   users = [],
 }: Props) {
+  const [conversation, setConversation] = useState<Conversation>()
+  const [hasUnread, setHasUnread] = useState(false)
   const { me } = useMe()
   userIds = userIds?.filter(id => id !== me?.id)
 
@@ -42,6 +45,19 @@ export default function User({
   users = [...users, ...(data?.users ?? [])]
 
   const CondLink = id ? Link : React.Fragment
+
+  useEffect(() => {
+    if (typeof onSelect === 'function' || !id || conversation) return
+    Conversation.get(id).then(setConversation)
+  }, [id, onSelect, conversation])
+
+  useEffect(() => {
+    if (!conversation) return
+
+    return conversation.on('message', () => {
+      setHasUnread(true)
+    })
+  }, [conversation])
 
   if (!users.length) return null
   return (
@@ -72,6 +88,7 @@ export default function User({
         {typeof onSelect === 'function' && (
           <Checkbox checked={selected as boolean} onChange={onSelect} />
         )}
+        {hasUnread && <S.Unread />}
       </CondLink>
     </S.User>
   )
@@ -126,5 +143,13 @@ const S = {
       white-space: nowrap;
       flex: 0 1 auto;
     }
+  `,
+
+  Unread: styled.div`
+    display: block;
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    background-color: var(--cl-accent);
   `,
 }

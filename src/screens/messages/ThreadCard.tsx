@@ -32,7 +32,7 @@ function ThreadCard({ channelId }: Props) {
         {...(messages.length <= 30
           ? { messages }
           : {
-              messages: [messages[0], ...messages.slice(-15)],
+              messages: [messages[0], ...messages.slice(-10)],
               ommission: [0],
             })}
       />

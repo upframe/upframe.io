@@ -7,15 +7,32 @@ import type {
 } from 'gql/types'
 import * as gql from './gql'
 import Channel from './channel'
+import Message from './message'
 
 export default class Conversation {
   private static instances: { [id: string]: Conversation } = {}
-  private static eventHandlers: {
-    [event in ConversationEvent]: ConversationEventHandler[]
+  private static staticEventHandlers: {
+    [event in StaticEvent]: StaticEventHandler[]
   } = {
     added: [],
   }
-  public channels: Channel[] = []
+  private eventHandlers: {
+    [event in ConversationEvent]: ConversationEventHandler<event>[]
+  } = {
+    message: [],
+    channel: [],
+  }
+
+  private _channels: Channel[] = []
+  public get channels() {
+    return this._channels
+  }
+  public addChannel(channel: Channel) {
+    this._channels.push(channel)
+    channel.on('message', msg => {
+      this.eventHandlers.message.forEach(handler => handler(msg))
+    })
+  }
 
   protected constructor(
     public readonly id: string,
@@ -23,8 +40,8 @@ export default class Conversation {
     channels: string[] = []
   ) {
     Conversation.instances[id] = this
-    Conversation.eventHandlers.added?.forEach(handler => handler(this))
-    channels.forEach(id => this.channels.push(Channel.get(id)))
+    Conversation.staticEventHandlers.added?.forEach(handler => handler(this))
+    channels.forEach(id => this.addChannel(Channel.get(id)))
   }
 
   public static async get(id: string): Promise<Conversation> {
@@ -78,14 +95,34 @@ export default class Conversation {
     return Object.values(Conversation.instances)
   }
 
-  public static on(
-    event: ConversationEvent,
-    handler: ConversationEventHandler
+  public static onStatic(event: StaticEvent, handler: StaticEventHandler) {
+    Conversation.staticEventHandlers[event].push(handler)
+    return () =>
+      Conversation.staticEventHandlers[event].filter(v => v !== handler)
+  }
+
+  public on<T extends ConversationEvent>(
+    event: T,
+    handler: ConversationEventHandler<T>
   ) {
-    Conversation.eventHandlers[event].push(handler)
-    return () => Conversation.eventHandlers[event].filter(v => v !== handler)
+    // @ts-ignore
+    this.eventHandlers[event].push(handler)
+    return () => {
+      // @ts-ignore
+      this.eventHandlers[event] = this.eventHandlers[event].filter(
+        v => v !== handler
+      )
+    }
   }
 }
 
-type ConversationEvent = 'added'
-type ConversationEventHandler = (v: Conversation) => any
+type StaticEvent = 'added'
+type StaticEventHandler = (v: Conversation) => any
+
+type ConversationEvent = 'message' | 'channel'
+type ConversationEventHandler<T extends ConversationEvent> = (
+  v: ConversationEventPayload<T>
+) => any
+type ConversationEventPayload<T extends ConversationEvent> = T extends 'message'
+  ? Message
+  : Channel

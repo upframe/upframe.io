@@ -53,7 +53,7 @@ export function useConversations() {
   )
 
   useEffect(() => {
-    Conversation.on('added', value => {
+    Conversation.onStatic('added', value => {
       dispatch({ type: 'add', value })
     })
   }, [])
