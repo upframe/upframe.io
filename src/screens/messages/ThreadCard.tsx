@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import Input from './MsgInput'
 import MsgQueue from './MsgQueue'
-import Message from './Message'
 import { useChannel } from 'conversations'
+import { Link } from 'react-router-dom'
+import { path } from 'utils/url'
 
 interface Props {
   channelId: string
@@ -11,7 +12,13 @@ interface Props {
 
 function ThreadCard({ channelId }: Props) {
   const [input, setInput] = useState('')
-  const { messages, sendMessage } = useChannel(channelId, { last: 20 })
+  const { messages, sendMessage } = useChannel(
+    channelId,
+    {
+      last: 31,
+    },
+    { first: 1 }
+  )
 
   function send() {
     if (sendMessage) sendMessage(input)
@@ -20,7 +27,15 @@ function ThreadCard({ channelId }: Props) {
 
   return (
     <S.Card>
-      <MsgQueue messages={messages} />
+      <S.ThreadLink to={`${path()}/${channelId}`} />
+      <MsgQueue
+        {...(messages.length <= 30
+          ? { messages }
+          : {
+              messages: [messages[0], ...messages.slice(-15)],
+              ommission: [0],
+            })}
+      />
       <Input
         placeholder="Reply"
         value={input}
@@ -39,6 +54,7 @@ const S = {
     border-radius: 0.5rem;
     box-sizing: border-box;
     padding: 1rem;
+    position: relative;
     margin-top: 2rem;
 
     input {
@@ -52,10 +68,16 @@ const S = {
     *:last-child {
       margin-bottom: 0;
     }
+  `,
 
-    /* stylelint-disable-next-line selector-type-no-unknown */
-    ${Message.Wrap}:last-of-type {
-      margin-bottom: 1.5rem;
+  ThreadLink: styled(Link)`
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
     }
   `,
 }

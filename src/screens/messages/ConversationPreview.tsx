@@ -9,8 +9,6 @@ interface Props {
 export default function ConversationPreview({ conversationId }: Props) {
   const { conversation } = useConversation(conversationId)
 
-  console.log('render')
-
   return (
     <>
       {conversation?.channels?.map(({ id }) => (

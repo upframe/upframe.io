@@ -40,5 +40,8 @@ const S = {
     resize: none;
     display: block;
     box-sizing: border-box;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 600;
   `,
 }

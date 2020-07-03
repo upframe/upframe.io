@@ -87,6 +87,20 @@ export default class Channel {
     return this.readLocal(dir, num, cursor)
   }
 
+  public async ranges(queries: MsgQuery[]): Promise<Message[]> {
+    return Channel.dedupe(
+      (await Promise.all(queries.map(query => this.messages(query))))
+        .flat()
+        .sort((a, b) => a.unixTime - b.unixTime)
+    )
+  }
+
+  private static dedupe(msgs: Message[]): Message[] {
+    return msgs.filter(
+      ({ id }, i) => msgs.findIndex(msg => msg.id === id) === i
+    )
+  }
+
   private addMsgs(msgs: Message[]) {
     msgs.forEach(msg => {
       if (this.msgs.length === 0) {

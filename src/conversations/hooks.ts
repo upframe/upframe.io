@@ -61,7 +61,7 @@ export function useConversations() {
   return conversations as Conversation[]
 }
 
-export function useChannel(id: string, msgQuery: MsgQuery) {
+export function useChannel(id: string, ...msgQuery: MsgQuery[]) {
   const [channel, setChannel] = useState<Channel>()
   const [messages, setMessages] = useState<Message[]>([])
   const [fetching, setFetching] = useState(false)
@@ -69,7 +69,7 @@ export function useChannel(id: string, msgQuery: MsgQuery) {
   const query = useMemo(
     () => msgQuery,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    Object.entries(msgQuery).map(([k, v]) => k + v)
+    msgQuery.flatMap(query => Object.entries(query).map(([k, v]) => k + v))
   )
 
   useEffect(() => {
@@ -79,11 +79,14 @@ export function useChannel(id: string, msgQuery: MsgQuery) {
 
   useEffect(() => {
     if (!channel || !query) return
-    channel.messages(query).then(setMessages)
+    const fetch = () =>
+      query.length === 1
+        ? channel.messages(query[0]).then(setMessages)
+        : channel.ranges(query).then(setMessages)
 
-    return channel.on('message', () =>
-      channel.messages(query).then(setMessages)
-    )
+    fetch()
+
+    return channel.on('message', fetch)
   }, [channel, query])
 
   useEffect(() => {
