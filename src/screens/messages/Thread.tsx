@@ -26,7 +26,6 @@ export default function Thread({ id }: Props) {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>
 
   useEffect(() => {
-    console.log({ fetching })
     setFetchBlock(fetching)
   }, [fetching])
 

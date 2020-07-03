@@ -3,7 +3,9 @@
     [
       "stylelint-processor-styled-components",
       {
-        "ignoreFiles": ["**/*.{css,scss}"]
+        "ignoreFiles": [
+          "**/*.{css,scss}"
+        ]
       }
     ]
   ],
@@ -12,11 +14,14 @@
     "stylelint-config-css-modules",
     "stylelint-config-styled-components"
   ],
-  "plugins": ["stylelint-scss"],
+  "plugins": [
+    "stylelint-scss"
+  ],
   "rules": {
     "max-empty-lines": 1,
     "at-rule-no-unknown": null,
     "scss/at-rule-no-unknown": true,
-    "no-descending-specificity": null
+    "no-descending-specificity": null,
+    "declaration-colon-newline-after": null
   }
 }

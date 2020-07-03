@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
+import { Icon } from 'components'
 
 interface Props {
   onSubmit(v: string): void
@@ -10,6 +11,14 @@ export default function MsgInput({ onSubmit = () => {}, placeholder }: Props) {
   const [value, setValue] = useState('')
   const ref = useRef() as React.MutableRefObject<HTMLTextAreaElement>
   const [lines, setLines] = useState(1)
+  const [valid, setValid] = useState(false)
+
+  function submit() {
+    if (!valid) return
+    onSubmit(value)
+    setValue('')
+    setValid(false)
+  }
 
   const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     switch (e.key) {
@@ -19,7 +28,7 @@ export default function MsgInput({ onSubmit = () => {}, placeholder }: Props) {
           setLines(lines + 1)
           return setValue(value + '\n')
         }
-        if (value) onSubmit(value)
+        submit()
         break
       default:
     }
@@ -27,6 +36,7 @@ export default function MsgInput({ onSubmit = () => {}, placeholder }: Props) {
 
   function handleChange({ target }: React.ChangeEvent<HTMLTextAreaElement>) {
     setValue(target.value)
+    setValid(target.value.length > 0 && /[^\s\n]/.test(target.value))
 
     const clone = target.previousElementSibling as HTMLTextAreaElement
     if (!clone) return
@@ -44,7 +54,7 @@ export default function MsgInput({ onSubmit = () => {}, placeholder }: Props) {
   }
 
   return (
-    <>
+    <S.Wrap>
       <S.Clone value={value} readOnly />
       <S.Input
         onKeyDown={handleKey}
@@ -55,8 +65,12 @@ export default function MsgInput({ onSubmit = () => {}, placeholder }: Props) {
         lines={lines}
         // @ts-ignore
         onInput={handleInput}
+        data-valid={valid}
       />
-    </>
+      <S.Send>
+        <Icon icon="send" onClick={submit} clickStyle={false} />
+      </S.Send>
+    </S.Wrap>
   )
 }
 
@@ -101,6 +115,24 @@ const S = {
     height: 0;
     visibility: hidden;
     position: absolute;
+  `,
+
+  Send: styled.div`
+    position: absolute;
+    z-index: 800;
+    width: 21px;
+    height: 18px;
+    overflow: hidden;
+    transform: translateY(calc(-50% - (1.5em + 1rem + 2.4px) / 2));
+    right: 0.5rem;
+    opacity: 0.4;
+    transition: fill 0.15s ease, opacity 0.15s ease;
+
+    textarea[data-valid='true'] + & {
+      fill: var(--cl-accent);
+      opacity: 1;
+      cursor: pointer;
+    }
   `,
 
   Input,

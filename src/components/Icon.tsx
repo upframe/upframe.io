@@ -6,13 +6,19 @@ interface Props {
   icon: keyof typeof svg
   onClick?(): void
   linkTo?: string
+  clickStyle?: boolean
 }
 
-export default function Icon({ icon = 'info', onClick, linkTo }: Props) {
+export default function Icon({
+  icon = 'info',
+  onClick,
+  clickStyle = typeof onClick === 'function',
+  linkTo,
+}: Props) {
   const Wrap = linkTo ? Link : React.Fragment
 
   const mods = [
-    ...(onClick ? ['clickable'] : []),
+    ...(onClick && clickStyle ? ['clickable'] : []),
     ...('color' in svg[icon] ? ['color'] : []),
   ]
 
@@ -143,5 +149,10 @@ const svg = {
   more: {
     path:
       'M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z',
+  },
+  send: {
+    path:
+      'M0.842663 17.25L20.0835 9L0.842663 0.75L0.833496 7.16667L14.5835 9L0.833496 10.8333L0.842663 17.25Z',
+    size: 21,
   },
 }
