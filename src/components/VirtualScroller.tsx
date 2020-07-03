@@ -44,15 +44,17 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
 
     function onScroll() {
       if (!scroller) return
-      const ot = (node.scrollTop / itemPx) | 0
+      const ot = Math.floor(node.scrollTop / itemPx)
 
       const { frame, off } = scroller.read(ot + min)
       setChildren(frame)
-      setOffTop(ot - (2 - off))
+      setOffTop(ot - (scroller.buffer - off))
       setOffBottom(
         scroller.max -
           scroller.min -
-          (ot - (2 - off) + scroller.view + 2 * scroller.buffer)
+          ot -
+          scroller.view -
+          (scroller.buffer / 2 + off)
       )
     }
 
