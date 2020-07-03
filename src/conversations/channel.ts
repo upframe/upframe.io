@@ -11,12 +11,22 @@ import Message from './message'
 export default class Channel {
   private static instances: { [id: string]: Channel } = {}
   private msgs: Message[] = []
-  private hasFirst = false
-  private hasLatest = false
+  public hasFirst = false
+  public hasLatest = false
   private eventHandlers: {
-    [event in ChannelEvent]: ChannelEventHandler[]
+    [event in ChannelEvent]: ChannelEventHandler<event>[]
   } = {
     message: [],
+    fetch: [],
+  }
+
+  private _fetching = false
+  private get fetching() {
+    return this._fetching
+  }
+  private set fetching(v: boolean) {
+    this._fetching = v
+    this.eventHandlers.fetch.forEach(handler => handler(v ? 'start' : 'stop'))
   }
 
   protected constructor(public readonly id: string) {}
@@ -45,6 +55,7 @@ export default class Channel {
 
     const res = this.checkAvailable(dir, num, cursor)
     if (res === true) return this.readLocal(dir, num, cursor)
+    if (res.chainEnd) return this.readLocal(dir, num - res.num, cursor)
 
     const done = await this.fetchQueue()
 
@@ -78,6 +89,12 @@ export default class Channel {
 
   private addMsgs(msgs: Message[]) {
     msgs.forEach(msg => {
+      if (this.msgs.length === 0) {
+        if (this.hasFirst) msg.previous = null
+        if (this.hasLatest) msg.next = null
+        this.msgs = [msg]
+        return
+      }
       let alreadyKnown = false
       let firstAfter = Infinity
       for (let i = 0; i < this.msgs.length; i++)
@@ -93,6 +110,9 @@ export default class Channel {
         if (this.hasFirst) msg.previous = null
       } else if (firstAfter === Infinity) {
         if (this.hasLatest) msg.next = null
+        const previous = this.msgs[this.msgs.length - 1]
+        msg.previous = previous
+        previous.next = msg
       } else {
         const previous = this.msgs[firstAfter - 1]
         msg.previous = previous
@@ -111,18 +131,22 @@ export default class Channel {
     direction: 'forward' | 'backward',
     num: number,
     cursor?: string
-  ): true | { num: number; cursor?: string } {
+  ): true | { num: number; cursor?: string; chainEnd: boolean } {
     const walk = (
       dir: 'Forth' | 'Back',
       num: number,
       cursor: string
-    ): true | { num: number; cursor?: string } => {
+    ): true | { num: number; cursor?: string; chainEnd: boolean } => {
       const [node, n] = (this.msgs.find(({ id }) => id === cursor) as Message)[
         `walk${dir}`
       ](num)
       if (n === 0 || node[dir === 'Forth' ? 'next' : 'previous'] === null)
         return true
-      return { cursor: node.id, num: n }
+      return {
+        cursor: node.id,
+        num: n,
+        chainEnd: node[dir === 'Forth' ? 'next' : 'previous'] === null,
+      }
     }
 
     if (
@@ -130,7 +154,7 @@ export default class Channel {
       ((direction === 'forward' && !this.hasFirst) ||
         (direction === 'backward' && !this.hasLatest))
     )
-      return { num, cursor }
+      return { num, cursor, chainEnd: false }
 
     return cursor
       ? walk(direction === 'forward' ? 'Forth' : 'Back', num, cursor)
@@ -156,9 +180,13 @@ export default class Channel {
 
   private _queue: Promise<any>[] = [Promise.resolve()]
   private async fetchQueue() {
+    this.fetching = true
     let done = () => {}
     const action = new Promise(resolve => {
-      done = resolve
+      done = () => {
+        this.fetching = false
+        resolve()
+      }
     })
 
     const waitFor = this._queue.slice(-1)[0]
@@ -192,9 +220,11 @@ export default class Channel {
     this.eventHandlers.message.forEach(handler => handler(msg))
   }
 
-  public on(event: ChannelEvent, handler: ChannelEventHandler) {
+  public on<T extends ChannelEvent>(event: T, handler: ChannelEventHandler<T>) {
+    // @ts-ignore
     this.eventHandlers[event].push(handler)
     return () => {
+      // @ts-ignore
       this.eventHandlers[event] = this.eventHandlers[event].filter(
         v => v !== handler
       )
@@ -214,5 +244,10 @@ type MsgQueryForward = {
 
 export type MsgQuery = MsgQueryBackward | MsgQueryForward
 
-type ChannelEvent = 'message'
-type ChannelEventHandler = (msg?: Message) => any
+type ChannelEvent = 'message' | 'fetch'
+type ChannelEventHandler<T extends ChannelEvent> = (
+  v: ChannelEventPayload<T>
+) => any
+type ChannelEventPayload<T extends ChannelEvent> = T extends 'message'
+  ? Message
+  : 'start' | 'stop'

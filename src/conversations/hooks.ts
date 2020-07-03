@@ -64,12 +64,13 @@ export function useConversations() {
 export function useChannel(id: string, msgQuery: MsgQuery) {
   const [channel, setChannel] = useState<Channel>()
   const [messages, setMessages] = useState<Message[]>([])
+  const [fetching, setFetching] = useState(false)
+  const { me } = useMe()
   const query = useMemo(
     () => msgQuery,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     Object.entries(msgQuery).map(([k, v]) => k + v)
   )
-  const { me } = useMe()
 
   useEffect(() => {
     setChannel(Channel.get(id))
@@ -79,16 +80,24 @@ export function useChannel(id: string, msgQuery: MsgQuery) {
   useEffect(() => {
     if (!channel || !query) return
     channel.messages(query).then(setMessages)
+
     return channel.on('message', () =>
       channel.messages(query).then(setMessages)
     )
   }, [channel, query])
 
+  useEffect(() => {
+    if (!channel) return
+    return channel.on('fetch', v => setFetching(v === 'start'))
+  }, [channel])
+
   return {
     messages,
+    fetching,
     sendMessage:
       channel &&
       me &&
       ((content: string) => channel.sendMessage(content, me.id)),
+    channel,
   }
 }
