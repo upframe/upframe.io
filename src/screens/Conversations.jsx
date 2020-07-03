@@ -7,7 +7,7 @@ import Conversation from './messages/Conversation'
 import { path } from 'utils/url'
 
 export default function Conversations({ match }) {
-  const select = match.params.id === 'new'
+  const select = match.params.conversationId === 'new'
   const history = useHistory()
   const [selected, setSelected] = useState([])
 
@@ -26,15 +26,19 @@ export default function Conversations({ match }) {
         />
       </S.Left>
       <S.Right>
-        {!select && !match.params.id && (
+        {!select && !match.params.conversationId && (
           <EmptyRoom onToggleSelect={toggleSelect} />
         )}
         {select && selected.length > 0 && (
           <Conversation participants={selected.map(({ id }) => id)} />
         )}
-        {match.params.id && match.params.id !== 'new' && (
-          <Conversation id={match.params.id} />
-        )}
+        {match.params.conversationId &&
+          match.params.conversationId !== 'new' && (
+            <Conversation
+              id={match.params.conversationId}
+              channel={match.params.channelId}
+            />
+          )}
       </S.Right>
     </S.Conversations>
   )

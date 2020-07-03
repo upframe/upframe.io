@@ -8,15 +8,16 @@ import { path } from 'utils/url'
 import Participants from './Participants'
 import { notify } from 'notification'
 import { Conversation, useConversation } from 'conversations'
+import Thread from './Thread'
 
-type ExistProps = { id: string }
+type ExistProps = { id: string; channel?: string }
 type NewProps = { participants: string[] }
 
 export default function ConSwitch(props: ExistProps | NewProps) {
   return (
     <S.Room>
       {'id' in props ? (
-        <Existing id={props.id} />
+        <Existing id={props.id} channel={props.channel} />
       ) : (
         <New participants={props.participants} />
       )}
@@ -24,7 +25,7 @@ export default function ConSwitch(props: ExistProps | NewProps) {
   )
 }
 
-function Existing({ id }: ExistProps) {
+function Existing({ id, channel }: ExistProps) {
   const { conversation } = useConversation(id)
 
   if (conversation === undefined) return <Spinner />
@@ -35,10 +36,16 @@ function Existing({ id }: ExistProps) {
   return (
     <>
       <Participants ids={conversation.participants} />
-      <ReverseScroller>
-        {id && <Preview conversationId={id} />}
-        <StartThread cardView={false} conversationId={id} />
-      </ReverseScroller>
+      {!channel ? (
+        <ReverseScroller>
+          {id && <Preview conversationId={id} />}
+          <StartThread cardView={false} conversationId={id} />
+        </ReverseScroller>
+      ) : (
+        <ReverseScroller>
+          <Thread id={channel} />
+        </ReverseScroller>
+      )}
     </>
   )
 }
