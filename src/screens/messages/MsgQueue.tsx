@@ -8,6 +8,7 @@ interface Props {
 
 export default function MsgQueue({ messages = [] }: Props) {
   const [msgs, setMsgs] = useState<any[]>([])
+  const [focus, setFocus] = useState()
 
   useEffect(() => {
     setMsgs(
@@ -23,7 +24,14 @@ export default function MsgQueue({ messages = [] }: Props) {
   return (
     <>
       {msgs.map(msg => (
-        <Message key={msg.id} {...msg} />
+        <Message
+          key={msg.id}
+          {...msg}
+          onLockFocus={v => {
+            setFocus(v ? msg.id : undefined)
+          }}
+          {...(focus && { focused: msg.id === focus })}
+        />
       ))}
     </>
   )
