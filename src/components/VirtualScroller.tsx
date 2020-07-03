@@ -46,38 +46,52 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
       if (!scroller) return
       const ot = (node.scrollTop / itemPx) | 0
 
-      const { frame, off } = scroller.read(ot)
+      const { frame, off } = scroller.read(ot + min)
       setChildren(frame)
       setOffTop(ot - (2 - off))
       setOffBottom(
-        scroller.max - (ot - (2 - off) + scroller.view + 2 * scroller.buffer)
+        scroller.max -
+          scroller.min -
+          (ot - (2 - off) + scroller.view + 2 * scroller.buffer)
       )
     }
 
     node.addEventListener('scroll', onScroll)
     return () => node.removeEventListener('scroll', onScroll)
-  }, [ref, scroller, itemPx])
+  }, [ref, scroller, itemPx, min])
 
   useEffect(() => {
-    if (!height) return
+    if (!height || scroller) return
     const heightPx = parseSize(itemHeight)
 
-    const scroller = new Scroller(
+    const _scroller = new Scroller(
       i => <Child key={i} {...props(i)} />,
       Math.ceil(height / heightPx),
       buffer,
       min,
       max
     )
-    setScroller(scroller)
+    setScroller(_scroller)
 
-    const { frame, off } = scroller.read(startAt)
+    const { frame, off } = _scroller.read(startAt)
     setChildren(frame)
     const scroll = (buffer - off) * itemPx
     setOffTop(0)
-    setOffBottom(max - (startAt + Math.ceil(height / heightPx) + 2 * buffer))
+    setOffBottom(
+      max - min - (startAt + Math.ceil(height / heightPx) + 2 * buffer)
+    )
     if (scroll) ref.current.scrollTo({ top: scroll })
-  }, [height, itemHeight, buffer, min, max, props, startAt, itemPx])
+  }, [height, itemHeight, buffer, min, max, props, startAt, itemPx, scroller])
+
+  useEffect(() => {
+    if (!scroller) return
+    if (min !== undefined && min !== scroller.min) {
+      const top = (scroller.min - min) * itemPx
+      scroller.min = min
+      ref.current.scrollBy({ top })
+    }
+    if (max !== undefined && max !== scroller.max) scroller.max = max
+  }, [min, max, scroller, offTop, itemPx, offBottom])
 
   return (
     <S.Scroller

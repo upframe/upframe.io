@@ -7,8 +7,8 @@ export default class Scroller<T extends any> {
     private readonly getCursor: (i: number) => T,
     public readonly view: number,
     public readonly buffer: number,
-    public readonly min: number = -Infinity,
-    public readonly max: number = Infinity
+    public min: number = -Infinity,
+    public max: number = Infinity
   ) {
     if (max - min < view + buffer) throw Error('range is too small for frame')
     this.frameSize = view + 2 * buffer

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { VirtualScroller } from 'components'
 
@@ -12,15 +12,32 @@ function Item({ v, ...rest }) {
 }
 
 export default function Page() {
+  const [min, setMin] = useState(-20)
+  const [max, setMax] = useState(20)
+
   return (
     <div>
       <VirtualScroller
         itemHeight="5rem"
         Child={Item}
         props={i => ({ v: i })}
-        min={0}
-        max={10000}
+        min={min}
+        max={max}
       />
+      <button
+        onClick={() => {
+          setMax(max * 2)
+        }}
+      >
+        max
+      </button>
+      <button
+        onClick={() => {
+          setMin(min - 20)
+        }}
+      >
+        min
+      </button>
     </div>
   )
 }
