@@ -41,11 +41,19 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   useEffect(() => {
     if (!ref.current || !scroller) return
     const node = ref.current
+    let lastPos = node.scrollTop
+    let lastScroll = performance.now()
+    let animFrame: number
 
-    function onScroll() {
+    function checkScroll() {
       if (!scroller) return
-      const ot = Math.floor(node.scrollTop / itemPx)
+      animFrame = requestAnimationFrame(checkScroll)
+      if (node.scrollTop === lastPos) return
 
+      lastPos = node.scrollTop
+      lastScroll = performance.now()
+
+      const ot = Math.floor(node.scrollTop / itemPx)
       const { frame, off } = scroller.read(ot + min)
       setChildren(frame)
       setOffTop(ot - (scroller.buffer - off))
@@ -58,8 +66,33 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
       )
     }
 
-    node.addEventListener('scroll', onScroll)
-    return () => node.removeEventListener('scroll', onScroll)
+    let timeoutId: number
+
+    function checkScrollStop() {
+      if (performance.now() - lastScroll > 100) {
+        cancelAnimationFrame(animFrame)
+        listenScrollStart()
+      } else timeoutId = setTimeout(checkScrollStop, 500)
+    }
+
+    function onScrollStart() {
+      checkScroll()
+      timeoutId = setTimeout(checkScrollStop, 500)
+    }
+
+    const listenScrollStart = () =>
+      node.addEventListener('scroll', onScrollStart, {
+        passive: true,
+        once: true,
+      })
+
+    listenScrollStart()
+
+    return () => {
+      node.removeEventListener('scroll', onScrollStart)
+      cancelAnimationFrame(animFrame)
+      clearTimeout(timeoutId)
+    }
   }, [ref, scroller, itemPx, min])
 
   useEffect(() => {
