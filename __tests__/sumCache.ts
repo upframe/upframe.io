@@ -88,7 +88,7 @@ describe('Sum Cache', () => {
     it(`sum of ${start} to ${end} is ${v}`, () =>
       expect(cache.sum(start, end)).toBe(v))
 
-  testSum(0, 100)
+  testSum(0, 1000)
 
   const steps = [17, 35, 78, 102, 153, 217, 389]
 
@@ -96,4 +96,15 @@ describe('Sum Cache', () => {
     for (let i = 0; i < Math.floor(1000 / step); i++)
       testSum(i * step, (i + 1) * step)
   }
+
+  it('can search sum', () =>
+    expect(cache.searchSum(calcSum(0, 550) + 5, 0)).toBe(551))
+  it('can search sum', () =>
+    expect(cache.searchSum(calcSum(0, 550), 0)).toBe(551))
+  it('can search sum', () =>
+    expect(cache.searchSum(calcSum(0, 550) - 1, 0)).toBe(550))
+
+  testAt(-101, -1005)
+  it('can search sum starting in front of partition', () =>
+    expect(cache.searchSum(calcSum(-101, 2) + 5, -101)).toBe(3))
 })

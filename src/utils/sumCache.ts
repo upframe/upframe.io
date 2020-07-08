@@ -1,18 +1,21 @@
 interface CacheAccess {
   at(i: number): number
   sum(start: number, length: number): number
+  searchSum(sum: number, offset?: number): number
 }
 
 class SumCache implements CacheAccess {
   private partitions: SumCache[] = []
+  private _sum: number
 
   constructor(
     public offset: number,
     private readonly getValue: (i: number) => number,
     private values: number[] = [],
     private partitionLength = 100,
-    private _sum: number = values?.reduce((a, c) => a + c, 0)
+    sum?: number
   ) {
+    this._sum = sum ?? values?.reduce((a, c) => a + c, 0)
     if (!partitionLength || !values.length) return
     for (let i = 0; i < ((values.length / partitionLength) | 0); i++) {
       this.partitions.push(
@@ -37,7 +40,7 @@ class SumCache implements CacheAccess {
     return this.write(i)
   }
 
-  public sum(start: number, end: number): number {
+  public sum(start: number = this.offset, end: number = this.max): number {
     this.checkInRange(start, end)
 
     if (start === this.offset && end === this.max) return this._sum
@@ -68,6 +71,44 @@ class SumCache implements CacheAccess {
     }
 
     return v
+  }
+
+  protected static intersect(v: number, start: number, end: number): boolean {
+    return v >= Math.min(start, end) && v < Math.max(start, end)
+  }
+
+  public searchSum(sum: number, offset = 0): number {
+    let tmpSum = 0
+    let part = this.partitions.find(p => p.offset <= offset && p.max >= offset)
+
+    if (!part) {
+      const nextPart = this.partitions.find(p => p.max >= offset)
+      if (nextPart) {
+        const off = this.sum(offset, nextPart.offset - 1)
+        if (!SumCache.intersect(sum, 0, off)) {
+          part = nextPart
+          tmpSum = off
+        }
+      }
+    }
+
+    while (part) {
+      const partSum = part.sum(Math.max(part.offset, offset), part.max)
+      if (tmpSum + partSum > sum)
+        return part.searchSum(sum - tmpSum, Math.max(offset, part.offset))
+      tmpSum += partSum
+      const nextOff = part.max + 1
+      part = this.partitions.find(p => p.offset === nextOff)
+    }
+
+    let i = offset - this.offset
+
+    let acc = 0
+    for (i; i < this.values.length; i++) {
+      acc += this.values[i]
+      if (acc >= sum) break
+    }
+    return i + this.offset + (acc === sum ? 1 : 0)
   }
 
   private write(i: number, v: number = this.getValue(i)): number {
@@ -190,6 +231,15 @@ export default class CacheManager implements CacheAccess {
     let { cache } = this.getCache(start)
     while (cache.max < end) cache = step(cache)
     return cache.sum(start, end)
+  }
+
+  public searchSum(sum: number, offset = 0): number {
+    const cache = this.caches.find(
+      c => c.offset <= offset && c.sum(c.offset, c.max) >= sum
+    )
+    if (cache) return cache.searchSum(sum, offset)
+
+    return -1
   }
 
   private merge(a: SumCache, b: SumCache): SumCache {
