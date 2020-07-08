@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { parseSize } from '../utils/css'
-import Scroller from '../utils/scroller'
+import { DynamicScroller } from 'utils/scroller'
+import Cache from 'utils/sumCache'
 
 interface Props {
-  itemHeight: string
+  size(index: number): number
   Child(...args: any[]): JSX.Element
   props(index: number): any
   min?: number
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const VirtualScroller: React.FunctionComponent<Props> = ({
-  itemHeight,
+  size,
   Child,
   props,
   min = -Infinity,
@@ -27,16 +27,20 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   const [children, setChildren] = useState<ReturnType<Props['Child']>[]>([])
   const [offTop, setOffTop] = useState(0)
   const [offBottom, setOffBottom] = useState(0)
-  const [itemPx] = useState(parseSize(itemHeight))
+  const [cache, setCache] = useState(new Cache(size))
+
+  useEffect(() => {
+    setCache(new Cache(size))
+  }, [size])
 
   const [scroller, setScroller] = useState<
-    Scroller<ReturnType<Props['Child']>>
+    DynamicScroller<ReturnType<Props['Child']>>
   >()
 
   useEffect(() => {
     if (!ref.current) return
     setHeight(ref.current.offsetHeight)
-  }, [ref, itemPx])
+  }, [ref])
 
   useEffect(() => {
     if (!ref.current || !scroller) return
@@ -45,24 +49,33 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
     let lastScroll = performance.now()
     let animFrame: number
 
+    function getOffset(n: number): number {
+      if (n === min) return 0
+      return cache.sum(min, n - 1)
+    }
+
     function checkScroll() {
-      if (!scroller) return
+      if (!scroller || !cache) return
       animFrame = requestAnimationFrame(checkScroll)
       if (node.scrollTop === lastPos) return
 
       lastPos = node.scrollTop
       lastScroll = performance.now()
 
-      const ot = Math.floor(node.scrollTop / itemPx)
+      const i = cache.searchSum(node.scrollTop, min)
+
+      const ot = Math.max(i - 1, 0)
       const { frame, off } = scroller.read(ot + min)
       setChildren(frame)
-      setOffTop(ot - (scroller.buffer - off))
+
+      const offTop = getOffset(ot - (scroller.buffer - off))
+
+      setOffTop(offTop)
+
+      const buffBottStart = ot + frame.length + off - scroller.buffer
+
       setOffBottom(
-        scroller.max -
-          scroller.min -
-          ot -
-          scroller.view -
-          (scroller.buffer / 2 + off)
+        buffBottStart > max ? 0 : cache.sum(Math.min(buffBottStart, max), max)
       )
     }
 
@@ -93,47 +106,35 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
       cancelAnimationFrame(animFrame)
       clearTimeout(timeoutId)
     }
-  }, [ref, scroller, itemPx, min])
+  }, [ref, scroller, min, max, cache])
 
   useEffect(() => {
-    if (!height || scroller) return
-    const heightPx = parseSize(itemHeight)
+    if (!height || scroller || !cache) return
 
-    const _scroller = new Scroller(
+    const _scroller = new DynamicScroller(
       i => <Child key={i} {...props(i)} />,
-      Math.ceil(height / heightPx),
+      cache,
       buffer,
+      height,
       min,
       max
     )
     setScroller(_scroller)
 
-    const { frame, off } = _scroller.read(startAt)
+    const { frame } = _scroller.read(startAt)
     setChildren(frame)
-    const scroll = (buffer - off) * itemPx
+    const scroll = 0
     setOffTop(0)
-    setOffBottom(
-      max - min - (startAt + Math.ceil(height / heightPx) + 2 * buffer)
-    )
+    setOffBottom(100)
     if (scroll) ref.current.scrollTo({ top: scroll })
-  }, [height, itemHeight, buffer, min, max, props, startAt, itemPx, scroller])
-
-  useEffect(() => {
-    if (!scroller) return
-    if (min !== undefined && min !== scroller.min) {
-      const top = (scroller.min - min) * itemPx
-      scroller.min = min
-      ref.current.scrollBy({ top })
-    }
-    if (max !== undefined && max !== scroller.max) scroller.max = max
-  }, [min, max, scroller, offTop, itemPx, offBottom])
+  }, [height, buffer, min, max, props, startAt, scroller, size, cache])
 
   return (
     <S.Scroller
       ref={ref}
       paddTop={offTop}
       paddBottom={offBottom}
-      itemSize={itemHeight}
+      itemSize="3rem"
     >
       {children}
     </S.Scroller>
@@ -149,17 +150,20 @@ interface ScScrollProps {
 const S = {
   Scroller: styled.div.attrs((p: ScScrollProps) => ({
     style: {
-      '--padd-top': `calc(${p.paddTop} * ${p.itemSize})`,
-      '--padd-bottom': `calc(${p.paddBottom} * ${p.itemSize})`,
+      '--padd-top': `${p.paddTop}px`,
+      '--padd-bottom': `${p.paddBottom}px`,
     },
   }))<ScScrollProps>`
     border: 1px solid black;
     display: flex;
     flex-direction: column;
     width: 30rem;
+    max-width: 100vw;
     margin: auto;
-    height: 70vh;
+    height: 80vh;
     overflow-y: auto;
+    box-sizing: border-box;
+    overscroll-behavior: contain;
 
     & > * {
       transform: translateY(var(--padd-top));
