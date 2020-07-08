@@ -108,6 +108,7 @@ class SumCache implements CacheAccess {
       acc += this.values[i]
       if (acc >= sum) break
     }
+    if (acc < sum) return Infinity
     return i + this.offset + (acc === sum ? 1 : 0)
   }
 
@@ -234,12 +235,23 @@ export default class CacheManager implements CacheAccess {
   }
 
   public searchSum(sum: number, offset = 0): number {
-    const cache = this.caches.find(
-      c => c.offset <= offset && c.sum(c.offset, c.max) >= sum
-    )
-    if (cache) return cache.searchSum(sum, offset)
+    let { cache } = this.getCache(offset)
 
-    return -1
+    let i = cache.searchSum(sum, offset)
+    if (i !== Infinity) return i
+
+    let tmp = cache.sum(offset)
+    let next = this.caches[this.caches.indexOf(cache) + 1]
+
+    while (tmp < sum) {
+      tmp += cache.at(cache.max + 1)
+      if (next && cache.max === next.offset - 1) {
+        cache = this.merge(cache, next)
+        next = this.caches[this.caches.indexOf(cache) + 1]
+      }
+    }
+
+    return cache.searchSum(sum, offset)
   }
 
   private merge(a: SumCache, b: SumCache): SumCache {

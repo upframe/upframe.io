@@ -107,4 +107,8 @@ describe('Sum Cache', () => {
   testAt(-101, -1005)
   it('can search sum starting in front of partition', () =>
     expect(cache.searchSum(calcSum(-101, 2) + 5, -101)).toBe(3))
+
+  testSum(1050, 1100)
+  it('can search sum over multiple caches', () =>
+    expect(cache.searchSum(calcSum(-120, 1200) + 1, -120)).toBe(1201))
 })
