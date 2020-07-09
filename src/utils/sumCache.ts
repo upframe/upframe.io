@@ -216,8 +216,12 @@ export default class CacheManager implements CacheAccess {
   }
 
   public sum(start: number, end = start): number {
+    if (end < start) end = start
+
     if (end < start || !Number.isInteger(end))
       throw Error('end must be integer >= start')
+
+    if (end === start) return this.at(start)
 
     const step = (cache: SumCache): SumCache => {
       const next = this.getNext(cache)

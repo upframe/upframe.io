@@ -65,12 +65,12 @@ export class DynamicScroller<T extends any> {
   private lastFrame?: T[]
 
   constructor(
-    private readonly getCursor: (i: number) => T,
+    public getCursor: (i: number) => T,
     private readonly sizeCache: Cache,
     public readonly buffer: number,
     public readonly size: number,
-    public readonly min: number = -Infinity,
-    public readonly max: number = Infinity
+    public min: number = -Infinity,
+    public max: number = Infinity
   ) {}
 
   private frameSize(start: number): number {
@@ -78,9 +78,10 @@ export class DynamicScroller<T extends any> {
     let n = 0
     do {
       n++
-      height = this.sizeCache.sum(start, start + n - 1)
-    } while (height < this.size)
-    return n + 1 + this.buffer * 2
+      height = this.sizeCache.sum(start, Math.min(start + n - 1, this.max))
+    } while (height < this.size && n + start < this.max)
+    const res = Math.min(n + 1 + this.buffer * 2, this.max - this.min + 1)
+    return res
   }
 
   read(cursor: number): { frame: T[]; off: number } {
@@ -100,7 +101,11 @@ export class DynamicScroller<T extends any> {
 
     const ec = cursor + off
 
-    if (this.lastFrame && ec === this.lastCursor)
+    if (
+      this.lastFrame &&
+      ec === this.lastCursor &&
+      this.lastFrame.length === size
+    )
       return { frame: this.lastFrame, off }
 
     if (off !== 0) range = range.map(v => v + off)
@@ -124,6 +129,7 @@ export class DynamicScroller<T extends any> {
           frame = [
             ...range.slice(0, si).map(this.getCursor),
             ...this.lastFrame,
+            ...range.slice(this.lastFrame.length).map(this.getCursor),
           ].slice(0, size)
         }
       }
