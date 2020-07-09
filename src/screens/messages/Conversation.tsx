@@ -42,9 +42,7 @@ function Existing({ id, channel }: ExistProps) {
           <StartThread cardView={false} conversationId={id} />
         </ReverseScroller>
       ) : (
-        <ReverseScroller>
-          <Thread id={channel} />
-        </ReverseScroller>
+        <Thread id={channel} />
       )}
     </>
   )

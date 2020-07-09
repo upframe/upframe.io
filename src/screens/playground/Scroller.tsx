@@ -12,12 +12,11 @@ const colors = {
 }
 
 const size = (i: number): number => {
-  // console.log('get', i)
-  return 32 + (Math.sin(i % 23) + 1) * 40
+  return 32 + (Math.sin(Math.abs(i) % 23) + 1) * 40
 }
 
 function Item({ v, ...rest }) {
-  let cl = v % 9
+  let cl = Math.abs(v) % 9
   if (cl > 5) cl = 5 - (cl - 5)
 
   return (
@@ -34,9 +33,10 @@ export default function Page() {
         size={size}
         Child={Item}
         props={i => ({ v: i })}
-        min={0}
-        max={1000}
+        min={-5}
+        max={100}
         buffer={2}
+        anchorBottom
       />
     </S.Page>
   )
@@ -54,6 +54,9 @@ const S = {
     ${VirtualScroller.sc} {
       height: calc(100vh - 5rem);
       max-height: 50rem;
+      width: 30rem;
+      border: 1px solid black;
+      margin: auto;
     }
   `,
 

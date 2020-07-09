@@ -46,6 +46,8 @@ export default function Conversations({ match }) {
 
 const S = {
   Conversations: styled.div`
+    --chat-max-width: 70ch;
+
     display: flex;
     flex-direction: row;
     margin-top: -1rem;

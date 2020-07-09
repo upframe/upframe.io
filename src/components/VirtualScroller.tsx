@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useReducer } from 'react'
 import styled from 'styled-components'
 import { DynamicScroller } from 'utils/scroller'
 import Cache from 'utils/sumCache'
@@ -11,6 +11,7 @@ interface Props {
   max?: number
   buffer?: number
   startAt?: number
+  anchorBottom?: boolean
 }
 
 const VirtualScroller: React.FunctionComponent<Props> = ({
@@ -20,7 +21,8 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   min = -Infinity,
   max = Infinity,
   buffer = 2,
-  startAt = min === -Infinity ? 0 : min,
+  startAt,
+  anchorBottom = false,
 }) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>
   const [height, setHeight] = useState<number>()
@@ -28,6 +30,7 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   const [offTop, setOffTop] = useState(0)
   const [offBottom, setOffBottom] = useState(0)
   const [cache, setCache] = useState(new Cache(size))
+  const [preScrollDone, setPreScrollDone] = useReducer(() => true, false)
 
   useEffect(() => {
     setCache(new Cache(size))
@@ -38,12 +41,22 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   >()
 
   useEffect(() => {
-    if (!ref.current) return
-    setHeight(ref.current.offsetHeight)
+    if (!scroller) return
+    scroller.max = max
+  }, [max, scroller])
+
+  useEffect(() => {
+    if (!scroller) return
+    scroller.getCursor = i => <Child key={i} {...props(i)} />
+  }, [props, scroller])
+
+  useEffect(() => {
+    if (!ref.current?.parentElement) return
+    setHeight(ref.current.parentElement.offsetHeight)
   }, [ref])
 
   useEffect(() => {
-    if (!ref.current || !scroller) return
+    if (!ref.current || !scroller || !preScrollDone) return
     const node = ref.current
     let lastPos = node.scrollTop
     let lastScroll = performance.now()
@@ -54,19 +67,21 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
       return cache.sum(min, n - 1)
     }
 
-    function checkScroll() {
+    function checkScroll(force = false) {
       if (!scroller || !cache) return
-      animFrame = requestAnimationFrame(checkScroll)
-      if (node.scrollTop === lastPos) return
+      animFrame = requestAnimationFrame(() => checkScroll())
+      if (node.scrollTop === lastPos && !force) return
 
       lastPos = node.scrollTop
       lastScroll = performance.now()
 
       const i = cache.searchSum(node.scrollTop, min)
 
-      const ot = Math.max(i - 1, 0)
-      const { frame, off } = scroller.read(ot + min)
+      const ot = Math.max(i - 1, min)
+      let { frame, off } = scroller.read(ot)
       setChildren(frame)
+      if (Math.abs(off) > scroller.buffer)
+        off = off > 0 ? scroller.buffer : -scroller.buffer
 
       const offTop = getOffset(ot - (scroller.buffer - off))
 
@@ -101,15 +116,19 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
 
     listenScrollStart()
 
+    checkScroll(true)
+
     return () => {
       node.removeEventListener('scroll', onScrollStart)
       cancelAnimationFrame(animFrame)
       clearTimeout(timeoutId)
     }
-  }, [ref, scroller, min, max, cache])
+  }, [ref, scroller, min, max, cache, preScrollDone])
 
   useEffect(() => {
-    if (!height || scroller || !cache) return
+    if (!height || !cache) return
+
+    if ((scroller as any)?.sizeCache === cache) return
 
     const _scroller = new DynamicScroller(
       i => <Child key={i} {...props(i)} />,
@@ -121,23 +140,28 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
     )
     setScroller(_scroller)
 
-    const { frame } = _scroller.read(startAt)
-    setChildren(frame)
-    const scroll = 0
-    setOffTop(0)
-    setOffBottom(100)
-    if (scroll) ref.current.scrollTo({ top: scroll })
-  }, [height, buffer, min, max, props, startAt, scroller, size, cache])
+    if (typeof startAt === 'number')
+      ref.current.scrollTo({ top: cache.sum(min, startAt - 1) })
+    else if (anchorBottom)
+      ref.current.scrollTo({
+        top: cache.sum(min, max) - ref.current.offsetHeight,
+      })
+
+    setPreScrollDone()
+  }, [size, cache, height])
 
   return (
-    <S.Scroller
-      ref={ref}
-      paddTop={offTop}
-      paddBottom={offBottom}
-      itemSize="3rem"
-    >
-      {children}
-    </S.Scroller>
+    <S.Wrap>
+      <S.Scroller
+        ref={ref}
+        paddTop={offTop}
+        paddBottom={offBottom}
+        itemSize="3rem"
+      >
+        {children}
+        <S.Placeholder />
+      </S.Scroller>
+    </S.Wrap>
   )
 }
 
@@ -148,22 +172,22 @@ interface ScScrollProps {
 }
 
 const S = {
+  Wrap: styled.div`
+    height: 100%;
+  `,
+
   Scroller: styled.div.attrs((p: ScScrollProps) => ({
     style: {
       '--padd-top': `${p.paddTop}px`,
       '--padd-bottom': `${p.paddBottom}px`,
     },
   }))<ScScrollProps>`
-    border: 1px solid black;
     display: flex;
     flex-direction: column;
-    width: 30rem;
-    max-width: 100vw;
-    margin: auto;
-    height: 80vh;
     overflow-y: auto;
     box-sizing: border-box;
     overscroll-behavior: contain;
+    max-height: 100%;
 
     & > * {
       transform: translateY(var(--padd-top));
@@ -173,5 +197,15 @@ const S = {
       margin-bottom: var(--padd-bottom);
     }
   `,
+
+  Placeholder: styled.div`
+    height: 0;
+    margin-top: 20000px;
+    position: relative;
+
+    * + & {
+      margin-top: 0;
+    }
+  `,
 }
-export default Object.assign(VirtualScroller, { sc: S.Scroller })
+export default Object.assign(VirtualScroller, { sc: S.Wrap })

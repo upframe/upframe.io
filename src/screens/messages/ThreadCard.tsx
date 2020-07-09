@@ -44,7 +44,7 @@ const S = {
   Card: styled.article`
     border: 1.5px solid #e5e5e5;
     width: 100%;
-    max-width: 70ch;
+    max-width: var(--chat-max-width);
     border-radius: 0.5rem;
     box-sizing: border-box;
     padding: 1rem;

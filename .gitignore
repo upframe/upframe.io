@@ -27,5 +27,6 @@ src/gql/types
 
 /*.txt
 tests
+docs
 /tmp
 .eslintcache

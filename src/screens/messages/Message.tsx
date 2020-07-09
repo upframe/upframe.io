@@ -75,15 +75,15 @@ const S = {
   Wrap: styled.article`
     display: flex;
     flex-direction: row;
-    padding: 0.2rem;
-    padding-top: 0.5rem;
-    align-items: center;
+    padding: 0;
     flex-shrink: 0;
     position: relative;
 
-    &[data-stacked='true'] {
+    --line-height: 2rem;
+
+    /* &[data-stacked='true'] {
       padding-top: 0.2rem;
-    }
+    } */
 
     picture,
     img {
@@ -91,6 +91,7 @@ const S = {
       height: ${picSize};
       flex-shrink: 0;
       border-radius: 1000px;
+      margin-top: 0.25rem;
     }
 
     & > ${Time.sc} {
@@ -121,12 +122,15 @@ const S = {
     display: flex;
     flex-direction: row;
     align-items: center;
+    /* background-color: #00f2; */
+    height: var(--line-height);
   `,
 
   Body: styled.p`
     margin: 0;
-    margin-top: 0.2rem;
     color: #000c;
+    /* background: #0f02; */
+    line-height: var(--line-height);
   `,
 
   Name: styled.span`
