@@ -1,20 +1,48 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import styles from './categories.module.scss'
-import { Title, Text } from '../../components'
+import { Spinner } from '../../components'
+import styled from 'styled-components'
+import Category from './Category'
+import { gql, useQuery } from 'gql'
+
+const CATEGORIES = gql`
+  query Lists {
+    lists {
+      id
+      name
+      description
+      publicView
+      pictureUrl
+    }
+  }
+`
 
 export default function Categories() {
-  return (
-    <>
-      <Title s2>Top Categories</Title>
-      <Text>How can we help? Start by picking one of our main categories.</Text>
-      <div className={styles.categories}>
-        {['product', 'design', 'software'].map(v => (
-          <Link key={v} to={`/list/${v}`}>
-            {v}
-          </Link>
+  const Container = styled.div`
+    display: flex;
+    width: auto;
+    height: auto;
+    overflow-y: auto;
+  `
+  const { data } = useQuery(CATEGORIES)
+  if (data) {
+    const lists = data.lists
+    const listNames = []
+    const photoUrl = []
+    lists.forEach(list => listNames.push(list.name))
+    lists.forEach(list => photoUrl.push(list.pictureUrl))
+
+    return (
+      <Container>
+        {listNames.map((v, index) => (
+          <Category key={v} name={v} pictureUrl={photoUrl[index]} />
         ))}
-      </div>
-    </>
-  )
+      </Container>
+    )
+  } else {
+    return (
+      <>
+        <Spinner />
+      </>
+    )
+  }
 }
