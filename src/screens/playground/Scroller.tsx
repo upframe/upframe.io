@@ -31,11 +31,21 @@ function Item({ v, ...rest }) {
 export default function Page() {
   const [updateInput, setUpdateInput] = useState('')
   const [toUpdate, setToUpdate] = useState<number[]>([])
+  const [addInput, setAddInput] = useState('')
+  const [min, setMin] = useState(-5)
+  const [max, setMax] = useState(100)
 
   function update() {
     cstSize[updateInput] = 200
     setToUpdate([...toUpdate, parseInt(updateInput)])
     setUpdateInput('')
+  }
+
+  function add(top: boolean) {
+    const v = parseInt(addInput)
+    if (top) setMin(min - v)
+    else setMax(max + v)
+    setAddInput('')
   }
 
   return (
@@ -44,8 +54,8 @@ export default function Page() {
         size={size}
         Child={Item}
         props={i => ({ v: i })}
-        min={-5}
-        max={100}
+        min={min}
+        max={max}
         buffer={2}
         anchorBottom
         update={toUpdate}
@@ -58,6 +68,14 @@ export default function Page() {
           type="number"
         ></input>
         <button onClick={update}>update</button>
+        <br />
+        <input
+          value={addInput}
+          onChange={({ target }) => setAddInput(target.value)}
+          type="number"
+        />
+        <button onClick={() => add(true)}>add top</button>
+        <button onClick={() => add(false)}>add bottom</button>
       </S.Controls>
     </S.Page>
   )

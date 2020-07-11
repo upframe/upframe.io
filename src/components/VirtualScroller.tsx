@@ -35,7 +35,9 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   const [offBottom, setOffBottom] = useState(0)
   const [cache, setCache] = useState(new Cache(size))
   const [preScrollDone, setPreScrollDone] = useReducer(() => true, false)
-  const [upCount, forceUpdate] = useReducer((_, off) => ({ off }), { off: 0 })
+  const [upCount, forceUpdate] = useReducer((_, off) => ({ off }), {
+    off: 0,
+  })
 
   useEffect(() => {
     setCache(new Cache(size))
@@ -46,9 +48,19 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   >()
 
   useEffect(() => {
-    if (!scroller) return
-    scroller.max = max
-  }, [max, scroller])
+    if (!scroller || !cache) return
+    if (scroller.max !== max) scroller.max = max
+    if (scroller.min !== min) {
+      let dv = cache.sum(
+        Math.min(min, scroller.min),
+        Math.max(min, scroller.min) - 1
+      )
+      if (min > scroller.min) dv *= -1
+      ref.current?.scrollBy({ top: dv })
+      scroller.min = min
+      forceUpdate(0)
+    }
+  }, [min, max, scroller, cache])
 
   useEffect(() => {
     if (!scroller) return
