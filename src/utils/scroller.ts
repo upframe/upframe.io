@@ -84,7 +84,7 @@ export class DynamicScroller<T extends any> {
     return res
   }
 
-  read(cursor: number): { frame: T[]; off: number } {
+  public read(cursor: number): { frame: T[]; off: number } {
     const size = this.frameSize(Math.max(cursor - this.buffer, this.min))
 
     let range = Array(Math.ceil(size))
@@ -138,5 +138,17 @@ export class DynamicScroller<T extends any> {
     if (!frame) frame = range.map(this.getCursor)
     this.lastFrame = frame
     return { frame, off }
+  }
+
+  public update(i: number): number {
+    if (
+      this.lastCursor &&
+      this.lastFrame &&
+      this.lastCursor <= i &&
+      this.lastCursor + this.lastFrame.length > i
+    )
+      this.lastCursor = undefined
+
+    return this.sizeCache.update(i)
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { VirtualScroller } from 'components'
 
@@ -11,8 +11,10 @@ const colors = {
   5: '#f0f4',
 }
 
+const cstSize = {}
+
 const size = (i: number): number => {
-  return 32 + (Math.sin(Math.abs(i) % 23) + 1) * 40
+  return cstSize[i] ?? 32 + (Math.sin(Math.abs(i) % 23) + 1) * 40
 }
 
 function Item({ v, ...rest }) {
@@ -27,6 +29,15 @@ function Item({ v, ...rest }) {
 }
 
 export default function Page() {
+  const [updateInput, setUpdateInput] = useState('')
+  const [toUpdate, setToUpdate] = useState<number[]>([])
+
+  function update() {
+    cstSize[updateInput] = 200
+    setToUpdate([...toUpdate, parseInt(updateInput)])
+    setUpdateInput('')
+  }
+
   return (
     <S.Page>
       <VirtualScroller
@@ -37,12 +48,22 @@ export default function Page() {
         max={100}
         buffer={2}
         anchorBottom
+        update={toUpdate}
+        onUpdate={id => setToUpdate(toUpdate.filter(v => v !== id))}
       />
+      <S.Controls>
+        <input
+          value={updateInput}
+          onChange={({ target }) => setUpdateInput(target.value)}
+          type="number"
+        ></input>
+        <button onClick={update}>update</button>
+      </S.Controls>
     </S.Page>
   )
 }
 
-type ItemProps = { size: number; color }
+type ItemProps = { size: number; color: string }
 
 const S = {
   Page: styled.div`
@@ -74,5 +95,11 @@ const S = {
     span {
       width: 100%;
     }
+  `,
+
+  Controls: styled.div`
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
   `,
 }

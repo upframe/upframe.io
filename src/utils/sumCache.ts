@@ -2,6 +2,7 @@ interface CacheAccess {
   at(i: number): number
   sum(start: number, length: number): number
   searchSum(sum: number, offset?: number): number
+  update(i: number): number
 }
 
 class SumCache implements CacheAccess {
@@ -38,6 +39,17 @@ class SumCache implements CacheAccess {
     if (this.values.length > i - this.offset && i - this.offset >= 0)
       return this.values[i - this.offset]
     return this.write(i)
+  }
+
+  public update(i: number, func?: (i: number) => number): number {
+    this.checkInRange(i)
+    const v = (func ?? this.getValue)(i)
+    const dv = v - this.values[i - this.offset]
+    this._sum += dv
+    this.values[i - this.offset] = v
+    const part = this.partitions.find(p => p.offset <= i && p.max >= i)
+    if (part) part.update(i, this.getValue)
+    return dv
   }
 
   public sum(start: number = this.offset, end: number = this.max): number {
@@ -195,6 +207,10 @@ export default class CacheManager implements CacheAccess {
     const next = this.getNext(cache)
     if (next && next.offset === i + 1) this.merge(cache, next)
     return v
+  }
+
+  public update(i: number): number {
+    return this.getCache(i).cache.update(i)
   }
 
   private getCache(offset: number): { cache: SumCache; isNew: boolean } {

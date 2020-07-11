@@ -12,6 +12,8 @@ interface Props {
   buffer?: number
   startAt?: number
   anchorBottom?: boolean
+  update?: number[]
+  onUpdate?(i: number): void
 }
 
 const VirtualScroller: React.FunctionComponent<Props> = ({
@@ -23,6 +25,8 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   buffer = 2,
   startAt,
   anchorBottom = false,
+  update,
+  onUpdate,
 }) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>
   const [height, setHeight] = useState<number>()
@@ -31,6 +35,7 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   const [offBottom, setOffBottom] = useState(0)
   const [cache, setCache] = useState(new Cache(size))
   const [preScrollDone, setPreScrollDone] = useReducer(() => true, false)
+  const [upCount, forceUpdate] = useReducer((_, off) => ({ off }), { off: 0 })
 
   useEffect(() => {
     setCache(new Cache(size))
@@ -80,8 +85,6 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
       const ot = Math.max(i - 1, min)
       let { frame, off } = scroller.read(ot)
       setChildren(frame)
-      if (Math.abs(off) > scroller.buffer)
-        off = off > 0 ? scroller.buffer : -scroller.buffer
 
       const offTop = getOffset(ot - (scroller.buffer - off))
 
@@ -117,13 +120,24 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
     listenScrollStart()
 
     checkScroll(true)
+    if (upCount.off)
+      requestAnimationFrame(() => ref.current.scrollBy({ top: upCount.off }))
 
     return () => {
       node.removeEventListener('scroll', onScrollStart)
       cancelAnimationFrame(animFrame)
       clearTimeout(timeoutId)
     }
-  }, [ref, scroller, min, max, cache, preScrollDone])
+  }, [ref, scroller, min, max, cache, preScrollDone, upCount])
+
+  useEffect(() => {
+    if (!update?.length || !scroller) return
+    const i = update[0]
+    if (onUpdate) onUpdate(i)
+    const ci = cache.searchSum(ref.current.scrollTop, min)
+    const dv = scroller.update(i)
+    forceUpdate(ci > i ? dv : 0)
+  }, [update, onUpdate, scroller])
 
   useEffect(() => {
     if (!height || !cache) return
@@ -174,6 +188,9 @@ interface ScScrollProps {
 const S = {
   Wrap: styled.div`
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   `,
 
   Scroller: styled.div.attrs((p: ScScrollProps) => ({
@@ -189,12 +206,12 @@ const S = {
     overscroll-behavior: contain;
     max-height: 100%;
 
-    & > * {
-      transform: translateY(var(--padd-top));
+    & * {
+      overflow-anchor: none;
     }
 
-    & > *:last-child {
-      margin-bottom: var(--padd-bottom);
+    & > * {
+      transform: translateY(var(--padd-top));
     }
   `,
 
@@ -205,6 +222,7 @@ const S = {
 
     * + & {
       margin-top: 0;
+      margin-bottom: var(--padd-bottom);
     }
   `,
 }
