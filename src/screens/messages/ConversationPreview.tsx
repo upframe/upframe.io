@@ -7,11 +7,11 @@ interface Props {
 }
 
 export default function ConversationPreview({ conversationId }: Props) {
-  const { conversation } = useConversation(conversationId)
+  const { channels } = useConversation(conversationId)
 
   return (
     <>
-      {conversation?.channels?.map(({ id }) => (
+      {channels.map(({ id }) => (
         <Thread key={id} channelId={id} />
       ))}
     </>

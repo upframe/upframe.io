@@ -36,6 +36,10 @@ export function useMessaging() {
 
 export function useConversation(id: string) {
   const [conversation, setConversation] = useState<Conversation | null>()
+  const [channels, addChannels] = useReducer(
+    (state: Channel[], added: Channel[]) => [...added, ...state],
+    []
+  )
 
   useEffect(() => {
     Conversation.get(id)
@@ -43,7 +47,15 @@ export function useConversation(id: string) {
       .catch(() => setConversation(null))
   }, [id])
 
-  return { conversation }
+  useEffect(() => {
+    if (!conversation) return
+    addChannels(conversation.channels)
+    return conversation.on('channel', c => {
+      addChannels([c])
+    })
+  }, [conversation])
+
+  return { conversation, channels }
 }
 
 export function useConversations() {

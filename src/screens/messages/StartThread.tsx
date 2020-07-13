@@ -3,47 +3,36 @@ import styled from 'styled-components'
 import { Button, Title, Icon } from 'components'
 import Thread from './ThreadCard'
 import Input from './MsgInput'
-import { gql, useMutation } from 'gql'
+import { useConversation } from 'conversations/hooks'
 
-const START_THREAD = gql`
-  mutation StartThread($conversationId: ID!, $msg: String) {
-    createThread(conversationId: $conversationId, msg: $msg) {
-      id
-      channels {
-        id
-        messages {
-          edges {
-            node {
-              id
-              content
-              author
-              time
-            }
-          }
-        }
-      }
-    }
-  }
-`
-
-interface Props {
+type Props = {
   conversationId?: string
   onSend?(msg: any): void
   cardView?: boolean
 }
 
-export default function StartThread({
-  conversationId,
-  onSend,
-  cardView = false,
-}: Require<Props, 'conversationId'> | Require<Props, 'onSend'>) {
-  const [card, setCard] = useState(cardView)
-  const [startThread] = useMutation(START_THREAD)
+export default function StartThreadWrap(
+  props: Require<Props, 'conversationId'> | Require<Props, 'onSend'>
+) {
+  return props.onSend ? (
+    <StartThread {...(props as Require<Props, 'onSend'>)} />
+  ) : (
+    <Existing {...(props as Require<Props, 'conversationId'>)} />
+  )
+}
+
+function Existing(props: Require<Props, 'conversationId'>) {
+  const { conversation } = useConversation(props.conversationId)
 
   function send(msg: string) {
-    startThread({ variables: { conversationId, msg } })
-    setCard(false)
+    conversation?.createChannel(msg)
   }
+
+  return <StartThread {...props} onSend={send} />
+}
+
+function StartThread({ onSend, cardView = false }: Require<Props, 'onSend'>) {
+  const [card, setCard] = useState(cardView)
 
   return (
     <S.Start data-type={card ? 'card' : 'button'}>
@@ -60,7 +49,10 @@ export default function StartThread({
           </S.TitleRow>
           <Input
             placeholder="Message"
-            onSubmit={typeof onSend === 'function' ? onSend : send}
+            onSubmit={v => {
+              setCard(false)
+              onSend(v)
+            }}
           />
         </Thread.Card>
       ) : (

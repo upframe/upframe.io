@@ -4,6 +4,8 @@ import type {
   FetchConversationVariables,
   CreateConversation,
   CreateConversationVariables,
+  CreateChannel,
+  CreateChannelVariables,
 } from 'gql/types'
 import * as gql from './gql'
 import Channel from './channel'
@@ -27,11 +29,13 @@ export default class Conversation {
   public get channels() {
     return this._channels
   }
-  public addChannel(channel: Channel) {
+  public addChannel(channel: Channel): Channel {
     this._channels.push(channel)
     channel.on('message', msg => {
       this.eventHandlers.message.forEach(handler => handler(msg))
     })
+    this.eventHandlers.channel.forEach(handler => handler(channel))
+    return channel
   }
 
   protected constructor(
@@ -73,6 +77,15 @@ export default class Conversation {
       con.id,
       con.participants.map(({ id }) => id)
     )
+  }
+
+  public async createChannel(msg?: string): Promise<Channel | null> {
+    const { data } = await api.mutate<CreateChannel, CreateChannelVariables>({
+      mutation: gql.CREATE_CHANNEL,
+      variables: { conversationId: this.id, msg },
+    })
+    if (!data?.createThread?.id) return null
+    return this.addChannel(Channel.get(data.createThread.id))
   }
 
   private static async fetch(id: string): Promise<Conversation> {

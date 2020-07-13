@@ -98,3 +98,21 @@ export const SEND_MESSAGE = gql`
     }
   }
 `
+
+export const CREATE_CHANNEL = gql`
+  mutation CreateChannel($conversationId: ID!, $msg: String) {
+    createThread(conversationId: $conversationId, msg: $msg) {
+      id
+      messages {
+        edges {
+          node {
+            id
+            content
+            author
+            time
+          }
+        }
+      }
+    }
+  }
+`
