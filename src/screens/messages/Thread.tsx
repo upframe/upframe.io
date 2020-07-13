@@ -24,17 +24,26 @@ function useMessages(channelId: string) {
   })
   const [updated, changeUpdated] = useReducer(
     (
-      state: number[],
+      state: [number, boolean][],
       {
         type,
         index,
         indexes = [],
-      }: { type: 'add' | 'remove'; index?: number; indexes?: number[] }
+        noRender = true,
+      }: {
+        type: 'add' | 'remove'
+        index?: number
+        indexes?: number[]
+        noRender?: boolean
+      }
     ) => {
       indexes = [...indexes, ...(typeof index === 'number' ? [index] : [])]
       return type === 'add'
-        ? [...state, ...indexes]
-        : state.filter(v => !indexes.includes(v))
+        ? [
+            ...state,
+            ...(indexes.map(i => [i, noRender]) as [number, boolean][]),
+          ]
+        : state.filter(([i]) => !indexes.includes(i))
     },
     []
   )
@@ -75,11 +84,6 @@ function useMessages(channelId: string) {
             if (messages.length >= lastRef.current) {
               setAnchorIndex(anchorRef.current - 1)
             }
-          } else {
-            changeUpdated({
-              type: 'add',
-              index: messages.length - anchorRef.current - 1,
-            })
           }
         }
       }),
@@ -110,6 +114,12 @@ function useMessages(channelId: string) {
     setLast(lastRef.current + 30)
   }, [lastRef])
 
+  const reportSize = useCallback((size: number, id: string) => {
+    const index = msgRef.current.findIndex(msg => msg.id === id)
+    if (!index) return
+    changeUpdated({ type: 'add', index })
+  }, [])
+
   const props = useCallback(
     (i: number) => {
       i += anchorRef.current
@@ -120,19 +130,23 @@ function useMessages(channelId: string) {
         }
       }
 
-      // const focus = focusRef.current
       return {
         ...msgRef.current[i],
         stacked: isStacked(i),
-        // ...(focus && { focused: msgRef.current[i].id === focus }),
+        focused: focus && msgRef.current[i].id === focus,
         onLockFocus(v: boolean) {
-          // console.log('lock focus', v)
-          // setFocus(v ? msgRef.current[i].id : undefined)
+          setFocus(v ? msgRef.current[i].id : undefined)
+          changeUpdated({
+            type: 'add',
+            indexes: msgRef.current.map((_, i) => i - anchorRef.current),
+            noRender: false,
+          })
         },
         i: i - anchorRef.current,
+        reportSize,
       }
     },
-    [isStacked, msgRef, anchorRef, loadMore]
+    [isStacked, msgRef, anchorRef, loadMore, reportSize, focus]
   )
 
   return {
@@ -144,6 +158,7 @@ function useMessages(channelId: string) {
     maxIndex: messages.length - 1 - anchorIndex,
     updated,
     changeUpdated,
+    blockScroll: typeof focus === 'string',
   }
 }
 
@@ -157,6 +172,7 @@ export default function Thread({ id }: Props) {
     maxIndex,
     updated,
     changeUpdated,
+    blockScroll,
   } = useMessages(id)
 
   return (
@@ -172,10 +188,11 @@ export default function Thread({ id }: Props) {
               max={maxIndex}
               buffer={5}
               anchorBottom
-              update={updated.map(i => [i, true])}
-              onUpdate={index => {
-                changeUpdated({ type: 'remove', index })
+              update={updated}
+              onUpdate={(...indexes) => {
+                changeUpdated({ type: 'remove', indexes })
               }}
+              blockScroll={blockScroll}
             />
           )}
         </S.Messages>
@@ -193,7 +210,11 @@ export default function Thread({ id }: Props) {
 }
 
 function Item(props) {
-  return props.load ? <LoadMore {...props} /> : <Message {...props} />
+  return props.load ? (
+    <LoadMore {...props} />
+  ) : (
+    <Message {...props} reportSize={props.reportSize} />
+  )
 }
 
 function LoadMore({ loadMore }) {

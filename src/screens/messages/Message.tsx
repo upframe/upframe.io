@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { fragments, useQuery, gql } from 'gql'
 import { ProfilePicture } from 'components'
 import Time from './Time'
 import type { ChatUser, ChatUserVariables } from 'gql/types'
 import Context from './MsgContext'
+import { useHeight } from 'utils/hooks'
 
 const USER_QUERY = gql`
   query ChatUser($id: ID!) {
@@ -28,6 +29,7 @@ interface Props {
   focused?: boolean
   onLockFocus(v: boolean): void
   i?: number
+  reportSize?(size: number, id: string): void
 }
 
 function Message({
@@ -39,10 +41,18 @@ function Message({
   onLockFocus,
   focused,
   i,
+  reportSize,
 }: Props) {
   const { data } = useQuery<ChatUser, ChatUserVariables>(USER_QUERY, {
     variables: { id: author },
   })
+  const ref = useRef() as React.MutableRefObject<HTMLElement>
+  const height = useHeight(ref)
+
+  useEffect(() => {
+    if (typeof height !== 'number' || !reportSize) return
+    reportSize(height, id)
+  }, [height, reportSize, id])
 
   return (
     <S.Wrap
@@ -51,6 +61,7 @@ function Message({
         'data-focus': focused ? 'lock' : 'block',
       })}
       data-id={id}
+      {...(reportSize && { ref })}
     >
       {!stacked ? (
         <ProfilePicture imgs={data?.user?.profilePictures} size={picSize} />

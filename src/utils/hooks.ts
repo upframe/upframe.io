@@ -166,3 +166,27 @@ export function useSignOut() {
     history.push('/login')
   }
 }
+
+export function useHeight(ref: React.MutableRefObject<HTMLElement>) {
+  const [height, setHeight] = useState<number>()
+
+  useEffect(() => {
+    const node = ref.current
+    if (!node) return
+
+    function size() {
+      setHeight(node.offsetHeight)
+    }
+
+    size()
+
+    if (!window.ResizeObserver) return
+
+    const observer = new ResizeObserver(size)
+    observer.observe(node)
+
+    return () => observer.unobserve(node)
+  }, [ref])
+
+  return height
+}

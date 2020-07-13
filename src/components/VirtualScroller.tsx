@@ -19,7 +19,8 @@ interface Props {
   startAt?: number
   anchorBottom?: boolean
   update?: [number, boolean?][]
-  onUpdate?(i: number): void
+  onUpdate?(...i: number[]): void
+  blockScroll?: boolean
 }
 
 const VirtualScroller: React.FunctionComponent<Props> = ({
@@ -33,6 +34,7 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   anchorBottom = false,
   update,
   onUpdate,
+  blockScroll = false,
 }) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>
   const [height, setHeight] = useState<number>()
@@ -101,7 +103,7 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
       return Math.max(i - 1, scroller.min)
     }
 
-    function checkScroll(force = false): boolean | void {
+    function checkScroll(force = false, once = false): boolean | void {
       if (!scroller || !cache) return
       if (!force) animFrame = requestAnimationFrame(() => checkScroll())
       if (node.scrollTop === lastPos && !force) return
@@ -126,7 +128,7 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
           : cache.sum(Math.min(buffBottStart, scroller.max), scroller.max)
       )
 
-      if (force) listenScrollStart()
+      if (force && !once) listenScrollStart()
     }
 
     let timeoutId: number
@@ -158,14 +160,26 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
       } else setScroll(upCount.off)
     }
 
-    checkScroll(true)
+    checkScroll(true, blockScroll)
 
     return () => {
       node.removeEventListener('scroll', onScrollStart)
       cancelAnimationFrame(animFrame)
       clearTimeout(timeoutId)
     }
-  }, [ref, scroller, cache, preScrollDone, upCount, anchorBottom])
+  }, [ref, scroller, cache, preScrollDone, upCount, anchorBottom, blockScroll])
+
+  useEffect(() => {
+    const node = ref.current
+    if (!blockScroll || !node) return
+
+    function block(e) {
+      e.preventDefault()
+    }
+
+    node.addEventListener('wheel', block)
+    return () => node.removeEventListener('wheel', block)
+  }, [blockScroll])
 
   useLayoutEffect(() => {
     if (!scroll) return
@@ -175,12 +189,14 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (!update?.length || !scroller || !cache) return
-    const i = update[0][0]
-    if (onUpdate) onUpdate(i)
-    const ci = cache.searchSum(ref.current.scrollTop, scroller.min)
-    const dv = scroller.update(i)
-    if (update[0][1]) ref.current.scrollBy({ top: dv })
-    else forceUpdate(ci > i ? dv : 0)
+
+    update.forEach(([i, s]) => {
+      const ci = cache.searchSum(ref.current.scrollTop, scroller.min)
+      const dv = scroller.update(i)
+      if (s) ref.current.scrollBy({ top: dv })
+      else forceUpdate(ci > i ? dv : 0)
+    })
+    if (onUpdate) onUpdate(...update.map(([i]) => i))
   }, [update, onUpdate, scroller, cache])
 
   useEffect(() => {
