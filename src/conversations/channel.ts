@@ -72,8 +72,12 @@ export default class Channel {
     const messages = data?.channel?.messages
     if (!messages) throw Error(`couldn't fetch messages`)
 
-    this.hasFirst = !messages.pageInfo.hasPreviousPage
-    this.hasLatest = !messages.pageInfo.hasNextPage
+    let hasPages = [
+      !messages.pageInfo.hasPreviousPage,
+      !messages.pageInfo.hasNextPage,
+    ]
+    if (dir === 'backward') hasPages.reverse()
+    ;[this.hasFirst, this.hasLatest] = hasPages
 
     const msgs =
       data?.channel?.messages.edges.flatMap(({ node }) =>

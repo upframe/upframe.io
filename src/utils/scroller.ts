@@ -141,14 +141,7 @@ export class DynamicScroller<T extends any> {
   }
 
   public update(i: number): number {
-    if (
-      this.lastCursor &&
-      this.lastFrame &&
-      this.lastCursor <= i &&
-      this.lastCursor + this.lastFrame.length > i
-    )
-      this.lastCursor = undefined
-
+    this.lastCursor = undefined
     return this.sizeCache.update(i)
   }
 }

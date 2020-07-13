@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useReducer } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useReducer,
+  useLayoutEffect,
+} from 'react'
 import styled from 'styled-components'
 import { DynamicScroller } from 'utils/scroller'
 import Cache from 'utils/sumCache'
@@ -12,7 +18,7 @@ interface Props {
   buffer?: number
   startAt?: number
   anchorBottom?: boolean
-  update?: number[]
+  update?: [number, boolean?][]
   onUpdate?(i: number): void
 }
 
@@ -38,6 +44,7 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   const [upCount, forceUpdate] = useReducer((_, off) => ({ off }), {
     off: 0,
   })
+  const [scroll, setScroll] = useState(0)
 
   useEffect(() => {
     setCache(new Cache(size))
@@ -49,16 +56,20 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
 
   useEffect(() => {
     if (!scroller || !cache) return
-    if (scroller.max !== max) scroller.max = max
+    if (scroller.max !== max) {
+      scroller.max = max
+      forceUpdate(0)
+    }
+
     if (scroller.min !== min) {
       let dv = cache.sum(
         Math.min(min, scroller.min),
         Math.max(min, scroller.min) - 1
       )
+
       if (min > scroller.min) dv *= -1
-      ref.current?.scrollBy({ top: dv })
       scroller.min = min
-      forceUpdate(0)
+      forceUpdate(dv)
     }
   }, [min, max, scroller, cache])
 
@@ -80,21 +91,26 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
     let animFrame: number
 
     function getOffset(n: number): number {
-      if (n === min) return 0
-      return cache.sum(min, n - 1)
+      if (n === scroller?.min) return 0
+      return cache.sum(scroller?.min ?? 0, n - 1)
     }
 
-    function checkScroll(force = false) {
+    function offsetTop() {
+      if (!scroller) return 0
+      const i = cache.searchSum(node.scrollTop, scroller.min)
+      return Math.max(i - 1, scroller.min)
+    }
+
+    function checkScroll(force = false): boolean | void {
       if (!scroller || !cache) return
-      animFrame = requestAnimationFrame(() => checkScroll())
+      if (!force) animFrame = requestAnimationFrame(() => checkScroll())
       if (node.scrollTop === lastPos && !force) return
 
       lastPos = node.scrollTop
       lastScroll = performance.now()
 
-      const i = cache.searchSum(node.scrollTop, min)
+      const ot = offsetTop()
 
-      const ot = Math.max(i - 1, min)
       let { frame, off } = scroller.read(ot)
       setChildren(frame)
 
@@ -105,8 +121,12 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
       const buffBottStart = ot + frame.length + off - scroller.buffer
 
       setOffBottom(
-        buffBottStart > max ? 0 : cache.sum(Math.min(buffBottStart, max), max)
+        buffBottStart > scroller.max
+          ? 0
+          : cache.sum(Math.min(buffBottStart, scroller.max), scroller.max)
       )
+
+      if (force) listenScrollStart()
     }
 
     let timeoutId: number
@@ -129,27 +149,39 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
         once: true,
       })
 
-    listenScrollStart()
+    if (upCount.off && (!anchorBottom || scroller.read(offsetTop()).off >= 0)) {
+      if (
+        node.scrollTop + upCount.off + node.offsetHeight <=
+        node.scrollHeight - node.offsetHeight
+      ) {
+        node.scrollBy({ top: upCount.off })
+      } else setScroll(upCount.off)
+    }
 
     checkScroll(true)
-    if (upCount.off)
-      requestAnimationFrame(() => ref.current.scrollBy({ top: upCount.off }))
 
     return () => {
       node.removeEventListener('scroll', onScrollStart)
       cancelAnimationFrame(animFrame)
       clearTimeout(timeoutId)
     }
-  }, [ref, scroller, min, max, cache, preScrollDone, upCount])
+  }, [ref, scroller, cache, preScrollDone, upCount, anchorBottom])
+
+  useLayoutEffect(() => {
+    if (!scroll) return
+    ref.current.scrollBy({ top: scroll })
+    setScroll(0)
+  }, [scroll])
 
   useEffect(() => {
-    if (!update?.length || !scroller) return
-    const i = update[0]
+    if (!update?.length || !scroller || !cache) return
+    const i = update[0][0]
     if (onUpdate) onUpdate(i)
-    const ci = cache.searchSum(ref.current.scrollTop, min)
+    const ci = cache.searchSum(ref.current.scrollTop, scroller.min)
     const dv = scroller.update(i)
-    forceUpdate(ci > i ? dv : 0)
-  }, [update, onUpdate, scroller])
+    if (update[0][1]) ref.current.scrollBy({ top: dv })
+    else forceUpdate(ci > i ? dv : 0)
+  }, [update, onUpdate, scroller, cache])
 
   useEffect(() => {
     if (!height || !cache) return

@@ -32,8 +32,8 @@ export default function Page() {
   const [updateInput, setUpdateInput] = useState('')
   const [toUpdate, setToUpdate] = useState<number[]>([])
   const [addInput, setAddInput] = useState('')
-  const [min, setMin] = useState(-5)
-  const [max, setMax] = useState(100)
+  const [min, setMin] = useState(0)
+  const [max, setMax] = useState(14)
 
   function update() {
     cstSize[updateInput] = 200
@@ -58,7 +58,7 @@ export default function Page() {
         max={max}
         buffer={2}
         anchorBottom
-        update={toUpdate}
+        update={toUpdate.map(i => [i])}
         onUpdate={id => setToUpdate(toUpdate.filter(v => v !== id))}
       />
       <S.Controls>

@@ -1,86 +1,235 @@
-import React, { useState, useEffect, useRef, useReducer } from 'react'
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  useReducer,
+} from 'react'
 import styled from 'styled-components'
 import { useChannel } from 'conversations'
-import MsgQueue from './MsgQueue'
 import Input from './MsgInput'
-import { Spinner } from 'components'
+import { Spinner, VirtualScroller } from 'components'
+import Message from './Message'
 
 interface Props {
   id: string
 }
 
-export default function Thread({ id }: Props) {
-  const [cursor] = useState()
-  const [fetchBlock, setFetchBlock] = useState(false)
-
-  const [last, load] = useReducer(
-    (state, { type, value }) =>
-      !fetchBlock && type === 'more' ? state + value : state,
-    20
+function useMessages(channelId: string) {
+  const [anchorIndex, setAnchorIndex] = useState(0)
+  const [anchorId, setAnchorId] = useState<string>()
+  const [last, setLast] = useState(30)
+  const { messages, sendMessage, channel, fetching } = useChannel(channelId, {
+    last,
+  })
+  const [updated, changeUpdated] = useReducer(
+    (
+      state: number[],
+      {
+        type,
+        index,
+        indexes = [],
+      }: { type: 'add' | 'remove'; index?: number; indexes?: number[] }
+    ) => {
+      indexes = [...indexes, ...(typeof index === 'number' ? [index] : [])]
+      return type === 'add'
+        ? [...state, ...indexes]
+        : state.filter(v => !indexes.includes(v))
+    },
+    []
   )
 
-  const { messages, sendMessage, fetching, channel } = useChannel(id, {
-    last,
-    before: cursor,
-  })
-  const ref = useRef() as React.MutableRefObject<HTMLDivElement>
+  const [focus, setFocus] = useState<string>()
+
+  const anchorRef = useRef(anchorIndex)
+  anchorRef.current = anchorIndex
+  const msgRef = useRef(messages)
+  msgRef.current = messages
+  const fetchingRef = useRef(fetching)
+  fetchingRef.current = fetching
+  const lastRef = useRef(last)
+  lastRef.current = last
+  const focusRef = useRef(focus)
+  focusRef.current = focus
 
   useEffect(() => {
-    setFetchBlock(fetching)
-  }, [fetching])
+    if (anchorId || !messages.length) return
+    setAnchorId(messages[0].id)
+  }, [messages, anchorId])
 
   useEffect(() => {
-    if (!ref.current || !('MutationObserver' in window) || !channel) return
-    const container = ref.current.parentElement
+    const i = messages.findIndex(({ id }) => id === anchorId)
+    if (i === anchorIndex || i < 0) return
+    setAnchorIndex(i)
+    changeUpdated({ type: 'add', indexes: [-anchorIndex - 1, -anchorIndex] })
+  }, [messages, anchorId, anchorIndex, updated])
 
-    function handleChange() {
-      const node = ref.current.querySelector('article')
-      if (!node || !container) return
+  useEffect(
+    () =>
+      channel?.on('message', msg => {
+        if (!messages.find(({ id }) => id === msg.id)) {
+          if (
+            msg.previous &&
+            messages.indexOf(msg.previous) === messages.length - 1
+          ) {
+            if (messages.length >= lastRef.current) {
+              setAnchorIndex(anchorRef.current - 1)
+            }
+          } else {
+            changeUpdated({
+              type: 'add',
+              index: messages.length - anchorRef.current - 1,
+            })
+          }
+        }
+      }),
+    [channel, messages, anchorRef, lastRef]
+  )
 
-      if (
-        !node ||
-        node.getBoundingClientRect().y <
-          container.getBoundingClientRect().y -
-            container.getBoundingClientRect().height / 5
-      )
-        return
+  const isStacked = useCallback(
+    (i: number) =>
+      i > 0 &&
+      i < msgRef.current.length &&
+      msgRef.current[i - 1]?.author === msgRef.current[i].author &&
+      msgRef.current[i].date.getTime() - msgRef.current[i - 1]?.date.getTime() <
+        1000 * 60 * 5,
 
-      load({ type: 'more', value: 20 })
-    }
+    [msgRef]
+  )
 
-    const observer = new MutationObserver(handleChange)
-    observer.observe(ref.current, { childList: true })
-    container?.addEventListener('scroll', handleChange)
+  const size = useCallback(
+    (i: number) => {
+      i += anchorRef.current
+      if (i < 0) return 64
+      return isStacked(i) ? 32 : 64
+    },
+    [isStacked, anchorRef]
+  )
 
-    return () => {
-      observer.disconnect()
-      container?.removeEventListener('scroll', handleChange)
-    }
-  }, [ref, channel])
+  const loadMore = useCallback(() => {
+    setLast(lastRef.current + 30)
+  }, [lastRef])
+
+  const props = useCallback(
+    (i: number) => {
+      i += anchorRef.current
+      if (i < 0) {
+        return {
+          load: true,
+          loadMore,
+        }
+      }
+
+      // const focus = focusRef.current
+      return {
+        ...msgRef.current[i],
+        stacked: isStacked(i),
+        // ...(focus && { focused: msgRef.current[i].id === focus }),
+        onLockFocus(v: boolean) {
+          // console.log('lock focus', v)
+          // setFocus(v ? msgRef.current[i].id : undefined)
+        },
+        i: i - anchorRef.current,
+      }
+    },
+    [isStacked, msgRef, anchorRef, loadMore]
+  )
+
+  return {
+    messages,
+    sendMessage,
+    props,
+    size,
+    minIndex: -anchorIndex - (channel?.hasFirst ? 0 : 1),
+    maxIndex: messages.length - 1 - anchorIndex,
+    updated,
+    changeUpdated,
+  }
+}
+
+export default function Thread({ id }: Props) {
+  const {
+    messages,
+    sendMessage,
+    props,
+    size,
+    minIndex,
+    maxIndex,
+    updated,
+    changeUpdated,
+  } = useMessages(id)
 
   return (
-    <S.Thread ref={ref}>
-      {fetching && (
-        <S.Loading>
-          <Spinner />
-        </S.Loading>
-      )}
-      <MsgQueue messages={messages} />
-      <Input
-        placeholder="Reply"
-        onSubmit={v => {
-          if (sendMessage) sendMessage(v)
-        }}
-      />
-    </S.Thread>
+    <S.Wrap>
+      <S.Thread>
+        <S.Messages>
+          {messages?.length > 0 && (
+            <VirtualScroller
+              size={size}
+              Child={Item}
+              props={props}
+              min={minIndex}
+              max={maxIndex}
+              buffer={5}
+              anchorBottom
+              update={updated.map(i => [i, true])}
+              onUpdate={index => {
+                changeUpdated({ type: 'remove', index })
+              }}
+            />
+          )}
+        </S.Messages>
+        <S.InputBar>
+          <Input
+            placeholder="Reply"
+            onSubmit={v => {
+              if (sendMessage) sendMessage(v)
+            }}
+          />
+        </S.InputBar>
+      </S.Thread>
+    </S.Wrap>
+  )
+}
+
+function Item(props) {
+  return props.load ? <LoadMore {...props} /> : <Message {...props} />
+}
+
+function LoadMore({ loadMore }) {
+  useEffect(() => {
+    const tId = setTimeout(loadMore, 100)
+    return () => clearTimeout(tId)
+  }, [loadMore])
+
+  return (
+    <S.Load>
+      <Spinner />
+    </S.Load>
   )
 }
 
 const S = {
+  Wrap: styled.div`
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 15%;
+    padding-left: min(15%, calc((100vw - 20rem - var(--chat-max-width)) / 2));
+    flex-grow: 1;
+    overflow-y: hidden;
+
+    @media (max-width: 1007.67px) {
+      padding: 0;
+    }
+  `,
+
   Thread: styled.div`
     width: 100%;
-    max-width: 70ch;
-    padding-top: 2rem;
+    max-width: var(--chat-max-width);
+    display: flex;
+    flex-direction: column;
+    justify-items: space-between;
+    height: 100%;
   `,
 
   Loading: styled.div`
@@ -89,6 +238,48 @@ const S = {
 
     & > svg {
       width: 2.5rem;
+    }
+  `,
+
+  Messages: styled.div`
+    flex-grow: 1;
+    overflow-y: scroll;
+    box-sizing: border-box;
+  `,
+
+  InputBar: styled.div`
+    width: 100%;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+
+    textarea {
+      margin: 0;
+    }
+  `,
+
+  Msg: styled.span`
+    height: 200px;
+    line-height: 200px;
+  `,
+
+  Load: styled.div`
+    width: 64px;
+    height: 64px;
+    display: block;
+    position: relative;
+    flex-shrink: 0;
+    margin: auto;
+
+    svg {
+      --size: 2.5rem;
+
+      width: var(--size);
+      height: var(--size);
+      position: absolute;
+      left: calc(50% - var(--size) / 2);
+      top: calc(50% - var(--size) / 2);
     }
   `,
 }

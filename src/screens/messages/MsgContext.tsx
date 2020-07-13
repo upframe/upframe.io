@@ -5,9 +5,10 @@ import { Icon } from 'components'
 interface Props {
   id: string
   onToggle(v: boolean): void
+  i?: number
 }
 
-function MsgContext({ id, onToggle }: Props) {
+function MsgContext({ id, onToggle, i }: Props) {
   const [showMenu, setShowMenu] = useState(false)
 
   function toggle() {
@@ -18,12 +19,12 @@ function MsgContext({ id, onToggle }: Props) {
   return (
     <S.ContextIcon>
       <Icon icon="more" onClick={toggle} />
-      {showMenu && <Menu id={id} onToggle={toggle} />}
+      {showMenu && <Menu id={id} onToggle={toggle} i={i} />}
     </S.ContextIcon>
   )
 }
 
-function Menu({ id, onToggle }: Props) {
+function Menu({ id, onToggle, i }: Props) {
   useEffect(() => {
     if (!onToggle) return
     function onClick() {
@@ -34,8 +35,9 @@ function Menu({ id, onToggle }: Props) {
   }, [onToggle])
 
   return (
-    <S.Menu>
-      <span onClick={e => e.stopPropagation()}>{id}</span>
+    <S.Menu onClick={e => e.stopPropagation()}>
+      <span>{id}</span>
+      <span>{i}</span>
     </S.Menu>
   )
 }
@@ -62,6 +64,7 @@ const S = {
     top: 0;
     box-sizing: border-box;
     display: flex;
+    flex-direction: column;
     padding: 1rem;
     background-color: #fff;
     border: 1px solid #e5e5e5;

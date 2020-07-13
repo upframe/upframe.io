@@ -41,14 +41,14 @@ class SumCache implements CacheAccess {
     return this.write(i)
   }
 
-  public update(i: number, func?: (i: number) => number): number {
+  public update(i: number, v?: number): number {
     this.checkInRange(i)
-    const v = (func ?? this.getValue)(i)
+    if (v === undefined) v = this.getValue(i)
     const dv = v - this.values[i - this.offset]
     this._sum += dv
     this.values[i - this.offset] = v
     const part = this.partitions.find(p => p.offset <= i && p.max >= i)
-    if (part) part.update(i, this.getValue)
+    if (part) part.update(i, v)
     return dv
   }
 
@@ -250,6 +250,7 @@ export default class CacheManager implements CacheAccess {
     }
 
     let { cache } = this.getCache(start)
+    while (cache.offset > start) cache.at(cache.offset - 1)
     while (cache.max < end) cache = step(cache)
     return cache.sum(start, end)
   }

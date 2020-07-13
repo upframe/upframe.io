@@ -27,6 +27,7 @@ interface Props {
   stacked?: boolean
   focused?: boolean
   onLockFocus(v: boolean): void
+  i?: number
 }
 
 function Message({
@@ -37,6 +38,7 @@ function Message({
   stacked = false,
   onLockFocus,
   focused,
+  i,
 }: Props) {
   const { data } = useQuery<ChatUser, ChatUserVariables>(USER_QUERY, {
     variables: { id: author },
@@ -66,7 +68,7 @@ function Message({
         )}
         <S.Body>{content}</S.Body>
       </S.Main>
-      <Context id={id} onToggle={onLockFocus} />
+      <Context id={id} onToggle={onLockFocus} i={i} />
     </S.Wrap>
   )
 }
@@ -80,10 +82,6 @@ const S = {
     position: relative;
 
     --line-height: 2rem;
-
-    /* &[data-stacked='true'] {
-      padding-top: 0.2rem;
-    } */
 
     picture,
     img {
@@ -122,14 +120,12 @@ const S = {
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* background-color: #00f2; */
     height: var(--line-height);
   `,
 
   Body: styled.p`
     margin: 0;
     color: #000c;
-    /* background: #0f02; */
     line-height: var(--line-height);
   `,
 
