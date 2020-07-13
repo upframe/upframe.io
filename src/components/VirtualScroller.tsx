@@ -266,7 +266,7 @@ const S = {
 
     * + & {
       margin-top: 0;
-      margin-bottom: var(--padd-bottom);
+      border-bottom: var(--padd-bottom) solid transparent;
     }
   `,
 }
