@@ -15,7 +15,7 @@ export default function TzSelect({
   useEffect(() => {
     Promise.all(
       ['land', 'slices', 'tzs'].map(v =>
-        fetch(`https://s3-eu-west-1.amazonaws.com/upframe.io-assets/${v}.json`)
+        fetch(`${process.env.REACT_APP_ASSETS}${v}.json`)
           .then(res => res.json())
           .then(res => [v, res])
       )
