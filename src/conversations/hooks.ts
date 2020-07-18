@@ -11,6 +11,8 @@ import type {
   MessageSubVariables,
   ChannelSub,
   ChannelSubVariables,
+  ConversationSub,
+  ConversationSubVariables,
 } from 'gql/types'
 
 export function useMessaging() {
@@ -37,6 +39,19 @@ export function useMessaging() {
       })
     },
   })
+
+  useSubscription<ConversationSub, ConversationSubVariables>(
+    gql.CONVERSATION_SUBSCRIPTION,
+    {
+      variables: { token: me?.msgToken as string },
+      skip: !me?.msgToken,
+      onSubscriptionData({ subscriptionData }) {
+        const conversation = subscriptionData?.data?.conversation
+        if (!conversation) return
+        Conversation.get(conversation.id)
+      },
+    }
+  )
 
   useQuery<Conversations>(gql.CONVERSATIONS, {
     skip: !me,
