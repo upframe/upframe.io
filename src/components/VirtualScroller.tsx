@@ -179,16 +179,16 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
 
     node.addEventListener('wheel', block)
     return () => node.removeEventListener('wheel', block)
-  }, [blockScroll])
+  }, [blockScroll, ref])
 
   useLayoutEffect(() => {
     if (!scroll) return
     ref.current.scrollBy({ top: scroll })
     setScroll(0)
-  }, [scroll])
+  }, [scroll, ref])
 
   useEffect(() => {
-    if (!update?.length || !scroller || !cache) return
+    if (!update?.length || !scroller || !cache || !ref?.current) return
 
     update.forEach(([i, s]) => {
       const ci = cache.searchSum(ref.current.scrollTop, scroller.min)
@@ -197,7 +197,7 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
       else forceUpdate(ci > i ? dv : 0)
     })
     if (onUpdate) onUpdate(...update.map(([i]) => i))
-  }, [update, onUpdate, scroller, cache])
+  }, [update, onUpdate, scroller, cache, ref])
 
   useEffect(() => {
     if (!height || !cache) return
@@ -222,6 +222,7 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
       })
 
     setPreScrollDone()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [size, cache, height])
 
   return (
