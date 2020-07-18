@@ -18,7 +18,7 @@ const INVITE = gql`
 `
 
 const INVITES = gql`
-  query invites($id: ID) {
+  query UserInvites($id: ID) {
     user(id: $id) {
       id
       ...Invites
