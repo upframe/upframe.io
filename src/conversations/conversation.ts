@@ -74,10 +74,12 @@ export default class Conversation {
     })
     const con = data?.createConversation
     if (!con) throw errors?.[0] ?? Error("couldn't create conversation")
-    return new Conversation(
+    const conversation = new Conversation(
       con.id,
       con.participants.map(({ id }) => id)
     )
+    con.channels?.forEach(({ id }) => conversation.addChannel(Channel.get(id)))
+    return conversation
   }
 
   public async createChannel(msg?: string): Promise<Channel | null> {
