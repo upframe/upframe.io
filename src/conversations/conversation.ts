@@ -30,6 +30,7 @@ export default class Conversation {
     return this._channels
   }
   public addChannel(channel: Channel): Channel {
+    if (this.channels.includes(channel)) return channel
     this._channels.push(channel)
     channel.on('message', msg => {
       this.eventHandlers.message.forEach(handler => handler(msg))

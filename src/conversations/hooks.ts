@@ -5,7 +5,13 @@ import Message from './message'
 import { useMe } from 'utils/hooks'
 import * as gql from './gql'
 import { useQuery, useSubscription } from 'gql'
-import type { Conversations, MessageSub, MessageSubVariables } from 'gql/types'
+import type {
+  Conversations,
+  MessageSub,
+  MessageSubVariables,
+  ChannelSub,
+  ChannelSubVariables,
+} from 'gql/types'
 
 export function useMessaging() {
   const { me } = useMe()
@@ -17,6 +23,18 @@ export function useMessaging() {
       const msg = subscriptionData?.data?.message
       if (!msg) return
       Channel.get(msg.channel).postMessage(Message.fromGqlMsg(msg))
+    },
+  })
+
+  useSubscription<ChannelSub, ChannelSubVariables>(gql.CHANNEL_SUBSCRIPTION, {
+    variables: { token: me?.msgToken as string },
+    skip: !me?.msgToken,
+    onSubscriptionData({ subscriptionData }) {
+      const channel = subscriptionData?.data?.channel
+      if (!channel) return
+      Conversation.get(channel.conversationId).then(con => {
+        con.addChannel(Channel.get(channel.id))
+      })
     },
   })
 

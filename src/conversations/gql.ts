@@ -42,6 +42,15 @@ export const MSG_SUBSCRIPTION = gql`
   }
 `
 
+export const CHANNEL_SUBSCRIPTION = gql`
+  subscription ChannelSub($token: ID!) {
+    channel(token: $token) {
+      id
+      conversationId
+    }
+  }
+`
+
 export const CONVERSATIONS = gql`
   query Conversations {
     me {
