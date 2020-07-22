@@ -69,8 +69,11 @@ export function useMessaging() {
 
 export function useConversation(id: string) {
   const [conversation, setConversation] = useState<Conversation | null>()
-  const [channels, addChannels] = useReducer(
-    (state: Channel[], added: Channel[]) => [...added, ...state],
+  const [channels, setChannels] = useReducer(
+    (
+      state: Channel[],
+      { type, channels = [] }: { type: 'add' | 'reset'; channels: Channel[] }
+    ) => (type === 'reset' ? channels : [...channels, ...state]),
     []
   )
 
@@ -82,9 +85,9 @@ export function useConversation(id: string) {
 
   useEffect(() => {
     if (!conversation) return
-    addChannels(conversation.channels)
+    setChannels({ type: 'reset', channels: conversation.channels })
     return conversation.on('channel', c => {
-      addChannels([c])
+      setChannels({ type: 'add', channels: [c] })
     })
   }, [conversation])
 
