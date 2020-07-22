@@ -65,6 +65,7 @@ export default function User({
       {...(typeof onSelect === 'function' && {
         onClick: () => onSelect(!selected),
       })}
+      data-active={path(2).split('/').pop() === id}
     >
       {/* @ts-ignore */}
       <CondLink {...(id && { to: `${path(1)}/${id}` })}>
@@ -112,10 +113,6 @@ const S = {
       border-radius: 50%;
     }
 
-    &:hover {
-      background-color: #0000000c;
-    }
-
     input {
       flex-shrink: 0;
       margin-left: 0.5rem;
@@ -123,6 +120,11 @@ const S = {
 
     & > a {
       display: contents;
+    }
+
+    &[data-active='true'],
+    &:hover {
+      background-color: #0000000c;
     }
   `,
 
