@@ -29,9 +29,11 @@ const S = {
       margin-top: 0;
     }
 
-    p {
+    p,
+    q {
       font-size: 1em;
       line-height: 1.5em;
+      margin: 0;
     }
 
     ${title} {
@@ -84,6 +86,22 @@ const S = {
         margin-top: -1px;
         margin-left: -1px;
         padding-left: 0.5rem;
+      }
+    }
+
+    blockquote {
+      padding-left: 0.75rem;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        display: block;
+        height: 100%;
+        width: 0.25rem;
+        left: 0;
+        background-color: var(--cl-text-light);
+        border-radius: 1000px;
       }
     }
   `,

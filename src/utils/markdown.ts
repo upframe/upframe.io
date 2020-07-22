@@ -1,6 +1,8 @@
 import markdownIt from 'markdown-it'
 
-const md = new markdownIt().enable('table')
+const md = new markdownIt({
+  breaks: true,
+}).enable('table')
 
 const tableDefault =
   md.renderer.rules.table_open ??

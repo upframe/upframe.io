@@ -153,5 +153,6 @@ const S = {
     height: 0.9rem;
     border-radius: 50%;
     background-color: var(--cl-accent);
+    flex-shrink: 0;
   `,
 }
