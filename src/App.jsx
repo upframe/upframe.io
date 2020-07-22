@@ -1,10 +1,18 @@
 import React, { Suspense } from 'react'
 import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { Navbar, Spinner, NotificationStack, ScrollToTop } from './components'
 import Routes from './Routes'
-import styles from './styles/app.module.scss'
 import { useMessaging } from './conversations'
+import styled from 'styled-components'
+import { mobile } from 'styles/responsive'
+import layout from 'styles/layout'
+import {
+  Navbar,
+  Spinner,
+  NotificationStack,
+  ScrollToTop,
+  MobileNav,
+} from './components'
 
 export default function App() {
   useMessaging()
@@ -33,15 +41,28 @@ export default function App() {
         <meta name="twitter:card" content="summary_large_image"></meta>
       </Helmet>
       <Router>
-        <div className={styles.app}>
+        <S.App>
           <Navbar />
           <Suspense fallback={<Spinner centered />}>
             <ScrollToTop />
             <Routes />
           </Suspense>
           <NotificationStack />
-        </div>
+          <MobileNav />
+        </S.App>
       </Router>
     </>
   )
+}
+
+const S = {
+  App: styled.div`
+    margin-top: ${layout.desktop.navbarHeight};
+    padding-top: 1rem;
+
+    @media ${mobile} {
+      margin-top: 0;
+      margin-bottom: ${layout.mobile.navbarHeight};
+    }
+  `,
 }
