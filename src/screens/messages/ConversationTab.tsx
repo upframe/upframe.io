@@ -70,7 +70,11 @@ export default function User({
       {/* @ts-ignore */}
       <CondLink {...(id && { to: `${path(1)}/${id}` })}>
         {users.length > 1 ? (
-          <Identicon ids={users.map(({ id }) => id)} />
+          <Identicon
+            ids={Array.from(
+              new Set([me?.id, ...users.map(({ id }) => id)].filter(Boolean))
+            )}
+          />
         ) : (
           <ProfilePicture imgs={users[0]?.profilePictures} size="3rem" />
         )}

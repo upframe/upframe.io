@@ -25,7 +25,7 @@ const S = {
       margin: 0;
     }
 
-    & > *:first-child {
+    & > *:first-child:not(table) {
       margin-top: 0;
     }
 
@@ -71,7 +71,7 @@ const S = {
       overflow: hidden;
       padding-top: 1px;
       padding-left: 1px;
-      margin-top: 1rem;
+      margin: 1rem 0;
 
       thead,
       tbody,
