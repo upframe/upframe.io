@@ -25,6 +25,10 @@ const S = {
       margin: 0;
     }
 
+    & > *:first-child {
+      margin-top: 0;
+    }
+
     p {
       font-size: 1em;
       line-height: 1.5em;
@@ -54,8 +58,33 @@ const S = {
       font-size: 1rem;
     }
 
-    & > *:first-child {
-      margin-top: 0;
+    ul {
+      padding-left: 1.2em;
+    }
+
+    table {
+      display: grid;
+      grid-template-columns: repeat(var(--columns), auto);
+      grid-gap: 0;
+      overflow: hidden;
+      padding-top: 1px;
+      padding-left: 1px;
+      margin-top: 1rem;
+
+      thead,
+      tbody,
+      tr {
+        display: contents;
+      }
+
+      th,
+      td {
+        text-align: left;
+        border: 1px solid black;
+        margin-top: -1px;
+        margin-left: -1px;
+        padding-left: 0.5rem;
+      }
     }
   `,
 }
