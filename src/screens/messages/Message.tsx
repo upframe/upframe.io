@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { fragments, useQuery, gql } from 'gql'
-import { ProfilePicture } from 'components'
+import { ProfilePicture, Markdown } from 'components'
 import Time from './Time'
 import type { ChatUser, ChatUserVariables } from 'gql/types'
 import Context from './MsgContext'
@@ -77,7 +77,7 @@ function Message({
             <Time>{date}</Time>
           </S.Head>
         )}
-        <S.Body>{content}</S.Body>
+        <Markdown text={content} />
       </S.Main>
       <Context id={id} onToggle={onLockFocus} i={i} />
     </S.Wrap>
@@ -132,12 +132,6 @@ const S = {
     flex-direction: row;
     align-items: center;
     height: var(--line-height);
-  `,
-
-  Body: styled.p`
-    margin: 0;
-    color: #000c;
-    line-height: var(--line-height);
   `,
 
   Name: styled.span`

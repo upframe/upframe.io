@@ -18,6 +18,7 @@ export default function MsgInput({ onSubmit = () => {}, placeholder }: Props) {
     onSubmit(value)
     setValue('')
     setValid(false)
+    setLines(1)
   }
 
   const handleKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -85,6 +86,7 @@ const Input = styled.textarea<ScProps>`
   box-sizing: border-box;
   margin-top: 1.5rem;
   padding: 0.5rem;
+  padding-right: 2.5rem;
   position: relative;
   z-index: 600;
   background-color: #f1f3f4;
