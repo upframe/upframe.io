@@ -91,8 +91,8 @@ const S = {
     padding: 0;
     flex-shrink: 0;
     position: relative;
-
-    --line-height: 2rem;
+    margin-top: 0.5rem;
+    padding-right: 1rem;
 
     picture,
     img {
@@ -107,6 +107,7 @@ const S = {
       opacity: 0;
       width: ${picSize};
       text-align: right;
+      line-height: 1.5rem;
     }
 
     &:not([data-focus='block']):hover,
@@ -125,13 +126,14 @@ const S = {
 
   Main: styled.div`
     padding-left: 1rem;
+    flex-grow: 1;
   `,
 
   Head: styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: var(--line-height);
+    height: 2rem;
   `,
 
   Name: styled.span`
