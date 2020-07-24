@@ -48,9 +48,9 @@ function useMessages(channelId: string) {
     []
   )
   const [sizes, addSize] = useReducer(
-    (state: { [k: number]: number }, [index, size]: [number, number]) => ({
+    (state: { [id: string]: number }, [id, size]: [string, number]) => ({
       ...state,
-      [index]: size,
+      [id]: size,
     }),
     {}
   )
@@ -113,7 +113,10 @@ function useMessages(channelId: string) {
   const size = useCallback(
     (i: number) => {
       i += anchorRef.current
-      return sizesRef.current[i] ?? (i < 0 || !isStacked(i)) ? 56 : 24
+      return (
+        sizesRef.current[msgRef.current[i]?.id] ??
+        (i < 0 || !isStacked(i) ? 56 : 24)
+      )
     },
     [isStacked, anchorRef]
   )
@@ -124,9 +127,10 @@ function useMessages(channelId: string) {
 
   const reportSize = useCallback((size: number, id: string) => {
     const index = msgRef.current.findIndex(msg => msg.id === id)
+    addSize([id, size])
     if (!index) return
-    addSize([index, size])
-    changeUpdated({ type: 'add', index })
+    if (sizesRef.current[id] === size) return
+    changeUpdated({ type: 'add', index: index - anchorRef.current })
   }, [])
 
   const props = useCallback(

@@ -41,7 +41,7 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   const [children, setChildren] = useState<ReturnType<Props['Child']>[]>([])
   const [offTop, setOffTop] = useState(0)
   const [offBottom, setOffBottom] = useState(0)
-  const [cache, setCache] = useState(new Cache(size))
+  const [cache, setCache] = useState<Cache>()
   const [preScrollDone, setPreScrollDone] = useReducer(() => true, false)
   const [upCount, forceUpdate] = useReducer((_, off) => ({ off }), {
     off: 0,
@@ -49,6 +49,7 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   const [scroll, setScroll] = useState(0)
 
   useEffect(() => {
+    if (typeof size !== 'function') return
     setCache(new Cache(size))
   }, [size])
 
@@ -86,19 +87,19 @@ const VirtualScroller: React.FunctionComponent<Props> = ({
   }, [ref])
 
   useEffect(() => {
-    if (!ref.current || !scroller || !preScrollDone) return
+    if (!ref.current || !scroller || !preScrollDone || !cache) return
     const node = ref.current
     let lastPos = node.scrollTop
     let lastScroll = performance.now()
     let animFrame: number
 
     function getOffset(n: number): number {
-      if (n === scroller?.min) return 0
+      if (n === scroller?.min || !cache) return 0
       return cache.sum(scroller?.min ?? 0, n - 1)
     }
 
     function offsetTop() {
-      if (!scroller) return 0
+      if (!scroller || !cache) return 0
       const i = cache.searchSum(node.scrollTop, scroller.min)
       return Math.max(i - 1, scroller.min)
     }

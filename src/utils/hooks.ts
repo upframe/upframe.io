@@ -183,7 +183,7 @@ export function useHeight(ref: React.MutableRefObject<HTMLElement>) {
     if (!window.ResizeObserver) return
 
     const observer = new ResizeObserver(size)
-    observer.observe(node)
+    observer.observe(node, { box: 'border-box' })
 
     return () => observer.unobserve(node)
   }, [ref])
