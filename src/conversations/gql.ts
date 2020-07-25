@@ -72,6 +72,10 @@ export const CONVERSATIONS = gql`
           id
         }
       }
+      unread {
+        channelId
+        unread
+      }
     }
   }
 `

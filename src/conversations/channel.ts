@@ -18,7 +18,9 @@ export default class Channel {
   } = {
     message: [],
     fetch: [],
+    unread: [],
   }
+  private unread: string[] = []
 
   private _fetching = false
   private get fetching() {
@@ -248,6 +250,16 @@ export default class Channel {
       )
     }
   }
+
+  public setReadStatus(...msgs: { id: string; read: boolean }[]) {
+    this.unread = [
+      ...this.unread.filter(
+        v => !msgs.find(({ id, read }) => read && id === v)
+      ),
+      ...msgs.flatMap(({ id, read }) => (read ? [] : [id])),
+    ]
+    this.eventHandlers.unread.forEach(handler => handler(this.unread.length))
+  }
 }
 
 type MsgQueryBackward = {
@@ -262,10 +274,12 @@ type MsgQueryForward = {
 
 export type MsgQuery = MsgQueryBackward | MsgQueryForward
 
-type ChannelEvent = 'message' | 'fetch'
+type ChannelEvent = 'message' | 'fetch' | 'unread'
 type ChannelEventHandler<T extends ChannelEvent> = (
   v: ChannelEventPayload<T>
 ) => any
 type ChannelEventPayload<T extends ChannelEvent> = T extends 'message'
   ? Message
-  : 'start' | 'stop'
+  : T extends 'fetch'
+  ? 'start' | 'stop'
+  : number

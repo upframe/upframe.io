@@ -128,7 +128,7 @@ function useMessages(channelId: string) {
   const reportSize = useCallback((size: number, id: string) => {
     const index = msgRef.current.findIndex(msg => msg.id === id)
     addSize([id, size])
-    if (!index) return
+    if (!index || sizesRef.current[id] > size) return
     if (sizesRef.current[id] === size) return
     changeUpdated({ type: 'add', index: index - anchorRef.current })
   }, [])

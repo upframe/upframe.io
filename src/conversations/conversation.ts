@@ -23,6 +23,11 @@ export default class Conversation {
   } = {
     message: [],
     channel: [],
+    unread: [],
+  }
+  private unread = 0
+  public get hasUnread() {
+    return this.unread > 0
   }
 
   private _channels: Channel[] = []
@@ -34,6 +39,10 @@ export default class Conversation {
     this._channels.push(channel)
     channel.on('message', msg => {
       this.eventHandlers.message.forEach(handler => handler(msg))
+    })
+    channel.on('unread', num => {
+      if (!!this.unread !== !!(this.unread += num))
+        this.eventHandlers.unread.forEach(handler => handler(!!this.unread))
     })
     this.eventHandlers.channel.forEach(handler => handler(channel))
     return channel
@@ -136,10 +145,12 @@ export default class Conversation {
 type StaticEvent = 'added'
 type StaticEventHandler = (v: Conversation) => any
 
-type ConversationEvent = 'message' | 'channel'
+type ConversationEvent = 'message' | 'channel' | 'unread'
 type ConversationEventHandler<T extends ConversationEvent> = (
   v: ConversationEventPayload<T>
 ) => any
 type ConversationEventPayload<T extends ConversationEvent> = T extends 'message'
   ? Message
-  : Channel
+  : T extends 'channel'
+  ? Channel
+  : boolean

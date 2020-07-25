@@ -54,9 +54,8 @@ export default function User({
   useEffect(() => {
     if (!conversation) return
 
-    return conversation.on('message', () => {
-      setHasUnread(true)
-    })
+    setHasUnread(conversation.hasUnread)
+    return conversation.on('unread', setHasUnread)
   }, [conversation])
 
   if (!users.length) return null

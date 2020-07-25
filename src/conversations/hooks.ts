@@ -63,6 +63,11 @@ export function useMessaging() {
           channels.map(({ id }) => id)
         )
       )
+      me?.unread?.map(({ channelId, unread }) =>
+        Channel.get(channelId)?.setReadStatus(
+          ...unread.map(id => ({ id, read: false }))
+        )
+      )
     },
   })
 }
