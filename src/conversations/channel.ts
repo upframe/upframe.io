@@ -83,7 +83,7 @@ export default class Channel {
 
     const msgs =
       data?.channel?.messages.edges.flatMap(({ node }) =>
-        node ? [Message.fromGqlMsg(node)] : []
+        node ? [Message.fromGqlMsg({ ...node, channel: this.id })] : []
       ) ?? []
 
     if (msgs.length) this.addMsgs(msgs)
@@ -219,7 +219,7 @@ export default class Channel {
 
   public async sendMessage(content: string, meId: string) {
     const id = Date.now().toString()
-    this.postMessage(new Message(id, content, meId, new Date()))
+    this.postMessage(new Message(id, content, meId, this.id, new Date()))
     const { data } = await api.mutate<
       SendChatMessage,
       SendChatMessageVariables
@@ -231,8 +231,8 @@ export default class Channel {
       this.msgs.findIndex(msg => msg.id === id),
       1
     )
-    const msg = data?.sendMessage
-    if (msg) this.postMessage(Message.fromGqlMsg(msg))
+    const msg = { ...data?.sendMessage, channel: this.id }
+    if (msg) this.postMessage(Message.fromGqlMsg(msg as any))
   }
 
   public postMessage(msg: Message) {
@@ -252,13 +252,24 @@ export default class Channel {
   }
 
   public setReadStatus(...msgs: { id: string; read: boolean }[]) {
+    const old = this.unread.length
     this.unread = [
       ...this.unread.filter(
         v => !msgs.find(({ id, read }) => read && id === v)
       ),
       ...msgs.flatMap(({ id, read }) => (read ? [] : [id])),
     ]
-    this.eventHandlers.unread.forEach(handler => handler(this.unread.length))
+    this.eventHandlers.unread.forEach(handler =>
+      handler(
+        msgs.filter(({ read }) => read).map(({ id }) => id),
+        this.unread.length - old
+      )
+    )
+  }
+
+  public isUnread(msgId: string) {
+    ;(window as any).channel = this
+    return this.unread.includes(msgId)
   }
 }
 
@@ -276,10 +287,10 @@ export type MsgQuery = MsgQueryBackward | MsgQueryForward
 
 type ChannelEvent = 'message' | 'fetch' | 'unread'
 type ChannelEventHandler<T extends ChannelEvent> = (
-  v: ChannelEventPayload<T>
+  ...v: ChannelEventPayload<T>
 ) => any
 type ChannelEventPayload<T extends ChannelEvent> = T extends 'message'
-  ? Message
+  ? [Message]
   : T extends 'fetch'
-  ? 'start' | 'stop'
-  : number
+  ? ['start' | 'stop']
+  : [string[], number]

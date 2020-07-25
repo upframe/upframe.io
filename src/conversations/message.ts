@@ -8,12 +8,19 @@ export default class Message {
     public readonly id: string,
     public readonly content: string,
     public readonly author: string,
+    public readonly channelId: string,
     public readonly date: Date,
     public readonly unixTime = date.getTime()
   ) {}
 
-  public static fromGqlMsg(msg: Optional<GqlMsg, 'channel'>) {
-    return new Message(msg.id, msg.content, msg.author, new Date(msg.time))
+  public static fromGqlMsg(msg: GqlMsg) {
+    return new Message(
+      msg.id,
+      msg.content,
+      msg.author,
+      msg.channel,
+      new Date(msg.time)
+    )
   }
 
   public walkBack(num: number): [Message, number] {

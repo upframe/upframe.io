@@ -137,3 +137,9 @@ export const CREATE_CHANNEL = gql`
     }
   }
 `
+
+export const MARK_READ = gql`
+  mutation MarkRead($input: [MarkReadInput!]!) {
+    markRead(input: $input)
+  }
+`

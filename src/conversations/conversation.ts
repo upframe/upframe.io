@@ -6,6 +6,8 @@ import type {
   CreateConversationVariables,
   CreateChannel,
   CreateChannelVariables,
+  MarkRead,
+  MarkReadVariables,
 } from 'gql/types'
 import * as gql from './gql'
 import Channel from './channel'
@@ -40,9 +42,10 @@ export default class Conversation {
     channel.on('message', msg => {
       this.eventHandlers.message.forEach(handler => handler(msg))
     })
-    channel.on('unread', num => {
-      if (!!this.unread !== !!(this.unread += num))
+    channel.on('unread', (read, d) => {
+      if (!!this.unread !== !!(this.unread += d))
         this.eventHandlers.unread.forEach(handler => handler(!!this.unread))
+      Conversation.setRead(channel, read)
     })
     this.eventHandlers.channel.forEach(handler => handler(channel))
     return channel
@@ -139,6 +142,32 @@ export default class Conversation {
         v => v !== handler
       )
     }
+  }
+
+  private static _read: { [channel: string]: string[] } = {}
+  private static nextReadSync: number
+
+  private static setRead(channel: Channel, msgs: string[]) {
+    if (msgs.length === 0) return
+    Conversation._read[channel.id] = Array.from(
+      new Set([...(Conversation._read[channel.id] ?? []), ...msgs])
+    )
+    clearTimeout(Conversation.nextReadSync)
+    Conversation.nextReadSync = setTimeout(() => {
+      const read: typeof Conversation._read = JSON.parse(
+        JSON.stringify(Conversation._read)
+      )
+      Conversation._read = {}
+      api.mutate<MarkRead, MarkReadVariables>({
+        mutation: gql.MARK_READ,
+        variables: {
+          input: Object.entries(read).map(([channel, msgs]) => ({
+            channel,
+            msgs,
+          })),
+        },
+      })
+    }, 2000)
   }
 }
 

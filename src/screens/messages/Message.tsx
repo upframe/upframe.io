@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { fragments, useQuery, gql } from 'gql'
 import { ProfilePicture, Markdown } from 'components'
@@ -6,6 +6,7 @@ import Time from './Time'
 import type { ChatUser, ChatUserVariables } from 'gql/types'
 import Context from './MsgContext'
 import { useHeight } from 'utils/hooks'
+import Channel from 'conversations/channel'
 
 const USER_QUERY = gql`
   query ChatUser($id: ID!) {
@@ -30,6 +31,7 @@ interface Props {
   onLockFocus(v: boolean): void
   i?: number
   reportSize?(size: number, id: string): void
+  channelId: string
 }
 
 function Message({
@@ -42,17 +44,66 @@ function Message({
   focused,
   i,
   reportSize,
+  channelId,
 }: Props) {
   const { data } = useQuery<ChatUser, ChatUserVariables>(USER_QUERY, {
     variables: { id: author },
   })
   const ref = useRef() as React.MutableRefObject<HTMLElement>
   const height = useHeight(ref)
+  const [unread, setUnread] = useState(Channel.get(channelId)?.isUnread(id))
+  const setUnreadRef = useRef(setUnread)
+  setUnreadRef.current = setUnread
 
   useEffect(() => {
     if (typeof height !== 'number' || !reportSize) return
     reportSize(height, id)
   }, [height, reportSize, id])
+
+  useEffect(() => {
+    if (
+      !unread ||
+      !channelId ||
+      !id ||
+      !ref.current ||
+      !ref.current.parentElement
+    )
+      return
+
+    let wasEnclosed = false
+    let tdId: number
+
+    const check = () => {
+      if (!ref.current || !ref.current.parentElement) return
+
+      const { top, bottom } = ref.current.getBoundingClientRect()
+      const parent = ref.current.parentElement.getBoundingClientRect()
+      const pTop = parent.top
+      const pBottom = pTop + ref.current.parentElement.clientHeight
+      const isEnclosed = top >= pTop && bottom <= pBottom
+
+      if (wasEnclosed && isEnclosed) {
+        Channel.get(channelId)?.setReadStatus({ id, read: true })
+        return
+      }
+      wasEnclosed = isEnclosed
+
+      tdId = setTimeout(() => check(), 1000)
+    }
+
+    tdId = setTimeout(() => check(), 500)
+
+    return () => clearTimeout(tdId)
+  }, [unread, channelId, id])
+
+  useEffect(() => {
+    if (!channelId || !id) return
+    const unread = Channel.get(channelId)?.isUnread(id)
+    if (!unread) return
+    return Channel.get(channelId).on('unread', () => {
+      if (!Channel.get(channelId)?.isUnread(id)) setUnreadRef.current(false)
+    })
+  }, [channelId, id])
 
   return (
     <S.Wrap
@@ -61,7 +112,8 @@ function Message({
         'data-focus': focused ? 'lock' : 'block',
       })}
       data-id={id}
-      {...(reportSize && { ref })}
+      {...((reportSize || unread) && { ref })}
+      {...(MARK_UNREAD && unread && { style: { background: '#f001' } })}
     >
       {!stacked ? (
         <ProfilePicture imgs={data?.user?.profilePictures} size={picSize} />
@@ -83,6 +135,9 @@ function Message({
     </S.Wrap>
   )
 }
+
+const MARK_UNREAD =
+  new URLSearchParams(window.location.search).get('debug') === 'unread'
 
 const S = {
   Wrap: styled.article`
