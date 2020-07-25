@@ -59,6 +59,16 @@ export const CONVERSATION_SUBSCRIPTION = gql`
   }
 `
 
+export const READ_SUBSCRIPTION = gql`
+  subscription ReadSubscription($token: ID!) {
+    read(token: $token) {
+      userId
+      channelId
+      msgId
+    }
+  }
+`
+
 export const CONVERSATIONS = gql`
   query Conversations {
     me {

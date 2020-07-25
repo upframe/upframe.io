@@ -13,6 +13,8 @@ import type {
   ChannelSubVariables,
   ConversationSub,
   ConversationSubVariables,
+  ReadSubscription,
+  ReadSubscriptionVariables,
 } from 'gql/types'
 
 export function useMessaging() {
@@ -25,6 +27,8 @@ export function useMessaging() {
       const msg = subscriptionData?.data?.message
       if (!msg) return
       Channel.get(msg.channel).postMessage(Message.fromGqlMsg(msg))
+      if (msg.author !== me?.id)
+        Channel.get(msg.channel).setReadStatus({ id: msg.id, read: false })
     },
   })
 
@@ -49,6 +53,19 @@ export function useMessaging() {
         const conversation = subscriptionData?.data?.conversation
         if (!conversation) return
         Conversation.get(conversation.id)
+      },
+    }
+  )
+
+  useSubscription<ReadSubscription, ReadSubscriptionVariables>(
+    gql.READ_SUBSCRIPTION,
+    {
+      variables: { token: me?.msgToken as string },
+      skip: !me?.msgToken,
+      onSubscriptionData({ subscriptionData }) {
+        const { userId, channelId, msgId } = subscriptionData?.data?.read ?? {}
+        if (userId !== me?.id || !channelId || !msgId) return
+        Channel.get(channelId).setReadStatus({ id: msgId, read: true })
       },
     }
   )
