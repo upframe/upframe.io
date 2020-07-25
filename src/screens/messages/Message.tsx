@@ -94,7 +94,7 @@ function Message({
     tdId = setTimeout(() => check(), 500)
 
     return () => clearTimeout(tdId)
-  }, [unread, channelId, id])
+  }, [unread, channelId, id, ref])
 
   useEffect(() => {
     if (!channelId || !id) return
