@@ -95,7 +95,13 @@ export function useConversation(id: string) {
     (
       state: Channel[],
       { type, channels = [] }: { type: 'add' | 'reset'; channels: Channel[] }
-    ) => (type === 'reset' ? channels : [...channels, ...state]),
+    ) =>
+      type === 'reset'
+        ? channels
+        : [
+            ...channels,
+            ...state.filter(({ id }) => !channels.find(c => c.id === id)),
+          ],
     []
   )
 
