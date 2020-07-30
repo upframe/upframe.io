@@ -216,6 +216,11 @@ export default function Thread({ id }: Props) {
             onSubmit={v => {
               if (sendMessage) sendMessage(v)
             }}
+            channelId={id}
+            autoFocus={
+              new URLSearchParams(window.location.search).get('focus') ===
+              'true'
+            }
           />
         </S.InputBar>
       </S.Thread>

@@ -35,6 +35,7 @@ function ThreadCard({ channelId }: Props) {
         onSubmit={v => {
           if (sendMessage) sendMessage(v)
         }}
+        channelId={channelId}
       />
     </S.Card>
   )

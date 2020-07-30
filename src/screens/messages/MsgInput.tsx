@@ -1,19 +1,33 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import { Icon } from 'components'
+import { useMatchMedia } from 'utils/hooks'
+import { mobile } from 'styles/responsive'
+import { useHistory } from 'react-router'
+import { path } from 'utils/url'
 
 interface Props {
   onSubmit(v: string): void
   placeholder?: string
+  channelId?: string
+  autoFocus?: boolean
 }
 
-export default function MsgInput({ onSubmit = () => {}, placeholder }: Props) {
+export default function MsgInput({
+  onSubmit = () => {},
+  placeholder,
+  channelId,
+  autoFocus,
+}: Props) {
   const [value, setValue] = useState('')
   const ref = useRef() as React.MutableRefObject<HTMLTextAreaElement>
   const [lines, setLines] = useState(1)
   const [valid, setValid] = useState(false)
+  const isMobile = useMatchMedia(mobile)
+  const history = useHistory()
 
-  function submit() {
+  function submit(e?: React.FormEvent<HTMLFormElement>) {
+    if (e) e.preventDefault()
     if (!valid) return
     onSubmit(value)
     setValue('')
@@ -54,8 +68,14 @@ export default function MsgInput({ onSubmit = () => {}, placeholder }: Props) {
     })
   }
 
+  function onFocus() {
+    const [, , , channel] = window.location.pathname.split('/')
+    if (channel || !channelId) return
+    history.push(`${path()}/${channelId}?focus=true`)
+  }
+
   return (
-    <S.Wrap>
+    <S.Wrap onSubmit={submit}>
       <S.Clone value={value} readOnly />
       <S.Input
         onKeyDown={handleKey}
@@ -67,6 +87,8 @@ export default function MsgInput({ onSubmit = () => {}, placeholder }: Props) {
         // @ts-ignore
         onInput={handleInput}
         data-valid={valid}
+        {...(isMobile && { onFocus })}
+        autoFocus={autoFocus}
       />
       <S.Send>
         <Icon icon="send" onClick={submit} clickStyle={false} />
@@ -107,7 +129,7 @@ const Input = styled.textarea<ScProps>`
 `
 
 const S = {
-  Wrap: styled.div`
+  Wrap: styled.form`
     position: relative;
     width: 100%;
     display: block;
