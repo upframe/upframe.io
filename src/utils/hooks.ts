@@ -210,3 +210,24 @@ export function useMatchMedia(query: string) {
 
   return match
 }
+
+export function useVirtualKeyboard() {
+  const isMobile = useMatchMedia('(hover: none) and (pointer: coarse)')
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (!isMobile) return
+
+    let height = window.innerHeight
+    function onResize(e) {
+      const dh = window.innerHeight - height
+      if (Math.abs(dh) >= 200) setOpen(dh < 0)
+      height = window.innerHeight
+    }
+
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [isMobile])
+
+  return open
+}

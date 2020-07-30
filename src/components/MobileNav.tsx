@@ -5,10 +5,13 @@ import layout from 'styles/layout'
 import { Icon, Link } from 'components'
 import { path } from 'utils/url'
 import { useLocation } from 'react-router'
+import { useVirtualKeyboard } from 'utils/hooks'
 
 export default function MobileNav() {
   useLocation()
+  const keyboardOpen = useVirtualKeyboard()
 
+  if (keyboardOpen) return null
   return (
     <S.Nav>
       <Link to="/" data-active={path(1) === '/'}>
@@ -41,7 +44,7 @@ const S = {
     width: 100vw;
     height: ${layout.mobile.navbarHeight};
     background-color: #fff;
-    box-shadow: 0 -2px 4px #aaa;
+    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);
 
     svg {
       height: calc(${layout.mobile.navbarHeight} * 0.5);

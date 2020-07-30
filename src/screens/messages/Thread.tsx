@@ -10,6 +10,7 @@ import { useChannel } from 'conversations'
 import Input from './MsgInput'
 import { Spinner, VirtualScroller } from 'components'
 import Message from './Message'
+import { mobile } from 'styles/responsive'
 
 interface Props {
   id: string
@@ -254,6 +255,10 @@ const S = {
 
     @media (max-width: 1007.67px) {
       padding: 0;
+    }
+
+    @media ${mobile} {
+      padding: 0 1rem;
     }
   `,
 
