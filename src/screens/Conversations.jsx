@@ -5,11 +5,15 @@ import ConversationList from './messages/ConversationList'
 import { useHistory } from 'react-router-dom'
 import Conversation from './messages/Conversation'
 import { path } from 'utils/url'
+import * as responsive from 'styles/responsive'
+import { useMatchMedia } from 'utils/hooks'
 
 export default function Conversations({ match }) {
   const select = match.params.conversationId === 'new'
   const history = useHistory()
   const [selected, setSelected] = useState([])
+
+  const mobile = useMatchMedia(responsive.mobile)
 
   function toggleSelect(v = !select) {
     if (v !== select) history.push(path(1) + (select ? '' : '/new'))
@@ -17,29 +21,33 @@ export default function Conversations({ match }) {
 
   return (
     <S.Conversations>
-      <S.Left>
-        <ConversationList
-          select={select}
-          onToggleSelect={toggleSelect}
-          selected={selected}
-          onSelection={setSelected}
-        />
-      </S.Left>
-      <S.Right>
-        {!select && !match.params.conversationId && (
-          <EmptyRoom onToggleSelect={toggleSelect} />
-        )}
-        {select && selected.length > 0 && (
-          <Conversation participants={selected.map(({ id }) => id)} />
-        )}
-        {match.params.conversationId &&
-          match.params.conversationId !== 'new' && (
-            <Conversation
-              id={match.params.conversationId}
-              channel={match.params.channelId}
-            />
+      {(!mobile || select || !match.params.conversationId) && (
+        <S.Left>
+          <ConversationList
+            select={select}
+            onToggleSelect={toggleSelect}
+            selected={selected}
+            onSelection={setSelected}
+          />
+        </S.Left>
+      )}
+      {(!mobile || (!select && match.params.conversationId)) && (
+        <S.Right>
+          {!select && !match.params.conversationId && (
+            <EmptyRoom onToggleSelect={toggleSelect} />
           )}
-      </S.Right>
+          {select && selected.length > 0 && (
+            <Conversation participants={selected.map(({ id }) => id)} />
+          )}
+          {match.params.conversationId &&
+            match.params.conversationId !== 'new' && (
+              <Conversation
+                id={match.params.conversationId}
+                channel={match.params.channelId}
+              />
+            )}
+        </S.Right>
+      )}
     </S.Conversations>
   )
 }
@@ -73,6 +81,11 @@ const S = {
     height: 100%;
     border-right: 1.5px solid #e5e5e5;
     box-sizing: border-box;
+
+    @media ${responsive.mobile} {
+      border: none;
+      width: 100%;
+    }
   `,
 
   Right: styled.div`

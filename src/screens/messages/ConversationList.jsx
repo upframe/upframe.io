@@ -6,6 +6,7 @@ import Tab from './ConversationTab'
 import { Link } from 'react-router-dom'
 import { path } from 'utils/url'
 import { useConversations } from 'conversations'
+import { mobile } from 'styles/responsive'
 
 export default function ConversationList({
   select,
@@ -78,6 +79,10 @@ const S = {
       width: 2.5rem;
       position: absolute;
       left: calc(50% - 1.25rem);
+    }
+
+    @media ${mobile} {
+      padding: inherit;
     }
   `,
 }
