@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Logo, SearchBar, Button } from 'components'
+import { Logo, SearchBar, Button, Icon } from 'components'
 import UserIcon from './UserIcon'
 import Dropdown from './Dropdown'
 import { useScrollAtTop, useMe } from 'utils/hooks'
@@ -23,12 +23,15 @@ export default function Navbar() {
       <SearchBar />
       <S.Right>
         {me && (
-          <UserIcon
-            userId={me.id}
-            onClick={() => {
-              if (!showDropdown) setShowDropdown(true)
-            }}
-          />
+          <>
+            <Icon icon="message" linkTo="/conversations" />
+            <UserIcon
+              userId={me.id}
+              onClick={() => {
+                if (!showDropdown) setShowDropdown(true)
+              }}
+            />
+          </>
         )}
         {!me && (
           <>
@@ -88,9 +91,18 @@ const S = {
   `,
 
   Right: styled.div`
-    margin-left: auto;
-    flex-shrink: 0;
+    box-sizing: border-box;
     padding-left: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: auto;
+    width: 8rem;
+
+    & > *:first-child {
+      margin-right: 1rem;
+    }
 
     button:last-of-type {
       margin-right: 0;

@@ -28,9 +28,11 @@ export default function Icon({
     <Wrap
       {...(linkTo && {
         to: linkTo,
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        'data-type': 'social',
+        ...(/^https?:\/\//.test(linkTo) && {
+          target: '_blank',
+          rel: 'noopener noreferrer',
+          'data-type': 'social',
+        }),
       })}
     >
       <S.Icon
