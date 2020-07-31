@@ -80,7 +80,7 @@ export default function User({
         <S.TextSec>
           <Title size={4}>
             {users.length === 1
-              ? users[0][id ? 'displayName' : 'name']
+              ? users[0].name
               : users.map(({ displayName }) => displayName).join(', ')}
           </Title>
           <Text>
