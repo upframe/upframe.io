@@ -18,6 +18,7 @@ export const person = {
       fragment PersonBase on Person {
         id
         name
+        displayName
         handle
         role
         headline

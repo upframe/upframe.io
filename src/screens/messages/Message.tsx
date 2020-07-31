@@ -13,6 +13,7 @@ const USER_QUERY = gql`
     user(id: $id) {
       id
       name
+      displayName
       ...ProfilePictures
     }
   }
@@ -125,7 +126,7 @@ function Message({
           <div />
         ) : (
           <S.Head>
-            <S.Name>{data?.user?.name}</S.Name>
+            <S.Name>{data?.user?.displayName}</S.Name>
             <Time>{date}</Time>
           </S.Head>
         )}

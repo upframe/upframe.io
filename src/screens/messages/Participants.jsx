@@ -7,6 +7,7 @@ const PARTICIPANTS = gql`
     users(ids: $ids) {
       id
       name
+      displayName
       handle
     }
   }
@@ -18,7 +19,9 @@ export default function Participants({ ids = [] }) {
   })
 
   return (
-    <S.Participants>{users.map(({ name }) => name).join(', ')}</S.Participants>
+    <S.Participants>
+      {users.map(({ displayName }) => displayName).join(', ')}
+    </S.Participants>
   )
 }
 
