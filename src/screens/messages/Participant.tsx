@@ -11,10 +11,11 @@ export default function Participants({
   const [time, setTime] = useState('')
   const [tzKnown, setTzKnown] = useState(false)
 
+  const utcOffset = user.timezone?.utcOffset
   useEffect(() => {
     let date = new Date()
-    if (user.timezone?.utcOffset) {
-      const dUTC = date.getTimezoneOffset() - -user.timezone.utcOffset
+    if (utcOffset) {
+      const dUTC = date.getTimezoneOffset() - -utcOffset
       date = new Date(date.getTime() + 1000 * 60 * dUTC)
       setTzKnown(true)
     }
@@ -31,7 +32,7 @@ export default function Participants({
         -2
       )} ${suffix}`
     )
-  }, [user.timezone?.utcOffset])
+  }, [utcOffset])
 
   return (
     <S.Participant>
