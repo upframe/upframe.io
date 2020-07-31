@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import EmptyRoom from './messages/EmtpyRoom'
 import ConversationList from './messages/ConversationList'
 import { useHistory } from 'react-router-dom'
-import Conversation from './messages/Conversation'
+import ConvView from './messages/Conversation'
 import { path } from 'utils/url'
 import * as responsive from 'styles/responsive'
 import { useMatchMedia } from 'utils/hooks'
+import Conversation from 'conversations/conversation'
 
 export default function Conversations({ match }) {
   const select = match.params.conversationId === 'new'
@@ -18,6 +19,9 @@ export default function Conversations({ match }) {
   function toggleSelect(v = !select) {
     if (v !== select) history.push(path(1) + (select ? '' : '/new'))
   }
+
+  const conversation =
+    select && Conversation.getByUsers(selected.map(({ id }) => id))
 
   return (
     <S.Conversations>
@@ -37,11 +41,15 @@ export default function Conversations({ match }) {
             <EmptyRoom onToggleSelect={toggleSelect} />
           )}
           {select && selected.length > 0 && (
-            <Conversation participants={selected.map(({ id }) => id)} />
+            <ConvView
+              {...(conversation
+                ? { id: conversation.id }
+                : { participants: selected.map(({ id }) => id) })}
+            />
           )}
           {match.params.conversationId &&
             match.params.conversationId !== 'new' && (
-              <Conversation
+              <ConvView
                 id={match.params.conversationId}
                 channel={match.params.channelId}
               />

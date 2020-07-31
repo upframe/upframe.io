@@ -144,6 +144,14 @@ export default class Conversation {
     }
   }
 
+  public static getByUsers(users: string[]) {
+    return Object.values(Conversation.instances).find(
+      ({ participants }) =>
+        participants.length === users.length &&
+        participants.every(id => users.includes(id))
+    )
+  }
+
   private static _read: { [channel: string]: string[] } = {}
   private static nextReadSync: number
 
