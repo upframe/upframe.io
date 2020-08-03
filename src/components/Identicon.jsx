@@ -84,5 +84,8 @@ const S = {
     width: 3rem;
     height: 3rem;
     image-rendering: pixelated;
+    /* stylelint-disable value-no-vendor-prefix */
+    image-rendering: -moz-crisp-edges;
+    flex-shrink: 0;
   `,
 }

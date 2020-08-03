@@ -104,6 +104,11 @@ const S = {
         border-radius: 1000px;
       }
     }
+
+    a {
+      text-decoration: underline var(--cl-primary);
+      text-underline-position: below;
+    }
   `,
 }
 
