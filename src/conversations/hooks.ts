@@ -124,11 +124,15 @@ export function useConversation(id: string) {
 
 export function useConversations() {
   const [conversations, dispatch] = useReducer(
-    (state, { type, value }) => (type === 'add' ? [...state, value] : state),
+    (state, { type, value }) =>
+      type === 'add'
+        ? [...state, ...(Array.isArray(value) ? value : [value])]
+        : state,
     []
   )
 
   useEffect(() => {
+    dispatch({ type: 'add', value: Conversation.list })
     Conversation.onStatic('added', value => {
       dispatch({ type: 'add', value })
     })
