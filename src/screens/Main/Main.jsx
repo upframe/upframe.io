@@ -33,9 +33,14 @@ export default function Main() {
   return (
     <>
       {!currentUser && !loggedIn && !search && <Landing />}
+
       <Home>
         {currentUser && !search && (
           <>
+            <Title s2> Top Categories</Title>
+            <Text>
+              How can we help? Start by picking one of our main categories.
+            </Text>
             <Categories />
             <Title s2>Featured Mentors</Title>
             <Text>

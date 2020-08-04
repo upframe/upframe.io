@@ -12,37 +12,45 @@ const CATEGORIES = gql`
       description
       publicView
       pictureUrl
+      backgroundColor
+      textColor
     }
   }
 `
 
 export default function Categories() {
-  const Container = styled.div`
-    display: flex;
-    width: auto;
-    height: auto;
-    overflow-y: auto;
-  `
-  const { data } = useQuery(CATEGORIES)
-  if (data) {
-    const lists = data.lists
-    const listNames = []
-    const photoUrl = []
-    lists.forEach(list => listNames.push(list.name))
-    lists.forEach(list => photoUrl.push(list.pictureUrl))
+  const { data, loading } = useQuery(CATEGORIES)
 
-    return (
-      <Container>
-        {listNames.map((v, index) => (
-          <Category key={v} name={v} pictureUrl={photoUrl[index]} />
-        ))}
-      </Container>
-    )
-  } else {
-    return (
-      <>
-        <Spinner />
-      </>
-    )
-  }
+  if (loading) return <Spinner centered />
+
+  return (
+    <Container>
+      {data.lists.map(list => (
+        <Category
+          key={list.id}
+          pictureUrl={list.pictureUrl}
+          name={list.name}
+          backgroundColor={list.backgroundColor}
+          textColor={list.textColor}
+        />
+      ))}
+    </Container>
+  )
 }
+
+const Container = styled.div`
+  display: flex;
+  position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  margin-left: -14vw;
+  margin-right: -25vw;
+  justify-content: space-between;
+  scroll-snap-type: x proximity;
+  scroll-padding: 50%;
+
+  @media (max-width: 1020px) {
+    margin: auto;
+    scroll-snap-type: x mandatory;
+  }
+`
