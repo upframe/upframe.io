@@ -1,4 +1,5 @@
 import { gql } from '../gql'
+import { person } from 'gql/fragments'
 
 export const CONVERSATION = gql`
   fragment ConversationBase on Conversation {
@@ -76,7 +77,7 @@ export const CONVERSATIONS = gql`
       conversations {
         id
         participants {
-          id
+          ...PersonBase
         }
         channels {
           id
@@ -88,6 +89,7 @@ export const CONVERSATIONS = gql`
       }
     }
   }
+  ${person.base}
 `
 
 export const CHANNEL_MSGS = gql`

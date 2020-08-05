@@ -1,28 +1,31 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { ProfilePicture, Title, Text, Checkbox, Identicon } from 'components'
 import { useMe } from 'utils/hooks'
 import { Link } from 'react-router-dom'
 import { path } from 'utils/url'
-import { gql, fragments, useQuery } from 'gql'
-import type { Participants, ParticipantsVariables } from 'gql/types'
+import { gql, fragments } from 'gql'
+import type { Participant, ParticipantVariables } from 'gql/types'
 import { Conversation } from 'conversations'
+import api from 'api'
 
-const PARTICIPANTS = gql`
-  query Participants($ids: [ID!]!) {
-    users(ids: $ids) {
+const PARTICIPANT = gql`
+  query Participant($id: ID!) {
+    user(id: $id) @client {
       ...PersonBase
     }
   }
   ${fragments.person.base}
 `
 
+type User = Exclude<Participant['user'], null>
+
 interface Props {
   id: string
   selected?: boolean
   onSelect(v: boolean): void
   userIds?: string[]
-  users?: Participants['users']
+  users?: User[]
 }
 
 export default function User({
@@ -35,14 +38,28 @@ export default function User({
   const [conversation, setConversation] = useState<Conversation>()
   const [hasUnread, setHasUnread] = useState(false)
   const { me } = useMe()
-  userIds = userIds?.filter(id => id !== me?.id)
+  const [participants, setParticipants] = useState<User[]>([])
 
-  const { data } = useQuery<Participants, ParticipantsVariables>(PARTICIPANTS, {
-    variables: { ids: userIds },
-    skip: !userIds?.length,
-  })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  userIds = useMemo(() => userIds?.filter(id => id !== me?.id), userIds?.sort())
 
-  users = [...users, ...(data?.users ?? [])]
+  useEffect(() => {
+    if (!userIds?.length) return
+    Promise.all(
+      userIds.map(id =>
+        api.query<Participant, ParticipantVariables>({
+          query: PARTICIPANT,
+          variables: { id },
+        })
+      )
+    ).then(res =>
+      setParticipants(
+        res.flatMap(({ data }) => data?.user).filter(Boolean) as User[]
+      )
+    )
+  }, [userIds])
+
+  users = [...users, ...participants]
 
   const CondLink = id ? Link : React.Fragment
 
