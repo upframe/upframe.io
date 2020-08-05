@@ -26,7 +26,6 @@ export default function Navbar() {
           <>
             <Icon icon="message" linkTo="/conversations" />
             <UserIcon
-              userId={me.id}
               onClick={() => {
                 if (!showDropdown) setShowDropdown(true)
               }}

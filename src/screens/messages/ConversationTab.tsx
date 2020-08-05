@@ -58,7 +58,7 @@ export default function User({
     return conversation.on('unread', setHasUnread)
   }, [conversation])
 
-  if (!users.length) return null
+  if (!users.length) return <S.User data-state="loading" />
   return (
     <S.User
       {...(typeof onSelect === 'function' && {
@@ -110,6 +110,36 @@ const S = {
     min-width: 0;
     box-sizing: border-box;
     user-select: none;
+    height: 3.4rem;
+    overflow: hidden;
+
+    &[data-state='loading'] {
+      background-color: #0002;
+
+      &::after {
+        --width: 20%;
+
+        content: '';
+        display: block;
+        width: var(--width);
+        left: calc(50% - var(--width) / 2);
+        position: relative;
+        top: -0.2rem;
+        height: 150%;
+        background: linear-gradient(90deg, #fff0, #fff6, #fff0);
+        animation: swipe 1.5s infinite;
+
+        @keyframes swipe {
+          from {
+            transform: translateX(-500%);
+          }
+
+          to {
+            transform: translateX(500%);
+          }
+        }
+      }
+    }
 
     picture,
     img {
