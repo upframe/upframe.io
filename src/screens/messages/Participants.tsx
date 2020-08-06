@@ -1,34 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { gql, useQuery } from 'gql'
 import Participant from './Participant'
-import { person } from 'gql/fragments'
-import type { ChatParticipants, ChatParticipantsVariables } from 'gql/types'
-
-const PARTICIPANTS = gql`
-  query ChatParticipants($ids: [ID!]!) {
-    users(ids: $ids) {
-      ...PersonBase
-      timezone {
-        utcOffset
-        informal {
-          current {
-            name
-          }
-        }
-      }
-    }
-  }
-  ${person.base}
-`
+import { useParticipants } from 'conversations/hooks'
 
 export default function Participants({ ids = [] }: { ids?: string[] }) {
-  const { data: { users = [] } = {} } = useQuery<
-    ChatParticipants,
-    ChatParticipantsVariables
-  >(PARTICIPANTS, {
-    variables: { ids },
-  })
+  const users = useParticipants(ids)
 
   return (
     <S.Participants>

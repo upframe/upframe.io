@@ -1,22 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ProfilePicture, Title, Text, Checkbox, Identicon } from 'components'
 import { useMe } from 'utils/hooks'
 import { Link } from 'react-router-dom'
 import { path } from 'utils/url'
-import { gql, fragments } from 'gql'
-import type { Participant, ParticipantVariables } from 'gql/types'
+import type { Participant } from 'gql/types'
 import { Conversation } from 'conversations'
-import api from 'api'
-
-const PARTICIPANT = gql`
-  query Participant($id: ID!) {
-    user(id: $id) @client {
-      ...PersonBase
-    }
-  }
-  ${fragments.person.base}
-`
+import { useParticipants } from 'conversations/hooks'
 
 type User = Exclude<Participant['user'], null>
 
@@ -38,26 +28,7 @@ export default function User({
   const [conversation, setConversation] = useState<Conversation>()
   const [hasUnread, setHasUnread] = useState(false)
   const { me } = useMe()
-  const [participants, setParticipants] = useState<User[]>([])
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  userIds = useMemo(() => userIds?.filter(id => id !== me?.id), userIds?.sort())
-
-  useEffect(() => {
-    if (!userIds?.length) return
-    Promise.all(
-      userIds.map(id =>
-        api.query<Participant, ParticipantVariables>({
-          query: PARTICIPANT,
-          variables: { id },
-        })
-      )
-    ).then(res =>
-      setParticipants(
-        res.flatMap(({ data }) => data?.user).filter(Boolean) as User[]
-      )
-    )
-  }, [userIds])
+  const participants = useParticipants(userIds)
 
   users = [...users, ...participants]
 

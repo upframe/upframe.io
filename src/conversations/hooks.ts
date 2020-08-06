@@ -5,6 +5,7 @@ import Message from './message'
 import { useMe } from 'utils/hooks'
 import * as gql from './gql'
 import { useQuery, useSubscription } from 'gql'
+import api from 'api'
 import type {
   Conversations,
   MessageSub,
@@ -15,6 +16,8 @@ import type {
   ConversationSubVariables,
   ReadSubscription,
   ReadSubscriptionVariables,
+  Participant,
+  ParticipantVariables,
 } from 'gql/types'
 
 export function useMessaging() {
@@ -70,7 +73,7 @@ export function useMessaging() {
     }
   )
 
-  useQuery<Conversations>(gql.CONVERSATIONS, {
+  const { loading } = useQuery<Conversations>(gql.CONVERSATIONS, {
     skip: !me,
     onCompleted({ me }) {
       me?.conversations?.map(({ id, participants, channels }) =>
@@ -87,6 +90,10 @@ export function useMessaging() {
       )
     },
   })
+
+  useEffect(() => {
+    Conversation.blockFetch = loading
+  }, [loading])
 }
 
 export function useConversation(id: string) {
@@ -106,9 +113,11 @@ export function useConversation(id: string) {
   )
 
   useEffect(() => {
-    Conversation.get(id)
-      .then(setConversation)
-      .catch(() => setConversation(null))
+    requestAnimationFrame(() => {
+      Conversation.get(id)
+        .then(setConversation)
+        .catch(() => setConversation(null))
+    })
   }, [id])
 
   useEffect(() => {
@@ -183,4 +192,31 @@ export function useChannel(id: string, ...msgQuery: MsgQuery[]) {
       ((content: string) => channel.sendMessage(content, me.id)),
     channel,
   }
+}
+
+type User = Exclude<Participant['user'], null>
+export function useParticipants(ids: string[]): User[] {
+  const [participants, setParticipants] = useState<User[]>([])
+  const { me } = useMe()
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const userIds = useMemo(() => ids?.filter(id => id !== me?.id), ids?.sort())
+
+  useEffect(() => {
+    if (!userIds?.length) return
+    Promise.all(
+      userIds.map(id =>
+        api.query<Participant, ParticipantVariables>({
+          query: gql.PARTICIPANT,
+          variables: { id },
+        })
+      )
+    ).then(res =>
+      setParticipants(
+        res.flatMap(({ data }) => data?.user).filter(Boolean) as User[]
+      )
+    )
+  }, [userIds])
+
+  return participants
 }

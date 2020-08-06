@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ProfilePicture, Link } from 'components'
-import type { ChatParticipants } from 'gql/types'
+import type { Participant } from 'gql/types'
 
 export default function Participants({
   user,
 }: {
-  user: ChatParticipants['users'][number]
+  user: Exclude<Participant['user'], null>
 }) {
   const utcOffset = user.timezone?.utcOffset
   const time = useLocalTime(utcOffset)

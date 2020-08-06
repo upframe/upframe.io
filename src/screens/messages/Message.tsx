@@ -10,7 +10,7 @@ import Channel from 'conversations/channel'
 
 const USER_QUERY = gql`
   query ChatUser($id: ID!) {
-    user(id: $id) {
+    user(id: $id) @client {
       id
       name
       displayName

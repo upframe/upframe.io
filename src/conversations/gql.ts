@@ -13,6 +13,21 @@ export const CONVERSATION = gql`
   }
 `
 
+export const CHAT_PARTICIPANT = gql`
+  fragment ChatParticipant on Person {
+    ...PersonBase
+    timezone {
+      utcOffset
+      informal {
+        current {
+          name
+        }
+      }
+    }
+  }
+  ${person.base}
+`
+
 export const FETCH_CONVERSATION = gql`
   query FetchConversation($id: ID!) {
     conversation(conversationId: $id) {
@@ -77,7 +92,7 @@ export const CONVERSATIONS = gql`
       conversations {
         id
         participants {
-          ...PersonBase
+          ...ChatParticipant
         }
         channels {
           id
@@ -89,7 +104,7 @@ export const CONVERSATIONS = gql`
       }
     }
   }
-  ${person.base}
+  ${CHAT_PARTICIPANT}
 `
 
 export const CHANNEL_MSGS = gql`
@@ -154,4 +169,13 @@ export const MARK_READ = gql`
   mutation MarkRead($input: [MarkReadInput!]!) {
     markRead(input: $input)
   }
+`
+
+export const PARTICIPANT = gql`
+  query Participant($id: ID!) {
+    user(id: $id) @client {
+      ...ChatParticipant
+    }
+  }
+  ${CHAT_PARTICIPANT}
 `
