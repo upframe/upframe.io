@@ -41,6 +41,13 @@ export default function MsgInput({
         e.preventDefault()
         if (e.shiftKey) {
           setLines(lines + 1)
+          const textarea: HTMLTextAreaElement = e.target as any
+          const cursor = textarea.selectionStart
+          requestAnimationFrame(() => {
+            if (!textarea) return
+            setValue(value.slice(0, cursor) + '\n' + value.slice(cursor))
+            textarea.setSelectionRange(cursor + 1, cursor + 1)
+          })
           return setValue(value + '\n')
         }
         submit()

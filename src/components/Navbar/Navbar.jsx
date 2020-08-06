@@ -113,5 +113,13 @@ const S = {
         display: none;
       }
     }
+
+    button {
+      flex-shrink: 0;
+    }
+
+    svg {
+      opacity: 0.8;
+    }
   `,
 }
