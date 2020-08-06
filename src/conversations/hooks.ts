@@ -73,7 +73,7 @@ export function useMessaging() {
     }
   )
 
-  const { loading } = useQuery<Conversations>(gql.CONVERSATIONS, {
+  useQuery<Conversations>(gql.CONVERSATIONS, {
     skip: !me,
     onCompleted({ me }) {
       me?.conversations?.map(({ id, participants, channels }) =>
@@ -83,6 +83,7 @@ export function useMessaging() {
           channels.map(({ id }) => id)
         )
       )
+      Conversation.initDone()
       me?.unread?.map(({ channelId, unread }) =>
         Channel.get(channelId)?.setReadStatus(
           ...unread.map(id => ({ id, read: false }))
@@ -90,10 +91,6 @@ export function useMessaging() {
       )
     },
   })
-
-  useEffect(() => {
-    Conversation.blockFetch = loading
-  }, [loading])
 }
 
 export function useConversation(id: string) {
@@ -113,11 +110,9 @@ export function useConversation(id: string) {
   )
 
   useEffect(() => {
-    requestAnimationFrame(() => {
-      Conversation.get(id)
-        .then(setConversation)
-        .catch(() => setConversation(null))
-    })
+    Conversation.get(id)
+      .then(setConversation)
+      .catch(() => setConversation(null))
   }, [id])
 
   useEffect(() => {

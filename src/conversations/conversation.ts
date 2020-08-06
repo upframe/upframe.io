@@ -31,13 +31,16 @@ export default class Conversation {
   public get hasUnread() {
     return this.unread > 0
   }
-  private static _blockFetch = Promise.resolve()
-  private static unblockFetch?: () => {}
 
   private _channels: Channel[] = []
   public get channels() {
     return this._channels
   }
+
+  public static initDone: (v?: unknown) => void
+  private static init = new Promise(res => {
+    Conversation.initDone = res
+  })
 
   protected constructor(
     public readonly id: string,
@@ -48,18 +51,6 @@ export default class Conversation {
     Conversation.instances[id] = this
     Conversation.staticEventHandlers.added?.forEach(handler => handler(this))
     channels.forEach(id => this.addChannel(Channel.get(id)))
-  }
-
-  public static set blockFetch(v: boolean) {
-    if (!v) {
-      if (Conversation.unblockFetch) Conversation.unblockFetch()
-      Conversation.unblockFetch = undefined
-    } else
-      Conversation._blockFetch.then(() => {
-        Conversation._blockFetch = new Promise(res => {
-          Conversation.unblockFetch = res as any
-        })
-      })
   }
 
   public addChannel(channel: Channel): Channel {
@@ -78,7 +69,7 @@ export default class Conversation {
   }
 
   public static async get(id: string): Promise<Conversation> {
-    await Conversation._blockFetch
+    await Conversation.init
     return id in Conversation.instances
       ? Conversation.instances[id]
       : await Conversation.fetch(id)
