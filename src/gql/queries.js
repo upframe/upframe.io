@@ -98,11 +98,13 @@ export const SETTINGS_NOTIFICATIONS = gql`
       ... on Person {
         notificationPrefs {
           receiveEmails
+          msgEmails
         }
       }
       ... on Mentor {
         notificationPrefs {
           receiveEmails
+          msgEmails
           slotReminder
         }
       }

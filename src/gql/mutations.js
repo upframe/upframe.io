@@ -114,11 +114,13 @@ export const UPDATE_NOTIICATION_PREFERENCES = gql`
       ... on User {
         notificationPrefs {
           receiveEmails
+          msgEmails
         }
       }
       ... on Mentor {
         notificationPrefs {
           receiveEmails
+          msgEmails
           slotReminder
         }
       }
