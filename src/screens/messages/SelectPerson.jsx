@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDebouncedInputCall } from 'utils/hooks'
-import { useQuery, gql } from 'gql'
+import { useQuery, gql, fragments } from 'gql'
 import { SearchInput } from 'components'
 import Tab from './ConversationTab'
 
@@ -10,18 +10,12 @@ const SEARCH = gql`
     search(term: $term, maxUsers: 20) {
       users {
         user {
-          id
-          name
-          headline
-          profilePictures {
-            size
-            type
-            url
-          }
+          ...PersonBase
         }
       }
     }
   }
+  ${fragments.person.base}
 `
 
 export default function SelectPerson({ selected, onSelection }) {

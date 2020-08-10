@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import EmptyRoom from './messages/EmtpyRoom'
 import ConversationList from './messages/ConversationList'
@@ -8,11 +8,27 @@ import { path } from 'utils/url'
 import * as responsive from 'styles/responsive'
 import { useMatchMedia } from 'utils/hooks'
 import Conversation from 'conversations/conversation'
+import { gql, fragments } from 'gql'
+import api from 'api'
+
+const SELECTED = gql`
+  query SelectedPartsInfo($ids: [ID!]!) {
+    users(ids: $ids) {
+      ...PersonBase
+    }
+  }
+  ${fragments.person.base}
+`
 
 export default function Conversations({ match }) {
   const select = match.params.conversationId === 'new'
   const history = useHistory()
-  const [selected, setSelected] = useState([])
+  const [selected, setSelected] = useState(
+    new URLSearchParams(window.location.search)
+      .get('parts')
+      ?.split('_')
+      .map(id => ({ id })) ?? []
+  )
 
   const mobile = useMatchMedia(responsive.mobile)
 
@@ -22,6 +38,34 @@ export default function Conversations({ match }) {
 
   const conversation =
     select && Conversation.getByUsers(selected.map(({ id }) => id))
+
+  useEffect(() => {
+    if (!select || !selected.length) {
+      if (
+        typeof new URLSearchParams(window.location.search).get('parts') ===
+        'string'
+      )
+        history.replace(
+          window.location.pathname +
+            window.location.search
+              .replace(/[?&]parts=[a-z0-9-]+/, '')
+              .replace(/^&/, '?')
+        )
+      return
+    }
+    const params = new URLSearchParams(window.location.search)
+    params.set('parts', selected.map(({ id }) => id).join('_'))
+    history.replace(`${window.location.pathname}?${params.toString()}`)
+    const unknown = selected.filter(({ name }) => !name).map(({ id }) => id)
+    if (!unknown.length) return
+    api
+      .query({ query: SELECTED, variables: { ids: unknown } })
+      .then(({ data }) => {
+        setSelected(
+          selected.map(v => data.users.find(({ id }) => id === v.id) ?? v)
+        )
+      })
+  }, [select, selected, history])
 
   return (
     <S.Conversations>

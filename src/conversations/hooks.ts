@@ -194,8 +194,11 @@ export function useParticipants(ids: string[]): User[] {
   const [participants, setParticipants] = useState<User[]>([])
   const { me } = useMe()
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const userIds = useMemo(() => ids?.filter(id => id !== me?.id), ids?.sort())
+  const userIds = useMemo(
+    () => ids?.filter(id => id !== me?.id),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [...ids?.sort(), ...Array(100).fill(0)].slice(0, 100)
+  )
 
   useEffect(() => {
     if (!userIds?.length) return
