@@ -1,14 +1,15 @@
 import React from 'react'
 import Landing from './Landing'
 import MentorList from './MentorList'
-import { Title, Text, Footer, LoginBar } from '../../components'
+import { Title, Text, Footer } from '../../components'
 import Categories from './Categories'
 import { queries, useQuery } from 'gql'
 import Home from '../Home'
+import { useLoggedIn } from 'utils/hooks'
 
 export default function Main() {
   const { data: { mentors = [] } = {} } = useQuery(queries.MENTORS)
-  const loggedIn = localStorage.getItem('loggedIn') === 'true'
+  const loggedIn = useLoggedIn()
 
   return (
     <>
@@ -30,7 +31,6 @@ export default function Main() {
         {mentors.length > 0 && <MentorList mentors={mentors} />}
       </Home>
       <Footer />
-      {!loggedIn && <LoginBar />}
     </>
   )
 }

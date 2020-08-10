@@ -2,30 +2,48 @@ import React from 'react'
 import styled from 'styled-components'
 import { desktop } from 'styles/responsive'
 import layout from 'styles/layout'
-import { Icon, Link } from 'components'
+import { Icon, Link, Button } from 'components'
 import { path } from 'utils/url'
 import { useLocation } from 'react-router'
-import { useVirtualKeyboard } from 'utils/hooks'
+import { useVirtualKeyboard, useLoggedIn } from 'utils/hooks'
 
 export default function MobileNav() {
   useLocation()
   const keyboardOpen = useVirtualKeyboard()
+  const loggedIn = useLoggedIn()
 
   if (keyboardOpen) return null
   return (
     <S.Nav>
-      <Link to="/" data-active={path(1) === '/'}>
-        <Icon icon="home" />
-      </Link>
-      <Link to="/conversations" data-active={path(1) === '/conversations'}>
-        <Icon icon="message" />
-      </Link>
-      <Link to="/settings" data-active={path(1) === '/settings'}>
-        <Icon icon="person" />
-      </Link>
-      <Link to="/search" data-active={path(1) === '/search'}>
-        <Icon icon="search" />
-      </Link>
+      {loggedIn ? (
+        <>
+          <Link to="/" data-active={path(1) === '/'}>
+            <Icon icon="home" />
+          </Link>
+          <Link to="/conversations" data-active={path(1) === '/conversations'}>
+            <Icon icon="message" />
+          </Link>
+          <Link to="/settings" data-active={path(1) === '/settings'}>
+            <Icon icon="person" />
+          </Link>
+          <Link to="/search" data-active={path(1) === '/search'}>
+            <Icon icon="search" />
+          </Link>
+        </>
+      ) : (
+        <>
+          <Button
+            filled
+            linkTo="https://www.producthunt.com/upcoming/upframe"
+            newTab
+          >
+            Get Invite
+          </Button>
+          <Button accent linkTo="/login">
+            Log in
+          </Button>
+        </>
+      )}
     </S.Nav>
   )
 }

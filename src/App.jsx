@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Routes from './Routes'
@@ -6,6 +6,7 @@ import { useMessaging } from './conversations'
 import styled from 'styled-components'
 import { mobile } from 'styles/responsive'
 import layout from 'styles/layout'
+import { useMe } from 'utils/hooks'
 import {
   Navbar,
   Spinner,
@@ -16,6 +17,13 @@ import {
 
 export default function App() {
   useMessaging()
+
+  const { me, loading } = useMe()
+
+  useEffect(() => {
+    if (loading) return
+    localStorage.setItem('loggedIn', !!me)
+  }, [me, loading])
 
   return (
     <>

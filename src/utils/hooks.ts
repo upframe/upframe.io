@@ -231,3 +231,17 @@ export function useVirtualKeyboard() {
 
   return open
 }
+
+export function useLoggedIn() {
+  const [loggedIn, setLoggedIn] = useState(
+    localStorage.getItem('loggedIn') === 'true'
+  )
+  const { me, loading } = useMe()
+
+  useEffect(() => {
+    if (loading) return
+    setLoggedIn(!!me)
+  }, [loading, me])
+
+  return loggedIn
+}
