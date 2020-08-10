@@ -149,6 +149,8 @@ const S = {
     position: relative;
     margin-top: 0.5rem;
     padding-right: 1rem;
+    max-width: 100%;
+    overflow-x: hidden;
 
     picture,
     img {
@@ -183,6 +185,8 @@ const S = {
   Main: styled.div`
     padding-left: 1rem;
     flex-grow: 1;
+    overflow-x: hidden;
+    overflow-wrap: break-word;
   `,
 
   Head: styled.div`

@@ -81,7 +81,7 @@ export default function Conversations({ match }) {
       )}
       {(!mobile || (!select && match.params.conversationId)) && (
         <S.Right>
-          {!select && !match.params.conversationId && (
+          {!selected.length && (!match.params.conversationId || select) && (
             <EmptyRoom onToggleSelect={toggleSelect} />
           )}
           {select && selected.length > 0 && (
@@ -143,5 +143,9 @@ const S = {
   Right: styled.div`
     height: 100%;
     flex-grow: 1;
+
+    @media ${responsive.mobile} {
+      width: 100vw;
+    }
   `,
 }
