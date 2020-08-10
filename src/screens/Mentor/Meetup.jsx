@@ -1,13 +1,22 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './profile.module.scss'
 import { Card, Title, Button } from '../../components'
 import Slot from './Slot'
 import { useMe } from 'utils/hooks'
+import Conversation from 'conversations/conversation'
 
 const phUrl = 'https://www.producthunt.com/upcoming/upframe'
 
-export default function Meetup({ mentor, onSlot, onMsg }) {
+export default function Meetup({ mentor, onSlot }) {
   const { me } = useMe()
+  const [conId, setConId] = useState()
+
+  useEffect(() => {
+    setConId(Conversation.getByUsers([mentor.id])?.id)
+    Conversation.onStatic('added', () =>
+      setConId(Conversation.getByUsers([mentor.id])?.id)
+    )
+  }, [mentor.id])
 
   return (
     <Card className={styles.meetup}>
@@ -27,7 +36,16 @@ export default function Meetup({ mentor, onSlot, onMsg }) {
                 : { linkTo: phUrl })}
             />
           ))}
-        <Button filled {...(me ? { onClick: onMsg } : { linkTo: phUrl })}>
+        <Button
+          filled
+          linkTo={
+            !me
+              ? phUrl
+              : conId
+              ? `/conversations/${conId}`
+              : `/conversations/new?parts=${mentor.id}`
+          }
+        >
           Message
         </Button>
       </div>

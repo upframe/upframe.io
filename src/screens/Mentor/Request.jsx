@@ -18,13 +18,6 @@ export default function Request({ mentor, onClose, slot }) {
   const [valid, setValid] = useState(true)
   const { me } = useMe()
 
-  const [sendMessage] = useMutation(mutations.SEND_MESSAGE_EXT, {
-    variables: { msg, to: mentor.id },
-    onCompleted() {
-      onClose()
-    },
-  })
-
   const [requestSlot] = useMutation(mutations.REQUEST_MEETUP, {
     variables: { msg, slotId: slot },
     onCompleted() {
@@ -38,17 +31,14 @@ export default function Request({ mentor, onClose, slot }) {
   }, [msg, me])
 
   async function submit() {
-    if (slot) requestSlot()
-    else sendMessage()
+    requestSlot()
   }
 
   return (
     <Shade onClick={onClose}>
       <div className={styles.request} onClick={e => e.stopPropagation()}>
         <Icon icon="close" onClick={onClose} />
-        <Title size={1}>
-          {slot ? 'Have a call with' : 'Message'} {mentor.name.split(' ')[0]}
-        </Title>
+        <Title size={1}>Have a call with {mentor.displayName}</Title>
         <Divider />
         <Labeled
           label="Message"
