@@ -94,22 +94,10 @@ export const SETTINGS_PROFILE = gql`
 export const SETTINGS_NOTIFICATIONS = gql`
   query SettingsNotifications($id: ID!) {
     user(id: $id) {
-      id
-      ... on Person {
-        notificationPrefs {
-          receiveEmails
-          msgEmails
-        }
-      }
-      ... on Mentor {
-        notificationPrefs {
-          receiveEmails
-          msgEmails
-          slotReminder
-        }
-      }
+      ...NotificationSettings
     }
   }
+  ${person.notificationSettings}
 `
 
 export const SETTINGS_CALENDAR = gql`

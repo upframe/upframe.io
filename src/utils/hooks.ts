@@ -5,6 +5,7 @@ import { queries, mutations, useQuery, useMutation } from 'gql'
 import isEqual from 'lodash/isEqual'
 import api from 'api'
 import type { Me } from 'gql/types'
+import type { DocumentNode } from 'graphql'
 
 export { useHistory }
 
@@ -154,16 +155,26 @@ export function useSignIn() {
 
   return (user: any) => {
     api.writeQuery({ query: queries.ME, data: { me: user } })
-    history.push('/')
+    history.push(
+      new URLSearchParams(window.location.search).get('unsubscribe')
+        ? '/settings/notifications' + window.location.search
+        : '/'
+    )
   }
 }
 
 export function useSignOut() {
   const history = useHistory()
 
-  return () => {
+  const [signOut] = useMutation(mutations.SIGN_OUT)
+
+  return async ({
+    mutate,
+    query = '',
+  }: { mutate?: DocumentNode; query?: string } = {}) => {
+    if (mutate) await signOut()
     api.writeQuery({ query: queries.ME, data: { me: null } })
-    history.push('/login')
+    history.push('/login' + query)
   }
 }
 

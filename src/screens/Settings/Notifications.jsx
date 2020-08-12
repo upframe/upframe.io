@@ -1,13 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Title, Text, Checkbox, Spinner } from 'components'
 import styles from './notifications.module.scss'
-import { useMe } from 'utils/hooks'
-import { queries, mutations, useQuery, useMutation } from 'gql'
+import { useMe, useSignOut, useHistory } from 'utils/hooks'
+import { gql, queries, mutations, useQuery, useMutation, fragments } from 'gql'
+import { notify } from 'notification'
+
+const UNSUBSCRIBE = gql`
+  mutation UnsubscribeEmailNotifications($token: ID!) {
+    unsubscribeEmailNotifications(token: $token) {
+      ...NotificationSettings
+    }
+  }
+  ${fragments.person.notificationSettings}
+`
 
 export default function Notifications() {
   const { me } = useMe()
   const [mail, setMail] = useState(false)
   const [msg, setMsg] = useState(false)
+  const unsubscribeToken = new URLSearchParams(window.location.search).get(
+    'unsubscribe'
+  )
+  const history = useHistory()
+  const signOut = useSignOut()
 
   const { data: { user = {} } = {} } = useQuery(
     queries.SETTINGS_NOTIFICATIONS,
@@ -25,7 +40,28 @@ export default function Notifications() {
     }
   )
 
-  if (!user.notificationPrefs) return <Spinner centered />
+  const [unsubscribe] = useMutation(UNSUBSCRIBE, {
+    variables: { token: unsubscribeToken },
+    onError() {
+      signOut({ mutate: true, query: window.location.search })
+    },
+    onCompleted() {
+      history.push(
+        window.location.pathname +
+          window.location.search
+            .replace(/[?&]unsubscribe=.+(?=&|$)/, '')
+            .replace(/^&/, '?')
+      )
+      notify('successfully unsubscribed from email notifications')
+    },
+  })
+
+  useEffect(() => {
+    if (!unsubscribeToken) return
+    unsubscribe()
+  }, [unsubscribeToken, unsubscribe])
+
+  if (!user.notificationPrefs || unsubscribeToken) return <Spinner centered />
   return (
     <div className={styles.notifications}>
       <Title size={2}>Conversations</Title>

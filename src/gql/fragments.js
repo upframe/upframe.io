@@ -96,6 +96,28 @@ export const person = {
     `
   },
 
+  get notificationSettings() {
+    return gql`
+      fragment NotificationSettings on Person {
+        ...PersonBase
+        ... on Person {
+          notificationPrefs {
+            receiveEmails
+            msgEmails
+          }
+        }
+        ... on Mentor {
+          notificationPrefs {
+            receiveEmails
+            msgEmails
+            slotReminder
+          }
+        }
+      }
+      ${this.base}
+    `
+  },
+
   get invites() {
     return gql`
       fragment Invites on Person {

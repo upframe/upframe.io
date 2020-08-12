@@ -13,6 +13,8 @@ function render(canvas, vp, ctx, obstacles, player, running = true) {
   ctx.lineWidth = devicePixelRatio * 2
   ctx.strokeStyle = canvas.style.color
   ctx.fillStyle = '#ff004b44'
+  ctx.font = `${20 * devicePixelRatio}px monospace`
+  ctx.textAlign = 'right'
 
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -95,7 +97,6 @@ function render(canvas, vp, ctx, obstacles, player, running = true) {
 export default function NotFound() {
   const canvasRef = useRef()
   const [started, setStarted] = useState(false)
-  const progRef = useRef()
   const [_theme, toggleTheme] = useReducer(v => (theme = !v), theme)
 
   const color = useSpring({
@@ -196,8 +197,6 @@ export default function NotFound() {
           run = false
       }
 
-      progRef.current.textContent = Math.round(player.x)
-
       if (!(((player.x / 1000) | 0) % 2) === theme) toggleTheme()
 
       while (obstacles[0].x + obstacles[0].w <= vp.x - vp.w / 3)
@@ -207,7 +206,8 @@ export default function NotFound() {
 
     render(canvasRef.current, vp, ctx, obstacles, player)
 
-    function onKeyDown({ key }) {
+    function onKeyDown({ key, isTrusted }) {
+      if (!isTrusted) return
       if (['ArrowUp', ' '].includes(key) && player.y <= 0) player.vel.y += 50
     }
 
@@ -219,6 +219,12 @@ export default function NotFound() {
       const dt = run ? performance.now() - lastStep : 0
       if (run) update(dt)
       render(canvasRef.current, vp, ctx, obstacles, player, run)
+      ctx.fillStyle = '#000'
+      ctx.fillText(
+        Math.round(player.x),
+        canvasRef.current.width * 0.95,
+        canvasRef.current.height * 0.05
+      )
       lastStep = performance.now()
       requestAnimationFrame(step)
     }
@@ -254,7 +260,6 @@ export default function NotFound() {
         <S.Background />
       </S.BackgroundWrap>
       <S.Canvas ref={canvasRef} style={color} />
-      <S.Progress ref={progRef} style={color}></S.Progress>
     </>
   )
 }
@@ -357,13 +362,6 @@ const S = {
         transform: rotate(-360deg);
       }
     }
-  `,
-
-  Progress: styled(animated.pre)`
-    position: absolute;
-    right: 8vmin;
-    top: 8vmin;
-    font-size: 1.5rem;
   `,
 
   NotFound: styled.div`
