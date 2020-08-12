@@ -72,7 +72,9 @@ export default function SearchBar() {
       ...users.map(({ user }) => user.id),
     ]
     setSelectionList(list)
-    if (!list.includes(selected)) setSelected()
+    if (!list.includes(selected)) {
+      setSelected(tags.length ? list[0] : undefined)
+    }
   }, [users, tags, selected])
 
   const inputRef = useRef(input)
@@ -80,15 +82,15 @@ export default function SearchBar() {
   const setFocusRef = useRef(setFocus)
   setFocusRef.current = setFocus
 
-  function submit(e) {
+  function submit(e, input = inputFinal, tags = searchTags) {
     if (e) e.preventDefault()
-    if (!inputFinal.length && !searchTags.length) return
+    if (!input.length && !tags.length) return
     if (e) e.target.querySelector('input').blur()
     setInput('')
     history.push(
       `/search?${Object.entries({
-        q: inputFinal.trim().replace(/\s{2,}/g, ' '),
-        t: searchTags.map(({ name }) => name).join(','),
+        q: input.trim().replace(/\s{2,}/g, ' '),
+        t: tags.map(({ name }) => name).join(','),
       })
         .filter(([, v]) => v.length)
         .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
@@ -107,6 +109,7 @@ export default function SearchBar() {
         if (tag) {
           setInput('')
           setSearchTags([...searchTags, tag.tag])
+          if (e.key === 'Enter') submit(undefined, '', [...searchTags, tag.tag])
         } else if (user && e.key === 'Enter') {
           setInput('')
           history.push(`/${user.user.handle}`)
@@ -121,6 +124,7 @@ export default function SearchBar() {
         break
       case 'ArrowUp':
       case 'ArrowDown': {
+        e.preventDefault()
         if (selectionList.length === 0) break
         const selectIndex = selectionList.indexOf(selected)
         const dir = e.key.replace('Arrow', '').toLowerCase()

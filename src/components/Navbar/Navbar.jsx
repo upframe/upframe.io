@@ -24,7 +24,6 @@ export default function Navbar() {
       <S.Right>
         {me && (
           <>
-            {/* <Icon icon="message" linkTo="/conversations" /> */}
             <MsgIcon />
             <UserIcon
               onClick={() => {
