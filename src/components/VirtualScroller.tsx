@@ -267,6 +267,7 @@ const S = {
     box-sizing: border-box;
     overscroll-behavior: contain;
     max-height: 100%;
+    overflow-x: hidden;
 
     & * {
       overflow-anchor: none;

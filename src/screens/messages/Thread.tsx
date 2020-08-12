@@ -303,11 +303,6 @@ const S = {
     }
   `,
 
-  Msg: styled.span`
-    height: 200px;
-    line-height: 200px;
-  `,
-
   Load: styled.div`
     width: 64px;
     height: 64px;

@@ -114,7 +114,7 @@ function Message({
       })}
       data-id={id}
       {...((reportSize || unread) && { ref })}
-      {...(MARK_UNREAD && unread && { style: { background: '#f001' } })}
+      {...(unread && { ['data-status']: 'unread' })}
     >
       {!stacked ? (
         <ProfilePicture imgs={data?.user?.profilePictures} size={picSize} />
@@ -137,9 +137,6 @@ function Message({
   )
 }
 
-const MARK_UNREAD =
-  new URLSearchParams(window.location.search).get('debug') === 'unread'
-
 const S = {
   Wrap: styled.article`
     display: flex;
@@ -150,7 +147,22 @@ const S = {
     margin-top: 0.5rem;
     padding-right: 1rem;
     max-width: 100%;
-    overflow-x: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      left: -0.25rem;
+      top: -0.25rem;
+      width: calc(100% + 0.5rem);
+      height: calc(100% + 0.5rem);
+      border-radius: 0.25rem;
+      transition: background-color 0.2s ease;
+    }
+
+    &[data-status='unread']::before {
+      background-color: #ff004b11;
+    }
 
     picture,
     img {
@@ -170,7 +182,9 @@ const S = {
 
     &:not([data-focus='block']):hover,
     &[data-focus='lock'] {
-      background-color: #eee6;
+      &::before {
+        background-color: #eee6;
+      }
 
       ${Time.sc} {
         opacity: initial;
