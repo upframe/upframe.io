@@ -243,16 +243,21 @@ export function useVirtualKeyboard() {
   return open
 }
 
-export function useLoggedIn() {
+export function useLoggedIn({
+  redirect,
+}: { redirect?: string | boolean } = {}) {
   const [loggedIn, setLoggedIn] = useState(
     localStorage.getItem('loggedIn') === 'true'
   )
   const { me, loading } = useMe()
+  const history = useHistory()
 
   useEffect(() => {
     if (loading) return
     setLoggedIn(!!me)
-  }, [loading, me])
+    if (!me && redirect)
+      history.push(typeof redirect === 'string' ? redirect : '/login')
+  }, [loading, me, redirect, history])
 
   return loggedIn
 }

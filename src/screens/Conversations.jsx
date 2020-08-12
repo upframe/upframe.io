@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 import ConvView from './messages/Conversation'
 import { path } from 'utils/url'
 import * as responsive from 'styles/responsive'
-import { useMatchMedia } from 'utils/hooks'
+import { useMatchMedia, useLoggedIn } from 'utils/hooks'
 import Conversation from 'conversations/conversation'
 import { gql, fragments } from 'gql'
 import api from 'api'
@@ -29,6 +29,7 @@ export default function Conversations({ match }) {
       ?.split('_')
       .map(id => ({ id })) ?? []
   )
+  useLoggedIn({ redirect: true })
 
   const mobile = useMatchMedia(responsive.mobile)
 
