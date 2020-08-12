@@ -16,9 +16,10 @@ import Message from './message'
 export default class Conversation {
   private static instances: { [id: string]: Conversation } = {}
   private static staticEventHandlers: {
-    [event in StaticEvent]: StaticEventHandler[]
+    [event in StaticEvent]: StaticEventHandler<event>[]
   } = {
     added: [],
+    unread: [],
   }
   private eventHandlers: {
     [event in ConversationEvent]: ConversationEventHandler<event>[]
@@ -27,9 +28,22 @@ export default class Conversation {
     channel: [],
     unread: [],
   }
-  private unread = 0
+  private static staticUnread = 0
+  private _unread = 0
+  private get unread() {
+    return this._unread
+  }
+  private set unread(v: number) {
+    const du = v - this._unread
+    this._unread = v
+    Conversation.staticUnread += du
+  }
   public get hasUnread() {
     return this.unread > 0
+  }
+
+  public static get staticHasUnread() {
+    return Object.values(Conversation.instances).some(v => v.hasUnread)
   }
 
   private _channels: Channel[] = []
@@ -63,6 +77,10 @@ export default class Conversation {
       if (!!this.unread !== !!(this.unread += d))
         this.eventHandlers.unread.forEach(handler => handler(!!this.unread))
       Conversation.setRead(channel, read)
+      if (!(Conversation.staticUnread - d) !== !Conversation.staticUnread)
+        Conversation.staticEventHandlers.unread.forEach(handler =>
+          handler(Conversation.staticUnread > 0)
+        )
     })
     this.eventHandlers.channel.forEach(handler => handler(channel))
     return channel
@@ -131,9 +149,14 @@ export default class Conversation {
     return Object.values(Conversation.instances)
   }
 
-  public static onStatic(event: StaticEvent, handler: StaticEventHandler) {
+  public static onStatic<T extends StaticEvent>(
+    event: T,
+    handler: StaticEventHandler<T>
+  ) {
+    // @ts-ignore
     Conversation.staticEventHandlers[event].push(handler)
     return () =>
+      // @ts-ignore
       Conversation.staticEventHandlers[event].filter(v => v !== handler)
   }
 
@@ -186,8 +209,13 @@ export default class Conversation {
   }
 }
 
-type StaticEvent = 'added'
-type StaticEventHandler = (v: Conversation) => any
+type StaticEvent = 'added' | 'unread'
+type StaticEventHandler<T extends StaticEvent> = (
+  v: StaticEventPayload<T>
+) => any
+type StaticEventPayload<T extends StaticEvent> = T extends 'added'
+  ? Conversation
+  : boolean
 
 type ConversationEvent = 'message' | 'channel' | 'unread'
 type ConversationEventHandler<T extends ConversationEvent> = (

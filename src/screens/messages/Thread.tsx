@@ -298,6 +298,10 @@ const S = {
     padding-top: 1rem;
     padding-bottom: 2rem;
 
+    @media ${mobile} {
+      padding-bottom: 0;
+    }
+
     textarea {
       margin: 0;
     }

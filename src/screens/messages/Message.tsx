@@ -114,7 +114,7 @@ function Message({
       })}
       data-id={id}
       {...((reportSize || unread) && { ref })}
-      {...(unread && { ['data-status']: 'unread' })}
+      {...(unread && { 'data-status': 'unread' })}
     >
       {!stacked ? (
         <ProfilePicture imgs={data?.user?.profilePictures} size={picSize} />

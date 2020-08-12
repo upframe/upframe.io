@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { desktop } from 'styles/responsive'
 import layout from 'styles/layout'
-import { Icon, Link, Button } from 'components'
+import { Icon, Link, Button, MsgIcon } from 'components'
 import { path } from 'utils/url'
 import { useLocation } from 'react-router'
 import { useVirtualKeyboard, useLoggedIn } from 'utils/hooks'
@@ -20,9 +20,7 @@ export default function MobileNav() {
           <Link to="/" data-active={path(1) === '/'}>
             <Icon icon="home" />
           </Link>
-          <Link to="/conversations" data-active={path(1) === '/conversations'}>
-            <Icon icon="message" />
-          </Link>
+          <MsgIcon data-active={path(1) === '/conversations'} />
           <Link to="/settings" data-active={path(1) === '/settings'}>
             <Icon icon="person" />
           </Link>
@@ -62,7 +60,7 @@ const S = {
     width: 100vw;
     height: ${layout.mobile.navbarHeight};
     background-color: #fff;
-    box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 
     svg {
       height: calc(${layout.mobile.navbarHeight} * 0.5);
@@ -76,6 +74,10 @@ const S = {
 
     *[data-active='true'] > svg {
       fill: #ff6d95;
+    }
+
+    a {
+      line-height: 0;
     }
 
     @media ${desktop} {

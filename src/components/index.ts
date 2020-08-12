@@ -37,5 +37,6 @@ export { default as ReverseScroller } from './ReverseScroller'
 export { default as Identicon } from './Identicon'
 export { default as VirtualScroller } from './VirtualScroller'
 export { default as Markdown } from './Markdown'
+export { default as MsgIcon } from './MsgIcon'
 
 export { Link } from 'react-router-dom'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Logo, SearchBar, Button, Icon } from 'components'
+import { Logo, SearchBar, Button, MsgIcon } from 'components'
 import UserIcon from './UserIcon'
 import Dropdown from './Dropdown'
 import { useScrollAtTop, useMe } from 'utils/hooks'
@@ -24,7 +24,8 @@ export default function Navbar() {
       <S.Right>
         {me && (
           <>
-            <Icon icon="message" linkTo="/conversations" />
+            {/* <Icon icon="message" linkTo="/conversations" /> */}
+            <MsgIcon />
             <UserIcon
               onClick={() => {
                 if (!showDropdown) setShowDropdown(true)
