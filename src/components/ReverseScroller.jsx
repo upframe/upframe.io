@@ -25,7 +25,8 @@ const S = {
       transform: rotate(180deg);
       direction: rtl;
 
-      & > * {
+      & > *,
+      & > div > article {
         transform: rotate(180deg);
       }
 

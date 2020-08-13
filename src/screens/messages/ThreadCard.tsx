@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import Input from './MsgInput'
 import MsgQueue from './MsgQueue'
@@ -8,9 +8,10 @@ import { path } from 'utils/url'
 
 interface Props {
   channelId: string
+  onLoaded(): void
 }
 
-function ThreadCard({ channelId }: Props) {
+function ThreadCard({ channelId, onLoaded }: Props) {
   const { messages, sendMessage } = useChannel(
     channelId,
     {
@@ -18,6 +19,13 @@ function ThreadCard({ channelId }: Props) {
     },
     { first: 1 }
   )
+  const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    if (loaded || !messages.length || typeof onLoaded !== 'function') return
+    setLoaded(true)
+    onLoaded()
+  }, [messages, loaded, onLoaded])
 
   return (
     <S.Card>
