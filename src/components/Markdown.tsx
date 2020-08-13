@@ -38,8 +38,8 @@ const S = {
 
     ${title} {
       line-height: 1.25em;
-      margin-top: 1.5rem;
-      margin-bottom: 1rem;
+      margin-top: 1.5em;
+      margin-bottom: 1em;
     }
 
     h1 {
@@ -57,7 +57,7 @@ const S = {
     }
 
     h4 {
-      font-size: 1rem;
+      font-size: 1em;
     }
 
     ul {
@@ -71,7 +71,7 @@ const S = {
       overflow: hidden;
       padding-top: 1px;
       padding-left: 1px;
-      margin: 1rem 0;
+      margin: 1em 0;
 
       thead,
       tbody,
@@ -85,12 +85,12 @@ const S = {
         border: 1px solid black;
         margin-top: -1px;
         margin-left: -1px;
-        padding-left: 0.5rem;
+        padding-left: 0.5em;
       }
     }
 
     blockquote {
-      padding-left: 0.75rem;
+      padding-left: 0.75em;
       position: relative;
 
       &::before {
@@ -98,7 +98,7 @@ const S = {
         position: absolute;
         display: block;
         height: 100%;
-        width: 0.25rem;
+        width: 0.25em;
         left: 0;
         background-color: var(--cl-text-light);
         border-radius: 1000px;

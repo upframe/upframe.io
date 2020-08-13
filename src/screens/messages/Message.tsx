@@ -7,6 +7,7 @@ import type { ChatUser, ChatUserVariables } from 'gql/types'
 import Context from './MsgContext'
 import { useHeight } from 'utils/hooks'
 import Channel from 'conversations/channel'
+import { mobile } from 'styles/responsive'
 
 const USER_QUERY = gql`
   query ChatUser($id: ID!) {
@@ -192,6 +193,12 @@ const S = {
 
       ${Context.sc} {
         display: initial;
+      }
+    }
+
+    @media ${mobile} {
+      ${Markdown.sc} {
+        font-size: 0.9rem;
       }
     }
   `,

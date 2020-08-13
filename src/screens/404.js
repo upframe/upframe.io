@@ -219,7 +219,7 @@ export default function NotFound() {
       const dt = run ? performance.now() - lastStep : 0
       if (run) update(dt)
       render(canvasRef.current, vp, ctx, obstacles, player, run)
-      ctx.fillStyle = '#000'
+      ctx.fillStyle = canvasRef.current.style.color
       ctx.fillText(
         Math.round(player.x),
         canvasRef.current.width * 0.95,
