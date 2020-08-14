@@ -34,6 +34,10 @@ const S = {
         text-align: left;
         flex-direction: row-reverse;
       }
+
+      textarea {
+        direction: ltr;
+      }
     }
   `,
 }
