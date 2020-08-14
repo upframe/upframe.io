@@ -120,7 +120,7 @@ export default function Account() {
 
   return (
     <div className={styles.account}>
-      <Title s2 className={styles.span2}>
+      <Title size={2} className={styles.span2}>
         Account
       </Title>
       <Text className={styles.span2}>
@@ -128,7 +128,7 @@ export default function Account() {
         calendar with Upframe.
       </Text>
 
-      <Title s4 className={styles.span2}>
+      <Title size={4} className={styles.span2}>
         Your email
       </Title>
       <Text>
@@ -137,7 +137,7 @@ export default function Account() {
       </Text>
       <Button linkTo="/reset/email">Change Email</Button>
 
-      <Title s4 className={styles.span2}>
+      <Title size={4} className={styles.span2}>
         Password
       </Title>
       <Text>
@@ -149,10 +149,10 @@ export default function Account() {
         {!google.connected || google.canDisconnect ? 'Change' : 'Set'} password
       </Button>
 
-      <Title s2 className={styles.span2}>
+      <Title size={2} className={styles.span2}>
         Connections
       </Title>
-      <Title s4 className={styles.span2}>
+      <Title size={4} className={styles.span2}>
         Connect to Google
       </Title>
       <Text>
@@ -171,7 +171,7 @@ export default function Account() {
         <GoogleSignin text="Connect to Google" />
       )}
 
-      <Title s2 className={styles.span2}>
+      <Title size={2} className={styles.span2}>
         Change Your Time Zone
       </Title>
       <Text className={styles.span2}>
@@ -227,7 +227,7 @@ export default function Account() {
         <Text>Automatically set to system time zone.</Text>
       </div>
 
-      <Title s2 className={styles.span2}>
+      <Title size={2} className={styles.span2}>
         Your Data
       </Title>
       <Text className={styles.span2}>
@@ -236,7 +236,7 @@ export default function Account() {
         should be.
       </Text>
 
-      <Title s4 className={styles.span2}>
+      <Title size={4} className={styles.span2}>
         Delete Account
       </Title>
       <Text>
@@ -245,7 +245,7 @@ export default function Account() {
         irreversible, please proceed with caution.
       </Text>
       <Button onClick={() => setDeleteRequested(true)}>Delete Account</Button>
-      <Title s2 className={styles.span2}>
+      <Title size={2} className={styles.span2}>
         Privacy
       </Title>
       {me.role && me.role !== 'USER' && (

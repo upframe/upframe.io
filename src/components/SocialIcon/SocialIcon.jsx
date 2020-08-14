@@ -31,10 +31,7 @@ export default function SocialIcon({ link, ...props }) {
     .replace(/http(s?):\/\//, '')
     .replace(/^\w{3}\./, '')
     .startsWith(platforms[name].url)
-    ? link
-        .replace(/\/$/, '')
-        .split('/')
-        .pop()
+    ? link.replace(/\/$/, '').split('/').pop()
     : link
   ).replace(/^\//, '')}`
   return (

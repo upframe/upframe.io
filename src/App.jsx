@@ -1,42 +1,29 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { Navbar, Spinner, NotificationStack, ScrollToTop } from './components'
 import Routes from './Routes'
-import Context from './context'
-import styles from './styles/app.module.scss'
-import { queries, mutations, useQuery, useMutation } from './gql'
+import { useMessaging } from './conversations'
+import styled from 'styled-components'
+import { mobile } from 'styles/responsive'
+import layout from 'styles/layout'
+import { useMe } from 'utils/hooks'
+import {
+  Navbar,
+  Spinner,
+  NotificationStack,
+  ScrollToTop,
+  MobileNav,
+} from './components'
 
 export default function App() {
-  const [ctx, setCtx] = useState({
-    currentUser: null,
-  })
+  useMessaging()
 
-  const [setTz] = useMutation(mutations.SET_TIMEZONE)
+  const { me, loading } = useMe()
 
-  function setCurrentUser(currentUser) {
-    setCtx({ ...ctx, currentUser })
-  }
-
-  useQuery(queries.ME_ID, {
-    skip: ctx.currentUser,
-    errorPolicy: 'ignore',
-    onCompleted({ me } = {}) {
-      if (!me) return
-      setCurrentUser(me.id)
-      localStorage.setItem('loggedin', true)
-      if (
-        !me.inferTz ||
-        me.timezone?.iana === Intl.DateTimeFormat().resolvedOptions().timeZone
-      )
-        return
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
-      if (tz) setTz({ variables: { tz } })
-    },
-    onError() {
-      localStorage.setItem('loggedin', false)
-    },
-  })
+  useEffect(() => {
+    if (loading) return
+    localStorage.setItem('loggedIn', !!me)
+  }, [me, loading])
 
   return (
     <>
@@ -62,22 +49,28 @@ export default function App() {
         <meta name="twitter:card" content="summary_large_image"></meta>
       </Helmet>
       <Router>
-        <Context.Provider
-          value={{
-            ...ctx,
-            setCurrentUser,
-          }}
-        >
-          <div className={styles.app}>
-            <Navbar />
-            <Suspense fallback={<Spinner centered />}>
-              <ScrollToTop />
-              <Routes />
-            </Suspense>
-            <NotificationStack />
-          </div>
-        </Context.Provider>
+        <S.App>
+          <Navbar />
+          <Suspense fallback={<Spinner centered />}>
+            <ScrollToTop />
+            <Routes />
+          </Suspense>
+          <NotificationStack />
+          <MobileNav />
+        </S.App>
       </Router>
     </>
   )
+}
+
+const S = {
+  App: styled.div`
+    margin-top: ${layout.desktop.navbarHeight};
+    padding-top: 1rem;
+
+    @media ${mobile} {
+      margin-top: 0;
+      margin-bottom: ${layout.mobile.navbarHeight};
+    }
+  `,
 }

@@ -15,7 +15,7 @@ export default function TzSelect({
   useEffect(() => {
     Promise.all(
       ['land', 'slices', 'tzs'].map(v =>
-        fetch(`https://s3-eu-west-1.amazonaws.com/upframe.io-assets/${v}.json`)
+        fetch(`${process.env.REACT_APP_ASSETS}${v}.json`)
           .then(res => res.json())
           .then(res => [v, res])
       )
@@ -79,13 +79,13 @@ export default function TzSelect({
             ._groups[0][0].properties.ZONE.toString()
             .replace(/\./g, '_')}`
       )
-      .on('mouseover', function(d) {
+      .on('mouseover', function (d) {
         let zone = d.properties.ZONE.toString()
         if (!zone.startsWith('-')) zone = '+' + zone
         onInspect(`UTC ${zone}`)
         d3.select(this).classed('active-slice', true)
       })
-      .on('mouseout', function() {
+      .on('mouseout', function () {
         onInspect()
         d3.select(this).classed('active-slice', false)
       })
@@ -103,7 +103,7 @@ export default function TzSelect({
           .join(' ')
       )
       .attr('id', d => d.properties.id)
-      .on('mouseover', function(d) {
+      .on('mouseover', function (d) {
         d3.select(this).classed('active-tz', true)
         if (d.properties.id !== currentTz)
           onInspect(d.properties.id.replace(/_/g, ' '))
@@ -114,7 +114,7 @@ export default function TzSelect({
         )
         if (tz) tz.classed('active-slice', true)
       })
-      .on('mouseout', function(d) {
+      .on('mouseout', function (d) {
         if (d.properties.id !== currentTz)
           d3.select(this).classed('active-tz', false)
         onInspect()

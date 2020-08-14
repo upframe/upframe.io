@@ -15,17 +15,17 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
     selectRef.current.style.width = `${Math.min(img.width, img.height)}px`
     selectRef.current.style.height = `${Math.min(img.width, img.height)}px`
     let select = selectRef.current.getBoundingClientRect()
-    selectRef.current.style.left = `${img.left -
-      select.left +
-      (img.width - select.width) / 2}px`
-    selectRef.current.style.top = `${img.top -
-      select.top +
-      (img.height - select.height) / 2}px`
+    selectRef.current.style.left = `${
+      img.left - select.left + (img.width - select.width) / 2
+    }px`
+    selectRef.current.style.top = `${
+      img.top - select.top + (img.height - select.height) / 2
+    }px`
 
     select = selectRef.current.getBoundingClientRect()
-    previewRef.current.style.width = `${(1 /
-      (selectRef.current.offsetWidth / imgRef.current.offsetWidth)) *
-      100}%`
+    previewRef.current.style.width = `${
+      (1 / (selectRef.current.offsetWidth / imgRef.current.offsetWidth)) * 100
+    }%`
     previewRef.current.style.transform = `translateX(-${Math.round(
       ((select.x - img.x) / img.width) * 100
     )}%) translateY(-${Math.round(((select.y - img.y) / img.height) * 100)}%)`
@@ -59,9 +59,9 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
           boundary.height - selectRef.current.offsetHeight
         )}px`
 
-      previewRef.current.style.transform = `translateX(-${((x - img.x) /
-        img.width) *
-        100}%) translateY(-${((y - img.y) / img.height) * 100}%)`
+      previewRef.current.style.transform = `translateX(-${
+        ((x - img.x) / img.width) * 100
+      }%) translateY(-${((y - img.y) / img.height) * 100}%)`
     }
     window.addEventListener('mousemove', onMove)
     window.addEventListener(
@@ -98,10 +98,12 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
           img.width - (img.x + img.width - (select.x + select.width)),
           img.height - (img.y + img.height - (select.y + select.height))
         )
-        selectRef.current.style.left = `${selectRef.current.offsetLeft -
-          (bound - select.width)}px`
-        selectRef.current.style.top = `${selectRef.current.offsetTop -
-          (bound - select.height)}px`
+        selectRef.current.style.left = `${
+          selectRef.current.offsetLeft - (bound - select.width)
+        }px`
+        selectRef.current.style.top = `${
+          selectRef.current.offsetTop - (bound - select.height)
+        }px`
         selectRef.current.style.width = `${bound}px`
         selectRef.current.style.height = `${bound}px`
       } else if (node === 1) {
@@ -110,8 +112,9 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
           img.width - (select.left - img.left),
           img.height - (img.y + img.height - (select.y + select.height))
         )
-        selectRef.current.style.top = `${selectRef.current.offsetTop -
-          (bound - select.height)}px`
+        selectRef.current.style.top = `${
+          selectRef.current.offsetTop - (bound - select.height)
+        }px`
         selectRef.current.style.width = `${bound}px`
         selectRef.current.style.height = `${bound}px`
       } else if (node === 2) {
@@ -128,18 +131,19 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
           img.width - (img.x + img.width - (select.x + select.width)),
           img.height - (select.top - img.top)
         )
-        selectRef.current.style.left = `${selectRef.current.offsetLeft -
-          (bound - select.width)}px`
+        selectRef.current.style.left = `${
+          selectRef.current.offsetLeft - (bound - select.width)
+        }px`
         selectRef.current.style.width = `${bound}px`
         selectRef.current.style.height = `${bound}px`
       }
 
-      previewRef.current.style.width = `${(1 /
-        (selectRef.current.offsetWidth / imgRef.current.offsetWidth)) *
-        100}%`
-      previewRef.current.style.transform = `translateX(-${((select.x - img.x) /
-        img.width) *
-        100}%) translateY(-${((select.y - img.y) / img.height) * 100}%)`
+      previewRef.current.style.width = `${
+        (1 / (selectRef.current.offsetWidth / imgRef.current.offsetWidth)) * 100
+      }%`
+      previewRef.current.style.transform = `translateX(-${
+        ((select.x - img.x) / img.width) * 100
+      }%) translateY(-${((select.y - img.y) / img.height) * 100}%)`
     }
     window.addEventListener('mousemove', onMove)
     window.addEventListener(
@@ -223,7 +227,7 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
           <S.Corner onMouseDown={resize} />
         </S.Selection>
       </S.Frame>
-      <Title s4>Preview</Title>
+      <Title size={4}>Preview</Title>
       <S.Preview>
         <S.PreviewImgWrap>
           <img ref={previewRef} alt="preview" src={photo} />

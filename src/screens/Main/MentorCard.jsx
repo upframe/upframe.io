@@ -15,7 +15,7 @@ export default function MentorCard({ mentor }) {
     >
       <ProfilePicture imgs={mentor.profilePictures} size={imgSize} />
       <div className={styles.info}>
-        <Title s3>{mentor.name}</Title>{' '}
+        <Title size={3}>{mentor.name}</Title>{' '}
         <p className={styles.role}>{mentor.headline}</p>
         <p className={styles.biography}>{mentor.biography}</p>
         <div className={styles.skills}>

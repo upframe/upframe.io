@@ -114,10 +114,7 @@ export default function Redirects() {
     }
     if (diff.__removed?.length) {
       const deleted = diff.__removed.map(v =>
-        v
-          .split('_')
-          .slice(0, -1)
-          .join('_')
+        v.split('_').slice(0, -1).join('_')
       )
       await Promise.all(
         deleted.map(path => deleteRedirect({ variables: { path } }))
@@ -140,10 +137,7 @@ export default function Redirects() {
         changedPaths.map(v =>
           deleteRedirect({
             variables: {
-              path: v
-                .split('_')
-                .slice(0, -1)
-                .join('_'),
+              path: v.split('_').slice(0, -1).join('_'),
             },
           })
         )
@@ -185,9 +179,9 @@ export default function Redirects() {
         changed. If no value is set it defaults to 604800 (1&nbsp;week).
       </Text>
       <S.Table>
-        <Title s4>from</Title>
-        <Title s4>to</Title>
-        <Title s4>expires</Title>
+        <Title size={4}>from</Title>
+        <Title size={4}>to</Title>
+        <Title size={4}>expires</Title>
         <div />
         {redirects.flatMap(({ from, to, expires, key }) => [
           ...[from, to, expires].map((v, i) => (
@@ -212,22 +206,12 @@ export default function Redirects() {
         {Object.entries(diff).map(([k, v]) =>
           k.startsWith('__') ? (
             <pre key={k}>{`${k.slice(2)}: ${(k !== '__added'
-              ? v.map(k =>
-                  k
-                    .split('_')
-                    .slice(0, -1)
-                    .join('_')
-                )
+              ? v.map(k => k.split('_').slice(0, -1).join('_'))
               : v.map(k => redirects.find(({ key }) => key === k).from)
             ).join(', ')}`}</pre>
           ) : (
             <pre key={k}>
-              <b>
-                {k
-                  .split('_')
-                  .slice(0, -1)
-                  .join('_')}
-              </b>
+              <b>{k.split('_').slice(0, -1).join('_')}</b>
               {'   '}
               {Object.entries(v)
                 .map(

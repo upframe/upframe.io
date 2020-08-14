@@ -76,20 +76,10 @@ export const ME_ID = gql`
 export const ME = gql`
   query Me {
     me {
-      ...PersonBase
-      role
-      email
-      searchable
-      ... on Mentor {
-        calendarConnected
-        visibility
-      }
-      ...Timezone
-      inferTz
+      ...MeBase
     }
   }
-  ${person.base}
-  ${person.timezone}
+  ${person.meBase}
 `
 
 export const SETTINGS_PROFILE = gql`
@@ -104,20 +94,10 @@ export const SETTINGS_PROFILE = gql`
 export const SETTINGS_NOTIFICATIONS = gql`
   query SettingsNotifications($id: ID!) {
     user(id: $id) {
-      id
-      ... on Person {
-        notificationPrefs {
-          receiveEmails
-        }
-      }
-      ... on Mentor {
-        notificationPrefs {
-          receiveEmails
-          slotReminder
-        }
-      }
+      ...NotificationSettings
     }
   }
+  ${person.notificationSettings}
 `
 
 export const SETTINGS_CALENDAR = gql`

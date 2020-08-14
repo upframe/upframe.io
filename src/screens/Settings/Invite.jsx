@@ -18,7 +18,7 @@ const INVITE = gql`
 `
 
 const INVITES = gql`
-  query invites($id: ID) {
+  query UserInvites($id: ID) {
     user(id: $id) {
       id
       ...Invites
@@ -81,7 +81,7 @@ export default function Invite() {
 
   return (
     <S.Invite>
-      <Title s2>Invite People to join Upframe</Title>
+      <Title size={2}>Invite People to join Upframe</Title>
       <Text>
         Know any like-minded people who would be thrilled to be here? Invite
         them so they can create an account.
@@ -127,7 +127,7 @@ export default function Invite() {
       </S.Actions>
       {invites.length > 0 && (
         <>
-          <Title s2>Sent Invitations</Title>
+          <Title size={2}>Sent Invitations</Title>
           <S.List>
             <b>email</b>
             <b>role</b>

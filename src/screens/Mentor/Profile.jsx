@@ -65,11 +65,7 @@ export default function Profile({ match }) {
       <Showcase user={user} />
       {user.role !== 'USER' && (
         <>
-          <Meetup
-            mentor={user}
-            onSlot={toggleRequest}
-            onMsg={() => toggleRequest(true)}
-          />
+          <Meetup mentor={user} onSlot={toggleRequest} />
           {showRequest && (
             <Request
               mentor={user}

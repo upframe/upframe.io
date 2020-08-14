@@ -114,11 +114,13 @@ export const UPDATE_NOTIICATION_PREFERENCES = gql`
       ... on User {
         notificationPrefs {
           receiveEmails
+          msgEmails
         }
       }
       ... on Mentor {
         notificationPrefs {
           receiveEmails
+          msgEmails
           slotReminder
         }
       }
@@ -139,12 +141,6 @@ export const UPDATE_SLOTS = gql`
         }
       }
     }
-  }
-`
-
-export const SEND_MESSAGE_EXT = gql`
-  mutation SendMessageExt($to: ID!, $msg: String!) {
-    messageExt(input: { to: $to, message: $msg })
   }
 `
 

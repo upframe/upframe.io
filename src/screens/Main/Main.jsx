@@ -1,43 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Landing from './Landing'
 import MentorList from './MentorList'
-import { Title, Text, Footer, LoginBar } from '../../components'
+import { Title, Text, Footer } from '../../components'
 import Categories from './Categories'
-import { useCtx } from 'utils/hooks'
 import { queries, useQuery } from 'gql'
 import Home from '../Home'
+import { useLoggedIn } from 'utils/hooks'
 
 export default function Main() {
-  const [filtered, setFiltered] = useState([])
-  const { searchQuery: search, currentUser } = useCtx()
-  const [loggedIn] = useState(localStorage.getItem('loggedin') === 'true')
   const { data: { mentors = [] } = {} } = useQuery(queries.MENTORS)
-
-  useEffect(() => {
-    if (!mentors.length) return
-    if (!search) {
-      if (filtered.length === mentors.length) return
-      return setFiltered(mentors)
-    }
-    if (search)
-      setFiltered(
-        mentors.filter(({ name }) =>
-          name
-            .split(' ')
-            .some(v => v.toLowerCase().startsWith(search.toLowerCase()))
-        )
-      )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, mentors])
+  const loggedIn = useLoggedIn()
 
   return (
     <>
-      {!currentUser && !loggedIn && !search && <Landing />}
+      {!loggedIn && <Landing />}
       <Home>
-        {currentUser && !search && (
+        {loggedIn && (
           <>
             <Categories />
-            <Title s2>Featured Mentors</Title>
+            <Title size={2}>Featured Mentors</Title>
             <Text>
               Our in-house curators work alongside with startup founders,
               community shapers and domain experts across Europe to make sure
@@ -47,10 +28,9 @@ export default function Main() {
           </>
         )}
 
-        {mentors.length > 0 && <MentorList mentors={filtered} />}
+        {mentors.length > 0 && <MentorList mentors={mentors} />}
       </Home>
       <Footer />
-      {!currentUser && <LoginBar />}
     </>
   )
 }

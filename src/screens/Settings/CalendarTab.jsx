@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useCtx, useSignOut, useCalendars, useHistory } from 'utils/hooks'
+import { useSignOut, useCalendars, useHistory, useMe } from 'utils/hooks'
 import { haveSameContent } from 'utils/array'
 import { Title, Text } from 'components'
 import Item from './Item'
@@ -15,7 +15,7 @@ import { notify } from 'notification'
 export default function CalendarTab() {
   const [remoteSlots, setRemoteSlots] = useState([])
   const [slots, setSlots] = useState(remoteSlots)
-  const { currentUser } = useCtx()
+  const { me } = useMe()
   const [showCalendars, setShowCalendars] = useState([])
   const [calendars, loading] = useCalendars(showCalendars)
   const [extEvents, setExtEvents] = useState([])
@@ -23,7 +23,7 @@ export default function CalendarTab() {
   const signOut = useSignOut()
 
   const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_CALENDAR, {
-    variables: { id: currentUser },
+    variables: { id: me.id },
     onError(err) {
       if (hasError(err, 'GOOGLE_ERROR')) {
         notify("couldn't access google calendar")
@@ -111,7 +111,7 @@ export default function CalendarTab() {
         }
         external={extEvents}
       />
-      <Title s2>Calendar Connections</Title>
+      <Title size={2}>Calendar Connections</Title>
       <Text>
         Spend less time here and focus on what really matters by syncing your
         calendar with Upframe.
