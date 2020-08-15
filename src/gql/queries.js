@@ -14,7 +14,9 @@ export const MENTORS = gql`
 export const LIST = gql`
   query UserList($name: String!) {
     list(name: $name) {
+      id
       name
+      description
       users {
         ...MentorDetails
       }

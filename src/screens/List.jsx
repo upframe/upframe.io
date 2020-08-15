@@ -4,6 +4,7 @@ import { queries, useQuery } from 'gql'
 import { Spinner } from '../components'
 import MentorList from './Main/MentorList'
 import Home from './Home'
+import ListInfo from './Main/ListInfo'
 
 export default function List({ match }) {
   const [type, name] = match.url
@@ -31,6 +32,7 @@ export default function List({ match }) {
   if (!loading && !list) return <Redirect to="/404" />
   return (
     <Home>
+      {list && <ListInfo name={list.name} description={list.description} />}
       <MentorList
         mentors={
           list.users?.map(user => ('user' in user ? user.user : user)) ?? []
