@@ -1,0 +1,4 @@
+:root {
+  --list-width: 95vw;
+  --list-width: min(29.4rem, 95vw);
+}
