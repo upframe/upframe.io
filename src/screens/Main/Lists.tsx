@@ -37,11 +37,13 @@ const S = {
     height: calc(var(--list-width) * 0.34);
     box-sizing: border-box;
     width: 100vw;
+    scroll-snap-type: x mandatory;
 
     --padding: 15vw;
 
     margin-left: calc(var(--padding) * -1);
     padding-left: var(--padding);
+    scroll-padding: var(--padding);
 
     @media (max-width: 1020px) {
       --padding: calc((100vw - 55rem) / 2);

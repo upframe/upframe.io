@@ -19,6 +19,7 @@ const S = {
     background: #888;
     border-radius: 1rem;
     flex-shrink: 0;
+    scroll-snap-align: start;
 
     &:not(:first-of-type) {
       margin-left: 1.7rem;
