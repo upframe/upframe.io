@@ -10,7 +10,7 @@ interface Props {
 export default function ListCard({ list }: Props) {
   return (
     <S.Card
-      to={`/${list.name}`}
+      to={`/list/${list.name.replace(/\s/g, '_')}`}
       style={{
         backgroundColor: list.backgroundColor ?? 'var(--cl-secondary)',
         color: list.textColor ?? '#fffc',
