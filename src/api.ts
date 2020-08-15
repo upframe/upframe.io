@@ -62,7 +62,10 @@ const api = new ApolloClient({
     cacheRedirects: {
       Query: {
         user: (_, { id }, { getCacheKey }) => {
-          const entry = api.cache.data.data[id]
+          const entry =
+            api.cache.data.data['Mentor|' + id] ??
+            api.cache.data.data['User|' + id] ??
+            api.cache.data.data['Person|' + id]
           if (entry) return getCacheKey(entry)
         },
       },
