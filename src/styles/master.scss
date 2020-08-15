@@ -5,6 +5,7 @@
   font-display: swap;
   overflow: auto;
   padding-bottom: 5rem;
+  overscroll-behavior-x: none;
 
   a {
     color: #000;

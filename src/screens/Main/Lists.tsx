@@ -9,21 +9,29 @@ const LISTS = gql`
     lists {
       id
       name
+      illustration
+      backgroundColor
+      textColor
     }
   }
 `
 
 export default function Categories() {
   const { data: { lists = [] } = {} } = useQuery<Lists>(LISTS)
+  let repeat = parseInt(
+    new URLSearchParams(window.location.search).get('listRepeat') ?? '1'
+  )
 
   return (
     <>
       <Title size={2}>Top Categories</Title>
       <Text>How can we help? Start by picking one of our main categories.</Text>
       <S.Lists>
-        {lists.map(({ id, name }) => (
-          <ListCard key={id} name={name} />
-        ))}
+        {Array<typeof lists>(repeat)
+          .fill(lists)
+          .flatMap((lists, i) =>
+            lists.map(list => <ListCard key={`${list.id}-${i}`} list={list} />)
+          )}
       </S.Lists>
     </>
   )

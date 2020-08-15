@@ -55,7 +55,9 @@ const api = new ApolloClient({
     }),
     dataIdFromObject: object => {
       if (object.__typename === 'SocialHandle') return null
-      return object.id || null
+      return object.__typename && object.id
+        ? `${object.__typename}|${object.id}`
+        : null
     },
     cacheRedirects: {
       Query: {
