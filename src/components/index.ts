@@ -38,5 +38,6 @@ export { default as Identicon } from './Identicon'
 export { default as VirtualScroller } from './VirtualScroller'
 export { default as Markdown } from './Markdown'
 export { default as MsgIcon } from './MsgIcon'
+export { default as ListCard } from './ListCard'
 
 export { Link } from 'react-router-dom'
