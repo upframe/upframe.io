@@ -193,7 +193,11 @@ export default function Step2({
         text={biography}
         onChange={setBiography}
         required
-        placeholder="Help people understand how you can help them by describing what you built or achieved."
+        placeholder={
+          role === 'USER'
+            ? "When you reach out to mentors, they will see your profile. Write something that describes who you are and what you're working on here."
+            : 'Help people understand how you can help them by describing what you built or achieved.'
+        }
       />
       {role === 'MENTOR' && (
         <>
