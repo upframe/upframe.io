@@ -5,10 +5,20 @@ import { Title, Text, Button } from 'components'
 export default function EmptyRoom({ onToggleSelect }) {
   return (
     <S.Empty>
-      <img
-        src={process.env.REACT_APP_ASSETS + 'msg_postbox.png'}
-        alt="postbox illustration"
-      />
+      <picture>
+        <source
+          srcSet={process.env.REACT_APP_ASSETS + 'postbox.webp'}
+          type="image/webp"
+        />
+        <source
+          srcSet={process.env.REACT_APP_ASSETS + 'postbox.jpg'}
+          type="image/jpeg"
+        />
+        <img
+          src={process.env.REACT_APP_ASSETS + 'postbox.jpg'}
+          alt="postbox illustration"
+        />
+      </picture>
       <Title size={2}>There are no dumb questions.</Title>
       <Text>
         Message someone new to get advice on what you're working on. Or pick an
@@ -31,10 +41,15 @@ const S = {
     text-align: center;
     user-select: none;
 
+    picture {
+      display: contents;
+    }
+
     img {
       width: 28rem;
       max-width: 100%;
       height: auto;
+      margin-bottom: 1rem;
     }
 
     & > * {
