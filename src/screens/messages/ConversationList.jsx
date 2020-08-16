@@ -58,6 +58,7 @@ const S = {
     & > svg {
       width: 1.8rem;
       height: 1.8rem;
+      background-color: #e5e5e5;
 
       /* stylelint-disable value-keyword-case */
       ${props =>
