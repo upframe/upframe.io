@@ -76,10 +76,11 @@ export function useMessaging() {
   useQuery<Conversations>(gql.CONVERSATIONS, {
     skip: !me,
     onCompleted({ me }) {
-      me?.conversations?.map(({ id, participants, channels }) =>
+      me?.conversations?.map(({ id, participants, channels, lastUpdate }) =>
         Conversation.add(
           id,
           participants.map(({ id }) => id),
+          new Date(lastUpdate ?? 0),
           channels.map(({ id }) => id)
         )
       )
@@ -130,8 +131,12 @@ export function useConversations() {
   const [conversations, dispatch] = useReducer(
     (state, { type, value }) =>
       type === 'add'
-        ? [...state, ...(Array.isArray(value) ? value : [value])]
-        : state,
+        ? [...state, ...(Array.isArray(value) ? value : [value])].sort(
+            (a, b) => b.lastUpdate.getTime() - a.lastUpdate.getTime()
+          )
+        : [...state].sort(
+            (a, b) => b.lastUpdate.getTime() - a.lastUpdate.getTime()
+          ),
     []
   )
 
@@ -140,6 +145,9 @@ export function useConversations() {
     Conversation.onStatic('added', value => {
       dispatch({ type: 'add', value })
     })
+    Conversation.onStatic('message', () =>
+      dispatch({ type: 'sort', value: [] })
+    )
   }, [])
 
   return conversations as Conversation[]

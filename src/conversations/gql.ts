@@ -4,6 +4,7 @@ import { person } from 'gql/fragments'
 export const CONVERSATION = gql`
   fragment ConversationBase on Conversation {
     id
+    lastUpdate
     participants {
       id
     }
@@ -91,6 +92,7 @@ export const CONVERSATIONS = gql`
       id
       conversations {
         id
+        lastUpdate
         participants {
           ...ChatParticipant
         }

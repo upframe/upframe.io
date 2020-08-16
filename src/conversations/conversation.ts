@@ -20,6 +20,7 @@ export default class Conversation {
   } = {
     added: [],
     unread: [],
+    message: [],
   }
   private eventHandlers: {
     [event in ConversationEvent]: ConversationEventHandler<event>[]
@@ -59,6 +60,7 @@ export default class Conversation {
   protected constructor(
     public readonly id: string,
     public readonly participants: string[],
+    public lastUpdate: Date,
     channels: string[] = []
   ) {
     if (Conversation.instances[id]) return Conversation.instances[id]
@@ -71,7 +73,9 @@ export default class Conversation {
     if (this.channels.includes(channel)) return channel
     this._channels.push(channel)
     channel.on('message', msg => {
+      this.lastUpdate = new Date()
       this.eventHandlers.message.forEach(handler => handler(msg))
+      Conversation.staticEventHandlers.message.forEach(handler => handler(msg))
     })
     channel.on('unread', (read, d) => {
       if (!!this.unread !== !!(this.unread += d))
@@ -95,10 +99,11 @@ export default class Conversation {
   public static add(
     id: string,
     participants: string[],
+    lastUpdate: Date,
     channels?: string[]
   ): Conversation {
     if (id in Conversation.instances) return Conversation.instances[id]
-    return new Conversation(id, participants, channels)
+    return new Conversation(id, participants, lastUpdate, channels)
   }
 
   public static async create(participants: string[], firstMsg?: string) {
@@ -113,7 +118,8 @@ export default class Conversation {
     if (!con) throw errors?.[0] ?? Error("couldn't create conversation")
     const conversation = new Conversation(
       con.id,
-      con.participants.map(({ id }) => id)
+      con.participants.map(({ id }) => id),
+      new Date()
     )
     con.channels?.forEach(({ id }) => conversation.addChannel(Channel.get(id)))
     return conversation
@@ -141,6 +147,7 @@ export default class Conversation {
     return new Conversation(
       data.conversation.id,
       data.conversation.participants.map(({ id }) => id),
+      new Date(data.conversation.lastUpdate ?? 0),
       data.conversation.channels.map(({ id }) => id)
     )
   }
@@ -209,13 +216,15 @@ export default class Conversation {
   }
 }
 
-type StaticEvent = 'added' | 'unread'
+type StaticEvent = 'added' | 'unread' | 'message'
 type StaticEventHandler<T extends StaticEvent> = (
   v: StaticEventPayload<T>
 ) => any
 type StaticEventPayload<T extends StaticEvent> = T extends 'added'
   ? Conversation
-  : boolean
+  : T extends 'unread'
+  ? boolean
+  : Message
 
 type ConversationEvent = 'message' | 'channel' | 'unread'
 type ConversationEventHandler<T extends ConversationEvent> = (
