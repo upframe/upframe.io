@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ProfilePicture, Title, Text, Checkbox, Identicon } from 'components'
-import { useMe } from 'utils/hooks'
+import { useMe, useTimeMarker } from 'utils/hooks'
 import { Link } from 'react-router-dom'
 import { path } from 'utils/url'
 import type { Participant } from 'gql/types'
@@ -29,6 +29,7 @@ export default function User({
   const [hasUnread, setHasUnread] = useState(false)
   const { me } = useMe()
   const participants = useParticipants(userIds)
+  const time = useTimeMarker(conversation?.lastUpdate)
 
   users = [...users, ...participants]
 
@@ -79,6 +80,7 @@ export default function User({
         {typeof onSelect === 'function' && (
           <Checkbox checked={selected as boolean} onChange={onSelect} />
         )}
+        <S.Updated>{time}</S.Updated>
         {hasUnread && <S.Unread />}
       </CondLink>
     </S.User>
@@ -87,9 +89,13 @@ export default function User({
 
 const S = {
   User: styled.li`
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-column-gap: 0.5rem;
+    grid-template-areas:
+      'img name updated'
+      'img headline status';
     list-style: none;
-    display: flex;
-    align-items: center;
     border-radius: 0.5rem;
     margin: 1rem 0;
     padding: 0.2rem 0.5rem;
@@ -133,9 +139,10 @@ const S = {
       border-radius: 50%;
     }
 
-    input {
-      flex-shrink: 0;
-      margin-left: 0.5rem;
+    img,
+    canvas {
+      grid-area: img;
+      margin-right: 0.5rem;
     }
 
     & > a {
@@ -149,14 +156,7 @@ const S = {
   `,
 
   TextSec: styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    flex-grow: 1;
-    padding-left: 1rem;
-    box-sizing: border-box;
-    min-width: 0;
+    display: contents;
 
     * {
       margin: 0;
@@ -164,6 +164,14 @@ const S = {
       overflow: hidden;
       white-space: nowrap;
       flex: 0 1 auto;
+    }
+
+    & > *:first-child {
+      grid-area: name;
+    }
+
+    & > *:last-child {
+      grid-area: headline;
     }
   `,
 
@@ -173,6 +181,14 @@ const S = {
     height: 0.9rem;
     border-radius: 50%;
     background-color: var(--cl-accent);
-    flex-shrink: 0;
+    grid-area: status;
+    place-self: center end;
+  `,
+
+  Updated: styled.span`
+    grid-area: updated;
+    place-self: center end;
+    font-size: 0.8rem;
+    color: var(--cl-text-light);
   `,
 }

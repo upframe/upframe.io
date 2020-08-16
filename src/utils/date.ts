@@ -12,12 +12,12 @@ export const ordNum = n => {
   }
 }
 
-export const isSameDay = (date, comp = new Date()) =>
+export const isSameDay = (date: Date, comp = new Date()) =>
   date.getFullYear() === comp.getFullYear() &&
   date.getMonth() === comp.getMonth() &&
   date.getDate() === comp.getDate()
 
 export const isPreviousDay = (
-  date,
+  date: Date,
   comp = new Date(Date.now() - 1000 * 60 ** 2 * 24)
 ) => date.toLocaleDateString() === comp.toLocaleDateString()
