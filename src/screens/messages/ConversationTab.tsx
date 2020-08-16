@@ -145,6 +145,11 @@ const S = {
       margin-right: 0.5rem;
     }
 
+    & > input {
+      grid-row: 1 / span 2;
+      place-self: center;
+    }
+
     & > a {
       display: contents;
     }

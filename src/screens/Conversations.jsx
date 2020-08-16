@@ -4,7 +4,6 @@ import EmptyRoom from './messages/EmtpyRoom'
 import ConversationList from './messages/ConversationList'
 import { useHistory } from 'react-router-dom'
 import ConvView from './messages/Conversation'
-import { path } from 'utils/url'
 import * as responsive from 'styles/responsive'
 import { useMatchMedia, useLoggedIn } from 'utils/hooks'
 import Conversation from 'conversations/conversation'
@@ -21,12 +20,13 @@ const SELECTED = gql`
 `
 
 export default function Conversations({ match }) {
-  const select = match.params.conversationId === 'new'
+  const select = new URLSearchParams(window.location.search).has('parts')
   const history = useHistory()
   const [selected, setSelected] = useState(
     new URLSearchParams(window.location.search)
       .get('parts')
       ?.split('_')
+      .filter(v => v !== 'new')
       .map(id => ({ id })) ?? []
   )
   useLoggedIn({ redirect: true })
@@ -34,14 +34,20 @@ export default function Conversations({ match }) {
   const mobile = useMatchMedia(responsive.mobile)
 
   function toggleSelect(v = !select) {
-    if (v !== select) history.push(path(1) + (select ? '' : '/new'))
+    if (v === select) return
+    const params = new URLSearchParams(window.location.search)
+    if (v) params.set('parts', 'new')
+    else params.delete('parts')
+    let qStr = params.toString()
+    if (qStr) qStr = '?' + qStr
+    if (v !== select) history.push(window.location.pathname + qStr)
   }
 
   const conversation =
     select && Conversation.getByUsers(selected.map(({ id }) => id))
 
   useEffect(() => {
-    if (!select || !selected.length) {
+    if (!select) {
       if (
         typeof new URLSearchParams(window.location.search).get('parts') ===
         'string'
@@ -52,6 +58,12 @@ export default function Conversations({ match }) {
               .replace(/[?&]parts=[a-z0-9-]+/, '')
               .replace(/^&/, '?')
         )
+      return
+    }
+    if (!selected.length) {
+      const params = new URLSearchParams(window.location.search)
+      params.set('parts', 'new')
+      history.replace(`${window.location.pathname}?${params.toString()}`)
       return
     }
     const params = new URLSearchParams(window.location.search)
@@ -80,25 +92,24 @@ export default function Conversations({ match }) {
           />
         </S.Left>
       )}
-      {(!mobile || (!select && match.params.conversationId)) && (
+      {(!mobile || (!selected.length && match.params.conversationId)) && (
         <S.Right>
-          {!selected.length && (!match.params.conversationId || select) && (
+          {!selected.length && !match.params.conversationId && (
             <EmptyRoom onToggleSelect={toggleSelect} />
           )}
-          {select && selected.length > 0 && (
+          {selected.length > 0 && (
             <ConvView
               {...(conversation
                 ? { id: conversation.id }
                 : { participants: selected.map(({ id }) => id) })}
             />
           )}
-          {match.params.conversationId &&
-            match.params.conversationId !== 'new' && (
-              <ConvView
-                id={match.params.conversationId}
-                channel={match.params.channelId}
-              />
-            )}
+          {match.params.conversationId && !selected.length && (
+            <ConvView
+              id={match.params.conversationId}
+              channel={match.params.channelId}
+            />
+          )}
         </S.Right>
       )}
     </S.Conversations>
