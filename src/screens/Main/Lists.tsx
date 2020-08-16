@@ -39,26 +39,28 @@ export default function Categories() {
 
 const S = {
   Lists: styled.div`
+    --padding-side: 15vw;
+    --padding-vert: 1rem;
+
     display: flex;
     flex-direction: row;
     overflow-x: auto;
-    height: calc(var(--list-width) * 0.34);
+    height: calc(var(--list-width) * 0.34 + var(--padding-vert) * 2);
     box-sizing: border-box;
     width: 100vw;
     scroll-snap-type: x mandatory;
-
-    --padding: 15vw;
-
-    margin-left: calc(var(--padding) * -1);
-    padding-left: var(--padding);
-    scroll-padding: var(--padding);
+    margin-left: calc(var(--padding-side) * -1);
+    padding-left: var(--padding-side);
+    scroll-padding: var(--padding-side);
+    padding-top: var(--padding-vert);
+    padding-bottom: var(--padding-vert);
 
     @media (max-width: 1020px) {
-      --padding: calc((100vw - 55rem) / 2);
+      --padding-side: calc((100vw - 55rem) / 2);
     }
 
     @media (max-width: 57.75rem) {
-      --padding: 2.5vw;
+      --padding-side: 2.5vw;
     }
   `,
 }

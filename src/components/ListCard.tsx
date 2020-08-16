@@ -27,8 +27,8 @@ const S = {
     position: relative;
     display: flex;
     align-items: center;
-    padding-left: 2rem;
-    padding-left: min(2rem, 4.85vw);
+    padding-left: 1.5rem;
+    padding-left: min(1.5rem, 3.64vw);
     box-sizing: border-box;
     width: var(--list-width);
     height: 100%;
@@ -55,8 +55,8 @@ const S = {
 
   Title: styled.span`
     font-weight: 600;
-    font-size: 1.5rem;
-    font-size: min(4.85vw, 1.5rem);
+    font-size: 1.28rem;
+    font-size: min(4.12vw, 1.28rem);
     max-width: 60%;
   `,
 
