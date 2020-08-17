@@ -42,9 +42,13 @@ export const CREATE_CONVERSATION = gql`
   mutation CreateConversation($participants: [ID!]!, $msg: String) {
     createConversation(participants: $participants, msg: $msg) {
       ...ConversationBase
+      participants {
+        ...ChatParticipant
+      }
     }
   }
   ${CONVERSATION}
+  ${CHAT_PARTICIPANT}
 `
 
 export const MSG_SUBSCRIPTION = gql`
