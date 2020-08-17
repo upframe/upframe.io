@@ -13,7 +13,11 @@ export default function Participants({
 
   return (
     <S.Participant>
-      <ProfilePicture imgs={user.profilePictures} size={picSize} />
+      <ProfilePicture
+        imgs={user.profilePictures}
+        size={picSize}
+        linkTo={`/${user.handle}`}
+      />
       <S.Info>
         <S.Name>{user.name}</S.Name>
         <S.Secondary>

@@ -1,25 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { fragments, useQuery, gql } from 'gql'
+import { useQuery } from 'gql'
 import { ProfilePicture, Markdown } from 'components'
 import Time from './Time'
-import type { ChatUser, ChatUserVariables } from 'gql/types'
+import type { Participant, ParticipantVariables } from 'gql/types'
 import Context from './MsgContext'
 import { useHeight } from 'utils/hooks'
 import Channel from 'conversations/channel'
 import { mobile } from 'styles/responsive'
-
-const USER_QUERY = gql`
-  query ChatUser($id: ID!) {
-    user(id: $id) @client {
-      id
-      name
-      displayName
-      ...ProfilePictures
-    }
-  }
-  ${fragments.person.profilePictures}
-`
+import { PARTICIPANT } from 'conversations/gql'
 
 const picSize = '3.2rem'
 
@@ -48,7 +37,7 @@ function Message({
   reportSize,
   channelId,
 }: Props) {
-  const { data } = useQuery<ChatUser, ChatUserVariables>(USER_QUERY, {
+  const { data } = useQuery<Participant, ParticipantVariables>(PARTICIPANT, {
     variables: { id: author },
   })
   const ref = useRef() as React.MutableRefObject<HTMLElement>
@@ -118,7 +107,11 @@ function Message({
       {...(unread && { 'data-status': 'unread' })}
     >
       {!stacked ? (
-        <ProfilePicture imgs={data?.user?.profilePictures} size={picSize} />
+        <ProfilePicture
+          imgs={data?.user?.profilePictures}
+          size={picSize}
+          linkTo={`/${data?.user?.handle}`}
+        />
       ) : (
         <Time>{date}</Time>
       )}

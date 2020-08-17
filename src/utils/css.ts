@@ -1,4 +1,4 @@
-export const classes = (...classes) =>
+export const classes = (...classes: string[]): string =>
   classes
     .flatMap(c =>
       c === undefined
@@ -11,7 +11,7 @@ export const classes = (...classes) =>
     )
     .join(' ')
 
-export function parseSize(size) {
+export function parseSize(size: string): number {
   if (typeof size === 'number') return size
   const value = parseInt(size)
   const unit = size.replace(/[0-9.]/g, '')
