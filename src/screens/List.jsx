@@ -13,18 +13,9 @@ export default function List({ match }) {
     .filter(Boolean)
     .slice(-2)
   const { data = {}, loading } = useQuery(queries[type.toUpperCase()], {
-    variables:
-      type === 'search'
-        ? {
-            query: new URLSearchParams(window.location.search).get('q'),
-            tags: (
-              new URLSearchParams(window.location.search).get('t') || ''
-            ).split(','),
-          }
-        : { name: name.replace(/_/g, ' ').toLowerCase() },
+    variables: { name: name.replace(/_/g, ' ').toLowerCase() },
   })
-  const list =
-    type === 'list' ? data.list : type === 'tag' ? data.tag : data.search
+  const list = type === 'list' ? data.list : data.tag
 
   if (loading) return <Spinner centered />
   if (type === 'list' && name.replace(/_/g) !== list.name.replace(/\s/g))
