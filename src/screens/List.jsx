@@ -27,12 +27,14 @@ export default function List({ match }) {
     type === 'list' ? data.list : type === 'tag' ? data.tag : data.search
 
   if (loading) return <Spinner centered />
-  if (list && name.replace(/_/g) !== list.name.replace(/\s/g))
+  if (type === 'list' && name.replace(/_/g) !== list.name.replace(/\s/g))
     return <Redirect replace to={list.name.replace(/\s/g, '_')} />
   if (!loading && !list) return <Redirect to="/404" />
   return (
     <Home>
-      {list && <ListInfo name={list.name} description={list.description} />}
+      {type === 'list' && (
+        <ListInfo name={list.name} description={list.description} />
+      )}
       <MentorList
         mentors={
           list.users?.map(user => ('user' in user ? user.user : user)) ?? []
