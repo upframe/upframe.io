@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { mobile } from 'styles/responsive'
 
 export default function Home({ children }) {
   return <S.Home>{children}</S.Home>
@@ -26,6 +27,10 @@ const S = {
     h3 {
       font-weight: 500;
       color: #000;
+    }
+
+    @media ${mobile} {
+      min-height: initial;
     }
   `,
 }

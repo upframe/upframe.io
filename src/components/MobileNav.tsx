@@ -5,12 +5,13 @@ import layout from 'styles/layout'
 import { Icon, Link, Button, MsgIcon } from 'components'
 import { path } from 'utils/url'
 import { useLocation } from 'react-router'
-import { useVirtualKeyboard, useLoggedIn } from 'utils/hooks'
+import { useVirtualKeyboard, useLoggedIn, useMe } from 'utils/hooks'
 
 export default function MobileNav() {
   useLocation()
   const keyboardOpen = useVirtualKeyboard()
   const loggedIn = useLoggedIn()
+  const { me } = useMe()
 
   if (keyboardOpen) return null
   return (
@@ -21,7 +22,10 @@ export default function MobileNav() {
             <Icon icon="home" />
           </Link>
           <MsgIcon data-active={path(1) === '/conversations'} />
-          <Link to="/settings" data-active={path(1) === '/settings'}>
+          <Link
+            to={`/${me?.handle}`}
+            data-active={path(1) === `/${me?.handle}`}
+          >
             <Icon icon="person" />
           </Link>
           <Link to="/search" data-active={path(1) === '/search'}>

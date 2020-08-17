@@ -1,23 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Title, Text, ListCard } from '../../components'
-import { gql, useQuery } from 'gql'
+import { queries, useQuery } from 'gql'
 import type { Lists } from 'gql/types'
 
-const LISTS = gql`
-  query Lists {
-    lists {
-      id
-      name
-      illustration
-      backgroundColor
-      textColor
-    }
-  }
-`
-
 export default function Categories() {
-  const { data: { lists = [] } = {} } = useQuery<Lists>(LISTS)
+  const { data: { lists = [] } = {} } = useQuery<Lists>(queries.LISTS)
   let repeat = parseInt(
     new URLSearchParams(window.location.search).get('listRepeat') ?? '1'
   )

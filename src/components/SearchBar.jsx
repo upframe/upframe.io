@@ -240,6 +240,7 @@ const S = {
     flex-grow: 1;
     display: block;
     position: relative;
+    z-index: 1000;
   `,
 
   Search: styled.div`

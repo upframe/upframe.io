@@ -191,3 +191,15 @@ export const CHECK_VALIDITY = gql`
     }
   }
 `
+
+export const LISTS = gql`
+  query Lists {
+    lists {
+      id
+      name
+      illustration
+      backgroundColor
+      textColor
+    }
+  }
+`
