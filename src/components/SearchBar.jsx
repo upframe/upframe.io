@@ -75,7 +75,8 @@ export default function SearchBar() {
     if (!list.includes(selected)) {
       setSelected(tags.length ? list[0] : undefined)
     }
-  }, [users, tags, selected])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users, tags])
 
   const inputRef = useRef(input)
   inputRef.current = input
@@ -129,12 +130,12 @@ export default function SearchBar() {
         const selectIndex = selectionList.indexOf(selected)
         const dir = e.key.replace('Arrow', '').toLowerCase()
         if (dir === 'down') {
-          if (selectIndex >= selectionList.length - 1) break
-          if (selectIndex === -1) setSelected(selectionList[0])
+          if (selectIndex >= selectionList.length - 1) setSelected(undefined)
+          else if (selectIndex === -1) setSelected(selectionList[0])
           else setSelected(selectionList[selectIndex + 1])
         } else {
-          if (selectIndex === 0) break
-          if (selectIndex === -1) setSelected(selectionList.slice(-1)[0])
+          if (selectIndex === 0) setSelected(undefined)
+          else if (selectIndex === -1) setSelected(selectionList.slice(-1)[0])
           else setSelected(selectionList[selectIndex - 1])
         }
         break
