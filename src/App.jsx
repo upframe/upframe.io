@@ -67,7 +67,6 @@ const S = {
   App: styled.div`
     margin-top: ${layout.desktop.navbarHeight};
     padding-top: 1rem;
-    overflow-x: hidden;
 
     @media ${mobile} {
       margin-top: 0;
