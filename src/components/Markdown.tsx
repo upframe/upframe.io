@@ -106,8 +106,19 @@ const S = {
     }
 
     a {
-      text-decoration: underline var(--cl-primary);
-      text-underline-position: below;
+      --padding: 0.2ch;
+
+      background-color: #fd527f;
+      color: #fff;
+      margin: 0 calc(var(--padding) * -1);
+
+      &::before,
+      &::after {
+        content: '';
+        display: inline-block;
+        width: var(--padding);
+        height: 100%;
+      }
     }
   `,
 }
