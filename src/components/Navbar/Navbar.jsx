@@ -120,6 +120,8 @@ const S = {
 
     svg {
       opacity: 0.8;
+      width: 1.7rem;
+      height: 1.7rem;
     }
   `,
 }

@@ -46,7 +46,7 @@ const S = {
     }
 
     img {
-      width: 28rem;
+      width: 26rem;
       max-width: 100%;
       height: auto;
       margin-bottom: 1rem;

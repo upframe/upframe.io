@@ -96,17 +96,13 @@ const S = {
     flex-shrink: 0;
 
     svg {
-      height: calc(${layout.mobile.navbarHeight} * 0.5);
-      width: calc(${layout.mobile.navbarHeight} * 0.5);
+      height: calc(${layout.mobile.navbarHeight} * 0.4);
+      width: calc(${layout.mobile.navbarHeight} * 0.4);
       fill: #333;
     }
 
-    & > a:last-of-type {
-      transform: scale(0.7);
-    }
-
     *[data-active='true'] > svg {
-      fill: #ff6d95;
+      fill: var(--cl-accent);
     }
 
     a {

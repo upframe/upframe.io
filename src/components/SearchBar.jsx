@@ -257,8 +257,16 @@ const S = {
       background-color: rgba(0, 0, 0, 0.08);
     }
 
-    svg {
+    svg[data-mode~='clickable'] {
       margin-right: 1rem;
+      flex-shrink: 0;
+      border-radius: 0;
+      width: 1.5rem;
+      height: 1.5rem;
+
+      &:hover {
+        background-color: initial;
+      }
     }
 
     input {
