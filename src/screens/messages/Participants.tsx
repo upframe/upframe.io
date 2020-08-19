@@ -4,6 +4,7 @@ import Participant from './Participant'
 import { useParticipants } from 'conversations/hooks'
 import { Icon } from 'components'
 import { useHistory } from 'react-router-dom'
+import { desktop } from 'styles/responsive'
 
 export default function Participants({ ids = [] }: { ids?: string[] }) {
   const history = useHistory()
@@ -58,5 +59,9 @@ const S = {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+
+    @media ${desktop} {
+      display: none;
+    }
   `,
 }
