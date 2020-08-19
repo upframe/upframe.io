@@ -26,7 +26,7 @@ export default function Search() {
   if (!isMobile && !query && !tags.length) return <Redirect to="/" />
   return (
     <Home>
-      <SearchBar />
+      {isMobile && <SearchBar />}
       {!users && (
         <S.Lists>
           {lists.map(list => (
