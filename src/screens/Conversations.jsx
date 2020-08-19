@@ -37,7 +37,10 @@ export default function Conversations({ match }) {
     if (v === select) return
     const params = new URLSearchParams(window.location.search)
     if (v) params.set('parts', 'new')
-    else params.delete('parts')
+    else {
+      params.delete('parts')
+      setSelected([])
+    }
     let qStr = params.toString()
     if (qStr) qStr = '?' + qStr
     if (v !== select) history.push(window.location.pathname + qStr)
