@@ -48,7 +48,7 @@ const S = {
     & > * {
       height: calc(var(--list-width) * 0.34);
       margin-left: 0 !important;
-      margin-top: 1rem;
+      margin-top: 1.25rem;
       flex-shrink: 0;
     }
   `,

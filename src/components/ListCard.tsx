@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import type { Lists } from 'gql/types'
+import { mobile } from 'styles/responsive'
 
 interface Props {
   list: Lists['lists'][number]
@@ -24,6 +25,8 @@ export default function ListCard({ list }: Props) {
 
 const S = {
   Card: styled(Link)`
+    --margin: calc(100vw - var(--max-home-width));
+
     position: relative;
     display: flex;
     align-items: center;
@@ -37,10 +40,20 @@ const S = {
     flex-shrink: 0;
     scroll-snap-align: start;
     user-select: none;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
 
     &:not(:first-of-type) {
       margin-left: 1.7rem;
-      margin-left: min(1.7rem, 2.5vw);
+      margin-left: min(1.7rem, var(--margin));
+    }
+
+    &:last-of-type {
+      overflow: visible;
+
+      img {
+        border-bottom-right-radius: inherit;
+      }
     }
 
     &:last-of-type::after {
@@ -49,8 +62,19 @@ const S = {
       left: 100%;
       height: 100%;
       width: 1.7rem;
-      width: min(1.7rem, 2.5vw);
+      width: min(1.7rem, var(--margin));
       background-color: transparent;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        filter: saturate(1.2);
+        box-shadow: #0004 0 0 3.75px, #0002 0 3.75px 3.75px 0.3px;
+      }
+    }
+
+    @media ${mobile} {
+      border-radius: 0.5rem;
     }
   `,
 

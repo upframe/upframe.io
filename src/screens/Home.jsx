@@ -23,7 +23,7 @@ const S = {
     margin-left: 15vw;
     min-height: 100vh;
     box-sizing: border-box;
-    max-width: 95%;
+    max-width: 90%;
 
     @media (max-width: 1020px) {
       margin: auto;

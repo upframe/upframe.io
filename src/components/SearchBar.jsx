@@ -261,8 +261,8 @@ const S = {
       margin-right: 1rem;
       flex-shrink: 0;
       border-radius: 0;
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 1.2rem;
+      height: 1.2rem;
 
       &:hover {
         background-color: initial;

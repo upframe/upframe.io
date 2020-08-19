@@ -120,8 +120,12 @@ const S = {
 
     svg {
       opacity: 0.8;
-      width: 1.7rem;
-      height: 1.7rem;
+      width: 1.4rem;
+      height: 1.4rem;
+
+      path {
+        fill: var(--cl-text-strong);
+      }
     }
   `,
 }

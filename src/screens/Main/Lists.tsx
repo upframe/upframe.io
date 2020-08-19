@@ -148,7 +148,7 @@ const S = {
     }
 
     @media (max-width: 57.75rem) {
-      --padding-side: 2.5vw;
+      --padding-side: 5vw;
     }
   `,
 }
