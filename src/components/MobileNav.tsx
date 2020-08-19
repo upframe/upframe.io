@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { desktop } from 'styles/responsive'
 import layout from 'styles/layout'
@@ -6,46 +6,62 @@ import { Icon, Link, Button, MsgIcon } from 'components'
 import { path } from 'utils/url'
 import { useLocation } from 'react-router'
 import { useVirtualKeyboard, useLoggedIn, useMe } from 'utils/hooks'
+import { useNavActions } from 'utils/navigation'
+import { useSpring, animated } from 'react-spring'
 
 export default function MobileNav() {
   useLocation()
   const keyboardOpen = useVirtualKeyboard()
   const loggedIn = useLoggedIn()
   const { me } = useMe()
+  const { actions } = useNavActions([])
+  const [cached, setCached] = useState<JSX.Element[]>()
+
+  useEffect(() => {
+    if (!actions) return
+    setCached(actions)
+  }, [actions])
+
+  const props = useSpring({
+    transform: `translateY(${actions ? 0 : -100}%)`,
+  })
 
   if (keyboardOpen) return null
   return (
     <S.Nav>
-      {loggedIn ? (
-        <>
-          <Link to="/" data-active={path(1) === '/'}>
-            <Icon icon="home" />
-          </Link>
-          <MsgIcon data-active={path(1) === '/conversations'} />
-          <Link
-            to={`/${me?.handle}`}
-            data-active={path(1) === `/${me?.handle}`}
-          >
-            <Icon icon="person" />
-          </Link>
-          <Link to="/search" data-active={path(1) === '/search'}>
-            <Icon icon="search" />
-          </Link>
-        </>
-      ) : (
-        <>
-          <Button
-            filled
-            linkTo="https://www.producthunt.com/upcoming/upframe"
-            newTab
-          >
-            Get Invite
-          </Button>
-          <Button accent linkTo="/login">
-            Log in
-          </Button>
-        </>
-      )}
+      <S.Container style={props}>{cached}</S.Container>
+      <S.Container style={props}>
+        {loggedIn ? (
+          <>
+            <Link to="/" data-active={path(1) === '/'}>
+              <Icon icon="home" />
+            </Link>
+            <MsgIcon data-active={path(1) === '/conversations'} />
+            <Link
+              to={`/${me?.handle}`}
+              data-active={path(1) === `/${me?.handle}`}
+            >
+              <Icon icon="person" />
+            </Link>
+            <Link to="/search" data-active={path(1) === '/search'}>
+              <Icon icon="search" />
+            </Link>
+          </>
+        ) : (
+          <>
+            <Button
+              filled
+              linkTo="https://www.producthunt.com/upcoming/upframe"
+              newTab
+            >
+              Get Invite
+            </Button>
+            <Button accent linkTo="/login">
+              Log in
+            </Button>
+          </>
+        )}
+      </S.Container>
     </S.Nav>
   )
 }
@@ -53,18 +69,30 @@ export default function MobileNav() {
 const S = {
   Nav: styled.nav`
     position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: ${layout.mobile.navbarHeight};
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    z-index: 6000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    @media ${desktop} {
+      display: none;
+    }
+  `,
+
+  Container: styled(animated.div)`
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
     box-sizing: border-box;
-    z-index: 6000;
-    bottom: 0;
-    left: 0;
-    width: 100vw;
     height: ${layout.mobile.navbarHeight};
-    background-color: #fff;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
 
     svg {
       height: calc(${layout.mobile.navbarHeight} * 0.5);
@@ -72,7 +100,7 @@ const S = {
       fill: #333;
     }
 
-    & > *:last-of-type {
+    & > a:last-of-type {
       transform: scale(0.7);
     }
 
@@ -82,10 +110,6 @@ const S = {
 
     a {
       line-height: 0;
-    }
-
-    @media ${desktop} {
-      display: none;
     }
   `,
 }
