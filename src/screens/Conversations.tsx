@@ -54,6 +54,11 @@ export default function Conversations({ match }) {
 
   const mobile = useMatchMedia(responsive.mobile)
 
+  useEffect(() => {
+    if (select || !selected.length) return
+    setSelected([])
+  }, [select, selected])
+
   function toggleSelect(v = !select) {
     if (v === select) return
     params = new URLSearchParams(window.location.search)
