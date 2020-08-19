@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Link as RouterLink } from 'react-router-dom'
 
 type RLProps = Parameters<typeof RouterLink>[0]
@@ -20,21 +19,16 @@ export default function Link<D extends boolean | undefined>({
   ...rest
 }: Props<D>) {
   if (disable) return <>{children}</>
+  const Tag = external ? 'a' : RouterLink
   return (
     // @ts-ignore
-    <S.Link
-      {...(external ? { href: to } : { as: RouterLink, to })}
+    <Tag
+      {...(external ? { href: to } : { to })}
       {...(newTab && { target: '_blank', rel: 'noopener noreferrer' })}
       {...rest}
+      {...(wrap && { style: { display: 'contents' } })}
     >
       {children}
-    </S.Link>
+    </Tag>
   )
-}
-
-const S = {
-  Link: styled.a<{ wrap: boolean }>`
-    /* stylelint-disable-next-line */
-    ${({ wrap }) => (wrap ? `display: contents;` : '')}
-  `,
 }

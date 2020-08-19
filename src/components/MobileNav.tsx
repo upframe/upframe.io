@@ -6,7 +6,7 @@ import { Icon, Link, Button, MsgIcon } from 'components'
 import { path } from 'utils/url'
 import { useLocation } from 'react-router'
 import { useVirtualKeyboard, useLoggedIn, useMe } from 'utils/hooks'
-import { useNavActions } from 'utils/navigation'
+import { useNavActions, useNavbar } from 'utils/navigation'
 import { useSpring, animated } from 'react-spring'
 
 export default function MobileNav() {
@@ -14,19 +14,20 @@ export default function MobileNav() {
   const keyboardOpen = useVirtualKeyboard()
   const loggedIn = useLoggedIn()
   const { me } = useMe()
-  const { actions } = useNavActions([])
-  const [cached, setCached] = useState<JSX.Element[]>()
+  const { action } = useNavActions(<></>)
+  const [cached, setCached] = useState<JSX.Element>()
+  const { visible } = useNavbar()
 
   useEffect(() => {
-    if (!actions) return
-    setCached(actions)
-  }, [actions])
+    if (!action) return
+    setCached(action)
+  }, [action])
 
   const props = useSpring({
-    transform: `translateY(${actions ? 0 : -100}%)`,
+    transform: `translateY(${action ? 0 : -100}%)`,
   })
 
-  if (keyboardOpen) return null
+  if (keyboardOpen || !visible) return null
   return (
     <S.Nav>
       <S.Container style={props}>{cached}</S.Container>

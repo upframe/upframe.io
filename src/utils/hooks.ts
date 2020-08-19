@@ -104,8 +104,8 @@ export function useMe() {
   return { me: data?.me, loading: loading ?? true }
 }
 
-export function useDebouncedInputCall(
-  input: unknown,
+export function useDebouncedInputCall<T extends any>(
+  input: T,
   { initial = input, inputDelay = 1.7, maxDelay = 200 } = {}
 ) {
   const [lastInput, setLastInput] = useState(input)

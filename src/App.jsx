@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import { mobile } from 'styles/responsive'
 import layout from 'styles/layout'
 import { useMe } from 'utils/hooks'
+import { useNavbar } from 'utils/navigation'
 import {
   Navbar,
   Spinner,
@@ -17,6 +18,7 @@ import {
 
 export default function App() {
   useMessaging()
+  const { visible } = useNavbar()
 
   const { me, loading } = useMe()
 
@@ -49,7 +51,7 @@ export default function App() {
         <meta name="twitter:card" content="summary_large_image"></meta>
       </Helmet>
       <Router>
-        <S.App>
+        <S.App mobileNav={visible}>
           <Navbar />
           <Suspense fallback={<Spinner centered />}>
             <ScrollToTop />
@@ -70,7 +72,8 @@ const S = {
 
     @media ${mobile} {
       margin-top: 0;
-      margin-bottom: ${layout.mobile.navbarHeight};
+      margin-bottom: ${({ mobileNav }) =>
+        mobileNav ? layout.mobile.navbarHeight : '0'};
     }
   `,
 }

@@ -98,7 +98,7 @@ export default function MsgInput({
         autoFocus={autoFocus}
       />
       <S.Send>
-        <Icon icon="send" onClick={submit} clickStyle={false} />
+        <Icon icon="send" onClick={() => submit()} clickStyle={false} />
       </S.Send>
     </S.Wrap>
   )

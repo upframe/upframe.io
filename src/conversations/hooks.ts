@@ -213,7 +213,12 @@ export function useParticipants(ids: string[]): User[] {
     Promise.all(
       userIds.map(id =>
         api.query<Participant, ParticipantVariables>({
-          query: gql.PARTICIPANT,
+          query:
+            gql[
+              new URLSearchParams(window.location.search).has('parts')
+                ? 'FETCH_PARTICIPANT'
+                : 'PARTICIPANT'
+            ],
           variables: { id },
         })
       )

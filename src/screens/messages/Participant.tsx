@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { ProfilePicture, Link } from 'components'
 import type { Participant } from 'gql/types'
+import { mobile } from 'styles/responsive'
 
 export default function Participants({
   user,
@@ -91,6 +92,10 @@ const S = {
     * {
       margin: 0;
       line-height: 1.5;
+    }
+
+    @media ${mobile} {
+      margin-left: 0.75rem;
     }
   `,
 

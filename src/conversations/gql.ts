@@ -185,3 +185,12 @@ export const PARTICIPANT = gql`
   }
   ${CHAT_PARTICIPANT}
 `
+
+export const FETCH_PARTICIPANT = gql`
+  query FetchParticipant($id: ID!) {
+    user(id: $id) {
+      ...ChatParticipant
+    }
+  }
+  ${CHAT_PARTICIPANT}
+`

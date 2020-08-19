@@ -5,6 +5,7 @@ import { useQuery, gql } from 'gql'
 import { CHAT_PARTICIPANT } from 'conversations/gql'
 import { SearchInput } from 'components'
 import Tab from './ConversationTab'
+import type { SearchPerson, SearchPersonVariables } from 'gql/types'
 
 const SEARCH = gql`
   query SearchPerson($term: String!) {
@@ -19,22 +20,19 @@ const SEARCH = gql`
   ${CHAT_PARTICIPANT}
 `
 
-export const FETCH_PARTICIPANT = gql`
-  query FetchParticipant($id: ID!) {
-    user(id: $id) {
-      ...ChatParticipant
-    }
-  }
-  ${CHAT_PARTICIPANT}
-`
+interface Props {
+  selected: Participant[]
+  onSelection(v: Participant[]): void
+}
 
-export default function SelectPerson({ selected, onSelection }) {
+export default function SelectPerson({ selected, onSelection }: Props) {
   const [searchValue, setSearchValue] = useState('')
   const inputFinal = useDebouncedInputCall(searchValue)
 
-  const { data: { search: { users = [] } = {} } = {} } = useQuery(SEARCH, {
-    variables: { term: inputFinal, skip: true },
+  const { data } = useQuery<SearchPerson, SearchPersonVariables>(SEARCH, {
+    variables: { term: inputFinal },
   })
+  const users = data?.search?.users ?? []
 
   return (
     <S.Select>
@@ -55,7 +53,7 @@ export default function SelectPerson({ selected, onSelection }) {
           <Tab
             key={user.id}
             users={[user]}
-            selected={selected.find(({ id }) => id === user.id)}
+            selected={!!selected.find(({ id }) => id === user.id)}
             onSelect={v =>
               onSelection(
                 v

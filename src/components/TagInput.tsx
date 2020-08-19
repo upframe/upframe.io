@@ -2,6 +2,19 @@ import React from 'react'
 import styled from 'styled-components'
 import { Input, Chip } from '.'
 
+interface Props {
+  value: string
+  onChange(v: string): void
+  onTagClick?(v: string): void
+  tags?: Tag[]
+  highlight?: string
+}
+
+type Tag = {
+  id: string
+  name: string
+}
+
 export default function TagInput({
   value,
   onChange,
@@ -9,7 +22,7 @@ export default function TagInput({
   tags = [],
   highlight,
   ...props
-}) {
+}: Props) {
   return (
     <S.Input>
       <Input onChange={onChange} value={value} {...props} />

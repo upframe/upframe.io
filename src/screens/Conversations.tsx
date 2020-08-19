@@ -5,10 +5,13 @@ import ConversationList from './messages/ConversationList'
 import { useHistory } from 'react-router-dom'
 import ConvView from './messages/Conversation'
 import * as responsive from 'styles/responsive'
+import layout from 'styles/layout'
 import { useMatchMedia, useLoggedIn } from 'utils/hooks'
 import Conversation from 'conversations/conversation'
 import { gql, fragments } from 'gql'
 import api from 'api'
+import { useNavActions, useNavbar } from 'utils/navigation'
+import { Button } from 'components'
 
 const SELECTED = gql`
   query SelectedPartsInfo($ids: [ID!]!) {
@@ -20,9 +23,11 @@ const SELECTED = gql`
 `
 
 export default function Conversations({ match }) {
-  const select = new URLSearchParams(window.location.search).has('parts')
+  let params = new URLSearchParams(window.location.search)
+  const select = params.has('parts')
   const history = useHistory()
-  const [selected, setSelected] = useState(
+  const showPreview = params.get('mode') === 'preview'
+  const [selected, setSelected] = useState<Participant[]>(
     new URLSearchParams(window.location.search)
       .get('parts')
       ?.split('_')
@@ -30,12 +35,28 @@ export default function Conversations({ match }) {
       .map(id => ({ id })) ?? []
   )
   useLoggedIn({ redirect: true })
+  const actions = useNavActions(
+    <S.Finish>
+      <Button
+        filled
+        onClick={() => {
+          actions.hide()
+          params = new URLSearchParams(window.location.search)
+          params.set('mode', 'preview')
+          history.push(`${window.location.pathname}?${params.toString()}`)
+        }}
+      >
+        Finish Selection
+      </Button>
+    </S.Finish>
+  )
+  const navbar = useNavbar()
 
   const mobile = useMatchMedia(responsive.mobile)
 
   function toggleSelect(v = !select) {
     if (v === select) return
-    const params = new URLSearchParams(window.location.search)
+    params = new URLSearchParams(window.location.search)
     if (v) params.set('parts', 'new')
     else {
       params.delete('parts')
@@ -50,6 +71,8 @@ export default function Conversations({ match }) {
     select && Conversation.getByUsers(selected.map(({ id }) => id))
 
   useEffect(() => {
+    if (selected.length) actions.show()
+    else actions.hide()
     if (!select) {
       if (
         typeof new URLSearchParams(window.location.search).get('parts') ===
@@ -81,11 +104,22 @@ export default function Conversations({ match }) {
           selected.map(v => data.users.find(({ id }) => id === v.id) ?? v)
         )
       })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [select, selected, history])
 
+  const showConv =
+    !mobile || (!select && match.params.conversationId) || showPreview
+
+  useEffect(() => {
+    if (showConv) navbar.hide()
+    else navbar.show()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showConv])
+
   return (
-    <S.Conversations>
-      {(!mobile || select || !match.params.conversationId) && (
+    <S.Conversations navbar={navbar.visible}>
+      {(!mobile ||
+        ((select || !match.params.conversationId) && !showPreview)) && (
         <S.Left>
           <ConversationList
             select={select}
@@ -95,7 +129,7 @@ export default function Conversations({ match }) {
           />
         </S.Left>
       )}
-      {(!mobile || (!selected.length && match.params.conversationId)) && (
+      {showConv && (
         <S.Right>
           {!selected.length && !match.params.conversationId && (
             <EmptyRoom onToggleSelect={toggleSelect} />
@@ -120,14 +154,13 @@ export default function Conversations({ match }) {
 }
 
 const S = {
-  Conversations: styled.div`
+  Conversations: styled.div<{ navbar: boolean }>`
     --chat-max-width: 70ch;
 
     display: flex;
     flex-direction: row;
     margin-top: -1rem;
-    margin-bottom: -5rem;
-    height: calc(100vh - 5rem);
+    height: calc(100vh - ${layout.desktop.navbarHeight});
     box-sizing: border-box;
     position: relative;
 
@@ -140,6 +173,10 @@ const S = {
       height: 1rem;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
       z-index: 1;
+    }
+
+    @media ${responsive.mobile} {
+      height: calc(100vh - ${({ navbar }) => (navbar ? '4rem' : '0px')});
     }
   `,
 
@@ -161,6 +198,17 @@ const S = {
 
     @media ${responsive.mobile} {
       width: 100vw;
+    }
+  `,
+
+  Finish: styled.div`
+    &,
+    button {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 0;
+      font-size: 1.2rem;
     }
   `,
 }

@@ -1,27 +1,31 @@
 import { useState, useEffect } from 'react'
+import subscription from './subscription'
 
-let navActions: JSX.Element[] | null = null
-const subscribers: (() => void)[] = []
+type Action = JSX.Element | null
+const actionSub = subscription<Action>()
 
-export function useNavActions(v: typeof navActions) {
-  const [actions, setActions] = useState<typeof navActions>(navActions)
+export function useNavActions(v: Action) {
+  const [action, setAction] = useState<Action>()
 
-  function show() {
-    navActions = v
-    subscribers.forEach(handler => handler())
+  useEffect(() => actionSub.subscribe(setAction), [])
+
+  return {
+    action,
+    show: () => actionSub._call(v),
+    hide: () => actionSub._call(null),
   }
-  function hide() {
-    navActions = null
-    subscribers.forEach(handler => handler())
+}
+
+const navbarSub = subscription<boolean>()
+
+export function useNavbar() {
+  const [visible, setVisible] = useState(true)
+
+  useEffect(() => navbarSub.subscribe(setVisible), [])
+
+  return {
+    visible,
+    show: () => navbarSub._call(true),
+    hide: () => navbarSub._call(false),
   }
-
-  useEffect(() => {
-    const onChange = () => {
-      setActions(navActions)
-    }
-    subscribers.push(onChange)
-    return () => void subscribers.splice(subscribers.indexOf(onChange), 1)
-  }, [])
-
-  return { show, hide, actions }
 }

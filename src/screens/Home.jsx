@@ -14,6 +14,7 @@ const S = {
   Wrap: styled.div`
     width: 100vw;
     overflow-x: hidden;
+    padding-bottom: 0.5rem;
   `,
 
   Home: styled.main`

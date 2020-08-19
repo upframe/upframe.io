@@ -4,18 +4,15 @@ import { ProfilePicture, Title, Text, Checkbox, Identicon } from 'components'
 import { useMe, useTimeMarker } from 'utils/hooks'
 import { Link } from 'react-router-dom'
 import { path } from 'utils/url'
-import type { Participant } from 'gql/types'
 import { Conversation } from 'conversations'
 import { useParticipants } from 'conversations/hooks'
 
-type User = Exclude<Participant['user'], null>
-
 interface Props {
-  id: string
+  id?: string
   selected?: boolean
-  onSelect(v: boolean): void
+  onSelect?(v: boolean): void
   userIds?: string[]
-  users?: User[]
+  users?: Participant[]
 }
 
 export default function User({

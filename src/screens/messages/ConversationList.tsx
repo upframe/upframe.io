@@ -7,12 +7,19 @@ import { Link } from 'react-router-dom'
 import { path } from 'utils/url'
 import { useConversations } from 'conversations'
 
+interface Props {
+  select: boolean
+  onToggleSelect(v: boolean): void
+  selected: Participant[]
+  onSelection(v: Participant[]): void
+}
+
 export default function ConversationList({
   select,
   onToggleSelect,
   selected,
   onSelection,
-}) {
+}: Props) {
   const conversations = useConversations()
 
   return (
@@ -47,7 +54,7 @@ const S = {
     height: 100%;
   `,
 
-  Head: styled.div`
+  Head: styled.div<{ select: boolean }>`
     display: flex;
     flex-direction: row;
     justify-content: space-between;

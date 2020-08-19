@@ -2,17 +2,30 @@ import React from 'react'
 import styled from 'styled-components'
 import { Icon, TagInput } from 'components'
 
-export default function SearchInput({ value, onChange, onSubmit, ...props }) {
+interface Props {
+  value: string
+  onChange(v: string): void
+  onSubmit?(): void
+}
+
+export default function SearchInput({
+  value,
+  onChange,
+  onSubmit,
+  ...props
+}: Props & Optional<Omit<React.HTMLProps<HTMLInputElement>, keyof Props>>) {
   return (
     <S.Search>
       <TagInput value={value} onChange={onChange} {...props} />
       <Icon
         icon="search"
-        onClick={({ target }) =>
-          value
-            ? (onSubmit ?? (() => {}))()
-            : target.parentNode.querySelector('input')?.focus()
-        }
+        onClick={({ target }) => {
+          if (value && onSubmit) onSubmit()
+          else;
+          ;((target as HTMLImageElement)?.parentNode?.querySelector(
+            'input'
+          ) as HTMLInputElement)?.focus()
+        }}
       />
     </S.Search>
   )

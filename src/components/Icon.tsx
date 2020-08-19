@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 interface Props {
   icon: keyof typeof svg
-  onClick?(): void
+  onClick?(e: React.MouseEvent<SVGSVGElement, MouseEvent>): void
   linkTo?: string
   clickStyle?: boolean
 }
@@ -41,7 +41,7 @@ export default function Icon({
         width={sel.size ?? '24'}
         height={sel.size || '24'}
         viewBox={`0 0 ${sel.size || '24'} ${sel.size || '24'}`}
-        {...{ onClick }}
+        onClick={onClick}
       >
         {'path' in sel && <path d={sel.path} {...sel.props} fill={sel.color} />}
         {'markup' in sel && sel.markup}
