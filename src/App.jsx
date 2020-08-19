@@ -6,7 +6,7 @@ import { useMessaging } from './conversations'
 import styled from 'styled-components'
 import { mobile } from 'styles/responsive'
 import layout from 'styles/layout'
-import { useMe } from 'utils/hooks'
+import { useMe, useVirtualKeyboard } from 'utils/hooks'
 import { useNavbar } from 'utils/navigation'
 import {
   Navbar,
@@ -19,6 +19,7 @@ import {
 export default function App() {
   useMessaging()
   const { visible } = useNavbar()
+  const keyboardOpen = useVirtualKeyboard()
 
   const { me, loading } = useMe()
 
@@ -51,7 +52,7 @@ export default function App() {
         <meta name="twitter:card" content="summary_large_image"></meta>
       </Helmet>
       <Router>
-        <S.App mobileNav={visible}>
+        <S.App mobileNav={visible} keyboard={keyboardOpen}>
           <Navbar />
           <Suspense fallback={<Spinner centered />}>
             <ScrollToTop />
@@ -72,8 +73,8 @@ const S = {
 
     @media ${mobile} {
       margin-top: 0;
-      margin-bottom: ${({ mobileNav }) =>
-        mobileNav ? layout.mobile.navbarHeight : '0'};
+      margin-bottom: ${({ mobileNav, keyboard }) =>
+        mobileNav && !keyboard ? layout.mobile.navbarHeight : '0'};
     }
   `,
 }
