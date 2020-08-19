@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDebouncedInputCall } from 'utils/hooks'
-import { useQuery, gql, fragments } from 'gql'
+import { useQuery, gql } from 'gql'
+import { CHAT_PARTICIPANT } from 'conversations/gql'
 import { SearchInput } from 'components'
 import Tab from './ConversationTab'
 
@@ -10,12 +11,21 @@ const SEARCH = gql`
     search(term: $term, maxUsers: 20) {
       users {
         user {
-          ...PersonBase
+          ...ChatParticipant
         }
       }
     }
   }
-  ${fragments.person.base}
+  ${CHAT_PARTICIPANT}
+`
+
+export const FETCH_PARTICIPANT = gql`
+  query FetchParticipant($id: ID!) {
+    user(id: $id) {
+      ...ChatParticipant
+    }
+  }
+  ${CHAT_PARTICIPANT}
 `
 
 export default function SelectPerson({ selected, onSelection }) {
