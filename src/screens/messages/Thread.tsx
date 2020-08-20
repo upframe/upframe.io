@@ -297,6 +297,7 @@ const S = {
     box-sizing: border-box;
     padding-top: 1rem;
     padding-bottom: 2rem;
+    margin-bottom: 1rem;
 
     @media ${mobile} {
       padding-bottom: 0;
