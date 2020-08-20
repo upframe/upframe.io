@@ -23,6 +23,7 @@ interface Props {
   i?: number
   reportSize?(size: number, id: string): void
   channelId: string
+  showContext?: boolean
 }
 
 function Message({
@@ -36,6 +37,7 @@ function Message({
   i,
   reportSize,
   channelId,
+  showContext = false,
 }: Props) {
   const { data } = useQuery<Participant, ParticipantVariables>(PARTICIPANT, {
     variables: { id: author },
@@ -126,7 +128,7 @@ function Message({
         )}
         <Markdown text={content} />
       </S.Main>
-      <Context id={id} onToggle={onLockFocus} i={i} />
+      {showContext && <Context id={id} onToggle={onLockFocus} i={i} />}
     </S.Wrap>
   )
 }
