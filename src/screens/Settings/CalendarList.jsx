@@ -38,7 +38,7 @@ export default function CalendarList({
       >
         {user.calendarConnected && (
           <>
-            <Title s3>Calendars</Title>
+            <Title size={3}>Calendars</Title>
             <div className={styles.list}>
               {(user.calendars || []).map(({ id, name, color }, i) => {
                 return (
@@ -60,7 +60,7 @@ export default function CalendarList({
         )}
         {!user.calendarConnected && (
           <>
-            <Title s3>Connect your Google&nbsp;Calendar</Title>
+            <Title size={3}>Connect your Google&nbsp;Calendar</Title>
             <Text strong small mark>
               Scheduled events are added instantly to your calendar.
             </Text>

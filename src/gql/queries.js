@@ -14,7 +14,9 @@ export const MENTORS = gql`
 export const LIST = gql`
   query UserList($name: String!) {
     list(name: $name) {
+      id
       name
+      description
       users {
         ...MentorDetails
       }
@@ -76,20 +78,10 @@ export const ME_ID = gql`
 export const ME = gql`
   query Me {
     me {
-      ...PersonBase
-      role
-      email
-      searchable
-      ... on Mentor {
-        calendarConnected
-        visibility
-      }
-      ...Timezone
-      inferTz
+      ...MeBase
     }
   }
-  ${person.base}
-  ${person.timezone}
+  ${person.meBase}
 `
 
 export const SETTINGS_PROFILE = gql`
@@ -104,20 +96,10 @@ export const SETTINGS_PROFILE = gql`
 export const SETTINGS_NOTIFICATIONS = gql`
   query SettingsNotifications($id: ID!) {
     user(id: $id) {
-      id
-      ... on Person {
-        notificationPrefs {
-          receiveEmails
-        }
-      }
-      ... on Mentor {
-        notificationPrefs {
-          receiveEmails
-          slotReminder
-        }
-      }
+      ...NotificationSettings
     }
   }
+  ${person.notificationSettings}
 `
 
 export const SETTINGS_CALENDAR = gql`
@@ -206,6 +188,18 @@ export const CHECK_VALIDITY = gql`
       field
       valid
       reason
+    }
+  }
+`
+
+export const LISTS = gql`
+  query Lists {
+    lists {
+      id
+      name
+      illustration
+      backgroundColor
+      textColor
     }
   }
 `

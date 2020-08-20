@@ -11,19 +11,12 @@ import {
   Icon,
 } from '../../components/'
 import { notify } from 'notification'
-import { useCtx } from 'utils/hooks'
+import { useMe } from 'utils/hooks'
 
 export default function Request({ mentor, onClose, slot }) {
   const [msg, setMsg] = useState('')
   const [valid, setValid] = useState(true)
-  const { currentUser } = useCtx()
-
-  const [sendMessage] = useMutation(mutations.SEND_MESSAGE_EXT, {
-    variables: { msg, to: mentor.id },
-    onCompleted() {
-      onClose()
-    },
-  })
+  const { me } = useMe()
 
   const [requestSlot] = useMutation(mutations.REQUEST_MEETUP, {
     variables: { msg, slotId: slot },
@@ -34,21 +27,18 @@ export default function Request({ mentor, onClose, slot }) {
   })
 
   useEffect(() => {
-    setValid(msg.length && currentUser)
-  }, [msg, currentUser])
+    setValid(msg.length && me)
+  }, [msg, me])
 
   async function submit() {
-    if (slot) requestSlot()
-    else sendMessage()
+    requestSlot()
   }
 
   return (
     <Shade onClick={onClose}>
       <div className={styles.request} onClick={e => e.stopPropagation()}>
         <Icon icon="close" onClick={onClose} />
-        <Title s1>
-          {slot ? 'Have a call with' : 'Message'} {mentor.name.split(' ')[0]}
-        </Title>
+        <Title size={1}>Have a call with {mentor.displayName}</Title>
         <Divider />
         <Labeled
           label="Message"

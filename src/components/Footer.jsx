@@ -54,9 +54,5 @@ const S = {
     *:not([data-type='social']) + a[data-type='social'] {
       margin-right: auto;
     }
-
-    &[data-singedin='false'] {
-      margin-bottom: -1rem;
-    }
   `,
 }

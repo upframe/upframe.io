@@ -141,6 +141,14 @@
   & > * {
     box-sizing: border-box;
   }
+
+  @media (max-width: 599px), (orientation: portrait) {
+    .slot,
+    button {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
 }
 
 .slot {

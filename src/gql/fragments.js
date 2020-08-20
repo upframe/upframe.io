@@ -18,8 +18,10 @@ export const person = {
       fragment PersonBase on Person {
         id
         name
+        displayName
         handle
         role
+        headline
         ...ProfilePictures
       }
       ${this.profilePictures}
@@ -94,6 +96,28 @@ export const person = {
     `
   },
 
+  get notificationSettings() {
+    return gql`
+      fragment NotificationSettings on Person {
+        ...PersonBase
+        ... on Person {
+          notificationPrefs {
+            receiveEmails
+            msgEmails
+          }
+        }
+        ... on Mentor {
+          notificationPrefs {
+            receiveEmails
+            msgEmails
+            slotReminder
+          }
+        }
+      }
+      ${this.base}
+    `
+  },
+
   get invites() {
     return gql`
       fragment Invites on Person {
@@ -123,6 +147,26 @@ export const person = {
           isDst
         }
       }
+    `
+  },
+
+  get meBase() {
+    return gql`
+      fragment MeBase on Person {
+        ...PersonBase
+        role
+        email
+        searchable
+        ... on Mentor {
+          calendarConnected
+          visibility
+        }
+        ...Timezone
+        inferTz
+        msgToken
+      }
+      ${person.base}
+      ${person.timezone}
     `
   },
 }

@@ -1,6 +1,9 @@
-schema: https://dev.graphapi.upframe.io
+schema: src/gql/types/schema.json
 overwrite: true
 generates:
   ./src/_fragmentTypes.json:
     plugins:
       - fragment-matcher
+  ./src/gql/types/schema.ts:
+    plugins:
+      - 'typescript'

@@ -1,18 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
+import { mobile } from 'styles/responsive'
 
 export default function Home({ children }) {
-  return <S.Home>{children}</S.Home>
+  return (
+    <S.Wrap>
+      <S.Home>{children}</S.Home>
+    </S.Wrap>
+  )
 }
 
 const S = {
+  Wrap: styled.div`
+    width: 100%;
+    overflow-x: hidden;
+    padding-bottom: 0.5rem;
+  `,
+
   Home: styled.main`
     width: 55rem;
     margin: initial;
     margin-left: 15vw;
     min-height: 100vh;
     box-sizing: border-box;
-    max-width: 95%;
+    max-width: 90%;
 
     @media (max-width: 1020px) {
       margin: auto;
@@ -26,6 +37,10 @@ const S = {
     h3 {
       font-weight: 500;
       color: #000;
+    }
+
+    @media ${mobile} {
+      min-height: initial;
     }
   `,
 }

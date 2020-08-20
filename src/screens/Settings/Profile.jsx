@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
-import { useCtx } from 'utils/hooks'
 import { haveSameContent } from 'utils/array'
 import styles from './profile.module.scss'
 import { useQuery, queries, mutations, useMutation } from 'gql'
+import { useMe } from 'utils/hooks'
 import {
   Text,
   Title,
@@ -17,15 +17,15 @@ import {
 
 export default function Profile() {
   const fileInput = useRef(null)
-  const { currentUser } = useCtx()
   const [diff, setDiff] = useState({})
   const [invalid, setInvalid] = useState([])
   const [tags, setTags] = useState([])
-  const [photo, setPhoto] = useState(localStorage.getItem('photo'))
+  const [photo, setPhoto] = useState()
   const [showRemove, setShowRemove] = useState(false)
+  const { me } = useMe()
 
   const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_PROFILE, {
-    variables: { id: currentUser, skip: !currentUser },
+    variables: { id: me.id, skip: !me },
   })
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function Profile() {
     reader.readAsDataURL(e.target.files[0])
   }
 
-  const required = ['name', 'handle', 'headline', 'biography']
+  const required = ['name', 'displayName', 'handle', 'headline', 'biography']
   const requiredMet = required.every(field => user[field])
 
   const [updateProfile] = useMutation(mutations.UPDATE_PROFILE, {
@@ -171,7 +171,7 @@ export default function Profile() {
       <div className={styles.head}>
         <ProfilePicture imgs={user.profilePictures} size="11.125rem" />
         <div>
-          <Title s2>Profile Picture</Title>
+          <Title size={2}>Profile Picture</Title>
           <Text>
             We're big on pictures here.
             <br />
@@ -198,11 +198,17 @@ export default function Profile() {
           />
         </div>
       </div>
-      {item({ label: 'Your Name', field: 'name', span1: true })}
+      {item({
+        label: 'Your Name',
+        field: 'name',
+        span1: true,
+        autoComplete: 'off',
+      })}
       {item({ label: 'Location', span1: true })}
       {item({
         label: 'Username',
         field: 'handle',
+        autoComplete: 'off',
         hint: (
           <span>
             Your personal URL is{' '}
@@ -216,6 +222,7 @@ export default function Profile() {
           </span>
         ),
       })}
+      {item({ label: 'Display Name', field: 'displayName' })}
       {item({ label: 'Headline', field: 'headline' })}
       {user.role !== 'USER' && item({ label: 'Companies', field: 'company' })}
       {item({
@@ -224,11 +231,13 @@ export default function Profile() {
         type: 'text',
         hint: 'URLs are hyperlinked',
         placeholder:
-          'Help people understand how you can help them by describing what you built or achieved.',
+          user.role === 'USER'
+            ? "When you reach out to mentors, they will see your profile. Write something that describes who you are and what you're working on here."
+            : 'Help people understand how you can help them by describing what you built or achieved.',
       })}
       {user.role !== 'USER' && (
         <>
-          <Title s2 className={styles.span2}>
+          <Title size={2} className={styles.span2}>
             Experience
           </Title>
           <Text className={styles.span2}>
@@ -249,7 +258,7 @@ export default function Profile() {
           </div>
         </>
       )}
-      <Title s2 className={styles.span2}>
+      <Title size={2} className={styles.span2}>
         Other Profiles
       </Title>
       {[

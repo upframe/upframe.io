@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import { Title, Text, Input, Button } from 'components'
-import { useCtx, useHistory, useMe } from 'utils/hooks'
+import { useMe, useSignOut } from 'utils/hooks'
 import styles from './confirmDelete.module.scss'
 import { notify } from 'notification'
 import { mutations, useMutation } from 'gql'
 
 export default function ConfirmDelete({ onCancel }) {
-  const { setCurrentUser } = useCtx()
   const { me } = useMe()
   const [handle, setHandle] = useState('')
-  const history = useHistory()
+  const signOut = useSignOut()
 
   const [deleteAccount] = useMutation(mutations.DELETE_ACCOUNT, {
     variables: {
@@ -23,10 +22,7 @@ export default function ConfirmDelete({ onCancel }) {
     },
     onCompleted() {
       notify('account deleted')
-      setTimeout(() => {
-        setCurrentUser(null)
-        history.push('/')
-      }, 2000)
+      setTimeout(signOut, 1500)
     },
   })
 
@@ -39,7 +35,7 @@ export default function ConfirmDelete({ onCancel }) {
           e.preventDefault()
         }}
       >
-        <Title s4>Are you sure?</Title>
+        <Title size={4}>Are you sure?</Title>
         <Text strong>
           This action <Text bold>cannot</Text> be undone. Your account{' '}
           <Text underlined>{me.email}</Text> will be permanently deleted.

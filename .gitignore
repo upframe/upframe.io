@@ -17,16 +17,16 @@
 .env.production.local
 
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 *.sql
 .vscode
 .env
 
 _fragmentTypes.json
+src/gql/types
 
 /*.txt
 tests
+docs
 /tmp
 .eslintcache

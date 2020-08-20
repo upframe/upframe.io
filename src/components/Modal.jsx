@@ -14,7 +14,7 @@ export default function Modal({
     <Shade>
       <S.Modal data-size={cstSize ? 'custom' : 'default'}>
         <S.TitleRow>
-          <Title s3>{title}</Title>
+          <Title size={3}>{title}</Title>
           <Icon icon="close" onClick={onClose} />
         </S.TitleRow>
         {!!text && <Text>{text}</Text>}

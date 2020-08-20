@@ -72,23 +72,26 @@ export default function SearchBar() {
       ...users.map(({ user }) => user.id),
     ]
     setSelectionList(list)
-    if (!list.includes(selected)) setSelected()
-  }, [users, tags, selected])
+    if (!list.includes(selected)) {
+      setSelected(tags.length ? list[0] : undefined)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [users, tags])
 
   const inputRef = useRef(input)
   inputRef.current = input
   const setFocusRef = useRef(setFocus)
   setFocusRef.current = setFocus
 
-  function submit(e) {
+  function submit(e, input = inputFinal, tags = searchTags) {
     if (e) e.preventDefault()
-    if (!inputFinal.length && !searchTags.length) return
+    if (!input.length && !tags.length) return
     if (e) e.target.querySelector('input').blur()
     setInput('')
     history.push(
       `/search?${Object.entries({
-        q: inputFinal.trim().replace(/\s{2,}/g, ' '),
-        t: searchTags.map(({ name }) => name).join(','),
+        q: input.trim().replace(/\s{2,}/g, ' '),
+        t: tags.map(({ name }) => name).join(','),
       })
         .filter(([, v]) => v.length)
         .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
@@ -107,6 +110,7 @@ export default function SearchBar() {
         if (tag) {
           setInput('')
           setSearchTags([...searchTags, tag.tag])
+          if (e.key === 'Enter') submit(undefined, '', [...searchTags, tag.tag])
         } else if (user && e.key === 'Enter') {
           setInput('')
           history.push(`/${user.user.handle}`)
@@ -121,16 +125,17 @@ export default function SearchBar() {
         break
       case 'ArrowUp':
       case 'ArrowDown': {
+        e.preventDefault()
         if (selectionList.length === 0) break
         const selectIndex = selectionList.indexOf(selected)
         const dir = e.key.replace('Arrow', '').toLowerCase()
         if (dir === 'down') {
-          if (selectIndex >= selectionList.length - 1) break
-          if (selectIndex === -1) setSelected(selectionList[0])
+          if (selectIndex >= selectionList.length - 1) setSelected(undefined)
+          else if (selectIndex === -1) setSelected(selectionList[0])
           else setSelected(selectionList[selectIndex + 1])
         } else {
-          if (selectIndex === 0) break
-          if (selectIndex === -1) setSelected(selectionList.slice(-1)[0])
+          if (selectIndex === 0) setSelected(undefined)
+          else if (selectIndex === -1) setSelected(selectionList.slice(-1)[0])
           else setSelected(selectionList[selectIndex - 1])
         }
         break
@@ -154,7 +159,7 @@ export default function SearchBar() {
             setSearchTags(searchTags.filter(tag => tag.id !== id))
           }
           {...(searchTags.length === 0 && {
-            placeholder: 'What are you looking for?',
+            placeholder: 'Look for people or topics',
           })}
           {...(willDelete &&
             searchTags.length && { highlight: searchTags.slice(-1)[0]?.id })}
@@ -235,6 +240,7 @@ const S = {
     flex-grow: 1;
     display: block;
     position: relative;
+    z-index: 1000;
   `,
 
   Search: styled.div`
@@ -251,8 +257,16 @@ const S = {
       background-color: rgba(0, 0, 0, 0.08);
     }
 
-    svg {
+    svg[data-mode~='clickable'] {
       margin-right: 1rem;
+      flex-shrink: 0;
+      border-radius: 0;
+      width: 1.2rem;
+      height: 1.2rem;
+
+      &:hover {
+        background-color: initial;
+      }
     }
 
     input {

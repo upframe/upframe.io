@@ -1,0 +1,5 @@
+:root {
+  --max-home-width: 90vw;
+  --list-width: var(--max-home-width);
+  --list-width: min(25rem, var(--max-home-width));
+}

@@ -4,7 +4,7 @@
   font-family: 'Poppins', sans-serif;
   font-display: swap;
   overflow: auto;
-  padding-bottom: 5rem;
+  overscroll-behavior-x: none;
 
   a {
     color: #000;
@@ -20,4 +20,14 @@
 body {
   margin: 0;
   padding: 0;
+}
+
+*::selection {
+  color: #fff;
+  background-color: #fd527f;
+}
+
+img,
+button {
+  user-select: none;
 }
