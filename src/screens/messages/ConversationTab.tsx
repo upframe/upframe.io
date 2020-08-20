@@ -181,9 +181,11 @@ const S = {
     & > *:last-child {
       grid-area: headline;
       transition: color 0.15s ease;
+      font-size: 0.9rem;
 
       [data-state='unread'] & {
         color: #222;
+        font-weight: bold;
       }
     }
   `,
