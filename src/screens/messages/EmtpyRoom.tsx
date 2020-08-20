@@ -46,10 +46,9 @@ const S = {
     }
 
     img {
-      width: 26rem;
+      width: 24rem;
       max-width: 100%;
       height: auto;
-      margin-bottom: 1rem;
     }
 
     & > * {

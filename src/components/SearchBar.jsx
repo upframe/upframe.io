@@ -159,7 +159,7 @@ export default function SearchBar() {
             setSearchTags(searchTags.filter(tag => tag.id !== id))
           }
           {...(searchTags.length === 0 && {
-            placeholder: 'What are you looking for?',
+            placeholder: 'Look for people or topics',
           })}
           {...(willDelete &&
             searchTags.length && { highlight: searchTags.slice(-1)[0]?.id })}

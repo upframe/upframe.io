@@ -98,7 +98,7 @@ const S = {
     svg {
       height: calc(${layout.mobile.navbarHeight} * 0.4);
       width: calc(${layout.mobile.navbarHeight} * 0.4);
-      fill: var(--cl-text-strong);
+      fill: #888;
     }
 
     *[data-active='true'] > svg {

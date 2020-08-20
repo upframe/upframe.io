@@ -50,6 +50,7 @@ export default function User({
         onClick: () => onSelect(!selected),
       })}
       data-active={path(2).split('/').pop() === id}
+      data-state={hasUnread ? 'unread' : 'read'}
     >
       {/* @ts-ignore */}
       <CondLink {...(id && { to: `${path(1)}/${id}` })}>
@@ -170,10 +171,16 @@ const S = {
 
     & > *:first-child {
       grid-area: name;
+      color: #000d;
     }
 
     & > *:last-child {
       grid-area: headline;
+      transition: color 0.15s ease;
+
+      [data-state='unread'] & {
+        color: #222;
+      }
     }
   `,
 
