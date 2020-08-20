@@ -12,7 +12,7 @@ export default function Home({ children }) {
 
 const S = {
   Wrap: styled.div`
-    width: 100vw;
+    width: 100%;
     overflow-x: hidden;
     padding-bottom: 0.5rem;
   `,
