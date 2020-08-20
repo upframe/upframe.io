@@ -60,6 +60,14 @@ const S = {
     justify-content: space-between;
     align-items: center;
     user-select: none;
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    margin-right: calc(var(--side-margin) * -0.5);
+    margin-left: calc(var(--side-margin) * -0.5 + 0.1rem);
+
+    * {
+      margin: 0;
+    }
 
     & > svg {
       width: 1.8rem;
@@ -81,6 +89,8 @@ const S = {
     overflow-y: auto;
     margin: 0 calc(var(--side-margin) * -1);
     position: relative;
+    margin-top: 0;
+    padding-top: 0.5rem;
 
     .${Spinner.sc} {
       width: 2.5rem;

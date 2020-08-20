@@ -95,14 +95,18 @@ const S = {
       'img headline status';
     list-style: none;
     border-radius: 0.5rem;
-    margin: 1rem 0;
-    padding: 0.2rem 0.5rem;
+    margin: 0.3rem 0;
+    padding: 0.6rem 0.5rem;
     cursor: pointer;
     min-width: 0;
     box-sizing: border-box;
     user-select: none;
-    height: 3.4rem;
+    height: 4.2rem;
     overflow: hidden;
+
+    &:first-of-type {
+      margin-top: 0;
+    }
 
     &[data-state='loading'] {
       background-color: #0002;
