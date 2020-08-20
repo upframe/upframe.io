@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useDebouncedInputCall } from 'utils/hooks'
+import { useDebouncedInputCall, useMe } from 'utils/hooks'
 import { useQuery, gql } from 'gql'
 import { CHAT_PARTICIPANT } from 'conversations/gql'
 import { SearchInput } from 'components'
@@ -28,11 +28,14 @@ interface Props {
 export default function SelectPerson({ selected, onSelection }: Props) {
   const [searchValue, setSearchValue] = useState('')
   const inputFinal = useDebouncedInputCall(searchValue)
+  const { me } = useMe()
 
   const { data } = useQuery<SearchPerson, SearchPersonVariables>(SEARCH, {
     variables: { term: inputFinal },
   })
-  const users = data?.search?.users ?? []
+  const users = (data?.search?.users ?? []).filter(
+    ({ user }) => user.id !== me?.id
+  )
 
   return (
     <S.Select>
@@ -82,6 +85,10 @@ const S = {
       margin: 0 calc(var(--side-margin) * -0.5);
       width: calc(100% + var(--side-margin));
       flex-shrink: 0;
+    }
+
+    & > input > svg {
+      background: red;
     }
   `,
 

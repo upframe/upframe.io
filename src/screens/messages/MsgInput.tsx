@@ -39,7 +39,7 @@ export default function MsgInput({
     switch (e.key) {
       case 'Enter':
         e.preventDefault()
-        if (e.shiftKey) {
+        if (e.shiftKey || e.altKey) {
           setLines(lines + 1)
           const textarea: HTMLTextAreaElement = e.target as any
           const cursor = textarea.selectionStart

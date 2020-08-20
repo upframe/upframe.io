@@ -76,14 +76,15 @@ export function useMessaging() {
   useQuery<Conversations>(gql.CONVERSATIONS, {
     skip: !me,
     onCompleted({ me }) {
-      me?.conversations?.map(({ id, participants, channels, lastUpdate }) =>
-        Conversation.add(
-          id,
-          participants.map(({ id }) => id),
-          new Date(lastUpdate ?? 0),
-          channels.map(({ id }) => id)
-        )
-      )
+      me?.conversations?.map(({ id, participants, channels, lastUpdate }) => {
+        if (participants.length)
+          Conversation.add(
+            id,
+            participants.map(({ id }) => id),
+            new Date(lastUpdate ?? 0),
+            channels.map(({ id }) => id)
+          )
+      })
       Conversation.initDone()
       me?.unread?.map(({ channelId, unread }) =>
         Channel.get(channelId)?.setReadStatus(

@@ -71,5 +71,17 @@ const S = {
         }
       }
     }
+
+    svg[data-mode~='clickable'] {
+      margin-right: 1rem;
+      flex-shrink: 0;
+      border-radius: 0;
+      width: 1.2rem;
+      height: 1.2rem;
+
+      &:hover {
+        background-color: initial;
+      }
+    }
   `,
 }

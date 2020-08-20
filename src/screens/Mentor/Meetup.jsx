@@ -43,7 +43,9 @@ export default function Meetup({ mentor, onSlot }) {
               ? phUrl
               : conId
               ? `/conversations/${conId}`
-              : `/conversations/new?parts=${mentor.id}`
+              : mentor.id !== me.id
+              ? `/conversations/new?parts=${mentor.id}`
+              : '/conversations'
           }
         >
           Message
