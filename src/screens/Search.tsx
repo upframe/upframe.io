@@ -27,7 +27,7 @@ export default function Search() {
   return (
     <Home>
       {isMobile && <SearchBar />}
-      {!users && (
+      {isMobile && !users && (
         <S.Lists>
           {lists.map(list => (
             <ListCard key={list.id} list={list} />

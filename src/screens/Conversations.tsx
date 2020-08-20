@@ -46,7 +46,7 @@ export default function Conversations({ match }) {
           history.push(`${window.location.pathname}?${params.toString()}`)
         }}
       >
-        Finish Selection
+        Start Conversation
       </Button>
     </S.Finish>
   )
