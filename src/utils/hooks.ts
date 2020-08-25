@@ -4,9 +4,10 @@ import { useHistory } from 'react-router-dom'
 import { queries, mutations, useQuery, useMutation } from 'gql'
 import isEqual from 'lodash/isEqual'
 import api from 'api'
-import type { Me } from 'gql/types'
+import type { Me, Mentors } from 'gql/types'
 import type { DocumentNode } from 'graphql'
 import { isSameDay, isPreviousDay } from './date'
+import subscription from './subscription'
 
 export { useHistory }
 
@@ -331,4 +332,41 @@ export function useTimeMarker(date?: Date) {
   }, [date])
 
   return marker
+}
+
+const mentorSub = subscription<Mentors['mentors']>(set => {
+  api
+    .query<Mentors>({ query: queries.MENTORS })
+    .then(({ data }) => {
+      if (!set) return
+      set(data?.mentors ?? [])
+    })
+})
+
+export function useMentors() {
+  const [mentors, setMentors] = useState<Mentors['mentors']>(
+    mentorSub.state ?? []
+  )
+
+  function set(users: Mentors['mentors'] = mentors) {
+    mentorSub._call(
+      users
+        .map(v => ({
+          ...v,
+          score: (v.sortScore ?? 0) + Math.random(),
+        }))
+        .sort((a, b) => b.score - a.score)
+    )
+  }
+
+  useEffect(
+    () =>
+      mentorSub.subscribe(v => {
+        setMentors(v)
+      }, set),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
+  return { mentors, set }
 }

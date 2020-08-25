@@ -6,6 +6,7 @@ export const MENTORS = gql`
     mentors {
       ...MentorDetails
       categories
+      sortScore
     }
   }
   ${person.mentorDetails}

@@ -3,13 +3,13 @@ import Landing from './Landing'
 import MentorList from './MentorList'
 import { Title, Text, Footer } from '../../components'
 import Lists from './Lists'
-import { queries, useQuery } from 'gql'
 import Home from '../Home'
-import { useLoggedIn } from 'utils/hooks'
+import { useLoggedIn, useMentors } from 'utils/hooks'
 
 export default function Main() {
-  const { data: { mentors = [] } = {} } = useQuery(queries.MENTORS)
   const loggedIn = useLoggedIn()
+
+  const { mentors } = useMentors()
 
   return (
     <>
