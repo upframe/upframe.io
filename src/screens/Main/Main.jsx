@@ -8,7 +8,6 @@ import { useLoggedIn, useMentors } from 'utils/hooks'
 
 export default function Main() {
   const loggedIn = useLoggedIn()
-
   const { mentors } = useMentors()
 
   return (
