@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Title, Button, Modal, Spinner } from '.'
 
+const MAX_IMG_SIZE = 5e6
+
 export default function PhotoCrop({ photo, name, onCancel, onSave }) {
   const selectRef = useRef()
   const previewRef = useRef()
@@ -160,7 +162,6 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
     setLoading(true)
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
-    const maxSizeMB = 5
 
     const resize = (scale = 1) => {
       canvas.width = (selectRect.width / imgRect.width) * naturalWidth * scale
@@ -187,10 +188,10 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
           naturalHeight * scale
         )
         let data = canvas.toDataURL()
-        let size = Math.round((data.length * 3) / 4) / 10e5
+        const size = new Blob([data]).size
 
-        if (size > maxSizeMB && scale === 1) {
-          resize(Math.sqrt((maxSizeMB / size) * 0.8))
+        if (size > MAX_IMG_SIZE) {
+          resize(scale * (1 / Math.sqrt(size / MAX_IMG_SIZE)) * 0.99)
         } else onSave(data)
       }
       img.src = photo
