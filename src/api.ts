@@ -1,8 +1,9 @@
 import { ApolloClient } from '@apollo/client'
 import { HttpLink } from 'apollo-link-http'
+import { WebSocketLink } from 'apollo-link-ws'
+import { RetryLink } from 'apollo-link-retry'
 import { onError } from 'apollo-link-error'
 import { ApolloLink, split } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 import introspectionQueryResultData from './_fragmentTypes.json'
 import {
@@ -24,6 +25,7 @@ const httpLink = ApolloLink.from([
     if (networkError)
       notify('There seems to be a problem with your network connection')
   }),
+  new RetryLink(),
   new HttpLink({
     uri: process.env.REACT_APP_GRAPHAPI,
     credentials: 'include',

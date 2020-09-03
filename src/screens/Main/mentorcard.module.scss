@@ -23,13 +23,6 @@
       height: 18rem;
     }
   }
-
-  transition: transform 0.125s ease;
-
-  &:hover {
-    transform: scale(1.03);
-    transition: transform 0.25s ease 0s;
-  }
 }
 
 .info {

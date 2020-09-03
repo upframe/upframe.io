@@ -16,7 +16,7 @@ export default function MsgQueue({ messages = [], ommission = [] }: Props) {
     setMsgs(
       messages.map((v, i, msgs) =>
         msgs[i - 1]?.author === v.author &&
-        v.date.getTime() - msgs[i - 1]?.date.getTime() < 1000 * 60 * 5
+        v.date.getTime() - msgs[i - 1]?.date.getTime() < 1000 * 60 * 4
           ? { ...v, stacked: true }
           : v
       )

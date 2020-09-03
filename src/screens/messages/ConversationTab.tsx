@@ -30,8 +30,6 @@ export default function User({
 
   users = [...users, ...participants]
 
-  const CondLink = id ? Link : React.Fragment
-
   useEffect(() => {
     if (typeof onSelect === 'function' || !id || conversation) return
     Conversation.get(id).then(setConversation)
@@ -45,42 +43,41 @@ export default function User({
 
   if (!users.length) return <S.User data-state="loading" />
   return (
+    // @ts-ignore
     <S.User
       {...(typeof onSelect === 'function' && {
         onClick: () => onSelect(!selected),
       })}
       data-active={path(2).split('/').pop() === id}
       data-state={hasUnread ? 'unread' : 'read'}
+      {...(id && { to: `${path(1)}/${id}`, as: Link })}
     >
-      {/* @ts-ignore */}
-      <CondLink {...(id && { to: `${path(1)}/${id}` })}>
-        {users.length > 1 ? (
-          <Identicon
-            ids={Array.from(
-              new Set([me?.id, ...users.map(({ id }) => id)].filter(Boolean))
-            )}
-          />
-        ) : (
-          <ProfilePicture imgs={users[0]?.profilePictures} size="3rem" />
-        )}
-        <S.TextSec>
-          <Title size={4}>
-            {users.length === 1
-              ? users[0].name
-              : users.map(({ displayName }) => displayName).join(', ')}
-          </Title>
-          <Text>
-            {users.length > 1
-              ? `${users.length + 1} participants`
-              : users[0]?.headline ?? '\u00a0'}
-          </Text>
-        </S.TextSec>
-        {typeof onSelect === 'function' && (
-          <Checkbox checked={selected as boolean} onChange={onSelect} />
-        )}
-        <S.Updated>{time}</S.Updated>
-        {hasUnread && <S.Unread />}
-      </CondLink>
+      {users.length > 1 ? (
+        <Identicon
+          ids={Array.from(
+            new Set([me?.id, ...users.map(({ id }) => id)].filter(Boolean))
+          )}
+        />
+      ) : (
+        <ProfilePicture imgs={users[0]?.profilePictures} size="3rem" />
+      )}
+      <S.TextSec>
+        <Title size={4}>
+          {users.length === 1
+            ? users[0].name
+            : users.map(({ displayName }) => displayName).join(', ')}
+        </Title>
+        <Text>
+          {users.length > 1
+            ? `${users.length + 1} participants`
+            : users[0]?.headline ?? '\u00a0'}
+        </Text>
+      </S.TextSec>
+      {typeof onSelect === 'function' && (
+        <Checkbox checked={selected as boolean} onChange={onSelect} />
+      )}
+      <S.Updated>{time}</S.Updated>
+      {hasUnread && <S.Unread />}
     </S.User>
   )
 }

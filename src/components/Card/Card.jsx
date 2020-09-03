@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './card.module.scss'
 import { classes } from 'utils/css'
 import { Link } from 'react-router-dom'
+import { animated } from 'react-spring'
 
 export default function Card({
   className,
@@ -11,7 +12,7 @@ export default function Card({
   article,
   ...props
 }) {
-  const Tag = article ? 'article' : 'div'
+  const Tag = article ? animated.article : animated.div
   return (
     <Tag
       className={classes(styles.card, className, {

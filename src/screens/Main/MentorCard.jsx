@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, ProfilePicture, Title, Chip } from '../../components'
 import styles from './mentorcard.module.scss'
 
-export default function MentorCard({ mentor }) {
+export default function MentorCard({ mentor, style }) {
   const imgSize = window.innerWidth > 720 ? '13rem' : '18rem'
   let tags = (mentor.tags || []).slice(0, 2)
 
@@ -12,6 +12,7 @@ export default function MentorCard({ mentor }) {
       linkTo={`/${mentor.handle}`}
       hoverEffect={true}
       article
+      {...(style && { style })}
     >
       <ProfilePicture imgs={mentor.profilePictures} size={imgSize} />
       <div className={styles.info}>
