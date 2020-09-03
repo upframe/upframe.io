@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/upframe/upframe.io.svg?branch=staging)](https://travis-ci.com/upframe/upframe.io)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9f69fea7-0285-4a11-b1b3-38cec48cdaf7/deploy-status)](https://app.netlify.com/sites/serene-babbage-0e99d9/deploys) [![Netlify Status](https://api.netlify.com/api/v1/badges/1ee2f91d-9e4b-4658-ae28-40b9c6ccb8d8/deploy-status)](https://app.netlify.com/sites/betaupframe/deploys)
 
 # 🦄 Upframe
 
