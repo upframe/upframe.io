@@ -15,7 +15,12 @@ export default function Checkbox({
   color,
   loading = false,
 }: Props) {
-  if (loading) return <Spinner color={color || '#2c3976'} />
+  if (loading)
+    return (
+      <S.Spinner>
+        <Spinner color={color || '#2c3976'} />
+      </S.Spinner>
+    )
   return (
     <S.Checkbox
       type="checkbox"
@@ -60,16 +65,20 @@ const S = {
         background-color: initial !important;
       }
     }
+  `,
+
+  Spinner: styled.div`
+    display: contents;
 
     ${Spinner.sc} {
       --size: 3rem;
 
-      width: var(--size) !important;
-      height: var(--size) !important;
+      width: var(--size);
+      height: var(--size);
 
       --off: calc((var(--size) - 1.375rem) / 2 * -1);
 
-      margin: var(--off) !important;
+      margin: var(--off);
     }
   `,
 }
