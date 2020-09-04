@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import Thread from './ThreadCard'
 import { useConversation } from 'conversations'
-import { useTimeMarker } from 'utils/hooks'
+import { useTimeMarker } from 'utils/date'
 
 interface Props {
   conversationId: string
@@ -29,7 +29,7 @@ export default function ConversationPreview({ conversationId }: Props) {
 }
 
 function Timestamp({ time }: { time: Date }) {
-  const ts = useTimeMarker(time)
+  const ts = useTimeMarker(time, 'long')
   return <S.Timestamp>{ts}</S.Timestamp>
 }
 
@@ -39,7 +39,6 @@ const S = {
     font-size: 0.8rem;
     display: block;
     position: relative;
-    text-transform: uppercase;
 
     --top: 1.5rem;
     --bottom: 0.5rem;
