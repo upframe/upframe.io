@@ -31,6 +31,11 @@ export default class Channel {
     this.eventHandlers.fetch.forEach(handler => handler(v ? 'start' : 'stop'))
   }
 
+  private _startTime?: Date
+  public get startTime() {
+    return this._startTime
+  }
+
   protected constructor(public readonly id: string) {}
 
   public static get = (id: string) =>
@@ -87,6 +92,8 @@ export default class Channel {
       ) ?? []
 
     if (msgs.length) this.addMsgs(msgs)
+
+    if (this.hasFirst && !this.startTime) this._startTime = this.msgs[0].date
 
     done()
 
