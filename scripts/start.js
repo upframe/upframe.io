@@ -20,10 +20,11 @@ const clearConsole = require('react-dev-utils/clearConsole')
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles')
 const {
   choosePort,
-  createCompiler,
+  // createCompiler, // modified to work with MultiCompiler
   prepareProxy,
   prepareUrls,
 } = require('react-dev-utils/WebpackDevServerUtils')
+const { createCompiler } = require('./createCompiler')
 const openBrowser = require('react-dev-utils/openBrowser')
 const paths = require('../config/paths')
 const configFactory = require('../config/webpack.config')
