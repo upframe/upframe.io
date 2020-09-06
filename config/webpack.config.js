@@ -50,7 +50,9 @@ const merge = (target, source) => ({
   ...Object.fromEntries(
     Object.entries(source).map(([k, v]) => [
       k,
-      !(k in target) || typeof v !== 'object' ? v : merge(target[k], v),
+      Array.isArray(v) || !(k in target) || typeof v !== 'object'
+        ? v
+        : merge(target[k], v),
     ])
   ),
 })
@@ -669,8 +671,12 @@ const sw = shared(
   {
     entry: { sw: paths.appSW },
     output: {
-      filename: 'static/js/[name].js',
-      chunkFilename: 'static/js/[name].js',
+      filename: '[name].js',
+      chunkFilename: '[name].js',
+    },
+    optimization: {
+      splitChunks: false,
+      runtimeChunk: false,
     },
   },
   { emitManifest: false }
