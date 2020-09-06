@@ -45,9 +45,17 @@ const cssModuleRegex = /\.module\.css$/
 const sassRegex = /\.(scss|sass)$/
 const sassModuleRegex = /\.module\.(scss|sass)$/
 
-// This is the production and development configuration.
-// It is focused on developer experience, fast rebuilds, and a minimal bundle.
-module.exports = function (webpackEnv) {
+const merge = (target, source) => ({
+  ...target,
+  ...Object.fromEntries(
+    Object.entries(source).map(([k, v]) => [
+      k,
+      !(k in target) || typeof v !== 'object' ? v : merge(target[k], v),
+    ])
+  ),
+})
+
+const shared = (cst, { emitManifest = true } = {}) => webpackEnv => {
   const isEnvDevelopment = webpackEnv === 'development'
   const isEnvProduction = webpackEnv === 'production'
 
@@ -123,36 +131,10 @@ module.exports = function (webpackEnv) {
     return loaders
   }
 
-  return {
+  const base = {
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
     // Stop compilation early in production
     bail: isEnvProduction,
-    devtool: isEnvProduction
-      ? shouldUseSourceMap
-        ? 'source-map'
-        : false
-      : isEnvDevelopment && 'cheap-module-source-map',
-    // These are the "entry points" to our application.
-    // This means they will be the "root" imports that are included in JS bundle.
-    entry: [
-      // Include an alternative client for WebpackDevServer. A client's job is to
-      // connect to WebpackDevServer by a socket and get notified about changes.
-      // When you save a file, the client will either apply hot updates (in case
-      // of CSS changes), or refresh the page (in case of JS changes). When you
-      // make a syntax error, this client will display a syntax error overlay.
-      // Note: instead of the default WebpackDevServer client, we use a custom one
-      // to bring better experience for Create React App users. You can replace
-      // the line below with these two lines if you prefer the stock client:
-      // require.resolve('webpack-dev-server/client') + '?/',
-      // require.resolve('webpack/hot/dev-server'),
-      isEnvDevelopment &&
-        require.resolve('react-dev-utils/webpackHotDevClient'),
-      // Finally, this is your app's code:
-      paths.appIndexJs,
-      // We include the app code last so that if there is a runtime error during
-      // initialization, it doesn't blow up the WebpackDevServer client, and
-      // changing JS code would still trigger a refresh.
-    ].filter(Boolean),
     output: {
       // The build folder.
       path: isEnvProduction ? paths.appBuild : undefined,
@@ -188,6 +170,11 @@ module.exports = function (webpackEnv) {
       // module chunks which are built will work in web workers as well.
       globalObject: 'this',
     },
+    devtool: isEnvProduction
+      ? shouldUseSourceMap
+        ? 'source-map'
+        : false
+      : isEnvDevelopment && 'cheap-module-source-map',
     optimization: {
       minimize: isEnvProduction,
       minimizer: [
@@ -574,24 +561,25 @@ module.exports = function (webpackEnv) {
       //   `index.html`
       // - "entrypoints" key: Array of files which are included in `index.html`,
       //   can be used to reconstruct the HTML if necessary
-      new ManifestPlugin({
-        fileName: 'asset-manifest.json',
-        publicPath: paths.publicUrlOrPath,
-        generate: (seed, files, entrypoints) => {
-          const manifestFiles = files.reduce((manifest, file) => {
-            manifest[file.name] = file.path
-            return manifest
-          }, seed)
-          const entrypointFiles = entrypoints.main.filter(
-            fileName => !fileName.endsWith('.map')
-          )
+      emitManifest &&
+        new ManifestPlugin({
+          fileName: 'asset-manifest.json',
+          publicPath: paths.publicUrlOrPath,
+          generate: (seed, files, entrypoints) => {
+            const manifestFiles = files.reduce((manifest, file) => {
+              manifest[file.name] = file.path
+              return manifest
+            }, seed)
+            const entrypointFiles = entrypoints.main.filter(
+              fileName => !fileName.endsWith('.map')
+            )
 
-          return {
-            files: manifestFiles,
-            entrypoints: entrypointFiles,
-          }
-        },
-      }),
+            return {
+              files: manifestFiles,
+              entrypoints: entrypointFiles,
+            }
+          },
+        }),
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how webpack interprets its code. This is a practical
       // solution that requires the user to opt into importing specific locales.
@@ -642,4 +630,50 @@ module.exports = function (webpackEnv) {
     // our own hints via the FileSizeReporter
     performance: false,
   }
+
+  return merge(
+    base,
+    typeof cst === 'function' ? cst({ isEnvDevelopment, isEnvProduction }) : cst
+  )
 }
+
+// This is the production and development configuration.
+// It is focused on developer experience, fast rebuilds, and a minimal bundle.
+const app = shared(({ isEnvDevelopment, isEnvProduction }) => {
+  return {
+    // These are the "entry points" to our application.
+    // This means they will be the "root" imports that are included in JS bundle.
+    entry: [
+      // Include an alternative client for WebpackDevServer. A client's job is to
+      // connect to WebpackDevServer by a socket and get notified about changes.
+      // When you save a file, the client will either apply hot updates (in case
+      // of CSS changes), or refresh the page (in case of JS changes). When you
+      // make a syntax error, this client will display a syntax error overlay.
+      // Note: instead of the default WebpackDevServer client, we use a custom one
+      // to bring better experience for Create React App users. You can replace
+      // the line below with these two lines if you prefer the stock client:
+      // require.resolve('webpack-dev-server/client') + '?/',
+      // require.resolve('webpack/hot/dev-server'),
+      isEnvDevelopment &&
+        require.resolve('react-dev-utils/webpackHotDevClient'),
+      // Finally, this is your app's code:
+      paths.appIndexJs,
+      // We include the app code last so that if there is a runtime error during
+      // initialization, it doesn't blow up the WebpackDevServer client, and
+      // changing JS code would still trigger a refresh.
+    ].filter(Boolean),
+  }
+})
+
+const sw = shared(
+  {
+    entry: { sw: paths.appSW },
+    output: {
+      filename: 'static/js/[name].js',
+      chunkFilename: 'static/js/[name].js',
+    },
+  },
+  { emitManifest: false }
+)
+
+module.exports = env => [app, sw].map(f => f(env))

@@ -13,6 +13,15 @@ if (process.env.NODE_ENV !== 'development')
     dsn: process.env.REACT_APP_SENTRY_DSN,
   })
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then(
+      ({ scope }) => console.log('sw registered with scope:', scope),
+      err => console.log('sw registration failed:', err)
+    )
+  })
+}
+
 ReactDOM.render(
   <ApolloProvider client={client}>
     <App />
