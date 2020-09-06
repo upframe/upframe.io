@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom'
 
 type RLProps = Parameters<typeof RouterLink>[0]
 
-type Props<D extends boolean | undefined> = { disable: D } & {
+type Props<D extends boolean | undefined = false> = { disable?: D } & {
   external?: boolean
   newTab?: boolean
   wrap?: boolean
