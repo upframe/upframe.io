@@ -289,10 +289,12 @@ export function useMentors() {
   }
 
   useEffect(
-    () =>
-      mentorSub.subscribe(v => {
-        setMentors(v)
-      }, set),
+    () => {
+      setMentors(mentorSub.state ?? [])
+      return mentorSub.subscribe(v => {
+        if (v?.length) setMentors(v)
+      }, set)
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )

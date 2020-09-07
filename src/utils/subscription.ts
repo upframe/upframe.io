@@ -14,8 +14,8 @@ export default <T>(setup?: (...args: any[]) => Function | void) => {
     },
     unsubscribe,
     _call(v: T) {
-      subscribers.forEach(f => f(v))
       _state = v
+      subscribers.forEach(f => f(v))
     },
     get requested() {
       return subscribers.length > 0

@@ -1,3 +1,5 @@
+import { openDB } from 'idb'
+
 export default null
 declare var self: ServiceWorkerGlobalScope
 
@@ -5,8 +7,15 @@ const VERSION = 1
 const CACHE_PREFIX = `${self.location.hostname}.v${VERSION}.`
 const STATIC_CACHE = CACHE_PREFIX + 'static'
 const PHOTO_CACHE = CACHE_PREFIX + 'photo'
+const CACHE_OPS = ['Mentors', 'Lists'].map(v => v.toLowerCase())
 
 const expectedCaches = [STATIC_CACHE]
+
+const db = openDB(self.location.hostname, 1, {
+  upgrade(db) {
+    db.createObjectStore('queries')
+  },
+})
 
 self.addEventListener('install', event => {
   const cacheStatic = async () => {
@@ -70,8 +79,49 @@ self.addEventListener('fetch', event => {
     return match ?? fetchProm
   }
 
+  const handlePost = async () => {
+    const request = event.request.clone()
+    const body = await request.text()
+    const { operationName: op } = JSON.parse(body)
+
+    if (!CACHE_OPS.includes(op.toLowerCase())) return fetch(event.request)
+
+    let cached = await (await db).get('queries', op)
+    if (cached?.requestBody !== body) cached = null
+
+    const fetchProm = fetch(event.request)
+
+    event.waitUntil(
+      db.then(db =>
+        fetchProm.then(res => {
+          const response = res.clone()
+          response.blob().then(responseBody => {
+            let { status, statusText, headers } = response
+            return db.put(
+              'queries',
+              {
+                status,
+                statusText,
+                headers: Object.fromEntries(headers.entries()),
+                responseBody,
+                requestBody: body,
+              },
+              op
+            )
+          })
+        })
+      )
+    )
+
+    if (!cached) return fetchProm
+    const { responseBody, ...rest } = cached
+    return new Response(responseBody, rest)
+  }
+
   event.respondWith(
-    event.request.url.startsWith(process.env.PHOTO_BUCKET as string)
+    event.request.method === 'POST'
+      ? handlePost()
+      : event.request.url.startsWith(process.env.PHOTO_BUCKET as string)
       ? handlePhoto()
       : handleDefault()
   )

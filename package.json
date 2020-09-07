@@ -62,6 +62,7 @@
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
     "html-webpack-plugin": "4.0.0-beta.11",
+    "idb": "^5.0.4",
     "identity-obj-proxy": "3.0.0",
     "jest": "24.9.0",
     "jest-environment-jsdom-fourteen": "1.0.1",
