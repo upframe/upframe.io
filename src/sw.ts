@@ -4,12 +4,14 @@ declare var self: ServiceWorkerGlobalScope
 const VERSION = 1
 const CACHE_PREFIX = `${self.location.hostname}.v${VERSION}.`
 const STATIC_CACHE = CACHE_PREFIX + 'static'
+const PHOTO_CACHE = CACHE_PREFIX + 'photo'
 
 const expectedCaches = [STATIC_CACHE]
 
 self.addEventListener('install', event => {
   const cacheStatic = async () => {
     const cache = await caches.open(STATIC_CACHE)
+    await caches.open(PHOTO_CACHE)
     const { files } = await fetch('/asset-manifest.json').then(res =>
       res.json()
     )
@@ -49,7 +51,7 @@ self.addEventListener('activate', event => {
 })
 
 self.addEventListener('fetch', event => {
-  const respond = async () => {
+  const handleDefault = async () => {
     const cache = await caches.open(STATIC_CACHE)
     return (
       (await cache.match(
@@ -58,5 +60,19 @@ self.addEventListener('fetch', event => {
     )
   }
 
-  event.respondWith(respond())
+  const handlePhoto = async () => {
+    const cache = await caches.open(PHOTO_CACHE)
+    const match = await cache.match(event.request)
+    const fetchProm = fetch(event.request).then(res => {
+      cache.put(event.request, res.clone())
+      return res
+    })
+    return match ?? fetchProm
+  }
+
+  event.respondWith(
+    event.request.url.startsWith(process.env.PHOTO_BUCKET as string)
+      ? handlePhoto()
+      : handleDefault()
+  )
 })
