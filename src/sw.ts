@@ -9,7 +9,7 @@ const STATIC_CACHE = CACHE_PREFIX + 'static'
 const PHOTO_CACHE = CACHE_PREFIX + 'photo'
 const CACHE_OPS = ['Mentors', 'Lists'].map(v => v.toLowerCase())
 
-const expectedCaches = [STATIC_CACHE]
+const expectedCaches = [STATIC_CACHE, PHOTO_CACHE]
 
 const db = openDB(self.location.hostname, 1, {
   upgrade(db) {
@@ -76,6 +76,7 @@ self.addEventListener('fetch', event => {
       cache.put(event.request, res.clone())
       return res
     })
+    event.waitUntil(fetchProm)
     return match ?? fetchProm
   }
 
@@ -121,7 +122,9 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     event.request.method === 'POST'
       ? handlePost()
-      : event.request.url.startsWith(process.env.PHOTO_BUCKET as string)
+      : event.request.url.startsWith(
+          process.env.REACT_APP_PHOTO_BUCKET as string
+        )
       ? handlePhoto()
       : handleDefault()
   )
