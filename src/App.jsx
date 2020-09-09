@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react'
+import React, { Suspense, useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Routes from './Routes'
@@ -14,12 +14,14 @@ import {
   NotificationStack,
   ScrollToTop,
   MobileNav,
+  UpdatePrompt,
 } from './components'
 
 export default function App() {
   useMessaging()
   const { visible } = useNavbar()
   const keyboardOpen = useVirtualKeyboard()
+  const [updateAvailable, setUpdateAvailable] = useState(false)
 
   const { me, loading } = useMe()
 
@@ -27,6 +29,14 @@ export default function App() {
     if (loading) return
     localStorage.setItem('loggedIn', !!me)
   }, [me, loading])
+
+  useEffect(() => {
+    if (!navigator.serviceWorker) return
+    navigator.serviceWorker.onmessage = ({ data }) => {
+      if (data?.type !== 'UPDATE_AVAILABLE') return
+      setUpdateAvailable(true)
+    }
+  }, [])
 
   return (
     <>
@@ -60,6 +70,7 @@ export default function App() {
           </Suspense>
           <NotificationStack />
           <MobileNav />
+          {updateAvailable && <UpdatePrompt />}
         </S.App>
       </Router>
     </>

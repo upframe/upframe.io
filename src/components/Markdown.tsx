@@ -106,8 +106,7 @@ const S = {
     }
 
     a {
-      text-decoration: underline var(--cl-primary);
-      text-underline-position: below;
+      color: var(--cl-secondary);
     }
   `,
 }

@@ -70,7 +70,7 @@ const S = {
       padding: 0 15vw;
     }
 
-    a:first-child > svg {
+    & > *:first-child > svg {
       margin-left: -0.8rem;
       margin-right: 1rem;
 
