@@ -11,6 +11,8 @@ const CACHE_OPS = ['Mentors', 'Lists'].map(v => v.toLowerCase())
 
 const expectedCaches = [STATIC_CACHE, PHOTO_CACHE]
 
+const IS_LOCAL = ['localhost', '127.0.0.1'].includes(self.location.hostname)
+
 interface UpframeDB extends DBSchema {
   queries: {
     key: string
@@ -36,6 +38,7 @@ const dbProm = openDB<UpframeDB>(self.location.hostname, 1, {
 })
 
 self.addEventListener('install', event => {
+  if (IS_LOCAL) return
   event.waitUntil(cacheStatic())
 })
 
@@ -58,6 +61,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const handleDefault = async () => {
+    if (IS_LOCAL) return fetch(event.request)
     const cache = await caches.open(STATIC_CACHE)
     const isNav = event.request.mode === 'navigate'
     if (isNav) event.waitUntil(checkForUpdate())
@@ -156,8 +160,6 @@ async function getStatic() {
 }
 
 async function checkForUpdate() {
-  await new Promise(res => setTimeout(res, 1000))
-
   const db = await dbProm
   const updateStatus = await db.get('meta', 'updateStatus')
 
