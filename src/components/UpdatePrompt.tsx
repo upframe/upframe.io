@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Icon from './Icon'
+import { mobile } from 'styles/responsive'
+import layout from 'styles/layout'
 
 export default function UpdatePrompt() {
   const [hidden, setHidden] = useState(false)
@@ -35,6 +37,28 @@ const S = {
     box-sizing: border-box;
     padding: 0.8rem 1.5rem;
     padding-right: 1rem;
+    border-radius: 0.25rem;
+    z-index: 5000;
+
+    @media ${mobile} {
+      bottom: calc(${layout.mobile.navbarHeight} + 1rem);
+    }
+
+    @media (max-width: 600px) {
+      bottom: ${layout.mobile.navbarHeight};
+      width: 100vw;
+      max-width: initial;
+      right: 0;
+      padding-left: 4vw;
+      padding-right: 4vw;
+      border-radius: 0;
+    }
+
+    @media (max-width: 450px) {
+      svg:first-of-type {
+        display: none;
+      }
+    }
   `,
 
   Text: styled.p`
@@ -46,6 +70,12 @@ const S = {
 
     span {
       display: inline-block;
+    }
+
+    @media (max-width: 450px) {
+      span {
+        display: inline;
+      }
     }
   `,
 

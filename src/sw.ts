@@ -46,15 +46,13 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     Promise.all([
       self.clients.claim(),
-      caches.keys().then(keys =>
-        Promise.all(
-          keys.map(key => {
-            if (!expectedCaches.includes(key)) {
-              return caches.delete(key)
-            }
-          })
-        )
-      ),
+      caches
+        .keys()
+        .then(keys =>
+          Promise.all(
+            keys.map(key => !expectedCaches.includes(key) && caches.delete(key))
+          )
+        ),
     ])
   )
 })
@@ -74,10 +72,9 @@ self.addEventListener('fetch', event => {
   const handlePhoto = async () => {
     const cache = await caches.open(PHOTO_CACHE)
     const match = await cache.match(event.request)
-    const fetchProm = fetch(event.request).then(res => {
-      cache.put(event.request, res.clone())
-      return res
-    })
+    const fetchProm = fetch(event.request).then(res =>
+      cache.put(event.request, res.clone()).then(() => res)
+    )
     event.waitUntil(fetchProm)
     return match ?? fetchProm
   }
