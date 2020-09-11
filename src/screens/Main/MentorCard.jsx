@@ -17,7 +17,7 @@ export default function MentorCard({ mentor, style }) {
       <ProfilePicture imgs={mentor.profilePictures} size={imgSize} />
       <div className={styles.info}>
         <Title size={3}>{mentor.name}</Title>{' '}
-        <p className={styles.role}>{mentor.headline}</p>
+        <p className={styles.headline}>{mentor.headline}</p>
         <p className={styles.biography}>{mentor.biography}</p>
         <div className={styles.skills}>
           {tags.map(({ id, name }) => (
