@@ -14,6 +14,10 @@
       overscroll-behavior: none;
     }
 
+    .rbc-time-header {
+      pointer-events: none;
+    }
+
     .rbc-time-header-cell {
       line-height: 50px;
     }
