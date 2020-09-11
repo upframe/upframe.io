@@ -226,7 +226,9 @@ export default class Channel {
 
   public async sendMessage(content: string, meId: string) {
     const id = Date.now().toString()
-    this.postMessage(new Message(id, content, meId, this.id, new Date()))
+    this.postMessage(
+      new Message(id, content, undefined, meId, this.id, new Date())
+    )
     const { data } = await api.mutate<
       SendChatMessage,
       SendChatMessageVariables

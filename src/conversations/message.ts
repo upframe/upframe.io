@@ -1,3 +1,4 @@
+import { render } from 'utils/markdown'
 import type { Message as GqlMsg } from 'gql/types'
 
 export default class Message {
@@ -6,17 +7,21 @@ export default class Message {
 
   constructor(
     public readonly id: string,
-    public readonly content: string,
+    public readonly content: string | null | undefined,
+    public markup: string | null | undefined,
     public readonly author: string,
     public readonly channelId: string,
     public readonly date: Date,
     public readonly unixTime = date.getTime()
-  ) {}
+  ) {
+    if (content && !markup) this.markup = render(content)
+  }
 
   public static fromGqlMsg(msg: GqlMsg) {
     return new Message(
       msg.id,
       msg.content,
+      msg.markup,
       msg.author,
       msg.channel,
       new Date(msg.time)

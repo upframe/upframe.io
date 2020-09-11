@@ -55,7 +55,8 @@ export const MSG_SUBSCRIPTION = gql`
   subscription MessageSub($token: ID!) {
     message(token: $token) {
       id
-      content
+      content(fallback: true)
+      markup
       author
       time
       channel
@@ -129,7 +130,8 @@ export const CHANNEL_MSGS = gql`
           node {
             id
             author
-            content
+            content(fallback: true)
+            markup
             time
           }
         }
@@ -146,7 +148,8 @@ export const SEND_MESSAGE = gql`
   mutation SendChatMessage($channel: ID!, $content: String!) {
     sendMessage(channel: $channel, content: $content) {
       id
-      content
+      content(fallback: true)
+      markup
       time
       author
     }
@@ -161,7 +164,8 @@ export const CREATE_CHANNEL = gql`
         edges {
           node {
             id
-            content
+            content(fallback: true)
+            markup
             author
             time
           }

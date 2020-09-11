@@ -14,7 +14,8 @@ const picSize = '3.2rem'
 
 interface Props {
   id: string
-  content: string
+  content?: string
+  markup: string
   author: string
   date: Date
   stacked?: boolean
@@ -29,6 +30,7 @@ interface Props {
 function Message({
   id,
   content,
+  markup,
   author,
   date,
   stacked = false,
@@ -126,7 +128,7 @@ function Message({
             <Time>{date}</Time>
           </S.Head>
         )}
-        <Markdown text={content} />
+        <Markdown markup={markup} />
       </S.Main>
       {showContext && <Context id={id} onToggle={onLockFocus} i={i} />}
     </S.Wrap>
