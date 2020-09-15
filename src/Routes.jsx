@@ -35,7 +35,7 @@ export default function Routes() {
         path="/(conversations|c)/:conversationId?/:channelId?"
         component={Conversations}
       />
-      <Route exact path="/tools" component={Tools} />
+      <Route exact path="/tools/:page?" component={Tools} />
       <Route exact path="/meetup/confirm/:meetupid" component={MeetupConfirm} />
       <Route exact path="/meetup/cancel/:meetupid" component={MeetupCancel} />
       <Route exact path="/redirects" component={Redirects} />
