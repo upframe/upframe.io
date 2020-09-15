@@ -32,6 +32,7 @@ export default function Dropdown({ onBlur }) {
     <nav className={styles.dropdown} tabIndex={0} ref={ref} onBlur={onClick}>
       <Link to={`/${me ? me.handle : ''}`}>My Profile</Link>
       <Link to={`/settings/public`}>Settings</Link>
+      {me.role === 'ADMIN' && <Link to={'/admin'}>Admin</Link>}
       <p onClick={signOut}>Sign out</p>
     </nav>
   )
