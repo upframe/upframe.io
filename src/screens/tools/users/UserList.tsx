@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { gql } from 'gql'
 import api from 'api'
+import { Spinner, Button } from 'components'
 
 const buildQuery = (fields: string[]) => `
-  query ToolsUserList {
-    userList {
+  query ToolsUserList($limit: Int) {
+    userList(limit: $limit) {
       total
       edges {
         node {
@@ -23,12 +24,21 @@ export default function UserList() {
   const [users, setUsers] = useState([])
   const [fieldSelection] = useState<typeof fieldSet[number][]>(['name', 'role'])
   const [selected, setSelected] = useState<string[]>([])
+  const [limit, setLimit] = useState(25)
+  const [loading, setLoading] = useState(true)
+  const [total, setTotal] = useState<number>()
 
   useEffect(() => {
-    api.query({ query: gql(buildQuery(fieldSelection)) }).then(({ data }) => {
-      setUsers(data.userList.edges.map(({ node }) => node))
-    })
-  }, [fieldSelection])
+    setLoading(true)
+    api
+      .query({ query: gql(buildQuery(fieldSelection)), variables: { limit } })
+      .then(({ data }) => {
+        const { edges, total } = data.userList
+        setUsers(edges.map(({ node }) => node))
+        setTotal(total)
+        setLoading(false)
+      })
+  }, [fieldSelection, limit])
 
   function onSelect(
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -54,51 +64,90 @@ export default function UserList() {
   }
 
   return (
-    <S.List fields={fieldSelection.length}>
-      {['', ...fieldSelection].map(field => (
-        <S.Header key={`title-${field}`}>{field}</S.Header>
-      ))}
-      {users.flatMap((user: any) => [
-        <S.Select
-          key={`${user.id}-selected`}
-          onClick={e => onSelect(e, user)}
-          data-selected={selected.includes(user.id)}
-        >
-          <input
-            type="checkbox"
-            checked={selected.includes(user.id)}
-            readOnly
-          />
-        </S.Select>,
-        ...Object.entries(user)
-          .filter(([k]) => fieldSelection.includes(k as any))
-          .sort(
-            ([k1], [k2]) =>
-              fieldSelection.indexOf(k1 as any) -
-              fieldSelection.indexOf(k2 as any)
-          )
-          .map(([k, v]: [string, any]) => (
-            <S.Item key={`${user.id}-${k}`} data-field={k}>
-              {v}
-            </S.Item>
-          )),
-      ])}
-    </S.List>
+    <S.Wrap>
+      <S.List fields={fieldSelection.length}>
+        {['', ...fieldSelection].map(field => (
+          <S.Header key={`title-${field}`}>{field}</S.Header>
+        ))}
+        {loading ? (
+          <S.LoadingPlaceholder rows={limit}>
+            <Spinner />
+          </S.LoadingPlaceholder>
+        ) : (
+          <>
+            {users.flatMap((user: any) => [
+              <S.Select
+                key={`${user.id}-selected`}
+                onClick={e => onSelect(e, user)}
+                data-selected={selected.includes(user.id)}
+              >
+                <input
+                  type="checkbox"
+                  checked={selected.includes(user.id)}
+                  readOnly
+                />
+              </S.Select>,
+              ...Object.entries(user)
+                .filter(([k]) => fieldSelection.includes(k as any))
+                .sort(
+                  ([k1], [k2]) =>
+                    fieldSelection.indexOf(k1 as any) -
+                    fieldSelection.indexOf(k2 as any)
+                )
+                .map(([k, v]: [string, any]) => (
+                  <S.Item key={`${user.id}-${k}`} data-field={k}>
+                    {v}
+                  </S.Item>
+                )),
+            ])}
+          </>
+        )}
+      </S.List>
+      <S.PageControl>
+        <S.PageSelect>
+          <Button text>&lt;</Button>
+          <span>viewing users 1&ndash;{limit}</span>
+          <Button text>&gt;</Button>
+        </S.PageSelect>
+        <span>total: {total}</span>
+        <span>page 1&thinsp;/&thinsp;{Math.ceil((total ?? 0) / limit)}</span>
+        <span>
+          <select
+            value={limit}
+            onChange={({ target }) => setLimit(parseInt(target.value))}
+          >
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+            <option>75</option>
+            {Array(19)
+              .fill(0)
+              .map((_, i) => (i + 2) * 50)
+              .map(v => (
+                <option key={`opt-${v}`}>{v}</option>
+              ))}
+          </select>{' '}
+          users per page
+        </span>
+      </S.PageControl>
+    </S.Wrap>
   )
 }
 
 const S = {
-  List: styled.div<{ fields: number }>`
-    display: grid;
-    grid-template-columns: auto ${({ fields }) => '1fr '.repeat(fields)};
-    min-width: 0;
-    font-size: 0.85rem;
-
-    --line-height: 2em;
+  Wrap: styled.div`
     --grid-width: 60vw;
 
     width: var(--grid-width);
     margin: auto;
+    font-size: 0.85rem;
+  `,
+
+  List: styled.div<{ fields: number }>`
+    display: grid;
+    grid-template-columns: auto ${({ fields }) => '1fr '.repeat(fields)};
+
+    --line-height: 2em;
 
     & > * {
       place-self: center start;
@@ -160,6 +209,41 @@ const S = {
 
     &[data-field='role'] {
       text-transform: lowercase;
+    }
+  `,
+
+  LoadingPlaceholder: styled.div<{ rows: number }>`
+    display: block;
+    width: 100%;
+    height: calc(${({ rows }) => rows} * var(--line-height));
+  `,
+
+  PageControl: styled.div`
+    width: 100%;
+    height: 2rem;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+
+    & > * {
+      margin: 0 1rem;
+    }
+  `,
+
+  PageSelect: styled.div`
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    button {
+      margin: 0;
+      padding: 0;
+      display: block;
+      font-size: 1.5em;
+    }
+
+    span {
+      margin: 0 0.5rem;
     }
   `,
 }
