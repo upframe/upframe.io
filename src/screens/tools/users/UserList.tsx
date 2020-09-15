@@ -5,8 +5,8 @@ import api from 'api'
 import { Spinner, Button } from 'components'
 
 const buildQuery = (fields: string[]) => `
-  query ToolsUserList($limit: Int) {
-    userList(limit: $limit) {
+  query ToolsUserList($first: Int, $last: Int, $after: ID, $before: ID) {
+    userList(first: $first, last: $last, after: $after, before: $before) {
       total
       edges {
         node {
@@ -24,21 +24,29 @@ export default function UserList() {
   const [users, setUsers] = useState([])
   const [fieldSelection] = useState<typeof fieldSet[number][]>(['name', 'role'])
   const [selected, setSelected] = useState<string[]>([])
-  const [limit, setLimit] = useState(25)
   const [loading, setLoading] = useState(true)
   const [total, setTotal] = useState<number>()
+  const [limit, setLimit] = useState(25)
+  const [cursor, setCursor] = useState<string | undefined>(undefined)
+  const [pageDir, setPageDir] = useState<'forward' | 'backward'>('forward')
 
   useEffect(() => {
     setLoading(true)
     api
-      .query({ query: gql(buildQuery(fieldSelection)), variables: { limit } })
+      .query({
+        query: gql(buildQuery(fieldSelection)),
+        variables:
+          pageDir === 'forward'
+            ? { first: limit, after: cursor }
+            : { last: limit, before: cursor },
+      })
       .then(({ data }) => {
         const { edges, total } = data.userList
         setUsers(edges.map(({ node }) => node))
         setTotal(total)
         setLoading(false)
       })
-  }, [fieldSelection, limit])
+  }, [fieldSelection, limit, cursor, pageDir])
 
   function onSelect(
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -61,6 +69,20 @@ export default function UserList() {
         ])
       )
     )
+  }
+
+  function nextPage() {
+    const last: any = users.slice(-1)[0]
+    if (!last) return
+    setPageDir('forward')
+    setCursor(last.id)
+  }
+
+  function previousPage() {
+    const first: any = users[0]
+    if (!first) return
+    setPageDir('backward')
+    setCursor(first.id)
   }
 
   return (
@@ -105,9 +127,13 @@ export default function UserList() {
       </S.List>
       <S.PageControl>
         <S.PageSelect>
-          <Button text>&lt;</Button>
+          <Button text onClick={previousPage}>
+            &lt;
+          </Button>
           <span>viewing users 1&ndash;{limit}</span>
-          <Button text>&gt;</Button>
+          <Button text onClick={nextPage}>
+            &gt;
+          </Button>
         </S.PageSelect>
         <span>total: {total}</span>
         <span>page 1&thinsp;/&thinsp;{Math.ceil((total ?? 0) / limit)}</span>
@@ -141,6 +167,7 @@ const S = {
     width: var(--grid-width);
     margin: auto;
     font-size: 0.85rem;
+    user-select: none;
   `,
 
   List: styled.div<{ fields: number }>`
@@ -198,7 +225,6 @@ const S = {
     font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 0.5em;
-    user-select: none;
   `,
 
   Item: styled.span`
