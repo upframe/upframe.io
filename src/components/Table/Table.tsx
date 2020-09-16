@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import Pagination from './Pagination'
+import PaginationInterface from './Pagination'
 
 type Row = { [c: string]: any }
 
 interface Props {
   columns: string[]
   defaultColumns: string[]
-  query(fields: string[], rows: number): Promise<{ rows: Row[] }>
+  query(
+    fields: string[],
+    rows: number,
+    offset: number
+  ): Promise<{ rows: Row[]; total: number }>
   width?: string
   numRows?: number
 }
@@ -22,13 +26,18 @@ export default function Table({
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState<string[]>([])
+  const [total, setTotal] = useState<number>()
+  const [rowLimit, setRowLimit] = useState(numRows)
+  const [offset, setOffset] = useState(0)
 
   useEffect(() => {
-    query(selectedColumns, numRows).then(({ rows }) => {
+    setLoading(true)
+    query(selectedColumns, rowLimit, offset).then(({ rows, total }) => {
       setLoading(false)
       setRows(rows)
+      setTotal(total)
     })
-  }, [query, selectedColumns, numRows])
+  }, [query, selectedColumns, rowLimit, offset])
 
   function onSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>, row: Row) {
     if (!e.shiftKey || !selected.length)
@@ -50,17 +59,22 @@ export default function Table({
     )
   }
 
+  const Pagination = (
+    <PaginationInterface
+      totalRows={total}
+      rowLimit={rowLimit}
+      setRowLimit={setRowLimit}
+      offset={offset}
+      setOffset={setOffset}
+    />
+  )
   return (
     <S.Wrap width={width} rows={numRows}>
-      <S.ControlStrip>
-        <Pagination totalRows={100} />
-      </S.ControlStrip>
+      <S.ControlStrip>{Pagination}</S.ControlStrip>
       <S.Table columns={selectedColumns.length}>
         <S.HeaderRow>
           {['', ...selectedColumns].map(column => (
-            <S.Cell key={`title-${column}`}>
-              <S.Header>{column}</S.Header>
-            </S.Cell>
+            <S.Header key={`title-${column}`}>{column}</S.Header>
           ))}
         </S.HeaderRow>
         {!loading &&
@@ -92,15 +106,17 @@ export default function Table({
             ))}
         </S.LoadingPlaceholder>
       )}
+      <S.ControlStrip>{Pagination}</S.ControlStrip>
     </S.Wrap>
   )
 }
 
 const Cell = styled.div`
   position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
-  height: 100%;
+  height: var(--row-height);
   background-color: var(--row-color);
   box-sizing: border-box;
   padding: 0.5rem;
@@ -117,32 +133,35 @@ const Row = styled.div`
   }
 
   &[data-selected='true'] {
-    --row-color: #b3e5fc;
+    --row-color: #cfe8fc;
   }
+`
 
-  &:nth-of-type(2n)[data-selected='true'] {
-    --row-color: #9edefb;
-  }
+const _Table = styled.div<{ columns: number }>`
+  display: grid;
+  grid-template-columns: var(--row-height) ${({ columns }) =>
+      'auto '.repeat(columns)};
+  box-sizing: border-box;
+  grid-gap: var(--border-size);
+  background-color: var(--border-color);
 `
 
 const S = {
   Wrap: styled.div<{ width: string; rows: number }>`
     --grid-width: ${({ width }) => width};
-    --row-height: 2rem;
+    --row-height: 2.5rem;
+    --border-color: #90a4ae;
+    --border-size: 1px;
 
     width: var(--grid-width);
     margin: auto;
     font-size: 0.9rem;
+    box-shadow: 0 0 2px 1px #3338;
+    border-radius: 0.15rem;
+    user-select: none;
   `,
 
-  Table: styled.div<{ columns: number }>`
-    display: grid;
-    grid-template-columns: auto ${({ columns }) => '1fr '.repeat(columns)};
-    box-sizing: border-box;
-    grid-gap: 1px;
-    padding: 1px;
-    background-color: #bbb;
-  `,
+  Table: _Table,
 
   Row,
 
@@ -156,10 +175,9 @@ const S = {
     }
   `,
 
-  Header: styled.span`
+  Header: styled(Cell)`
     font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 0.5em;
+    text-transform: capitalize;
   `,
 
   Cell,
@@ -184,11 +202,11 @@ const S = {
       animation: fade 2s linear 0s infinite;
 
       &:nth-of-type(2n) {
-        background-color: #e1e3eb;
+        background-color: #dceffd;
       }
 
       &:nth-of-type(2n + 1) {
-        background-color: #ffdfe8;
+        background-color: #cfe8fc;
       }
 
       /* stylelint-disable-next-line */
@@ -218,12 +236,22 @@ const S = {
 
   ControlStrip: styled.div`
     display: flex;
-    height: 2rem;
+    height: 3rem;
     width: 100%;
-    border: 1px solid gray;
     box-sizing: border-box;
+    padding: 0 1rem;
 
-    ${Pagination.sc} {
+    --border: calc(2 * var(--border-size)) solid var(--border-color);
+
+    border-bottom: var(--border);
+
+    /* stylelint-disable-next-line */
+    ${_Table} ~ & {
+      border-top: var(--border);
+      border-bottom: none;
+    }
+
+    ${PaginationInterface.sc} {
       margin-left: auto;
     }
   `,

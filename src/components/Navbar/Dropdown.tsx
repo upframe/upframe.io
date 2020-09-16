@@ -90,7 +90,7 @@ const S = {
       }
 
       &:hover {
-        background-color: #c8c5c5;
+        background-color: #e0e0e0;
       }
     }
 
@@ -100,6 +100,10 @@ const S = {
   `,
 
   Admin: styled(Link)`
-    border-top: 2px dashed #ff7043;
+    background-color: #dceffd;
+
+    &:hover {
+      background-color: #0091ea55;
+    }
   `,
 }
