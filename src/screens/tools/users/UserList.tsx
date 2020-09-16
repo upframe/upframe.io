@@ -125,7 +125,7 @@ export default function UserList() {
           </>
         )}
       </S.List>
-      <S.PageControl>
+      <S.PaginationInterface>
         <S.PageSelect>
           <Button text onClick={previousPage}>
             &lt;
@@ -155,7 +155,7 @@ export default function UserList() {
           </select>{' '}
           users per page
         </span>
-      </S.PageControl>
+      </S.PaginationInterface>
     </S.Wrap>
   )
 }
@@ -244,7 +244,7 @@ const S = {
     height: calc(${({ rows }) => rows} * var(--line-height));
   `,
 
-  PageControl: styled.div`
+  PaginationInterface: styled.div`
     width: 100%;
     height: 2rem;
     margin-top: 1rem;
