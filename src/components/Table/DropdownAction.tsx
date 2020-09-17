@@ -13,12 +13,18 @@ const DropdownAction: React.FunctionComponent<Props> = ({
   return (
     <S.NavItem
       aria-expanded={false}
-      onClick={({ currentTarget }) =>
+      onClick={({ currentTarget }) => {
+        const gp = currentTarget.parentElement?.parentElement
+        if (!gp) return
+        Array.from(gp.querySelectorAll('[aria-expanded]')).forEach(el => {
+          if (el !== currentTarget)
+            (el as HTMLElement).setAttribute('aria-expanded', 'false')
+        })
         currentTarget.setAttribute(
           'aria-expanded',
           (currentTarget.getAttribute('aria-expanded') === 'false').toString()
         )
-      }
+      }}
     >
       {children}
       <S.Dropdown onClick={e => e.stopPropagation()}>{dropdown}</S.Dropdown>
