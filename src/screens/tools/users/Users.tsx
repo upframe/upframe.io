@@ -4,8 +4,8 @@ import { gql } from 'gql'
 import api from 'api'
 
 const buildQuery = (fields: string[]) => `
-  query ToolsUserList($limit: Int, $offset: Int, $sortBy: String, $order: SortOrder) {
-    userList(limit: $limit, offset: $offset, sortBy: $sortBy, order: $order) {
+  query ToolsUserList($limit: Int, $offset: Int, $sortBy: String, $order: SortOrder, $search: String) {
+    userList(limit: $limit, offset: $offset, sortBy: $sortBy, order: $order, search: $search) {
       total
       edges {
         node {
@@ -22,12 +22,13 @@ const query = (
   rows: number,
   offset: number,
   sortBy: string,
-  sortDir: 'ASC' | 'DESC'
+  sortDir: 'ASC' | 'DESC',
+  search: string
 ) =>
   api
     .query({
       query: gql(buildQuery(fields)),
-      variables: { limit: rows, offset, sortBy, order: sortDir },
+      variables: { limit: rows, offset, sortBy, order: sortDir, search },
     })
     .then(({ data: { userList: { edges, total } } }) => ({
       rows: edges.map(({ node: { joined, ...user } }) => ({

@@ -30,9 +30,7 @@ function PaginationInterface({
 }: Props) {
   function goToPage(page: number) {
     if (!totalRows) return
-    setOffset(
-      Math.max(0, Math.min((page - 1) * rowLimit, totalRows - rowLimit))
-    )
+    setOffset(Math.max(0, Math.min((page - 1) * rowLimit, totalRows - 1)))
   }
 
   const pages = Math.ceil((totalRows ?? 1) / rowLimit)

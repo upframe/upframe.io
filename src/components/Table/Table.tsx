@@ -13,7 +13,8 @@ interface Props {
     rows: number,
     offset: number,
     sortBy: string,
-    sortDir: 'ASC' | 'DESC'
+    sortDir: 'ASC' | 'DESC',
+    search?: string
   ): Promise<{ rows: Row[]; total: number }>
   width?: string
   numRows?: number
@@ -39,17 +40,19 @@ export default function Table({
   const [sortDir, setSortDir] = useState<'ASC' | 'DESC'>('ASC')
   const [expandedColumn, setExpandedColumn] = useState<number>()
   const [fullscreen, setFullscreen] = useState(false)
+  const [searchInput, setSearchInput] = useState('')
+  const [search, setSearch] = useState<string>()
 
   useEffect(() => {
     setLoading(true)
-    query(selectedColumns, rowLimit, offset, sortBy, sortDir).then(
+    query(selectedColumns, rowLimit, offset, sortBy, sortDir, search).then(
       ({ rows, total }) => {
         setLoading(false)
         setRows(rows)
         setTotal(total)
       }
     )
-  }, [query, selectedColumns, rowLimit, offset, sortBy, sortDir])
+  }, [query, selectedColumns, rowLimit, offset, sortBy, sortDir, search])
 
   function onSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>, row: Row) {
     if (!e.shiftKey || !selected.length)
@@ -155,6 +158,37 @@ export default function Table({
             </S.Customize>
           </S.Dropdown>
         </S.NavItem>
+        <S.SearchWrap>
+          <S.SearchBar
+            data-focus={false}
+            onMouseDown={({ currentTarget }) =>
+              requestAnimationFrame(() =>
+                currentTarget.querySelector('input')?.focus()
+              )
+            }
+            onSubmit={e => {
+              e.preventDefault()
+              if (search === searchInput) return
+              setLoading(true)
+              setSearch(searchInput || undefined)
+            }}
+          >
+            <Icon icon="search" />
+            <S.SearchInput
+              placeholder="Search by name"
+              onFocus={({ target }) =>
+                ((target.parentElement as HTMLFormElement).dataset.focus =
+                  'true')
+              }
+              onBlur={({ target }) =>
+                ((target.parentElement as HTMLFormElement).dataset.focus =
+                  'false')
+              }
+              value={searchInput}
+              onChange={({ target }) => setSearchInput(target.value)}
+            />
+          </S.SearchBar>
+        </S.SearchWrap>
         {Pagination}
       </S.ControlStrip>
       <S.Table
@@ -289,6 +323,7 @@ const S = {
     --grid-width: ${({ width }) => width};
     --row-height: 2.8rem;
     --border-color: #90a4ae;
+    --border-color-strong: #607d8b;
     --border-size: 1px;
     --cl-action-light: #1e88e5;
     --cl-action-dark: #0d47a1;
@@ -429,12 +464,16 @@ const S = {
 
   ControlStrip: styled.div`
     display: flex;
-    height: 3.5rem;
     width: 100%;
     box-sizing: border-box;
     padding-right: 1rem;
+    flex-wrap: wrap;
 
-    --border: calc(2 * var(--border-size)) solid var(--border-color);
+    & > * {
+      height: 3.5rem;
+    }
+
+    --border: calc(3 * var(--border-size)) solid var(--border-color);
 
     border-bottom: var(--border);
 
@@ -452,7 +491,6 @@ const S = {
   NavItem: styled.div`
     display: flex;
     align-items: center;
-    height: 100%;
     padding: 0 1em;
     border-right: var(--border-size) solid var(--border-color);
     flex-shrink: 0;
@@ -525,6 +563,106 @@ const S = {
       left: 50%;
       top: 50%;
       transform: scale(1) translateX(-50%) translateY(-50%);
+    }
+  `,
+
+  SearchWrap: styled.div`
+    display: block;
+    position: relative;
+    margin-left: 1rem;
+
+    --collapsed-size: 15em;
+
+    flex: 1 0 var(--collapsed-size);
+  `,
+
+  SearchBar: styled.form`
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    border: 1px solid var(--border-color-strong);
+    border-radius: 0.25em;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding-left: 0.5em;
+    box-sizing: border-box;
+    width: 100%;
+
+    --transition-time: 0.2s;
+
+    transition: border-color var(--transition-time) ease;
+
+    svg {
+      width: 1em;
+      height: 1em;
+      margin-right: 0.3em;
+      fill: var(--border-color-strong);
+      transition: fill var(--transition-time) ease;
+      cursor: pointer;
+    }
+
+    &::after {
+      content: '';
+      background: #fff;
+      position: absolute;
+      right: -2px;
+      top: -2px;
+      height: calc(100% + 4px);
+      width: calc(100% - var(--collapsed-size) + 0.5em);
+      transform-origin: right;
+      transition: transform var(--transition-time) ease, opacity 0s 0.05s;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      right: calc(100% - var(--collapsed-size) - 1px);
+      top: -1px;
+      height: 100%;
+      width: 1rem;
+      z-index: 2;
+      border: 1px solid;
+      border-color: inherit;
+      border-left: none;
+      border-top-right-radius: inherit;
+      border-bottom-right-radius: inherit;
+      transition: right var(--transition-time) ease, opacity 0s 0s;
+    }
+
+    &[data-focus='true']::after {
+      transform: scaleX(0);
+      opacity: 0;
+      transition: transform var(--transition-time) ease,
+        opacity 0s var(--transition-time);
+    }
+
+    &[data-focus='true']::before {
+      right: 0;
+      opacity: 0;
+      transition: right var(--transition-time) ease,
+        opacity 0s var(--transition-time);
+    }
+
+    &[data-focus='true'] {
+      border-color: var(--cl-action-dark);
+    }
+
+    &[data-focus='true'] svg {
+      fill: var(--cl-action-dark);
+    }
+  `,
+
+  SearchInput: styled.input`
+    flex-grow: 1;
+    border: none;
+    border-radius: inherit;
+    font-family: inherit;
+    font-size: 1em;
+    color: var(--cl-text-strong);
+
+    &:focus {
+      outline: none;
     }
   `,
 }
