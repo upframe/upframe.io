@@ -37,6 +37,7 @@ export default function Table({
   const [offset, setOffset] = useState(0)
   const [sortBy, setSortBy] = useState(defaultSortBy)
   const [sortDir, setSortDir] = useState<'ASC' | 'DESC'>('ASC')
+  const [expandedColumn, setExpandedColumn] = useState<number>()
 
   useEffect(() => {
     setLoading(true)
@@ -74,6 +75,21 @@ export default function Table({
     if (rowIds.every(id => selected.includes(id)))
       setSelected(selected.filter(id => !rowIds.includes(id)))
     else setSelected(Array.from(new Set([...selected, ...rowIds])))
+  }
+
+  function mouseMove(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    if (!e.currentTarget) return
+    const clBoxes = Array.from(
+      (e.currentTarget as HTMLElement).firstChild?.childNodes ?? []
+    )
+      .slice(1)
+      .map(v => (v as HTMLElement).getBoundingClientRect())
+
+    const column = clBoxes.findIndex(
+      ({ left, right }) => e.pageX >= left && e.pageX <= right + 1
+    )
+    if (column < 0 || expandedColumn === column) return
+    setExpandedColumn(column)
   }
 
   const Pagination = (
@@ -131,15 +147,21 @@ export default function Table({
         </S.NavItem>
         {Pagination}
       </S.ControlStrip>
-      <S.Table columns={selectedColumns.length}>
+      <S.Table
+        columns={selectedColumns.length}
+        expanded={expandedColumn}
+        data-expanded={expandedColumn}
+        onMouseMove={mouseMove}
+        onMouseLeave={() => setExpandedColumn(undefined)}
+      >
         <S.HeaderRow>
-          <S.Header clickable onClick={toggleAll}>
+          <S.Select clickable onClick={toggleAll}>
             <input
               type="checkbox"
               checked={rows.every(({ id }) => selected.includes(id))}
               readOnly
             />
-          </S.Header>
+          </S.Select>
           {selectedColumns.map(column => (
             <S.Header
               key={`title-${column}`}
@@ -174,11 +196,11 @@ export default function Table({
                 />
               </S.Select>
               {selectedColumns.map(column => (
-                <S.Cell key={`${row.id}-${column}`}>
+                <S.ContentCell key={`${row.id}-${column}`}>
                   <S.Item key={`${row.id}-${column}`} data-column={column}>
                     {row[column]}
                   </S.Item>
-                </S.Cell>
+                </S.ContentCell>
               ))}
             </S.Row>
           ))}
@@ -205,7 +227,7 @@ const Cell = styled.div<{ clickable?: boolean }>`
   height: var(--row-height);
   background-color: var(--row-color);
   box-sizing: border-box;
-  padding: 0.5rem;
+  padding: 0 var(--cell-padding);
   overflow: hidden;
   /* stylelint-disable-next-line */
   ${({ clickable }) => (clickable ? `cursor: pointer;` : '')}
@@ -215,23 +237,41 @@ const Row = styled.div`
   display: contents;
 
   --row-color: #fff;
+  --row-transparent: #fff0;
 
   &:nth-of-type(2n) {
     --row-color: #f8f8f8;
+    --row-transparent: #f8f8f800;
   }
 
   &[data-selected='true'] {
     --row-color: #cfe8fc;
+    --row-transparent: #cfe8fc00;
   }
 `
 
-const _Table = styled.div<{ columns: number }>`
+const _Table = styled.div<{ columns: number; expanded?: number }>`
   display: grid;
-  grid-template-columns: var(--row-height) ${({ columns }) =>
-      'auto '.repeat(columns)};
   box-sizing: border-box;
   grid-gap: var(--border-size);
   background-color: var(--border-color);
+  grid-template-columns: var(--row-height) ${({ columns }) =>
+      'auto '.repeat(columns)};
+
+  /* stylelint-disable-next-line */
+  ${({ columns }) =>
+    Array(columns)
+      .fill(0)
+      .map(
+        (_, i) => `
+        &[data-expanded='${i}'] {
+          grid-template-columns: var(--row-height) ${'auto '.repeat(
+            i
+          )}minmax(max-content, auto) ${'auto '.repeat(columns - i - 1)};
+        }
+      `
+      )
+      .join('\n')}
 `
 
 const S = {
@@ -242,6 +282,7 @@ const S = {
     --border-size: 1px;
     --cl-action-light: #1e88e5;
     --cl-action-dark: #0d47a1;
+    --cell-padding: 0.8em;
 
     width: var(--grid-width);
     margin: auto;
@@ -264,8 +305,14 @@ const S = {
   `,
 
   Select: styled(Cell)`
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
     input {
       display: block;
+      margin: 0;
     }
   `,
 
@@ -290,11 +337,29 @@ const S = {
 
   Cell,
 
+  ContentCell: styled(Cell)`
+    position: relative;
+    padding-right: 0;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      width: var(--cell-padding);
+      height: 100%;
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: linear-gradient(
+        to right,
+        var(--row-transparent),
+        var(--row-color)
+      );
+    }
+  `,
+
   Item: styled.span`
-    text-overflow: ellipsis;
     white-space: nowrap;
-    overflow-x: hidden;
-    user-select: none;
+    margin-right: var(--cell-padding);
 
     &[data-column='role'] {
       text-transform: lowercase;
