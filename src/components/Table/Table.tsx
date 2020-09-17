@@ -38,6 +38,7 @@ export default function Table({
   const [sortBy, setSortBy] = useState(defaultSortBy)
   const [sortDir, setSortDir] = useState<'ASC' | 'DESC'>('ASC')
   const [expandedColumn, setExpandedColumn] = useState<number>()
+  const [fullscreen, setFullscreen] = useState(false)
 
   useEffect(() => {
     setLoading(true)
@@ -105,8 +106,17 @@ export default function Table({
     />
   )
   return (
-    <S.Wrap width={width} rows={numRows}>
+    <S.Wrap
+      width={width}
+      rows={numRows}
+      data-view={fullscreen ? 'fullscreen' : 'default'}
+    >
       <S.ControlStrip>
+        <S.NavItem onClick={() => setFullscreen(!fullscreen)}>
+          <S.ViewToggle>
+            <Icon icon={fullscreen ? 'minimize' : 'maximize'} />
+          </S.ViewToggle>
+        </S.NavItem>
         <S.NavItem
           aria-expanded={false}
           onClick={({ currentTarget }) =>
@@ -290,9 +300,19 @@ const S = {
     box-shadow: 0 0 2px 1px #0005;
     border-radius: 0.15rem;
     user-select: none;
+    background-color: #fff;
 
     input[type='checkbox'] {
       cursor: pointer;
+    }
+
+    &[data-view='fullscreen'] {
+      --grid-width: 100vw;
+
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2000;
     }
   `,
 
@@ -438,12 +458,17 @@ const S = {
     flex-shrink: 0;
     cursor: pointer;
     position: relative;
+    box-sizing: border-box;
+    min-width: calc(var(--row-height) + 1px);
 
     svg {
       margin-left: auto;
       transform: scale(0.8);
       fill: var(--cl-action-dark);
-      padding-left: 0.5rem;
+
+      * ~ & {
+        padding-left: 0.5rem;
+      }
     }
   `,
 
@@ -489,6 +514,17 @@ const S = {
       label {
         margin-left: 0.5rem;
       }
+    }
+  `,
+
+  ViewToggle: styled.div`
+    display: contents;
+
+    svg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: scale(1) translateX(-50%) translateY(-50%);
     }
   `,
 }
