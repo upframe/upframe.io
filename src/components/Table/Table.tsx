@@ -68,11 +68,21 @@ export default function Table({
     )
   }
 
+  function toggleAll() {
+    const rowIds = rows.map(({ id }) => id)
+    if (rowIds.every(id => selected.includes(id)))
+      setSelected(selected.filter(id => !rowIds.includes(id)))
+    else setSelected(Array.from(new Set([...selected, ...rowIds])))
+  }
+
   const Pagination = (
     <PaginationInterface
       totalRows={total}
       rowLimit={rowLimit}
-      setRowLimit={setRowLimit}
+      setRowLimit={n => {
+        setOffset(0)
+        setRowLimit(n)
+      }}
       offset={offset}
       setOffset={setOffset}
     />
@@ -82,10 +92,18 @@ export default function Table({
       <S.ControlStrip>{Pagination}</S.ControlStrip>
       <S.Table columns={selectedColumns.length}>
         <S.HeaderRow>
-          {['', ...selectedColumns].map(column => (
+          <S.Header clickable onClick={toggleAll}>
+            <input
+              type="checkbox"
+              checked={rows.every(({ id }) => selected.includes(id))}
+              readOnly
+            />
+          </S.Header>
+          {selectedColumns.map(column => (
             <S.Header
               key={`title-${column}`}
               onClick={() => {
+                setOffset(0)
                 if (sortBy === column)
                   return setSortDir(sortDir === 'ASC' ? 'DESC' : 'ASC')
                 setSortDir('ASC')
@@ -107,7 +125,7 @@ export default function Table({
         {!loading &&
           rows.map(row => (
             <S.Row key={row.id} data-selected={selected.includes(row.id)}>
-              <S.Select onClick={e => onSelect(e, row)}>
+              <S.Select onClick={e => onSelect(e, row)} clickable>
                 <input
                   type="checkbox"
                   checked={selected.includes(row.id)}
@@ -138,7 +156,7 @@ export default function Table({
   )
 }
 
-const Cell = styled.div`
+const Cell = styled.div<{ clickable?: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
@@ -148,6 +166,8 @@ const Cell = styled.div`
   box-sizing: border-box;
   padding: 0.5rem;
   overflow: hidden;
+  /* stylelint-disable-next-line */
+  ${({ clickable }) => (clickable ? `cursor: pointer;` : '')}
 `
 
 const Row = styled.div`
@@ -188,6 +208,10 @@ const S = {
     box-shadow: 0 0 2px 1px #3338;
     border-radius: 0.15rem;
     user-select: none;
+
+    input[type='checkbox'] {
+      cursor: pointer;
+    }
   `,
 
   Table: _Table,
@@ -207,7 +231,10 @@ const S = {
   Header: styled(Cell)`
     font-weight: bold;
     text-transform: capitalize;
-    cursor: s-resize;
+
+    &[data-sortdir='ASC'] {
+      cursor: s-resize;
+    }
 
     &[data-sortdir='DESC'] {
       cursor: n-resize;
