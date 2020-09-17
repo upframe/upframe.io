@@ -30,12 +30,15 @@ const query = (
       variables: { limit: rows, offset, sortBy, order: sortDir },
     })
     .then(({ data: { userList: { edges, total } } }) => ({
-      rows: edges.map(({ node }) => node),
+      rows: edges.map(({ node: { joined, ...user } }) => ({
+        joined: new Date(joined).toLocaleDateString(),
+        ...user,
+      })),
       total,
     }))
 
-const columns = ['id', 'name', 'email', 'role']
-const defaultColumns = ['name', 'email', 'role']
+const columns = ['id', 'name', 'email', 'role', 'joined']
+const defaultColumns = ['name', 'email', 'role', 'joined']
 const defaultSortBy = 'name'
 
 export default function Users() {

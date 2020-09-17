@@ -162,6 +162,7 @@ const S = {
     display: flex;
     height: 100%;
     align-items: center;
+    flex-shrink: 0;
   `,
 
   Item: styled.div`

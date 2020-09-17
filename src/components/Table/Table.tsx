@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import PaginationInterface from './Pagination'
-import { Icon } from 'components'
+import { Icon, Title } from 'components'
 
 type Row = { [c: string]: any }
 
@@ -21,6 +21,7 @@ interface Props {
 }
 
 export default function Table({
+  columns,
   defaultColumns,
   numRows = 25,
   width = '80vw',
@@ -89,7 +90,47 @@ export default function Table({
   )
   return (
     <S.Wrap width={width} rows={numRows}>
-      <S.ControlStrip>{Pagination}</S.ControlStrip>
+      <S.ControlStrip>
+        <S.NavItem
+          aria-expanded={false}
+          onClick={({ currentTarget }) =>
+            currentTarget.setAttribute(
+              'aria-expanded',
+              (
+                currentTarget.getAttribute('aria-expanded') === 'false'
+              ).toString()
+            )
+          }
+        >
+          <span>Columns</span>
+          <Icon icon="gear" />
+          <S.Dropdown onClick={e => e.stopPropagation()}>
+            <S.Customize>
+              <Title size={4}>Display Columns</Title>
+              <ul>
+                {columns.map(name => (
+                  <li key={`cl-${name}`}>
+                    <input
+                      type="checkbox"
+                      id={`cl-${name}`}
+                      checked={selectedColumns.includes(name)}
+                      onChange={({ target }) => {
+                        setSelectedColumns(
+                          target.checked
+                            ? [...selectedColumns, name]
+                            : selectedColumns.filter(v => v !== name)
+                        )
+                      }}
+                    />
+                    <label htmlFor={`cl-${name}`}>{name}</label>
+                  </li>
+                ))}
+              </ul>
+            </S.Customize>
+          </S.Dropdown>
+        </S.NavItem>
+        {Pagination}
+      </S.ControlStrip>
       <S.Table columns={selectedColumns.length}>
         <S.HeaderRow>
           <S.Header clickable onClick={toggleAll}>
@@ -196,7 +237,7 @@ const _Table = styled.div<{ columns: number }>`
 const S = {
   Wrap: styled.div<{ width: string; rows: number }>`
     --grid-width: ${({ width }) => width};
-    --row-height: 2.5rem;
+    --row-height: 2.8rem;
     --border-color: #90a4ae;
     --border-size: 1px;
     --cl-action-light: #1e88e5;
@@ -205,7 +246,7 @@ const S = {
     width: var(--grid-width);
     margin: auto;
     font-size: 0.85rem;
-    box-shadow: 0 0 2px 1px #3338;
+    box-shadow: 0 0 2px 1px #0005;
     border-radius: 0.15rem;
     user-select: none;
 
@@ -303,10 +344,10 @@ const S = {
 
   ControlStrip: styled.div`
     display: flex;
-    height: 3rem;
+    height: 3.5rem;
     width: 100%;
     box-sizing: border-box;
-    padding: 0 1rem;
+    padding-right: 1rem;
 
     --border: calc(2 * var(--border-size)) solid var(--border-color);
 
@@ -320,6 +361,69 @@ const S = {
 
     ${PaginationInterface.sc} {
       margin-left: auto;
+    }
+  `,
+
+  NavItem: styled.div`
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 1em;
+    border-right: var(--border-size) solid var(--border-color);
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+
+    svg {
+      margin-left: auto;
+      transform: scale(0.8);
+      fill: var(--cl-action-dark);
+      padding-left: 0.5rem;
+    }
+  `,
+
+  Dropdown: styled.div`
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    box-shadow: 0 0 2px 1px #0005;
+    background: #fff;
+    z-index: 10;
+
+    *[aria-expanded='true'] > & {
+      display: block;
+    }
+  `,
+
+  Customize: styled.div`
+    padding: 1rem;
+
+    * {
+      white-space: nowrap;
+    }
+
+    h4 {
+      margin-top: 0;
+    }
+
+    ul {
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      list-style: none;
+      display: flex;
+      align-items: center;
+
+      input {
+        margin: 0;
+      }
+
+      label {
+        margin-left: 0.5rem;
+      }
     }
   `,
 }
