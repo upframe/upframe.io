@@ -10,7 +10,19 @@ interface Props {
 
 export default function FullscreenToggle({ fullscreen, setFullscreen }: Props) {
   return (
-    <S.NavItem onClick={() => setFullscreen(!fullscreen)}>
+    <S.NavItem
+      onClick={() => {
+        const toggleFullScreen = () =>
+          !fullscreen
+            ? document.documentElement.requestFullscreen?.()
+            : document.exitFullscreen?.()
+
+        toggleFullScreen()
+          // eslint-disable-next-line no-console
+          .catch(console.warn)
+          .finally(() => setFullscreen(!fullscreen))
+      }}
+    >
       <S.Toggle>
         <Icon icon={fullscreen ? 'minimize' : 'maximize'} />
       </S.Toggle>

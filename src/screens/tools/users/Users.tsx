@@ -39,7 +39,7 @@ const query = (
     }))
 
 const columns = ['id', 'name', 'email', 'role', 'joined']
-const defaultColumns = ['name', 'email', 'role', 'joined']
+const defaultColumns = ['name', 'email', 'role']
 const defaultSortBy = 'name'
 
 export default function Users() {
