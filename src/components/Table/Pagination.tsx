@@ -178,7 +178,7 @@ const S = {
   Pages: styled.pre`
     font-family: inherit;
     font-size: inherit;
-    color: #1e88e5;
+    color: var(--cl-action-light);
     cursor: default;
     font-weight: bold;
 
@@ -187,7 +187,7 @@ const S = {
     }
 
     & > span[data-active='true'] {
-      color: #0d47a1;
+      color: var(--cl-action-dark);
     }
 
     & > span[aria-disabled] {
@@ -199,6 +199,7 @@ const S = {
 
     & > span[aria-disabled='true'] {
       color: var(--cl-text-light);
+      cursor: default;
     }
   `,
 }

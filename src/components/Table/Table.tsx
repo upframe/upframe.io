@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import PaginationInterface from './Pagination'
+import { Icon } from 'components'
 
 type Row = { [c: string]: any }
 
@@ -10,10 +11,13 @@ interface Props {
   query(
     fields: string[],
     rows: number,
-    offset: number
+    offset: number,
+    sortBy: string,
+    sortDir: 'ASC' | 'DESC'
   ): Promise<{ rows: Row[]; total: number }>
   width?: string
   numRows?: number
+  defaultSortBy: string
 }
 
 export default function Table({
@@ -21,6 +25,7 @@ export default function Table({
   numRows = 25,
   width = '80vw',
   query,
+  defaultSortBy,
 }: Props) {
   const [selectedColumns, setSelectedColumns] = useState(defaultColumns)
   const [rows, setRows] = useState<Row[]>([])
@@ -29,15 +34,19 @@ export default function Table({
   const [total, setTotal] = useState<number>()
   const [rowLimit, setRowLimit] = useState(numRows)
   const [offset, setOffset] = useState(0)
+  const [sortBy, setSortBy] = useState(defaultSortBy)
+  const [sortDir, setSortDir] = useState<'ASC' | 'DESC'>('ASC')
 
   useEffect(() => {
     setLoading(true)
-    query(selectedColumns, rowLimit, offset).then(({ rows, total }) => {
-      setLoading(false)
-      setRows(rows)
-      setTotal(total)
-    })
-  }, [query, selectedColumns, rowLimit, offset])
+    query(selectedColumns, rowLimit, offset, sortBy, sortDir).then(
+      ({ rows, total }) => {
+        setLoading(false)
+        setRows(rows)
+        setTotal(total)
+      }
+    )
+  }, [query, selectedColumns, rowLimit, offset, sortBy, sortDir])
 
   function onSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>, row: Row) {
     if (!e.shiftKey || !selected.length)
@@ -74,7 +83,25 @@ export default function Table({
       <S.Table columns={selectedColumns.length}>
         <S.HeaderRow>
           {['', ...selectedColumns].map(column => (
-            <S.Header key={`title-${column}`}>{column}</S.Header>
+            <S.Header
+              key={`title-${column}`}
+              onClick={() => {
+                if (sortBy === column)
+                  return setSortDir(sortDir === 'ASC' ? 'DESC' : 'ASC')
+                setSortDir('ASC')
+                setSortBy(column)
+              }}
+              data-sortdir={
+                sortBy !== column || sortDir === 'DESC' ? 'ASC' : 'DESC'
+              }
+            >
+              <span>{column}</span>
+              {sortBy === column && (
+                <Icon
+                  icon={`arrow_${sortDir === 'ASC' ? 'down' : 'up'}` as any}
+                />
+              )}
+            </S.Header>
           ))}
         </S.HeaderRow>
         {!loading &&
@@ -152,10 +179,12 @@ const S = {
     --row-height: 2.5rem;
     --border-color: #90a4ae;
     --border-size: 1px;
+    --cl-action-light: #1e88e5;
+    --cl-action-dark: #0d47a1;
 
     width: var(--grid-width);
     margin: auto;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     box-shadow: 0 0 2px 1px #3338;
     border-radius: 0.15rem;
     user-select: none;
@@ -178,6 +207,17 @@ const S = {
   Header: styled(Cell)`
     font-weight: bold;
     text-transform: capitalize;
+    cursor: s-resize;
+
+    &[data-sortdir='DESC'] {
+      cursor: n-resize;
+    }
+
+    svg {
+      margin-left: auto;
+      transform: scale(0.9);
+      fill: var(--cl-action-dark);
+    }
   `,
 
   Cell,
