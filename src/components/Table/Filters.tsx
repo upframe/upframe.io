@@ -3,18 +3,25 @@ import styled from 'styled-components'
 import { Filter, Columns } from './filter'
 import { Title, Icon, Button } from 'components'
 import Dropdown from './DropdownAction'
+import ActionGroup from './ActionGroup'
 
 interface FilterProps {
   filter: Filter
+  onConfirm(): void
+  onDelete(): void
 }
 
-export function FilterItem({ filter }: FilterProps) {
+export function FilterItem({ filter, onConfirm, onDelete }: FilterProps) {
   const [column, setColumn] = useState(filter.column)
   const [actions, setActions] = useState<string[]>([])
   const [action, setAction] = useState(filter.action)
+  const [valid, setValid] = useState(filter.valid)
+  const [value, setValue] = useState(filter.value)
 
   useEffect(() => filter.onColumnChange(setColumn), [filter])
   useEffect(() => filter.onActionChange(setAction), [filter])
+  useEffect(() => filter.onValueChange(setValue), [filter])
+  useEffect(() => filter.onValidChange(setValid), [filter])
 
   useEffect(() => {
     if (!column) return
@@ -35,17 +42,33 @@ export function FilterItem({ filter }: FilterProps) {
         ))}
       </select>
       <select
-        value={action ?? 'ACTION'}
+        disabled={!column}
+        value={action ?? 'COMPARISON'}
         onChange={({ target }) => {
           filter.action = target.value
         }}
       >
-        <option disabled>ACTION</option>
+        <option disabled>COMPARISON</option>
         {actions.map(v => (
           <option key={`${filter.id}-a-${v}`}>{v}</option>
         ))}
       </select>
-      <input placeholder="VALUE"></input>
+      <input
+        placeholder="VALUE"
+        disabled={!(column && action)}
+        value={value ?? ''}
+        onChange={({ target }) => {
+          filter.value = target.value
+        }}
+      ></input>
+      <ActionGroup
+        confirm={valid}
+        cancel
+        onAction={action => {
+          if (action === 'cancel') onDelete()
+          else if (action === 'confirm') onConfirm()
+        }}
+      />
     </S.Filter>
   )
 }
@@ -54,20 +77,43 @@ interface Props {
   filters: Filter[]
   setFilters(v: Filter[]): void
   columns: Columns
+  updateFilter(filters: Filter[]): void
 }
 
-export function Filters({ filters, setFilters, columns }: Props) {
+export function Filters({ filters, setFilters, columns, updateFilter }: Props) {
+  const [_filters, _setFilters] = useState<Filter[]>([])
+
+  useEffect(() => {
+    _setFilters(filters)
+  }, [filters])
+
   return (
     <S.Wrap>
       <Title size={4}>Filters</Title>
       <S.FilterList>
-        {filters.map(filter => (
-          <FilterItem key={filter.id} filter={filter} />
+        {_filters.map(filter => (
+          <FilterItem
+            key={filter.id}
+            filter={filter}
+            onDelete={() => {
+              _setFilters(_filters.filter(v => v !== filter))
+              if (filters.includes(filter)) {
+                const newFilters = filters.filter(v => v !== filter)
+                setFilters(newFilters)
+                updateFilter(newFilters)
+              }
+            }}
+            onConfirm={() => {
+              const newFilters = [...filters, filter]
+              setFilters(newFilters)
+              updateFilter(newFilters)
+            }}
+          />
         ))}
       </S.FilterList>
       <Button
         text
-        onClick={() => setFilters([...filters, new Filter(columns)])}
+        onClick={() => _setFilters([...filters, new Filter(columns)])}
       >
         add filter
       </Button>

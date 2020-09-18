@@ -21,7 +21,8 @@ interface Props {
     offset: number,
     sortBy: string,
     sortDir: SortDir,
-    search?: string
+    search?: string,
+    filter?: string
   ): Promise<{ rows: Row[]; total: number }>
   width?: string
   numRows?: number
@@ -49,19 +50,35 @@ export default function Table({
   const [fullscreen, setFullscreen] = useState(false)
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState<string>()
-  const [filters, setFilters] = useState<Filter[]>([])
   const [columnNames] = useState(Object.keys(columns))
+  const [filters, setFilters] = useState<Filter[]>([])
+  const [filter, setFilter] = useState<string>()
 
   useEffect(() => {
     setLoading(true)
-    query(selectedColumns, rowLimit, offset, sortBy, sortDir, search).then(
-      ({ rows, total }) => {
-        setLoading(false)
-        setRows(rows)
-        setTotal(total)
-      }
-    )
-  }, [query, selectedColumns, rowLimit, offset, sortBy, sortDir, search])
+    query(
+      selectedColumns,
+      rowLimit,
+      offset,
+      sortBy,
+      sortDir,
+      search,
+      filter
+    ).then(({ rows, total }) => {
+      setLoading(false)
+      setRows(rows)
+      setTotal(total)
+    })
+  }, [
+    query,
+    selectedColumns,
+    rowLimit,
+    offset,
+    sortBy,
+    sortDir,
+    search,
+    filter,
+  ])
 
   function toggleAll() {
     const rowIds = rows.map(({ id }) => id)
@@ -83,6 +100,17 @@ export default function Table({
     )
     if (column < 0 || expandedColumn === column) return
     setExpandedColumn(column)
+  }
+
+  function updateFilter(filters: Filter[]) {
+    setFilter(
+      filters
+        .map(
+          ({ column, action, value, type }) =>
+            `${column} ${action} ${type === 'string' ? `'${value}'` : value}`
+        )
+        .join(' and ')
+    )
   }
 
   const Pagination = (
@@ -111,7 +139,7 @@ export default function Table({
           selected={selectedColumns}
           onSelect={setSelectedColumns}
         />
-        <Filters {...{ filters, setFilters, columns }} />
+        <Filters {...{ filters, setFilters, columns, updateFilter }} />
         <Search
           value={searchInput}
           onChange={setSearchInput}

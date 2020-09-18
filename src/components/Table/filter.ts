@@ -12,17 +12,21 @@ export class Filter {
 
   private _column?: string
   private _action?: string
+  private _value?: string
+  private _valid = false
   private readonly columnSub = subscription<string | undefined>()
   private readonly actionSub = subscription<string | undefined>()
+  private readonly valueSub = subscription<string | undefined>()
+  private readonly validSub = subscription<boolean>()
 
   public get column() {
     return this._column
   }
 
   public set column(v: string | undefined) {
-    this._column = v
-    this.columnSub._call(v)
+    this.columnSub._call((this._column = v))
     this.action = undefined
+    this.validCheck()
   }
 
   public onColumnChange = this.columnSub.subscribe
@@ -32,16 +36,46 @@ export class Filter {
   }
 
   public set action(v: string | undefined) {
-    this._action = v
-    this.actionSub._call(v)
+    this.actionSub._call((this._action = v))
+    this.validCheck()
   }
 
   public onActionChange = this.actionSub.subscribe
 
+  public get value() {
+    return this._value
+  }
+
+  public set value(v: string | undefined) {
+    this.valueSub._call((this._value = v))
+    this.validCheck()
+  }
+
+  public onValueChange = this.valueSub.subscribe
+
+  public get valid() {
+    return this._valid
+  }
+
+  public set valid(v: boolean) {
+    if (v === this._valid) return
+    this.validSub._call((this._valid = v))
+  }
+
+  private validCheck() {
+    this.valid = !!(this.column && this.action && this.value)
+  }
+
+  public onValidChange = this.validSub.subscribe
+
+  public get type(): ColumnType {
+    return this.columns[this.column as string]
+  }
+
   static actions(type: ColumnType): string[] {
     switch (type) {
       case 'string':
-        return ['begins_with']
+        return ['includes', 'begins_with', 'ends_with']
       case 'enum':
         return ['equals']
       default:

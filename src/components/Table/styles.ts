@@ -65,6 +65,7 @@ export const Wrap = styled.div<{ width: string; rows: number }>`
   --cl-action-light: #1e88e5;
   --cl-action-dark: #0d47a1;
   --cell-padding: 0.8em;
+  --cl-accent: var(--cl-action-dark);
 
   width: var(--grid-width);
   margin: auto;
