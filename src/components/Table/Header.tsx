@@ -54,6 +54,7 @@ export default function Header({
                 setSortDir(dir)
                 setContext(undefined)
               }}
+              onHide={() => setContext(undefined)}
             />
           )}
         </S.Header>
@@ -95,6 +96,7 @@ const S = {
 
     &[data-context='true'] > svg[data-icon='adjust'] {
       opacity: 1;
+      pointer-events: none;
     }
 
     svg[data-icon^='arrow'] ~ svg[data-icon='adjust'] {

@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import * as styles from './styles'
 import { Icon } from 'components'
+import { useClickOutHide } from 'utils/hooks'
 
 interface Props {
   dropdown: Element | JSX.Element
@@ -11,36 +12,33 @@ const DropdownAction: React.FunctionComponent<Props> = ({
   children,
   dropdown,
 }) => {
+  const [showDropdown, setShowDropdown] = useState(false)
+
   return (
     <S.NavItem
       aria-expanded={false}
-      onClick={({ currentTarget }) => {
-        const gp = currentTarget.parentElement?.parentElement
-        if (!gp) return
-        Array.from(gp.querySelectorAll('[aria-expanded]')).forEach(el => {
-          if (el !== currentTarget)
-            (el as HTMLElement).setAttribute('aria-expanded', 'false')
-        })
-        currentTarget.setAttribute(
-          'aria-expanded',
-          (currentTarget.getAttribute('aria-expanded') === 'false').toString()
-        )
+      onClick={() => {
+        if (!showDropdown) setShowDropdown(true)
       }}
     >
       {children}
-      <S.Dropdown onClick={e => e.stopPropagation()}>
-        {dropdown}
-        <S.Close>
-          <Icon
-            icon="close"
-            clickStyle={false}
-            onClick={({ currentTarget }) =>
-              currentTarget.parentElement?.parentElement?.parentElement?.click()
-            }
-          />
-        </S.Close>
-      </S.Dropdown>
+      {showDropdown && (
+        <Dropdown dropdown={dropdown} onHide={() => setShowDropdown(false)} />
+      )}
     </S.NavItem>
+  )
+}
+
+function Dropdown({ dropdown, onHide }: Props & { onHide(): void }) {
+  useClickOutHide(S.Dropdown.styledComponentId, onHide, true)
+
+  return (
+    <S.Dropdown>
+      {dropdown}
+      <S.Close>
+        <Icon icon="close" clickStyle={false} onClick={onHide} />
+      </S.Close>
+    </S.Dropdown>
   )
 }
 
@@ -50,7 +48,6 @@ const S = {
   ...styles,
 
   Dropdown: styled.div`
-    display: none;
     position: absolute;
     left: 0;
     top: 100%;
@@ -59,10 +56,7 @@ const S = {
     z-index: 10;
     min-width: 15rem;
     cursor: default;
-
-    * [aria-expanded='true'] > & {
-      display: block;
-    }
+    z-index: 1001;
   `,
 
   Close: styled.div`

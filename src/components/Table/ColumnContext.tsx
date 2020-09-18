@@ -1,14 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Title } from 'components'
+import { useClickOutHide } from 'utils/hooks'
 
 interface Props {
   column: string
   sortDir?: 'ASC' | 'DESC'
   setSortDir(dir: 'ASC' | 'DESC'): void
+  onHide(): void
 }
 
-export default function ColumnContext({ column, sortDir, setSortDir }: Props) {
+export default function ColumnContext({
+  column,
+  sortDir,
+  setSortDir,
+  onHide,
+}: Props) {
+  useClickOutHide(S.Context.styledComponentId, onHide)
+
   return (
     <S.Context>
       <Title size={4}>Sort</Title>
