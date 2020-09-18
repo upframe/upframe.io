@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import * as styles from './styles'
+import { Icon } from 'components'
 
 interface Props {
   dropdown: Element | JSX.Element
@@ -27,7 +28,18 @@ const DropdownAction: React.FunctionComponent<Props> = ({
       }}
     >
       {children}
-      <S.Dropdown onClick={e => e.stopPropagation()}>{dropdown}</S.Dropdown>
+      <S.Dropdown onClick={e => e.stopPropagation()}>
+        {dropdown}
+        <S.Close>
+          <Icon
+            icon="close"
+            clickStyle={false}
+            onClick={({ currentTarget }) =>
+              currentTarget.parentElement?.parentElement?.parentElement?.click()
+            }
+          />
+        </S.Close>
+      </S.Dropdown>
     </S.NavItem>
   )
 }
@@ -43,11 +55,20 @@ const S = {
     left: 0;
     top: 100%;
     box-shadow: 0 0 2px 1px #0005;
-    background: #fff;
+    background-color: #fff;
     z-index: 10;
+    min-width: 15rem;
+    cursor: default;
 
-    *[aria-expanded='true'] > & {
+    * [aria-expanded='true'] > & {
       display: block;
     }
+  `,
+
+  Close: styled.div`
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    cursor: pointer;
   `,
 }

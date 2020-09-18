@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useStateEffect } from 'utils/hooks'
 import PaginationInterface from './Pagination'
 import type { Filter, Columns } from './filter'
 import Filters from './Filters'
@@ -44,15 +45,15 @@ export default function Table({
   const [total, setTotal] = useState<number>()
   const [rowLimit, setRowLimit] = useState(numRows)
   const [offset, setOffset] = useState(0)
-  const [sortBy, setSortBy] = useState(defaultSortBy)
-  const [sortDir, setSortDir] = useState<'ASC' | 'DESC'>('ASC')
   const [expandedColumn, setExpandedColumn] = useState<number>()
   const [fullscreen, setFullscreen] = useState(false)
   const [searchInput, setSearchInput] = useState('')
-  const [search, setSearch] = useState<string>()
   const [columnNames] = useState(Object.keys(columns))
   const [filters, setFilters] = useState<Filter[]>([])
-  const [filter, setFilter] = useState<string>()
+  const [sortBy, setSortBy] = useStateEffect(setOffset, defaultSortBy)
+  const [sortDir, setSortDir] = useStateEffect<'ASC' | 'DESC'>(setOffset, 'ASC')
+  const [search, setSearch] = useStateEffect<string>(setOffset)
+  const [filter, setFilter] = useStateEffect<string>(setOffset)
 
   useEffect(() => {
     setLoading(true)
@@ -103,26 +104,21 @@ export default function Table({
   }
 
   function updateFilter(filters: Filter[]) {
-    setFilter(
-      filters
-        .map(
-          ({ column, action, value, type }) =>
-            `${column} ${action} ${type === 'string' ? `'${value}'` : value}`
-        )
-        .join(' and ')
-    )
+    const expr = filters
+      .map(
+        ({ column, action, value, type }) =>
+          `${column} ${action} ${type === 'string' ? `'${value}'` : value}`
+      )
+      .join(' and ')
+
+    if (search) setSearch('')
+    setFilter(expr)
   }
 
   const Pagination = (
     <PaginationInterface
       totalRows={total}
-      rowLimit={rowLimit}
-      setRowLimit={n => {
-        setOffset(0)
-        setRowLimit(n)
-      }}
-      offset={offset}
-      setOffset={setOffset}
+      {...{ rowLimit, setRowLimit, offset, setOffset }}
     />
   )
 
@@ -148,6 +144,7 @@ export default function Table({
             setLoading(true)
             setSearch(term)
           }}
+          filter={filter}
         />
         {Pagination}
       </S.ControlStrip>

@@ -7,5 +7,6 @@ module.exports = {
     'no-console': 'warn',
     'no-useless-computed-key': 'off',
     'no-unused-vars': 'warn',
+    'no-sequences': 'off',
   },
 }

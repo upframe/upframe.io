@@ -25,7 +25,7 @@ function PaginationInterface({
   totalRows,
   rowLimit,
   setRowLimit,
-  offset,
+  offset = 0,
   setOffset,
 }: Props) {
   function goToPage(page: number) {

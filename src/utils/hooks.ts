@@ -301,3 +301,17 @@ export function useMentors() {
 
   return { mentors, set }
 }
+
+export function useStateEffect<T>(
+  effect: (...args: any[]) => any,
+  init?: T
+): [T, (v: T) => void] {
+  const [value, setValue] = useState(init)
+  return [
+    value,
+    (v: T) => {
+      effect()
+      setValue(v)
+    },
+  ] as any
+}

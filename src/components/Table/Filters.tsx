@@ -84,8 +84,9 @@ export function Filters({ filters, setFilters, columns, updateFilter }: Props) {
   const [_filters, _setFilters] = useState<Filter[]>([])
 
   useEffect(() => {
-    _setFilters(filters)
-  }, [filters])
+    if (filters.some(filter => !_filters.includes(filter)))
+      _setFilters(Array.from(new Set([..._filters, ...filters])))
+  }, [_filters, filters])
 
   return (
     <S.Wrap>
@@ -104,6 +105,7 @@ export function Filters({ filters, setFilters, columns, updateFilter }: Props) {
               }
             }}
             onConfirm={() => {
+              if (filters.includes(filter)) return updateFilter(filters)
               const newFilters = [...filters, filter]
               setFilters(newFilters)
               updateFilter(newFilters)
@@ -113,7 +115,7 @@ export function Filters({ filters, setFilters, columns, updateFilter }: Props) {
       </S.FilterList>
       <Button
         text
-        onClick={() => _setFilters([...filters, new Filter(columns)])}
+        onClick={() => _setFilters([..._filters, new Filter(columns)])}
       >
         add filter
       </Button>
@@ -157,6 +159,10 @@ const S = {
 
     & > *:not(:first-child) {
       margin-left: 1rem;
+    }
+
+    & > *:last-child {
+      flex-grow: 1;
     }
   `,
 }

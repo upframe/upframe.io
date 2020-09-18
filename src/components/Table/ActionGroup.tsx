@@ -40,9 +40,13 @@ const S = {
   Group: styled.div`
     display: flex;
     min-height: 2rem;
+    justify-content: space-between;
+    align-items: center;
 
     & > * {
       height: 100%;
+      cursor: pointer;
+      margin: 0;
     }
   `,
 }

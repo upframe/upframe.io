@@ -42,6 +42,7 @@ export default function Icon({
         height={sel.size || '24'}
         viewBox={`0 0 ${sel.size || '24'} ${sel.size || '24'}`}
         onClick={onClick}
+        data-icon={icon}
       >
         {'path' in sel && <path d={sel.path} {...sel.props} fill={sel.color} />}
         {'markup' in sel && sel.markup}

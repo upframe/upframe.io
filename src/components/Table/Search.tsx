@@ -6,13 +6,14 @@ interface Props {
   value: string
   onChange(v: string): void
   onSearch(term: string): void
+  filter?: string
 }
 
-export default function Search({ value, onChange, onSearch }: Props) {
+export default function Search({ value, onChange, onSearch, filter }: Props) {
   return (
     <S.SearchWrap>
       <S.SearchBar
-        data-focus={false}
+        data-focus={!!filter}
         onMouseDown={({ currentTarget }) =>
           requestAnimationFrame(() =>
             currentTarget.querySelector('input')?.focus()
@@ -25,14 +26,15 @@ export default function Search({ value, onChange, onSearch }: Props) {
       >
         <Icon icon="search" />
         <S.SearchInput
-          placeholder="Search by name"
+          placeholder={filter ? `filter: ${filter}` : 'Search by name'}
+          disabled={!!filter}
           onFocus={({ target }) =>
             ((target.parentElement as HTMLFormElement).dataset.focus = 'true')
           }
           onBlur={({ target }) =>
             ((target.parentElement as HTMLFormElement).dataset.focus = 'false')
           }
-          value={value}
+          value={filter ? '' : value}
           onChange={({ target }) => onChange(target.value)}
         />
       </S.SearchBar>
