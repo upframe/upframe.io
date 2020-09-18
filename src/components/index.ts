@@ -40,6 +40,6 @@ export { default as Markdown } from './Markdown'
 export { default as MsgIcon } from './MsgIcon'
 export { default as ListCard } from './ListCard'
 export { default as UpdatePrompt } from './UpdatePrompt'
-export { default as Table } from './Table/Table'
+export { default as Table } from './Table'
 
 export { Link } from 'react-router-dom'

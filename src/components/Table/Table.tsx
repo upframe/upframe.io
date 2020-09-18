@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PaginationInterface from './Pagination'
+import type { Filter, Columns } from './filter'
 import Filters from './Filters'
 import * as S from './styles'
 import ColumnSelect from './ColumnSelect'
@@ -12,7 +13,7 @@ import Body from './Body'
 type Row = { [c: string]: any }
 
 interface Props {
-  columns: string[]
+  columns: Columns
   defaultColumns: string[]
   query(
     fields: string[],
@@ -48,6 +49,8 @@ export default function Table({
   const [fullscreen, setFullscreen] = useState(false)
   const [searchInput, setSearchInput] = useState('')
   const [search, setSearch] = useState<string>()
+  const [filters, setFilters] = useState<Filter[]>([])
+  const [columnNames] = useState(Object.keys(columns))
 
   useEffect(() => {
     setLoading(true)
@@ -104,11 +107,11 @@ export default function Table({
       <S.ControlStrip>
         <FullscreenToggle {...{ fullscreen, setFullscreen }} />
         <ColumnSelect
-          columns={columns}
+          columns={columnNames}
           selected={selectedColumns}
           onSelect={setSelectedColumns}
         />
-        <Filters />
+        <Filters {...{ filters, setFilters, columns }} />
         <Search
           value={searchInput}
           onChange={setSearchInput}

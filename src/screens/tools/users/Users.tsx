@@ -2,6 +2,7 @@ import React from 'react'
 import { Table } from 'components'
 import { gql } from 'gql'
 import api from 'api'
+import type { Columns } from 'components/Table'
 
 const buildQuery = (fields: string[]) => `
   query ToolsUserList($limit: Int, $offset: Int, $sortBy: String, $order: SortOrder, $search: String) {
@@ -38,7 +39,13 @@ const query = (
       total,
     }))
 
-const columns = ['id', 'name', 'email', 'role', 'joined']
+const columns: Columns = {
+  id: 'string',
+  name: 'string',
+  email: 'string',
+  role: 'enum',
+  joined: 'string',
+}
 const defaultColumns = ['name', 'email', 'role']
 const defaultSortBy = 'name'
 
