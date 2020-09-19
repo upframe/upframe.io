@@ -48,11 +48,11 @@ const query = (
     }))
 
 const columns: Columns = {
-  id: 'string',
-  name: 'string',
-  email: 'string',
-  role: 'enum',
-  joined: 'string',
+  id: { type: 'string' },
+  name: { type: 'string', editable: true },
+  email: { type: 'string', editable: true },
+  role: { type: 'enum', editable: true },
+  joined: { type: 'string' },
 }
 const defaultColumns = ['name', 'email', 'role']
 const defaultSortBy = 'name'

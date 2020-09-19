@@ -23,7 +23,9 @@ export function ColumnSelect({ columns, selected, onSelect }: Props) {
               onChange={({ target }) => {
                 onSelect(
                   target.checked
-                    ? [...selected, name]
+                    ? columns.filter(
+                        column => selected.includes(column) || column === name
+                      )
                     : selected.filter(v => v !== name)
                 )
               }}

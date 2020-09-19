@@ -9,6 +9,9 @@ const actions = {
   cancel: {
     icon: 'close',
   },
+  edit: {
+    icon: 'edit',
+  },
 } as const
 
 type Actions = {
@@ -21,7 +24,7 @@ interface Props extends Actions {
 
 export default function ActionGroup({ onAction, ...rest }: Props) {
   return (
-    <S.Group>
+    <S.Group data-actions={Object.keys(rest).join(' ')}>
       {Object.entries(rest)
         .filter(([k, v]) => v)
         .map(([k]) => (
@@ -47,6 +50,18 @@ const S = {
       height: 100%;
       cursor: pointer;
       margin: 0;
+    }
+
+    svg[data-icon='edit'] {
+      fill: var(--cl-action-dark);
+    }
+
+    svg[data-icon='check'] {
+      fill: var(--cl-confirm);
+    }
+
+    svg[data-icon='close'] {
+      fill: var(--cl-cancel);
     }
   `,
 }

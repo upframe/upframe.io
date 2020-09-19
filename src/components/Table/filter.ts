@@ -2,7 +2,7 @@ import subscription from 'utils/subscription'
 
 const columnTypes = ['string', 'enum'] as const
 type ColumnType = typeof columnTypes[number]
-export type Columns = { [c: string]: ColumnType }
+export type Columns = { [c: string]: { type: ColumnType; editable?: boolean } }
 
 export class Filter {
   constructor(
@@ -69,7 +69,7 @@ export class Filter {
   public onValidChange = this.validSub.subscribe
 
   public get type(): ColumnType {
-    return this.columns[this.column as string]
+    return this.columns[this.column as string]?.type
   }
 
   static actions(type: ColumnType): string[] {

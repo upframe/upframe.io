@@ -25,7 +25,7 @@ export function FilterItem({ filter, onConfirm, onDelete }: FilterProps) {
 
   useEffect(() => {
     if (!column) return
-    setActions(Filter.actions(filter.columns[column]))
+    setActions(Filter.actions(filter.columns[column]?.type))
   }, [column, filter.columns])
 
   return (

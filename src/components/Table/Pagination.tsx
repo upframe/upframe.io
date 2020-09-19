@@ -55,7 +55,7 @@ function PaginationInterface({
           ))}
         </select>
       </S.Item>
-      {(totalRows ?? 0 > rowLimit) && (
+      {(totalRows ?? 0) > rowLimit && (
         <S.Item>
           <Pages pages={pages} current={current} onPageChange={goToPage} />
         </S.Item>

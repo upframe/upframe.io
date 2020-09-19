@@ -1,10 +1,12 @@
 import React from 'react'
 import * as S from './styles'
+import type { Columns } from './filter'
+import Cell from './ContentCell'
 
 type Row = { [c: string]: any }
 
 interface Props {
-  columns: string[]
+  columns: Columns
   rows: Row[]
   selected: string[]
   setSelected(v: string[]): void
@@ -42,12 +44,13 @@ export default function Body({ columns, rows, selected, setSelected }: Props) {
               readOnly
             />
           </S.Select>
-          {columns.map(column => (
-            <S.ContentCell key={`${row.id}-${column}`}>
-              <S.Item key={`${row.id}-${column}`} data-column={column}>
-                {row[column]}
-              </S.Item>
-            </S.ContentCell>
+          {Object.entries(columns).map(([column, { editable }]) => (
+            <Cell
+              key={`${row.id}-${column}`}
+              column={column}
+              value={row[column]}
+              editable={editable ?? false}
+            />
           ))}
         </S.Row>
       ))}

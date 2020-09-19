@@ -101,35 +101,6 @@ export const Select = styled(Cell)`
   }
 `
 
-export const ContentCell = styled(Cell)`
-  position: relative;
-  padding-right: 0;
-  overflow: hidden;
-
-  &::after {
-    content: '';
-    width: var(--cell-padding);
-    height: 100%;
-    position: absolute;
-    right: 0;
-    top: 0;
-    background: linear-gradient(
-      to right,
-      var(--row-transparent),
-      var(--row-color)
-    );
-  }
-`
-
-export const Item = styled.span`
-  white-space: nowrap;
-  margin-right: var(--cell-padding);
-
-  &[data-column='role'] {
-    text-transform: lowercase;
-  }
-`
-
 export const ControlStrip = styled.div`
   display: flex;
   width: 100%;

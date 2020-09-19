@@ -163,7 +163,11 @@ export default function Table({
         {!loading && (
           <Body
             {...{ rows, selected, setSelected }}
-            columns={selectedColumns}
+            columns={Object.fromEntries(
+              Object.entries(columns).filter(([k]) =>
+                selectedColumns.includes(k)
+              )
+            )}
           />
         )}
       </S.Table>
