@@ -149,7 +149,7 @@ export default function Table({
         {Pagination}
       </S.ControlStrip>
       <S.Table
-        columns={selectedColumns.length}
+        columns={selectedColumns.length + 1}
         expanded={expandedColumn}
         data-expanded={expandedColumn}
         onMouseMove={mouseMove}

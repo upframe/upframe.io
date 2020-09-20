@@ -31,7 +31,7 @@ export default function Header({
       <S.Select clickable onClick={toggleAll}>
         <input type="checkbox" checked={allSelected} readOnly />
       </S.Select>
-      {columns.map(column => (
+      {[...columns, 'actions'].map(column => (
         <S.Header data-context={column === context} key={`title-${column}`}>
           <span>{column}</span>
           {sortBy === column && (

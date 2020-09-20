@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as S from './styles'
 import type { Columns } from './filter'
 import Cell from './ContentCell'
+import RowActions from './RowActions'
 
 type Row = { [c: string]: any }
 
@@ -13,6 +14,8 @@ interface Props {
 }
 
 export default function Body({ columns, rows, selected, setSelected }: Props) {
+  const [edited, setEdited] = useState<{ [k: string]: string | number }>({})
+
   function onSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>, row: Row) {
     if (!e.shiftKey || !selected.length)
       return setSelected(
@@ -44,14 +47,45 @@ export default function Body({ columns, rows, selected, setSelected }: Props) {
               readOnly
             />
           </S.Select>
-          {Object.entries(columns).map(([name, conf]) => (
-            <Cell
-              key={`${row.id}-${name}`}
-              column={{ name, ...conf }}
-              value={row[name]}
-              editable={conf.editable ?? false}
-            />
-          ))}
+          {Object.entries(columns).map(([name, conf]) => {
+            const key = `${row.id}-${name}`
+            return (
+              <Cell
+                key={key}
+                column={{ name, ...conf }}
+                value={edited[key] ?? row[name]}
+                editable={conf.editable ?? false}
+                edited={key in edited}
+                onEdit={v =>
+                  setEdited({
+                    ...Object.fromEntries(
+                      Object.entries(edited).filter(([k]) => k !== key)
+                    ),
+                    ...(v !== row[name] ? { [key]: v } : {}),
+                  })
+                }
+              />
+            )
+          })}
+          <RowActions
+            id={row.id}
+            actions={
+              Object.keys(edited).find(k => k.startsWith(row.id))
+                ? ['save', 'cancel']
+                : ['add to list', 'remove from list', 'delete account']
+            }
+            cta={['save']}
+            onAction={action => {
+              if (action === 'cancel')
+                setEdited(
+                  Object.fromEntries(
+                    Object.entries(edited).filter(
+                      ([k]) => !k.startsWith(row.id)
+                    )
+                  )
+                )
+            }}
+          />
         </S.Row>
       ))}
     </>

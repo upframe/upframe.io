@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import * as styles from './styles'
 import Actions from './ActionGroup'
@@ -8,14 +8,24 @@ interface Props {
   column: Column
   value: string | number
   editable: boolean
+  onEdit(v: string | number): void
+  edited: boolean
 }
 
-export default function ContentCell({ column, value, editable }: Props) {
+export default function ContentCell({
+  column,
+  value,
+  editable,
+  onEdit,
+  edited,
+}: Props) {
   const [editing, setEditing] = useState(false)
   const [editValue, setEditValue] = useState(value)
 
+  useEffect(() => setEditValue(value), [value])
+
   return (
-    <S.Cell>
+    <S.Cell data-edited={edited}>
       <S.Content
         data-column={column.name}
         data-mode={editing ? 'edit' : 'view'}
@@ -49,6 +59,9 @@ export default function ContentCell({ column, value, editable }: Props) {
                     if (action === 'cancel') {
                       setEditing(false)
                       setEditValue(value)
+                    } else if (action === 'confirm') {
+                      setEditing(false)
+                      onEdit(editValue)
                     }
                   },
                 }
@@ -69,6 +82,13 @@ const S = {
   Cell: styled(styles.Cell)`
     position: relative;
     overflow: hidden;
+
+    &[data-edited='true'] {
+      background-color: #fff59d;
+
+      --row-color: #fff59d;
+      --row-transparent: #fff59d00;
+    }
   `,
 
   Content: styled.div`
