@@ -11,9 +11,22 @@ interface Props {
   rows: Row[]
   selected: string[]
   setSelected(v: string[]): void
+  onCellEdit?(
+    cells: {
+      row: string
+      column: string
+      value: string | number
+    }[]
+  ): void
 }
 
-export default function Body({ columns, rows, selected, setSelected }: Props) {
+export default function Body({
+  columns,
+  rows,
+  selected,
+  setSelected,
+  onCellEdit,
+}: Props) {
   const [edited, setEdited] = useState<{ [k: string]: string | number }>({})
 
   function onSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>, row: Row) {
@@ -48,7 +61,7 @@ export default function Body({ columns, rows, selected, setSelected }: Props) {
             />
           </S.Select>
           {Object.entries(columns).map(([name, conf]) => {
-            const key = `${row.id}-${name}`
+            const key = `${row.id}#${name}`
             return (
               <Cell
                 key={key}
@@ -84,6 +97,20 @@ export default function Body({ columns, rows, selected, setSelected }: Props) {
                     )
                   )
                 )
+              else if (action === 'save') {
+                onCellEdit?.(
+                  Object.entries(edited)
+                    .filter(([k]) => k.split('#')[0] === row.id)
+                    .map(([k, value]) => {
+                      const [row, column] = k.split('#')
+                      return {
+                        row,
+                        column,
+                        value,
+                      }
+                    })
+                )
+              }
             }}
           />
         </S.Row>

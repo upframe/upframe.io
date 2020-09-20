@@ -13,7 +13,7 @@ import Body from './Body'
 
 type Row = { [c: string]: any }
 
-interface Props {
+export interface TableProps {
   columns: Columns
   defaultColumns: string[]
   query(
@@ -28,6 +28,13 @@ interface Props {
   width?: string
   numRows?: number
   defaultSortBy: string
+  onCellEdit?(
+    cells: {
+      row: string
+      column: string
+      value: string | number
+    }[]
+  ): void
 }
 
 export default function Table({
@@ -37,7 +44,8 @@ export default function Table({
   width = '80vw',
   query,
   defaultSortBy,
-}: Props) {
+  onCellEdit,
+}: TableProps) {
   const [selectedColumns, setSelectedColumns] = useState(defaultColumns)
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
@@ -162,7 +170,7 @@ export default function Table({
         />
         {!loading && (
           <Body
-            {...{ rows, selected, setSelected }}
+            {...{ rows, selected, setSelected, onCellEdit }}
             columns={Object.fromEntries(
               Object.entries(columns).filter(([k]) =>
                 selectedColumns.includes(k)
