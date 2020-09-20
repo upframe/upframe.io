@@ -44,12 +44,12 @@ export default function Body({ columns, rows, selected, setSelected }: Props) {
               readOnly
             />
           </S.Select>
-          {Object.entries(columns).map(([column, { editable }]) => (
+          {Object.entries(columns).map(([name, conf]) => (
             <Cell
-              key={`${row.id}-${column}`}
-              column={column}
-              value={row[column]}
-              editable={editable ?? false}
+              key={`${row.id}-${name}`}
+              column={{ name, ...conf }}
+              value={row[name]}
+              editable={conf.editable ?? false}
             />
           ))}
         </S.Row>

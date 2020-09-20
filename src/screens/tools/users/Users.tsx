@@ -51,7 +51,7 @@ const columns: Columns = {
   id: { type: 'string' },
   name: { type: 'string', editable: true },
   email: { type: 'string', editable: true },
-  role: { type: 'enum', editable: true },
+  role: { type: 'enum', editable: true, values: ['USER', 'MENTOR', 'ADMIN'] },
   joined: { type: 'string' },
 }
 const defaultColumns = ['name', 'email', 'role']

@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import * as styles from './styles'
 import Actions from './ActionGroup'
+import type { Column } from './filter'
 
 interface Props {
-  column: string
+  column: Column
   value: string | number
   editable: boolean
 }
@@ -15,16 +16,28 @@ export default function ContentCell({ column, value, editable }: Props) {
 
   return (
     <S.Cell>
-      <S.Content data-column={column} data-mode={editing ? 'edit' : 'view'}>
+      <S.Content
+        data-column={column.name}
+        data-mode={editing ? 'edit' : 'view'}
+      >
         {!editing ? (
           <S.ContentSection>
             <span>{value}</span>
           </S.ContentSection>
-        ) : (
+        ) : column.type === 'string' ? (
           <S.TextInput
             value={editValue}
             onChange={({ target }) => setEditValue(target.value)}
           />
+        ) : (
+          <S.EnumInput
+            value={editValue}
+            onChange={({ target }) => setEditValue(target.value)}
+          >
+            {(column.values ?? []).map(v => (
+              <option key={`${column.name}-opt-${v}`}>{v}</option>
+            ))}
+          </S.EnumInput>
         )}
         {editable && (
           <Actions
@@ -59,7 +72,6 @@ const S = {
   `,
 
   Content: styled.div`
-    /* margin-right: var(--cell-padding); */
     display: flex;
     align-items: center;
     width: 100%;
@@ -136,4 +148,6 @@ const S = {
       border-color: var(--cl-action-light);
     }
   `,
+
+  EnumInput: styled.select``,
 }

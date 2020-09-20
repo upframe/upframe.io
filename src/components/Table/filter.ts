@@ -2,7 +2,14 @@ import subscription from 'utils/subscription'
 
 const columnTypes = ['string', 'enum'] as const
 type ColumnType = typeof columnTypes[number]
-export type Columns = { [c: string]: { type: ColumnType; editable?: boolean } }
+
+export type Column = {
+  name: string
+  type: ColumnType
+  editable?: boolean
+  values?: string[]
+}
+export type Columns = { [k: string]: Omit<Column, 'name'> }
 
 export class Filter {
   constructor(
