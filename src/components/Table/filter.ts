@@ -84,7 +84,7 @@ export class Filter {
       case 'string':
         return ['includes', 'begins_with', 'ends_with']
       case 'enum':
-        return ['equals']
+        return ['equal']
       default:
         throw new Error(`unknown filter type ${type}`)
     }

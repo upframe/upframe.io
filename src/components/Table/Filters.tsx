@@ -53,14 +53,28 @@ export function FilterItem({ filter, onConfirm, onDelete }: FilterProps) {
           <option key={`${filter.id}-a-${v}`}>{v}</option>
         ))}
       </select>
-      <input
-        placeholder="VALUE"
-        disabled={!(column && action)}
-        value={value ?? ''}
-        onChange={({ target }) => {
-          filter.value = target.value
-        }}
-      ></input>
+      {filter.type === 'enum' ? (
+        <select
+          value={value ?? 'VALUE'}
+          onChange={({ target }) => {
+            filter.value = target.value
+          }}
+        >
+          <option disabled>VALUE</option>
+          {(filter.columns[filter.column as string].values ?? []).map(v => (
+            <option key={v}>{v}</option>
+          ))}
+        </select>
+      ) : (
+        <input
+          placeholder="VALUE"
+          disabled={!(column && action)}
+          value={value ?? ''}
+          onChange={({ target }) => {
+            filter.value = target.value
+          }}
+        ></input>
+      )}
       <ActionGroup
         confirm={valid}
         cancel
