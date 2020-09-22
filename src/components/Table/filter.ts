@@ -1,6 +1,6 @@
 import subscription from 'utils/subscription'
 
-const columnTypes = ['string', 'enum'] as const
+const columnTypes = ['string', 'enum', 'object'] as const
 type ColumnType = typeof columnTypes[number]
 
 export type Column = {
@@ -8,6 +8,8 @@ export type Column = {
   type: ColumnType
   editable?: boolean
   values?: string[]
+  fields?: string[]
+  displayField?: string
 }
 export type Columns = { [k: string]: Omit<Column, 'name'> }
 

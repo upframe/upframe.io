@@ -6,6 +6,24 @@ import type { Columns, TableProps } from 'components/Table'
 import { partition } from 'utils/array'
 import type { EditUserInfo, EditUserInfoVariables } from 'gql/types'
 
+const columns: Columns = {
+  id: { type: 'string' },
+  name: { type: 'string', editable: true },
+  handle: { type: 'string', editable: true },
+  email: { type: 'string', editable: true },
+  role: { type: 'enum', editable: true, values: ['USER', 'MENTOR', 'ADMIN'] },
+  location: { type: 'string', editable: true },
+  headline: { type: 'string', editable: true },
+  invitedBy: {
+    type: 'object',
+    fields: ['id', 'name', 'handle'],
+    displayField: 'name',
+  },
+  joined: { type: 'string' },
+}
+const defaultColumns = ['name', 'email', 'role']
+const defaultSortBy = 'name'
+
 const buildQuery = (fields: string[]) => `
   query ToolsUserList($limit: Int, $offset: Int, $sortBy: String, $order: SortOrder, $search: String, $filter: String) {
     userList(limit: $limit, offset: $offset, sortBy: $sortBy, order: $order, search: $search, filter: $filter) {
@@ -13,7 +31,15 @@ const buildQuery = (fields: string[]) => `
       edges {
         node {
           id
-          ${fields.join('\n')}
+          ${fields
+            .map(v =>
+              columns[v].type !== 'object'
+                ? v
+                : `${v} {
+            ${columns[v].fields?.join('\n')}
+          }`
+            )
+            .join('\n')}
         }
       }
     }
@@ -72,18 +98,6 @@ const onCellEdit: TableProps['onCellEdit'] = async cells => {
     )
   )
 }
-
-const columns: Columns = {
-  id: { type: 'string' },
-  name: { type: 'string', editable: true },
-  email: { type: 'string', editable: true },
-  role: { type: 'enum', editable: true, values: ['USER', 'MENTOR', 'ADMIN'] },
-  location: { type: 'string', editable: true },
-  headline: { type: 'string', editable: true },
-  joined: { type: 'string' },
-}
-const defaultColumns = ['name', 'email', 'role']
-const defaultSortBy = 'name'
 
 export default function Users() {
   return (

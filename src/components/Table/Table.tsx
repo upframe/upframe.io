@@ -35,6 +35,7 @@ export interface TableProps {
       value: string | number
     }[]
   ): void
+  waitForContent?: boolean
 }
 
 export default function Table({
@@ -45,6 +46,7 @@ export default function Table({
   query,
   defaultSortBy,
   onCellEdit,
+  waitForContent = false,
 }: TableProps) {
   const [selectedColumns, setSelectedColumns] = useState(defaultColumns)
   const [rows, setRows] = useState<Row[]>([])
@@ -168,7 +170,7 @@ export default function Table({
           columns={selectedColumns}
           allSelected={rows.every(({ id }) => selected.includes(id))}
         />
-        {!loading && (
+        {!loading && !waitForContent && (
           <Body
             {...{ rows, selected, setSelected, onCellEdit }}
             columns={Object.fromEntries(
@@ -179,7 +181,7 @@ export default function Table({
           />
         )}
       </S.Table>
-      {loading && <Loading rows={rowLimit} />}
+      {(loading || waitForContent) && <Loading rows={rowLimit} />}
       <S.ControlStrip>{Pagination}</S.ControlStrip>
     </S.Wrap>
   )

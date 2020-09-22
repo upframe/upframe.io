@@ -66,7 +66,12 @@ export default function Body({
               <Cell
                 key={key}
                 column={{ name, ...conf }}
-                value={edited[key] ?? row[name]}
+                value={
+                  edited[key] ??
+                  (conf.displayField
+                    ? row[name]?.[conf.displayField]
+                    : row[name])
+                }
                 editable={conf.editable ?? false}
                 edited={key in edited}
                 onEdit={v =>
@@ -74,7 +79,12 @@ export default function Body({
                     ...Object.fromEntries(
                       Object.entries(edited).filter(([k]) => k !== key)
                     ),
-                    ...(v !== row[name] ? { [key]: v } : {}),
+                    ...(v !==
+                    (conf.displayField
+                      ? row[name]?.[conf.displayField]
+                      : row[name])
+                      ? { [key]: v }
+                      : {}),
                   })
                 }
               />
