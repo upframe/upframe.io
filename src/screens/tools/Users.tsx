@@ -16,12 +16,24 @@ const columns: Columns = {
   headline: { type: 'string', editable: true },
   invitedBy: {
     type: 'object',
-    fields: ['id', 'name', 'handle'],
+    fields: {
+      id: { type: 'string' },
+      name: { type: 'string' },
+      handle: { type: 'string' },
+    },
+    displayField: 'name',
+  },
+  lists: {
+    type: 'list',
+    fields: {
+      id: { type: 'string' },
+      name: { type: 'string' },
+    },
     displayField: 'name',
   },
   joined: { type: 'string' },
 }
-const defaultColumns = ['name', 'email', 'role']
+const defaultColumns = ['name', 'email', 'role', 'lists']
 const defaultSortBy = 'name'
 
 const buildQuery = (fields: string[]) => `
@@ -33,10 +45,10 @@ const buildQuery = (fields: string[]) => `
           id
           ${fields
             .map(v =>
-              columns[v].type !== 'object'
+              !['object', 'list'].includes(columns[v].type)
                 ? v
                 : `${v} {
-            ${columns[v].fields?.join('\n')}
+            ${Object.keys(columns[v].fields ?? {}).join('\n')}
           }`
             )
             .join('\n')}

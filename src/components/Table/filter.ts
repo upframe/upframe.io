@@ -1,6 +1,6 @@
 import subscription from 'utils/subscription'
 
-const columnTypes = ['string', 'enum', 'object'] as const
+const columnTypes = ['string', 'enum', 'object', 'list'] as const
 type ColumnType = typeof columnTypes[number]
 
 export type Column = {
@@ -8,7 +8,7 @@ export type Column = {
   type: ColumnType
   editable?: boolean
   values?: string[]
-  fields?: string[]
+  fields?: Columns
   displayField?: string
 }
 export type Columns = { [k: string]: Omit<Column, 'name'> }
@@ -20,10 +20,12 @@ export class Filter {
   ) {}
 
   private _column?: string
+  private _field?: string
   private _action?: string
   private _value?: string
   private _valid = false
   private readonly columnSub = subscription<string | undefined>()
+  private readonly fieldSub = subscription<string | undefined>()
   private readonly actionSub = subscription<string | undefined>()
   private readonly valueSub = subscription<string | undefined>()
   private readonly validSub = subscription<boolean>()
@@ -34,11 +36,23 @@ export class Filter {
 
   public set column(v: string | undefined) {
     this.columnSub._call((this._column = v))
+    this.field = undefined
     this.action = undefined
     this.validCheck()
   }
 
   public onColumnChange = this.columnSub.subscribe
+
+  public get field() {
+    return this._field
+  }
+
+  public set field(v: string | undefined) {
+    this.fieldSub._call((this._field = v))
+    this.validCheck()
+  }
+
+  public onFieldChange = this.fieldSub.subscribe
 
   public get action() {
     return this._action
@@ -81,10 +95,17 @@ export class Filter {
     return this.columns[this.column as string]?.type
   }
 
+  public get fieldType(): ColumnType {
+    const type = this.type
+    if (this.type !== 'object') return type
+    return this.columns[this.column as string]?.fields?.[this.field as string]
+      ?.type as ColumnType
+  }
+
   static actions(type: ColumnType): string[] {
     switch (type) {
       case 'string':
-        return ['includes', 'begins_with', 'ends_with']
+        return ['equals', 'includes', 'begins_with', 'ends_with']
       case 'enum':
         return ['equal']
       default:

@@ -6,15 +6,18 @@ import type { Column } from './filter'
 
 interface Props {
   column: Column
-  value: string | number
+  value?: string | number
+  values?: string[]
   editable: boolean
   onEdit(v: string | number): void
   edited: boolean
+  expandable?: boolean
 }
 
 export default function ContentCell({
   column,
   value,
+  values,
   editable,
   onEdit,
   edited,
@@ -32,7 +35,7 @@ export default function ContentCell({
       >
         {!editing ? (
           <S.ContentSection>
-            <span>{value}</span>
+            <span>{Array.isArray(values) ? values?.join(', ') : value}</span>
           </S.ContentSection>
         ) : column.type === 'string' ? (
           <S.TextInput
@@ -61,7 +64,7 @@ export default function ContentCell({
                       setEditValue(value)
                     } else if (action === 'confirm') {
                       setEditing(false)
-                      onEdit(editValue)
+                      if (editValue !== undefined) onEdit(editValue)
                     }
                   },
                 }
@@ -136,6 +139,11 @@ const S = {
     span {
       white-space: nowrap;
       overflow: hidden;
+
+      &::after {
+        white-space: pre;
+        content: '  ';
+      }
     }
 
     &::after {

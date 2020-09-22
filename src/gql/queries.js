@@ -5,7 +5,6 @@ export const MENTORS = gql`
   query Mentors {
     mentors {
       ...MentorDetails
-      categories
       sortScore
     }
   }

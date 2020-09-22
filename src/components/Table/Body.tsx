@@ -66,12 +66,19 @@ export default function Body({
               <Cell
                 key={key}
                 column={{ name, ...conf }}
-                value={
-                  edited[key] ??
-                  (conf.displayField
-                    ? row[name]?.[conf.displayField]
-                    : row[name])
-                }
+                {...(conf.type !== 'list'
+                  ? {
+                      value:
+                        edited[key] ??
+                        (conf.displayField
+                          ? row[name]?.[conf.displayField]
+                          : row[name]),
+                    }
+                  : {
+                      values: row[name]?.map(
+                        v => v?.[conf.displayField as string]
+                      ),
+                    })}
                 editable={conf.editable ?? false}
                 edited={key in edited}
                 onEdit={v =>

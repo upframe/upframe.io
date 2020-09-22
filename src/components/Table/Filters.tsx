@@ -13,20 +13,21 @@ interface FilterProps {
 
 export function FilterItem({ filter, onConfirm, onDelete }: FilterProps) {
   const [column, setColumn] = useState(filter.column)
+  const [field, setField] = useState(filter.field)
   const [actions, setActions] = useState<string[]>([])
   const [action, setAction] = useState(filter.action)
   const [valid, setValid] = useState(filter.valid)
   const [value, setValue] = useState(filter.value)
 
   useEffect(() => filter.onColumnChange(setColumn), [filter])
+  useEffect(() => filter.onFieldChange(setField), [filter])
   useEffect(() => filter.onActionChange(setAction), [filter])
   useEffect(() => filter.onValueChange(setValue), [filter])
   useEffect(() => filter.onValidChange(setValid), [filter])
 
   useEffect(() => {
-    if (!column) return
-    setActions(Filter.actions(filter.columns[column]?.type))
-  }, [column, filter.columns])
+    setActions(!filter.fieldType ? [] : Filter.actions(filter.fieldType))
+  }, [filter.fieldType])
 
   return (
     <S.Filter>
@@ -41,6 +42,21 @@ export function FilterItem({ filter, onConfirm, onDelete }: FilterProps) {
           <option key={`${filter.id}-c-${v}`}>{v}</option>
         ))}
       </select>
+      {filter.type === 'object' && (
+        <select
+          value={field ?? 'FIELD'}
+          onChange={({ target }) => {
+            filter.field = target.value
+          }}
+        >
+          <option disabled>FIELD</option>
+          {Object.keys(
+            filter.columns[filter.column as string].fields ?? {}
+          ).map(field => (
+            <option key={`${filter.column}-${field}`}>{field}</option>
+          ))}
+        </select>
+      )}
       <select
         disabled={!column}
         value={action ?? 'COMPARISON'}

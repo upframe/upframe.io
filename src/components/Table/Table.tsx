@@ -116,8 +116,10 @@ export default function Table({
   function updateFilter(filters: Filter[]) {
     const expr = filters
       .map(
-        ({ column, action, value, type }) =>
-          `${column} ${action} ${type === 'string' ? `'${value}'` : value}`
+        ({ column, field, action, value, fieldType: type }) =>
+          `${column}${!field ? '' : `.${field}`} ${action} ${
+            type === 'string' ? `'${value}'` : value
+          }`
       )
       .join(' and ')
 
