@@ -33,7 +33,7 @@ const columns: Columns = {
   },
   joined: { type: 'string' },
 }
-const defaultColumns = ['name', 'email', 'role', 'lists']
+const defaultColumns = ['name', 'email', 'role']
 const defaultSortBy = 'name'
 
 const buildQuery = (fields: string[]) => `
@@ -113,6 +113,10 @@ const onCellEdit: TableProps['onCellEdit'] = async cells => {
 
 export default function Users() {
   return (
-    <Table {...{ query, columns, defaultColumns, defaultSortBy, onCellEdit }} />
+    <Table
+      {...{ query, columns, defaultColumns, defaultSortBy, onCellEdit }}
+      actions={['Add to List', 'Remove from List', 'Delete Account']}
+      onAction={console.log}
+    />
   )
 }

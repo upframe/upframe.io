@@ -36,6 +36,8 @@ export interface TableProps {
     }[]
   ): void
   waitForContent?: boolean
+  actions?: string[]
+  onAction?(action: string, ...rows: string[]): void
 }
 
 export default function Table({
@@ -47,6 +49,8 @@ export default function Table({
   defaultSortBy,
   onCellEdit,
   waitForContent = false,
+  actions = [],
+  onAction,
 }: TableProps) {
   const [selectedColumns, setSelectedColumns] = useState(defaultColumns)
   const [rows, setRows] = useState<Row[]>([])
@@ -140,25 +144,43 @@ export default function Table({
       rows={numRows}
       data-view={fullscreen ? 'fullscreen' : 'default'}
     >
-      <S.ControlStrip>
+      <S.ControlStrip data-menu={selected.length > 0 ? 'actions' : 'default'}>
         <FullscreenToggle {...{ fullscreen, setFullscreen }} />
-        <ColumnSelect
-          columns={columnNames}
-          selected={selectedColumns}
-          onSelect={setSelectedColumns}
-        />
-        <Filters {...{ filters, setFilters, columns, updateFilter }} />
-        <Search
-          value={searchInput}
-          onChange={setSearchInput}
-          onSearch={term => {
-            if (term === search) return
-            setLoading(true)
-            setSearch(term)
-          }}
-          filter={filter}
-        />
-        {Pagination}
+        {selected.length === 0 ? (
+          <>
+            <ColumnSelect
+              columns={columnNames}
+              selected={selectedColumns}
+              onSelect={setSelectedColumns}
+            />
+            <Filters {...{ filters, setFilters, columns, updateFilter }} />
+            <Search
+              value={searchInput}
+              onChange={setSearchInput}
+              onSearch={term => {
+                if (term === search) return
+                setLoading(true)
+                setSearch(term)
+              }}
+              filter={filter}
+            />
+            {Pagination}
+          </>
+        ) : (
+          <S.BatchActions>
+            <span>
+              {selected.length} Item{selected.length === 1 ? '' : 's'} Selected
+            </span>
+            {actions.map(action => (
+              <S.ActionButton
+                key={`ba-${action}`}
+                onClick={() => onAction?.(action, ...selected)}
+              >
+                {action}
+              </S.ActionButton>
+            ))}
+          </S.BatchActions>
+        )}
       </S.ControlStrip>
       <S.Table
         columns={selectedColumns.length + 1}
@@ -168,7 +190,14 @@ export default function Table({
         onMouseLeave={() => setExpandedColumn(undefined)}
       >
         <Header
-          {...{ sortBy, sortDir, toggleAll, setSortBy, setSortDir, setOffset }}
+          {...{
+            sortBy,
+            sortDir,
+            toggleAll,
+            setSortBy,
+            setSortDir,
+            setOffset,
+          }}
           columns={selectedColumns}
           allSelected={rows.every(({ id }) => selected.includes(id))}
         />
@@ -180,6 +209,8 @@ export default function Table({
                 selectedColumns.includes(k)
               )
             )}
+            actions={actions}
+            onAction={(action, row) => onAction?.(action, row)}
           />
         )}
       </S.Table>

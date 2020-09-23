@@ -18,6 +18,8 @@ interface Props {
       value: string | number
     }[]
   ): void
+  actions: string[]
+  onAction(action: string, row: string): void
 }
 
 export default function Body({
@@ -26,6 +28,8 @@ export default function Body({
   selected,
   setSelected,
   onCellEdit,
+  actions,
+  onAction,
 }: Props) {
   const [edited, setEdited] = useState<{ [k: string]: string | number }>({})
 
@@ -102,7 +106,7 @@ export default function Body({
             actions={
               Object.keys(edited).find(k => k.startsWith(row.id))
                 ? ['save', 'cancel']
-                : ['add to list', 'remove from list', 'delete account']
+                : actions
             }
             cta={['save']}
             onAction={action => {
@@ -127,8 +131,9 @@ export default function Body({
                       }
                     })
                 )
-              }
+              } else onAction(action, row.id)
             }}
+            disabled={selected.length > 0}
           />
         </S.Row>
       ))}

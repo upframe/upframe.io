@@ -125,6 +125,52 @@ export const ControlStrip = styled.div`
   ${PaginationInterface.sc} {
     margin-left: auto;
   }
+
+  &[data-menu='actions'] {
+    background-color: var(--cl-action-light);
+    color: #fff;
+
+    svg {
+      fill: #fff;
+    }
+
+    * {
+      border: none;
+    }
+  }
+`
+
+export const BatchActions = styled.div`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 1em;
+
+  & > span {
+    margin-right: auto;
+  }
+
+  button {
+    margin-left: 1rem;
+    font-weight: bold;
+  }
+`
+
+export const ActionButton = styled.button`
+  appearance: none;
+  display: block;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1em;
+  color: inherit;
+
+  &:focus {
+    outline: none;
+  }
 `
 
 export const NavItem = styled.div`

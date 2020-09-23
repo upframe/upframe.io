@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Cell } from './styles'
+import { Cell, ActionButton } from './styles'
 import { Icon } from 'components'
 import { useClickOutHide } from 'utils/hooks'
 
@@ -9,9 +9,16 @@ interface Props {
   onAction(v: string): void
   id: string
   cta?: string[]
+  disabled?: boolean
 }
 
-export default function RowActions({ actions, onAction, id, cta = [] }: Props) {
+export default function RowActions({
+  actions,
+  onAction,
+  id,
+  cta = [],
+  disabled = false,
+}: Props) {
   const [showDropdown, setShowDropdown] = useState(false)
   const className = `${id}-actions`
   useClickOutHide(className, () => setShowDropdown(false))
@@ -19,7 +26,7 @@ export default function RowActions({ actions, onAction, id, cta = [] }: Props) {
   const content = actions.map(action => (
     <S.Action
       key={action}
-      onClick={() => onAction(action)}
+      onClick={() => !disabled && onAction(action)}
       data-role={cta.includes(action) ? 'cta' : 'default'}
     >
       {action}
@@ -28,6 +35,7 @@ export default function RowActions({ actions, onAction, id, cta = [] }: Props) {
 
   return (
     <S.Actions
+      data-state={disabled ? 'disabled' : 'enabled'}
       {...(actions.length >= 3 && {
         onClick() {
           setShowDropdown(!showDropdown)
@@ -65,19 +73,19 @@ const S = {
       fill: var(--cl-action-dark);
       transform: scale(0.9);
     }
+
+    &[data-state='disabled'] {
+      cursor: default;
+      pointer-events: none;
+
+      & > svg {
+        fill: var(--cl-text-medium);
+      }
+    }
   `,
 
-  Action: styled.button`
-    appearance: none;
-    display: block;
-    height: 100%;
+  Action: styled(ActionButton)`
     flex-grow: 1;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 1em;
-    color: inherit;
 
     &[data-role='cta'] {
       color: var(--cl-action-light);
@@ -87,10 +95,6 @@ const S = {
     &:not(:last-of-type) {
       border-right: 1px solid var(--border-color);
       line-height: 100%;
-    }
-
-    &:focus {
-      outline: none;
     }
   `,
 
