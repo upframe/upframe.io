@@ -8,6 +8,7 @@ import type {
   AuditTrailVariables,
   TrailUsers,
   TrailUsersVariables,
+  TrailLists,
 } from 'gql/types'
 
 const AUDIT_TRAIL = gql`
@@ -31,6 +32,15 @@ const TRAIL_USERS = gql`
   }
 `
 
+const TRAIL_LISTS = gql`
+  query TrailLists {
+    lists(includeUnlisted: true) {
+      id
+      name
+    }
+  }
+`
+
 type Event = {
   id: string
   editor: string
@@ -39,6 +49,8 @@ type Event = {
   field: string
   old: string
   new: string
+  eventType: string
+  list: number
 }
 
 const possessive = (name: string) =>
@@ -50,8 +62,9 @@ export default function Audit() {
   const [users, setUsers] = useState<{
     [id: string]: { name: string; handle: string }
   }>({})
+  const { data: { lists = [] } = {} } = useQuery<TrailLists>(TRAIL_LISTS)
 
-  const { data } = useQuery<AuditTrail, AuditTrailVariables>(AUDIT_TRAIL, {
+  useQuery<AuditTrail, AuditTrailVariables>(AUDIT_TRAIL, {
     variables: { trails: ['admin_edits'] },
     onCompleted({ audit }) {
       const newEvents: Event[] = []
@@ -62,20 +75,20 @@ export default function Audit() {
       setEvents(
         [...events, ...newEvents].sort((a, b) => (a.id > b.id ? -1 : 1))
       )
-      const newIds = newEvents.flatMap(
+
+      const newUsers = newEvents.flatMap(
         ({ editor, user }) =>
           [editor, user]
             .map(id => !userIds.includes(id) && id)
             .filter(Boolean) as string[]
       )
-      if (newIds.length) setUserIds([...userIds, ...newIds].sort())
+      if (newUsers.length) setUserIds([...userIds, ...newUsers].sort())
     },
   })
 
-  const ids = JSON.stringify(userIds)
-
+  const _userIds = JSON.stringify(userIds)
   useEffect(() => {
-    const users = JSON.parse(ids)
+    const users = JSON.parse(_userIds)
     if (!users.length) return
     api
       .query<TrailUsers, TrailUsersVariables>({
@@ -89,28 +102,44 @@ export default function Audit() {
           )
         )
       )
-  }, [ids])
+  }, [_userIds])
+
+  const formatUser = (id: string, p = false) => (
+    <User
+      id={id}
+      {...(id in users &&
+        (!p
+          ? users[id]
+          : { name: possessive(users[id].name), handle: users[id].handle }))}
+    />
+  )
 
   return (
     <S.Trail>
-      {events.map(({ id, date, editor, user, field, ...v }) => (
-        <S.Event key={id}>
-          <span>
-            {date.toLocaleDateString()} {date.toLocaleTimeString()}
-          </span>
-          <span>
-            <User {...{ id: editor, ...users[editor] }} /> changed{' '}
-            <User
-              id={user}
-              {...(user in users && {
-                name: possessive(users[user].name),
-                handle: users[user].handle,
-              })}
-            />{' '}
-            {field} from {v.old} to {v.new}
-          </span>
-        </S.Event>
-      ))}
+      {events.map(
+        ({ id, date, editor, user, field, eventType, list, ...v }) => (
+          <S.Event key={id}>
+            <span>
+              {date.toLocaleDateString()} {date.toLocaleTimeString()}
+            </span>
+            <span>
+              {eventType === 'edit_user_info' ? (
+                <>
+                  {formatUser(editor)} changed {formatUser(user, true)} {field}{' '}
+                  from {v.old} to {v.new}
+                </>
+              ) : eventType === 'add_to_list' ? (
+                <>
+                  {formatUser(editor)} added {formatUser(user)} to list '
+                  {lists.find(({ id }) => id === list)?.name ?? list}'
+                </>
+              ) : (
+                'unknown event type'
+              )}
+            </span>
+          </S.Event>
+        )
+      )}
     </S.Trail>
   )
 }

@@ -139,6 +139,7 @@ const S = {
     span {
       white-space: nowrap;
       overflow: hidden;
+      user-select: text;
 
       &::after {
         white-space: pre;
