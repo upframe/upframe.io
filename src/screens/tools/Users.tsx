@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Table } from 'components'
 import { gql } from 'gql'
 import api from 'api'
 import type { Columns, TableProps } from 'components/Table'
 import { partition } from 'utils/array'
 import type { EditUserInfo, EditUserInfoVariables } from 'gql/types'
+import Action, { actions } from './UserAction'
 
 const columns: Columns = {
   id: { type: 'string' },
@@ -64,7 +65,7 @@ const EDIT_USER_INFO = gql`
   }
 `
 
-const query: TableProps['query'] = (
+const query: TableProps<string[]>['query'] = (
   fields,
   rows,
   offset,
@@ -84,6 +85,7 @@ const query: TableProps['query'] = (
         search: search || undefined,
         filter: filter || undefined,
       },
+      fetchPolicy: 'network-only',
     })
     .then(({ data: { userList: { edges, total } } }) => ({
       rows: edges.map(({ node: { joined, ...user } }) => ({
@@ -93,30 +95,57 @@ const query: TableProps['query'] = (
       total,
     }))
 
-const onCellEdit: TableProps['onCellEdit'] = async cells => {
-  const byUser = partition(cells, 'row')
-  const users = byUser.map(cells =>
-    cells.reduce((a, { column, value }) => ({ ...a, [column]: value }), {
-      id: cells[0].row,
-    })
-  )
-
-  await Promise.all(
-    users.map(({ id, ...info }) =>
-      api.mutate<EditUserInfo, EditUserInfoVariables>({
-        mutation: EDIT_USER_INFO,
-        variables: { id, info },
-      })
-    )
-  )
+type Action = {
+  action: typeof actions[number]
+  users: string[]
 }
 
 export default function Users() {
+  const [{ action, users } = {} as Action, setAction] = useState<
+    Action | undefined
+  >()
+  const [key, setKey] = useState(0)
+
+  const onCellEdit: TableProps<string[]>['onCellEdit'] = async cells => {
+    const byUser = partition(cells, 'row')
+    const users = byUser.map(cells =>
+      cells.reduce((a, { column, value }) => ({ ...a, [column]: value }), {
+        id: cells[0].row,
+      })
+    )
+
+    await Promise.all(
+      users.map(({ id, ...info }) =>
+        api
+          .mutate<EditUserInfo, EditUserInfoVariables>({
+            mutation: EDIT_USER_INFO,
+            variables: { id, info },
+          })
+          .then(() => {
+            setKey(key + 1)
+          })
+      )
+    )
+  }
+
   return (
-    <Table
-      {...{ query, columns, defaultColumns, defaultSortBy, onCellEdit }}
-      actions={['Add to List', 'Remove from List', 'Delete Account']}
-      onAction={console.log}
-    />
+    <>
+      <Table
+        key={key}
+        {...{ query, columns, defaultColumns, defaultSortBy, onCellEdit }}
+        actions={actions}
+        onAction={(action, ...users) => setAction({ action, users })}
+      />
+      {action && (
+        <Action
+          {...{ action, users }}
+          onCancel={() => setAction(undefined)}
+          onDone={() => {
+            setAction(undefined)
+            setKey(key + 1)
+          }}
+        />
+      )}
+    </>
   )
 }

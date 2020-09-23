@@ -6,7 +6,7 @@ import RowActions from './RowActions'
 
 type Row = { [c: string]: any }
 
-interface Props {
+interface Props<T extends readonly string[]> {
   columns: Columns
   rows: Row[]
   selected: string[]
@@ -18,11 +18,11 @@ interface Props {
       value: string | number
     }[]
   ): void
-  actions: string[]
-  onAction(action: string, row: string): void
+  actions: T
+  onAction(action: T[number], row: string): void
 }
 
-export default function Body({
+export default function Body<T extends readonly string[]>({
   columns,
   rows,
   selected,
@@ -30,7 +30,7 @@ export default function Body({
   onCellEdit,
   actions,
   onAction,
-}: Props) {
+}: Props<T>) {
   const [edited, setEdited] = useState<{ [k: string]: string | number }>({})
 
   function onSelect(e: React.MouseEvent<HTMLDivElement, MouseEvent>, row: Row) {

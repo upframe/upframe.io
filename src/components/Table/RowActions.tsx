@@ -4,21 +4,21 @@ import { Cell, ActionButton } from './styles'
 import { Icon } from 'components'
 import { useClickOutHide } from 'utils/hooks'
 
-interface Props {
-  actions: string[]
-  onAction(v: string): void
+interface Props<T extends readonly string[]> {
+  actions: T
+  onAction(v: T[number]): void
   id: string
   cta?: string[]
   disabled?: boolean
 }
 
-export default function RowActions({
+export default function RowActions<T extends readonly string[]>({
   actions,
   onAction,
   id,
   cta = [],
   disabled = false,
-}: Props) {
+}: Props<T>) {
   const [showDropdown, setShowDropdown] = useState(false)
   const className = `${id}-actions`
   useClickOutHide(className, () => setShowDropdown(false))

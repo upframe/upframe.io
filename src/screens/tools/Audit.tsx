@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { gql, useQuery } from 'gql'
+import { gql, useQuery, queries } from 'gql'
+import { Spinner } from 'components'
 import api from 'api'
 import type {
   AuditTrail,
   AuditTrailVariables,
-  TrailUsers,
-  TrailUsersVariables,
-  TrailLists,
+  UserListNames,
+  UserListNamesVariables,
+  AllLists,
 } from 'gql/types'
 
 const AUDIT_TRAIL = gql`
@@ -18,25 +19,6 @@ const AUDIT_TRAIL = gql`
       trailId
       date
       payload
-    }
-  }
-`
-
-const TRAIL_USERS = gql`
-  query TrailUsers($ids: [ID!]!) {
-    users(ids: $ids) {
-      id
-      name
-      handle
-    }
-  }
-`
-
-const TRAIL_LISTS = gql`
-  query TrailLists {
-    lists(includeUnlisted: true) {
-      id
-      name
     }
   }
 `
@@ -51,6 +33,7 @@ type Event = {
   new: string
   eventType: string
   list: number
+  userName: string
 }
 
 const possessive = (name: string) =>
@@ -62,10 +45,13 @@ export default function Audit() {
   const [users, setUsers] = useState<{
     [id: string]: { name: string; handle: string }
   }>({})
-  const { data: { lists = [] } = {} } = useQuery<TrailLists>(TRAIL_LISTS)
+  const { data: { lists = [] } = {} } = useQuery<AllLists>(
+    queries.ALL_LIST_NAMES
+  )
 
-  useQuery<AuditTrail, AuditTrailVariables>(AUDIT_TRAIL, {
+  const { loading } = useQuery<AuditTrail, AuditTrailVariables>(AUDIT_TRAIL, {
     variables: { trails: ['admin_edits'] },
+    fetchPolicy: 'network-only',
     onCompleted({ audit }) {
       const newEvents: Event[] = []
       for (const event of audit) {
@@ -91,8 +77,8 @@ export default function Audit() {
     const users = JSON.parse(_userIds)
     if (!users.length) return
     api
-      .query<TrailUsers, TrailUsersVariables>({
-        query: TRAIL_USERS,
+      .query<UserListNames, UserListNamesVariables>({
+        query: queries.USER_LIST_NAMES,
         variables: { ids: users },
       })
       .then(({ data }) =>
@@ -114,10 +100,21 @@ export default function Audit() {
     />
   )
 
+  if (loading) return <Spinner />
   return (
     <S.Trail>
       {events.map(
-        ({ id, date, editor, user, field, eventType, list, ...v }) => (
+        ({
+          id,
+          date,
+          editor,
+          user,
+          field,
+          eventType,
+          list,
+          userName,
+          ...v
+        }) => (
           <S.Event key={id}>
             <span>
               {date.toLocaleDateString()} {date.toLocaleTimeString()}
@@ -132,6 +129,16 @@ export default function Audit() {
                 <>
                   {formatUser(editor)} added {formatUser(user)} to list '
                   {lists.find(({ id }) => id === list)?.name ?? list}'
+                </>
+              ) : eventType === 'remove_from_list' ? (
+                <>
+                  {formatUser(editor)} removed {formatUser(user)} from list '
+                  {lists.find(({ id }) => id === list)?.name ?? list}'
+                </>
+              ) : eventType === 'remove_account' ? (
+                <>
+                  {formatUser(editor)} deleted {formatUser(user)}{' '}
+                  {possessive(userName)} account
                 </>
               ) : (
                 'unknown event type'

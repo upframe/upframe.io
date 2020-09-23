@@ -13,7 +13,7 @@ import Body from './Body'
 
 type Row = { [c: string]: any }
 
-export interface TableProps {
+export interface TableProps<T extends readonly string[]> {
   columns: Columns
   defaultColumns: string[]
   query(
@@ -36,11 +36,11 @@ export interface TableProps {
     }[]
   ): void
   waitForContent?: boolean
-  actions?: string[]
-  onAction?(action: string, ...rows: string[]): void
+  actions?: T
+  onAction?(action: T[number], ...rows: string[]): void
 }
 
-export default function Table({
+export default function Table<T extends readonly string[]>({
   columns,
   defaultColumns,
   numRows = 25,
@@ -49,9 +49,9 @@ export default function Table({
   defaultSortBy,
   onCellEdit,
   waitForContent = false,
-  actions = [],
+  actions,
   onAction,
-}: TableProps) {
+}: TableProps<T>) {
   const [selectedColumns, setSelectedColumns] = useState(defaultColumns)
   const [rows, setRows] = useState<Row[]>([])
   const [loading, setLoading] = useState(true)
@@ -169,9 +169,9 @@ export default function Table({
         ) : (
           <S.BatchActions>
             <span>
-              {selected.length} Item{selected.length === 1 ? '' : 's'} Selected
+              {selected.length} User{selected.length === 1 ? '' : 's'} Selected
             </span>
-            {actions.map(action => (
+            {actions?.map(action => (
               <S.ActionButton
                 key={`ba-${action}`}
                 onClick={() => onAction?.(action, ...selected)}
@@ -203,13 +203,18 @@ export default function Table({
         />
         {!loading && !waitForContent && (
           <Body
-            {...{ rows, selected, setSelected, onCellEdit }}
+            {...{ rows, selected, setSelected }}
+            onCellEdit={cells => {
+              if (!onCellEdit) return
+              setLoading(true)
+              onCellEdit(cells)
+            }}
             columns={Object.fromEntries(
               Object.entries(columns).filter(([k]) =>
                 selectedColumns.includes(k)
               )
             )}
-            actions={actions}
+            actions={actions ?? (([] as unknown) as T)}
             onAction={(action, row) => onAction?.(action, row)}
           />
         )}

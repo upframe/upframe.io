@@ -203,3 +203,22 @@ export const LISTS = gql`
     }
   }
 `
+
+export const ALL_LIST_NAMES = gql`
+  query AllLists {
+    lists(includeUnlisted: true) {
+      id
+      name
+    }
+  }
+`
+
+export const USER_LIST_NAMES = gql`
+  query UserListNames($ids: [ID!]!) {
+    users(ids: $ids) {
+      id
+      name
+      handle
+    }
+  }
+`
