@@ -97,7 +97,7 @@ export class Filter {
 
   public get fieldType(): ColumnType {
     const type = this.type
-    if (this.type !== 'object') return type
+    if (!['object', 'list'].includes(this.type)) return type
     return this.columns[this.column as string]?.fields?.[this.field as string]
       ?.type as ColumnType
   }

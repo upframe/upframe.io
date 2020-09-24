@@ -42,7 +42,8 @@ export function FilterItem({ filter, onConfirm, onDelete }: FilterProps) {
           <option key={`${filter.id}-c-${v}`}>{v}</option>
         ))}
       </select>
-      {filter.type === 'object' && (
+      {filter.type === 'list' && <span>includes</span>}
+      {['object', 'list'].includes(filter.type) && (
         <select
           value={field ?? 'FIELD'}
           onChange={({ target }) => {
@@ -185,7 +186,8 @@ const S = {
 
   Filter: styled.li`
     display: flex;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    align-items: center;
 
     & > *:not(:first-child) {
       margin-left: 1rem;
