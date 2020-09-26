@@ -73,6 +73,14 @@ const EDIT_USER_INFO = gql`
   }
 `
 
+const SET_USER_ROLE = gql`
+  mutation SetUserRole($id: ID!, $role: Role!) {
+    setUserRole(userId: $id, role: $role) {
+      id
+    }
+  }
+`
+
 const query: TableProps<string[]>['query'] = (
   fields,
   rows,
@@ -122,18 +130,19 @@ export default function Users() {
       })
     )
 
-    await Promise.all(
-      users.map(({ id, ...info }) =>
-        api
-          .mutate<EditUserInfo, EditUserInfoVariables>({
+    Promise.all(
+      (users as any[]).flatMap(({ id, role, ...info }) => [
+        Object.entries(info).length &&
+          api.mutate<EditUserInfo, EditUserInfoVariables>({
             mutation: EDIT_USER_INFO,
             variables: { id, info },
-          })
-          .then(() => {
-            setKey(key + 1)
-          })
-      )
-    )
+          }),
+        role &&
+          api.mutate({ mutation: SET_USER_ROLE, variables: { id, role } }),
+      ]) as Promise<any>[]
+    ).then(() => {
+      setKey(key + 1)
+    })
   }
 
   return (

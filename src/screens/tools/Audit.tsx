@@ -175,6 +175,11 @@ export default function Audit() {
                   {formatUser(editor)} removed tag '{tags[tag] ?? tag}' from
                   user {formatUser(user)}
                 </>
+              ) : eventType === 'set_role' ? (
+                <>
+                  {formatUser(editor)} changed {formatUser(user, true)} role
+                  from {v.old} to {v.new}
+                </>
               ) : (
                 'unknown event type'
               )}
