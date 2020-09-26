@@ -222,3 +222,12 @@ export const USER_LIST_NAMES = gql`
     }
   }
 `
+
+export const TAG_LIST_NAMES = gql`
+  query TagListNames($ids: [Int!]!) {
+    tags(ids: $ids) {
+      id
+      name
+    }
+  }
+`

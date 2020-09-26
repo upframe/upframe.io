@@ -32,6 +32,14 @@ const columns: Columns = {
     },
     displayField: 'name',
   },
+  tags: {
+    type: 'list',
+    fields: {
+      id: { type: 'string' },
+      name: { type: 'string' },
+    },
+    displayField: 'name',
+  },
   joined: { type: 'string' },
 }
 const defaultColumns = ['name', 'email', 'role']

@@ -1,12 +1,21 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Button, Title, Text, Spinner } from 'components'
+import { Button, Title, Text, Spinner, Tagselect } from 'components'
 import { useQuery, queries, gql } from 'gql'
-import type { AllLists, UserListNames, UserListNamesVariables } from 'gql/types'
 import api from 'api'
+import type { AllLists, UserListNames, UserListNamesVariables } from 'gql/types'
+import type { Tag } from 'components/TagInput'
 
 const listActions = ['Add to List', 'Remove from List'] as const
-export const actions = [...listActions, 'Delete Account'] as const
+const tagActions = ['Add Tags', 'Remove Tags'] as const
+export const actions = [
+  ...listActions,
+  ...tagActions,
+  'Delete Account',
+] as const
+
+type ListAction = typeof listActions[number]
+type TagAction = typeof tagActions[number]
 
 const ADD_TO_LIST = gql`
   mutation AdminAddToList($list: Int!, $users: [ID!]!) {
@@ -30,6 +39,18 @@ export const DELETE_ACCOUNTS = gql`
   }
 `
 
+export const ADD_USER_TAGS = gql`
+  mutation AdminAddUserTags($tags: [Int!]!, $users: [ID!]!) {
+    addUserTags(tags: $tags, users: $users)
+  }
+`
+
+export const REMOVE_USER_TAGS = gql`
+  mutation AdminRemoveUserTags($tags: [Int!]!, $users: [ID!]!) {
+    removeUserTags(tags: $tags, users: $users)
+  }
+`
+
 interface Props<T extends readonly string[] = typeof actions> {
   action: T[number]
   users: string[]
@@ -44,21 +65,32 @@ export default function UserAction({ action, users, onDone, onCancel }: Props) {
     UserListNamesVariables
   >(queries.USER_LIST_NAMES, { variables: { ids: users } })
   const [list, setList] = useState<number>()
+  const [tags, setTags] = useState<number[]>([])
 
   function onConfirm() {
     setLoading(true)
-    api
-      .mutate({
-        ...(action === 'Add to List'
-          ? { mutation: ADD_TO_LIST, variables: { users, list } }
-          : action === 'Remove from List'
-          ? { mutation: REMOVE_FROM_LIST, variables: { users, list } }
-          : { mutation: DELETE_ACCOUNTS, variables: { users } }),
-      })
-      .then(() => {
-        setLoading(true)
-        onDone?.()
-      })
+
+    const mutationPayload = (): any => {
+      switch (action) {
+        case 'Add to List':
+          return { mutation: ADD_TO_LIST, variables: { users, list } }
+        case 'Remove from List':
+          return { mutation: REMOVE_FROM_LIST, variables: { users, list } }
+        case 'Add Tags':
+          return { mutation: ADD_USER_TAGS, variables: { users, tags } }
+        case 'Remove Tags':
+          return { mutation: REMOVE_USER_TAGS, variables: { users, tags } }
+        case 'Delete Account':
+          return { mutation: DELETE_ACCOUNTS, variables: { users } }
+        default:
+          throw Error(`unhandled mutation '${action}'`)
+      }
+    }
+
+    api.mutate(mutationPayload()).then(() => {
+      setLoading(true)
+      onDone?.()
+    })
   }
 
   return (
@@ -69,8 +101,14 @@ export default function UserAction({ action, users, onDone, onCancel }: Props) {
         ) : (
           <>
             <Title size={3}>{action}</Title>
-            {action !== 'Delete Account' && (
-              <ListAction {...{ action, users, list, setList }} />
+            {listActions.includes(action as ListAction) && (
+              <ListAction
+                action={action as ListAction}
+                {...{ users, list, setList }}
+              />
+            )}
+            {tagActions.includes(action as TagAction) && (
+              <TagAction setTags={setTags} />
             )}
             <ul>
               {userInfo.map(({ id, name }) => (
@@ -82,7 +120,11 @@ export default function UserAction({ action, users, onDone, onCancel }: Props) {
               <Button
                 accent
                 disabled={
-                  !(action === 'Delete Account' || typeof list === 'number')
+                  !(
+                    action === 'Delete Account' ||
+                    typeof list === 'number' ||
+                    tags.length
+                  )
                 }
                 onClick={onConfirm}
               >
@@ -130,6 +172,21 @@ function ListAction({
         </select>
       </Text>
     </>
+  )
+}
+
+function TagAction({ setTags: setTagIds }: { setTags(tags: number[]): void }) {
+  const [tags, setTags] = useState<Tag[]>([])
+
+  return (
+    <Tagselect
+      selection={tags}
+      onChange={tag => {
+        setTags(tag)
+        setTagIds(tag.map(({ id }) => id))
+      }}
+      canAdd={false}
+    />
   )
 }
 

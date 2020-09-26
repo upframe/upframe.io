@@ -10,6 +10,8 @@ import type {
   UserListNames,
   UserListNamesVariables,
   AllLists,
+  TagListNames,
+  TagListNamesVariables,
 } from 'gql/types'
 
 const AUDIT_TRAIL = gql`
@@ -34,6 +36,7 @@ type Event = {
   eventType: string
   list: number
   userName: string
+  tag: number
 }
 
 const possessive = (name: string) =>
@@ -45,6 +48,8 @@ export default function Audit() {
   const [users, setUsers] = useState<{
     [id: string]: { name: string; handle: string }
   }>({})
+  const [tagIds, setTagIds] = useState<number[]>([])
+  const [tags, setTags] = useState<{ [id: string]: string }>({})
   const { data: { lists = [] } = {} } = useQuery<AllLists>(
     queries.ALL_LIST_NAMES
   )
@@ -69,6 +74,11 @@ export default function Audit() {
             .filter(Boolean) as string[]
       )
       if (newUsers.length) setUserIds([...userIds, ...newUsers].sort())
+
+      const newTags = newEvents
+        .map(({ tag }) => !tagIds.includes(tag) && tag)
+        .filter(Boolean) as number[]
+      if (newTags.length) setTagIds([...tagIds, ...newTags].sort())
     },
   })
 
@@ -89,6 +99,20 @@ export default function Audit() {
         )
       )
   }, [_userIds])
+
+  const _tagIds = JSON.stringify(tagIds)
+  useEffect(() => {
+    const tags = JSON.parse(_tagIds)
+    if (!tags.length) return
+    api
+      .query<TagListNames, TagListNamesVariables>({
+        query: queries.TAG_LIST_NAMES,
+        variables: { ids: tags },
+      })
+      .then(({ data }) =>
+        setTags(Object.fromEntries(data.tags.map(({ id, name }) => [id, name])))
+      )
+  }, [_tagIds])
 
   const formatUser = (id: string, p = false) => (
     <User
@@ -113,6 +137,7 @@ export default function Audit() {
           eventType,
           list,
           userName,
+          tag,
           ...v
         }) => (
           <S.Event key={id}>
@@ -139,6 +164,16 @@ export default function Audit() {
                 <>
                   {formatUser(editor)} deleted {formatUser(user)}{' '}
                   {possessive(userName)} account
+                </>
+              ) : eventType === 'add_tag' ? (
+                <>
+                  {formatUser(editor)} added tag '{tags[tag] ?? tag}' to user{' '}
+                  {formatUser(user)}
+                </>
+              ) : eventType === 'remove_tag' ? (
+                <>
+                  {formatUser(editor)} removed tag '{tags[tag] ?? tag}' from
+                  user {formatUser(user)}
                 </>
               ) : (
                 'unknown event type'
