@@ -8,7 +8,7 @@ import type { EditUserInfo, EditUserInfoVariables } from 'gql/types'
 import Action, { actions } from './UserAction'
 
 const columns: Columns = {
-  id: { type: 'string' },
+  id: { type: 'string', filterable: false },
   name: { type: 'string', editable: true },
   handle: { type: 'string', editable: true },
   email: { type: 'string', editable: true },
@@ -35,12 +35,12 @@ const columns: Columns = {
   tags: {
     type: 'list',
     fields: {
-      id: { type: 'string' },
+      id: { type: 'number' },
       name: { type: 'string' },
     },
     displayField: 'name',
   },
-  joined: { type: 'string' },
+  joined: { type: 'string', filterable: false },
 }
 const defaultColumns = ['name', 'email', 'role']
 const defaultSortBy = 'name'

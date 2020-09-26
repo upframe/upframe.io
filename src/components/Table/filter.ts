@@ -1,6 +1,6 @@
 import subscription from 'utils/subscription'
 
-const columnTypes = ['string', 'enum', 'object', 'list'] as const
+const columnTypes = ['string', 'enum', 'number', 'object', 'list'] as const
 type ColumnType = typeof columnTypes[number]
 
 export type Column = {
@@ -10,6 +10,7 @@ export type Column = {
   values?: string[]
   fields?: Columns
   displayField?: string
+  filterable?: boolean
 }
 export type Columns = { [k: string]: Omit<Column, 'name'> }
 
@@ -108,6 +109,8 @@ export class Filter {
         return ['equals', 'includes', 'begins_with', 'ends_with']
       case 'enum':
         return ['equal']
+      case 'number':
+        return ['=', '<', '>', '<=', '>=']
       default:
         throw new Error(`unknown filter type ${type}`)
     }

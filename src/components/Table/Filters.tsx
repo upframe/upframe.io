@@ -38,9 +38,11 @@ export function FilterItem({ filter, onConfirm, onDelete }: FilterProps) {
         }}
       >
         <option disabled>COLUMN</option>
-        {Object.keys(filter.columns).map(v => (
-          <option key={`${filter.id}-c-${v}`}>{v}</option>
-        ))}
+        {Object.entries(filter.columns)
+          .filter(([, { filterable }]) => filterable !== false)
+          .map(([v]) => (
+            <option key={`${filter.id}-c-${v}`}>{v}</option>
+          ))}
       </select>
       {filter.type === 'list' && <span>includes</span>}
       {['object', 'list'].includes(filter.type) && (
