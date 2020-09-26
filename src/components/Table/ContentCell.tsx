@@ -39,7 +39,7 @@ export default function ContentCell({
           </S.ContentSection>
         ) : column.type === 'string' ? (
           <S.TextInput
-            value={editValue}
+            value={editValue ?? ''}
             onChange={({ target }) => setEditValue(target.value)}
           />
         ) : (
@@ -56,7 +56,8 @@ export default function ContentCell({
           <Actions
             {...(editing
               ? {
-                  confirm: ((editValue as any).trim?.() ?? editValue) !== value,
+                  confirm:
+                    ((editValue as any)?.trim?.() ?? editValue) !== value,
                   cancel: true,
                   onAction(action) {
                     if (action === 'cancel') {
