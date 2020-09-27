@@ -17,6 +17,7 @@ const Privacy = React.lazy(() => import('./screens/Privacy'))
 const Conversations = React.lazy(() => import('./screens/Conversations'))
 const Redirects = React.lazy(() => import('./screens/Redirects'))
 const Scroller = React.lazy(() => import('./screens/playground/Scroller'))
+const Tools = React.lazy(() => import('./screens/tools/Tools'))
 
 export default function Routes() {
   return (
@@ -34,6 +35,7 @@ export default function Routes() {
         path="/(conversations|c)/:conversationId?/:channelId?"
         component={Conversations}
       />
+      <Route exact path="/tools/:page?" component={Tools} />
       <Route exact path="/meetup/confirm/:meetupid" component={MeetupConfirm} />
       <Route exact path="/meetup/cancel/:meetupid" component={MeetupCancel} />
       <Route exact path="/redirects" component={Redirects} />

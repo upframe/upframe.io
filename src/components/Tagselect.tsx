@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { TagInput } from '.'
 import { useQuery, gql } from 'gql'
+import type { Tag } from './TagInput'
+import type { TagSearch, TagSearchVariables } from 'gql/types'
 
 const TAG_SEARCH = gql`
   query TagSearch($input: String!) {
@@ -17,25 +19,38 @@ const TAG_SEARCH = gql`
   }
 `
 
-export default function TagSelect({ selection, onChange, placeholder }) {
-  const [input, setInput] = useState('')
-  const [selected, setSelected] = useState()
-  const [newSelected, setNewSelected] = useState(false)
-  const listRef = useRef()
-  const [lastScroll, setLastScroll] = useState(performance.now())
-  const [toDelete, setToDelete] = useState()
+interface Props {
+  selection: Tag[]
+  onChange(tags: Tag[]): void
+  placeholder?: string
+  canAdd?: boolean
+}
 
-  const { data: { search: { tags = [] } = {} } = {} } = useQuery(TAG_SEARCH, {
+export default function TagSelect({
+  selection,
+  onChange,
+  placeholder,
+  canAdd = true,
+}: Props) {
+  const [input, setInput] = useState('')
+  const [selected, setSelected] = useState<Tag['id']>()
+  const [newSelected, setNewSelected] = useState(false)
+  const listRef = useRef() as React.MutableRefObject<HTMLUListElement>
+  const [lastScroll, setLastScroll] = useState(performance.now())
+  const [toDelete, setToDelete] = useState<number>()
+
+  const { data } = useQuery<TagSearch, TagSearchVariables>(TAG_SEARCH, {
     variables: { input },
   })
+  const tags = data?.search?.tags ?? []
 
   useEffect(() => {
     if (!tags.length) {
-      setSelected()
+      setSelected(undefined)
       setNewSelected(true)
     } else {
       setSelected(tags[0].tag.id)
-      setNewSelected()
+      setNewSelected(false)
     }
   }, [input, tags])
 
@@ -43,7 +58,7 @@ export default function TagSelect({ selection, onChange, placeholder }) {
   useEffect(() => {
     if (!listRef || !listRef.current) return
     const index = tags.findIndex(({ tag }) => tag.id === selected)
-    const node = listRef.current.children[index]
+    const node = listRef.current.children[index] as HTMLElement
     if (!node) return
 
     if (node.offsetTop < listRef.current.scrollTop) {
@@ -57,7 +72,7 @@ export default function TagSelect({ selection, onChange, placeholder }) {
         node.offsetTop + node.offsetHeight - listRef.current.offsetHeight
       setLastScroll(performance.now())
     }
-  }, [selected, tags])
+  }, [selected, tags, listRef])
 
   function addTag(tag) {
     if (tag)
@@ -78,14 +93,14 @@ export default function TagSelect({ selection, onChange, placeholder }) {
       if (input || !selection.length) return
       if (toDelete) {
         onChange(selection.slice(0, -1))
-        setToDelete(null)
+        setToDelete(undefined)
       } else setToDelete(selection.slice(-1)[0].id)
-    } else setToDelete()
+    } else setToDelete(undefined)
     if (['Enter', 'Tab', ','].includes(e.key)) {
       e.preventDefault()
       addTag(
         selected
-          ? tags.find(({ tag }) => tag.id === selected).tag
+          ? tags.find(({ tag }) => tag.id === selected)?.tag
           : { name: input, id: input }
       )
     }
@@ -109,9 +124,9 @@ export default function TagSelect({ selection, onChange, placeholder }) {
             )
           ].tag.id
         )
-        setNewSelected()
+        setNewSelected(false)
       } else {
-        setSelected()
+        setSelected(undefined)
         setNewSelected(true)
       }
     }
@@ -124,6 +139,7 @@ export default function TagSelect({ selection, onChange, placeholder }) {
         onChange={setInput}
         tags={selection}
         highlight={toDelete}
+        // @ts-ignore
         onKeyDown={handleKey}
         onTagClick={id => onChange(selection.filter(tag => tag.id !== id))}
         {...(selection.length === 0 && { placeholder })}
@@ -137,29 +153,30 @@ export default function TagSelect({ selection, onChange, placeholder }) {
               onMouseEnter={() => {
                 if (performance.now() - lastScroll > 100) {
                   setSelected(tag.id)
-                  setNewSelected()
+                  setNewSelected(false)
                 }
               }}
               onClick={() => addTag(tag)}
-              dangerouslySetInnerHTML={{ __html: markup }}
+              dangerouslySetInnerHTML={{ __html: markup as string }}
             ></li>
           ))}
-          {!tags
-            .map(({ tag }) => tag.name.toLowerCase())
-            .includes(input.toLowerCase()) && (
-            <S.Add
-              {...(newSelected && { 'data-selected': true })}
-              onClick={() => addTag({ name: input, id: input })}
-              onMouseEnter={() => {
-                if (performance.now() - lastScroll > 100) {
-                  setNewSelected(true)
-                  setSelected()
-                }
-              }}
-            >
-              &lsquo;{input}&rsquo;
-            </S.Add>
-          )}
+          {canAdd &&
+            !tags
+              .map(({ tag }) => tag.name.toLowerCase())
+              .includes(input.toLowerCase()) && (
+              <S.Add
+                {...(newSelected && { 'data-selected': true })}
+                onClick={() => addTag({ name: input, id: input })}
+                onMouseEnter={() => {
+                  if (performance.now() - lastScroll > 100) {
+                    setNewSelected(true)
+                    setSelected(undefined)
+                  }
+                }}
+              >
+                &lsquo;{input}&rsquo;
+              </S.Add>
+            )}
         </S.List>
       )}
     </S.Wrap>

@@ -301,3 +301,42 @@ export function useMentors() {
 
   return { mentors, set }
 }
+
+export function useStateEffect<T>(
+  effect: (...args: any[]) => any,
+  init?: T
+): [T, (v: T) => void] {
+  const [value, setValue] = useState(init)
+  return [
+    value,
+    (v?: T) => {
+      effect()
+      setValue(v)
+    },
+  ] as any
+}
+
+export function useClickOutHide(
+  containerClass: string,
+  onHide: () => void,
+  delay = false
+) {
+  useEffect(() => {
+    if (!containerClass || !onHide) return
+
+    const onClick = ({ target }: MouseEvent) => {
+      const isContext = (node: any = target) => {
+        if (!node) return false
+        if (Array.from(node.classList ?? []).includes(containerClass))
+          return true
+        return isContext(node.parentElement)
+      }
+
+      if (!isContext())
+        if (delay) setTimeout(onHide, 100)
+        else onHide()
+    }
+    window.addEventListener('mousedown', onClick)
+    return () => window.removeEventListener('mousedown', onClick)
+  }, [containerClass, onHide, delay])
+}
