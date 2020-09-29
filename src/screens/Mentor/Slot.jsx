@@ -1,22 +1,17 @@
 import React from 'react'
-import styles from './profile.module.scss'
+import styled from 'styled-components'
 
-export default function Slot({ start, onClick = () => {}, linkTo }) {
+export default function Slot({ start, onClick = () => {}, linkTo, selected }) {
   const date = new Date(start)
-  const month = date.toLocaleString('en-US', { month: 'short' })
-  const day = date.toLocaleString('en-US', { day: 'numeric' })
-  const weekday = date.toLocaleString('en-US', { weekday: 'short' })
   const time = date.toLocaleString('en-US', {
     hour12: true,
     hour: 'numeric',
     minute: 'numeric',
   })
 
-  let Tag = linkTo ? 'a' : 'div'
-
   return (
-    <Tag
-      className={styles.slot}
+    <TagContainer
+      selected={selected}
       onClick={() => onClick(start)}
       {...(linkTo && {
         target: '_blank',
@@ -25,14 +20,41 @@ export default function Slot({ start, onClick = () => {}, linkTo }) {
       })}
     >
       <div>
-        <span>{month}</span>
-        <span>{day}</span>
+        <span>{time}</span>
       </div>
-      <div>
-        <span>
-          {weekday} {time}
-        </span>
-      </div>
-    </Tag>
+    </TagContainer>
   )
 }
+
+const TagContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  color: black;
+  background-color; white;
+  cursor: pointer;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+  height: 4rem;
+  width: 11rem;
+  transition: border-color 0.25s ease;
+  
+  &:hover {
+    border-color: var(--cl-accent);
+  }
+  
+  @media (max-width: 599px), (orientation: portrait) {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  ${({ selected }) =>
+    selected &&
+    `
+      color: var(--cl-accent);
+    `}
+
+`

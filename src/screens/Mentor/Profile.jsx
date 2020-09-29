@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { Breadcrumbs, RecommendationCard, Spinner } from '../../components'
 import styles from './profile.module.scss'
 import Showcase from './Showcase'
 import Meetup from './Meetup'
-import Request from './Request'
 import { useQuery, queries, hasError } from 'gql'
 import { Helmet } from 'react-helmet'
 
@@ -18,8 +17,6 @@ const recommend = {
 const slotsAfter = new Date().toISOString()
 
 export default function Profile({ match }) {
-  const [showRequest, toggleRequest] = useState(false)
-
   const { data: { user = {} } = {}, loading, error } = useQuery(
     queries.PROFILE,
     {
@@ -65,14 +62,7 @@ export default function Profile({ match }) {
       <Showcase user={user} />
       {user.role !== 'USER' && (
         <>
-          <Meetup mentor={user} onSlot={toggleRequest} />
-          {showRequest && (
-            <Request
-              mentor={user}
-              {...(typeof showRequest === 'string' && { slot: showRequest })}
-              onClose={() => toggleRequest(false)}
-            />
-          )}
+          <Meetup mentor={user} />
           {user.handle in recommend && (
             <RecommendationCard recommendations={recommend[user.handle]} />
           )}
