@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react'
 import styled from 'styled-components'
 
 interface Props {
-  size: 1 | 2 | 3 | 4 | 5 | 6
+  size?: 1 | 2 | 3 | 4 | 5 | 6
 }
 
 const Title: FunctionComponent<Props> = ({ size = 2, ...props }) => {
