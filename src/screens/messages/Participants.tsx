@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Participant from './Participant'
 import { useParticipants } from 'conversations/hooks'
-import { Icon } from 'components'
+import { Icon, ProfilePicture } from 'components'
 import { useHistory } from 'react-router-dom'
 import { desktop } from 'styles/responsive'
 
 export default function Participants({ ids = [] }: { ids?: string[] }) {
   const history = useHistory()
   const users = useParticipants(ids)
+  const [active, setActive] = useState<typeof users[number]>()
 
   const goBack = () => {
     if (
@@ -33,11 +34,37 @@ export default function Participants({ ids = [] }: { ids?: string[] }) {
       {users.length === 1 ? (
         <Participant user={users[0]} />
       ) : (
-        users.map(({ displayName }) => displayName).join(', ')
+        <>
+          <S.PhotoStack onMouseLeave={() => setActive(undefined)}>
+            {users.map(user => (
+              <S.PhotoWrap
+                key={`photo-${user.id}`}
+                onMouseEnter={() => setActive(user)}
+              >
+                <ProfilePicture
+                  imgs={user.profilePictures}
+                  size={picSize}
+                  linkTo={`/${user.handle}`}
+                />
+              </S.PhotoWrap>
+            ))}
+          </S.PhotoStack>
+          <S.MultiInfo>
+            {active ? (
+              <Participant user={active} />
+            ) : (
+              <span>
+                {users.map(({ displayName }) => displayName).join(', ')}
+              </span>
+            )}
+          </S.MultiInfo>
+        </>
       )}
     </S.Participants>
   )
 }
+
+const picSize = '2.5rem'
 
 const S = {
   Participants: styled.div`
@@ -62,6 +89,87 @@ const S = {
 
     @media ${desktop} {
       display: none;
+    }
+  `,
+
+  PhotoStack: styled.div`
+    display: flex;
+
+    &:hover div:not(:hover) img {
+      filter: brightness(0.7);
+    }
+  `,
+
+  PhotoWrap: styled.div`
+    width: calc(${picSize} + 4px);
+    height: calc(${picSize} + 4px);
+    transition: transform 0.15s ease;
+    z-index: 1;
+    padding: 2px;
+    position: relative;
+
+    &:not(:first-of-type) {
+      margin-left: calc(-${picSize} + 0.75rem);
+    }
+
+    &:hover {
+      z-index: 5;
+    }
+
+    &:hover ~ & {
+      transform: translateX(calc((${picSize} + 0.75rem) / 2 + 0.2rem));
+    }
+
+    &:last-of-type {
+      transition: transform 0.15s ease, margin-right 0.15s ease;
+
+      &:hover {
+        margin-right: calc(((${picSize} + 0.75rem) / 2 + 0.2rem) * -1);
+      }
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: 0 0 5px #0003;
+      transition: filter 0.15s ease;
+    }
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      left: 0;
+      top: 0;
+      border-radius: 50%;
+      backdrop-filter: blur(0.25rem);
+    }
+  `,
+
+  MultiInfo: styled.div`
+    margin-left: 1rem;
+    transition: transform 0.15s ease;
+
+    & > span {
+      font-weight: bold;
+      font-size: 1rem;
+      color: var(--cl-text-strong);
+    }
+
+    div:hover + & {
+      transform: translateX(calc((${picSize} + 0.75rem) / 2 + 0.2rem));
+    }
+
+    picture {
+      display: none;
+    }
+
+    & > div > div {
+      margin-left: 0;
     }
   `,
 }

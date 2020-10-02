@@ -6,7 +6,6 @@ import isEqual from 'lodash/isEqual'
 import api from 'api'
 import type { Me, Mentors } from 'gql/types'
 import type { DocumentNode } from 'graphql'
-import { isSameDay, isPreviousDay } from './date'
 import subscription from './subscription'
 
 export { useHistory }
@@ -264,76 +263,6 @@ export function useLoggedIn({
   return loggedIn
 }
 
-const sec = 1000
-const min = sec * 60
-const hour = min * 60
-const day = hour * 24
-const week = day * 7
-const format: [
-  number | ((d: Date) => boolean),
-  (dt: number, d: Date) => [string, number?, boolean?]
-][] = [
-  [min, () => ['just now']],
-  [10 * min, dt => [`${(dt / min) | 0} min`, min]],
-  [hour, dt => [`${((dt / min / 5) | 0) * 5} min`, 5 * min]],
-  [5 * hour, dt => [`${(dt / hour) | 0}h ago`, hour]],
-  [
-    d => isSameDay(d) || isPreviousDay(d),
-    (_, d) => [
-      isSameDay(d) ? 'today' : 'yesterday',
-      new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1).getTime() -
-        d.getTime(),
-    ],
-  ],
-  [
-    d =>
-      Date.now() - d.getTime() < day * 7 && new Date().getDay() !== d.getDay(),
-    (_, d) => [d.toLocaleDateString('en-US', { weekday: 'short' })],
-  ],
-  [d => Date.now() - d.getTime() < week * 4, dt => [`${(dt / week) | 0}w ago`]],
-  [
-    d =>
-      Date.now() - d.getTime() < day * 90 ||
-      new Date().getFullYear() === d.getFullYear(),
-    (_, d) => [d.toLocaleDateString('en-US', { month: 'short' })],
-  ],
-  [Infinity, (_, d) => [d.getFullYear().toString()]],
-]
-
-export function useTimeMarker(date?: Date) {
-  const [marker, setMarker] = useState('')
-
-  useEffect(() => {
-    if (!date) return
-    let toId: number
-
-    function go(date: Date) {
-      const dt = Date.now() - date.getTime()
-      const [seg, f] = format.find(([max]) =>
-        typeof max === 'number' ? max > dt : max(date)
-      ) as typeof format[number]
-
-      const [formatted, interval] = f(dt, date)
-      setMarker(formatted)
-
-      if ((seg !== Infinity && typeof seg === 'number') || interval) {
-        const wait =
-          (!interval
-            ? (seg as number) - (dt % (seg as number))
-            : typeof seg === 'number'
-            ? interval - (dt % interval)
-            : interval) + 100
-        if (wait < 2 ** 31 - 1) toId = setTimeout(() => go(date), wait)
-      }
-    }
-    go(date)
-
-    return () => clearTimeout(toId)
-  }, [date])
-
-  return marker
-}
-
 const mentorSub = subscription<Mentors['mentors']>(set => {
   api
     .query<Mentors>({ query: queries.MENTORS })
@@ -360,13 +289,54 @@ export function useMentors() {
   }
 
   useEffect(
-    () =>
-      mentorSub.subscribe(v => {
-        setMentors(v)
-      }, set),
+    () => {
+      setMentors(mentorSub.state ?? [])
+      return mentorSub.subscribe(v => {
+        if (v?.length) setMentors(v)
+      }, set)
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
 
   return { mentors, set }
+}
+
+export function useStateEffect<T>(
+  effect: (...args: any[]) => any,
+  init?: T
+): [T, (v: T) => void] {
+  const [value, setValue] = useState(init)
+  return [
+    value,
+    (v?: T) => {
+      effect()
+      setValue(v)
+    },
+  ] as any
+}
+
+export function useClickOutHide(
+  containerClass: string,
+  onHide: () => void,
+  delay = false
+) {
+  useEffect(() => {
+    if (!containerClass || !onHide) return
+
+    const onClick = ({ target }: MouseEvent) => {
+      const isContext = (node: any = target) => {
+        if (!node) return false
+        if (Array.from(node.classList ?? []).includes(containerClass))
+          return true
+        return isContext(node.parentElement)
+      }
+
+      if (!isContext())
+        if (delay) setTimeout(onHide, 100)
+        else onHide()
+    }
+    window.addEventListener('mousedown', onClick)
+    return () => window.removeEventListener('mousedown', onClick)
+  }, [containerClass, onHide, delay])
 }

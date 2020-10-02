@@ -58,17 +58,6 @@ const S = {
     box-sizing: border-box;
     padding: 1rem;
     position: relative;
-    margin-top: 2rem;
-
-    &:last-of-type::after {
-      content: '';
-      display: block;
-      position: absolute;
-      top: -2rem;
-      left: 0;
-      width: 100%;
-      height: 2rem;
-    }
 
     input {
       width: 100%;

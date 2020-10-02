@@ -7,7 +7,7 @@ export default function Identicon({ ids, size = 5 }) {
   const ref = useRef()
 
   useEffect(() => {
-    setId(mergeIds(ids))
+    setId(mergeIds(ids.sort()))
   }, [ids])
 
   useEffect(() => {

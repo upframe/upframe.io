@@ -5,7 +5,6 @@ export const MENTORS = gql`
   query Mentors {
     mentors {
       ...MentorDetails
-      categories
       sortScore
     }
   }
@@ -201,6 +200,34 @@ export const LISTS = gql`
       illustration
       backgroundColor
       textColor
+    }
+  }
+`
+
+export const ALL_LIST_NAMES = gql`
+  query AllLists {
+    lists(includeUnlisted: true) {
+      id
+      name
+    }
+  }
+`
+
+export const USER_LIST_NAMES = gql`
+  query UserListNames($ids: [ID!]!) {
+    users(ids: $ids) {
+      id
+      name
+      handle
+    }
+  }
+`
+
+export const TAG_LIST_NAMES = gql`
+  query TagListNames($ids: [Int!]!) {
+    tags(ids: $ids) {
+      id
+      name
     }
   }
 `

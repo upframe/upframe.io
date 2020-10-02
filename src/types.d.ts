@@ -19,3 +19,5 @@ type GqlType<T> = RecursivePartial<Omit<T, '__typename'>>
 type CondOpt<T, K> = T extends { value: boolean } ? [(T | K)?] : [T | K]
 
 type Participant = Require<Partial<ChatParticipant>, 'id'>
+
+type SortDir = 'ASC' | 'DESC'

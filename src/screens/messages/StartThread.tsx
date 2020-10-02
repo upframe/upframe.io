@@ -64,7 +64,18 @@ function StartThread({ onSend, cardView = false }: Require<Props, 'onSend'>) {
 
 const S = {
   Start: styled.div`
-    margin-top: 2rem;
+    --top: 2rem;
+
+    margin-top: var(--top);
+
+    *[data-browser='firefox'] > & {
+      margin-top: 0;
+      margin-bottom: var(--top);
+    }
+
+    button {
+      margin-right: 0;
+    }
 
     &[data-type='card'] {
       display: contents;

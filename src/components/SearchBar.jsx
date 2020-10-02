@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import { TagInput, Icon, ProfilePicture } from '.'
 import { useQuery, gql } from 'gql'
@@ -144,6 +144,14 @@ export default function SearchBar() {
     }
   }
 
+  const unfocus = useCallback(() => {
+    requestAnimationFrame(() => setFocus(false))
+  }, [])
+
+  useEffect(() => () => window.removeEventListener('pointerup', unfocus), [
+    unfocus,
+  ])
+
   return (
     <S.Wrap onSubmit={submit} onKeyDown={handleKey}>
       <S.Search>
@@ -151,9 +159,9 @@ export default function SearchBar() {
           value={input}
           onChange={setInput}
           onFocus={() => setFocus(true)}
-          onBlur={() => {
-            setTimeout(() => setFocusRef.current(false), 100)
-          }}
+          onBlur={() =>
+            window.addEventListener('pointerup', unfocus, { once: true })
+          }
           tags={searchTags}
           onTagClick={id =>
             setSearchTags(searchTags.filter(tag => tag.id !== id))

@@ -2,45 +2,44 @@ import React from 'react'
 import styled from 'styled-components'
 import { Input, Chip } from '.'
 
-interface Props {
-  value: string
-  onChange(v: string): void
-  onTagClick?(v: string): void
-  tags?: Tag[]
-  highlight?: string
-}
-
-type Tag = {
-  id: string
+export type Tag = {
+  id: number
   name: string
 }
 
-export default function TagInput({
+interface Props {
+  value: string
+  onChange(v: string): void
+  onTagClick?(v: Tag['id']): void
+  tags?: Tag[]
+  highlight?: Tag['id']
+}
+
+const TagInput: React.FunctionComponent<Props> = ({
   value,
   onChange,
   onTagClick = () => {},
   tags = [],
   highlight,
   ...props
-}: Props) {
-  return (
-    <S.Input>
-      <Input onChange={onChange} value={value} {...props} />
-      {tags
-        .map(({ id, name }) => (
-          <Chip
-            key={id}
-            onClick={() => onTagClick(id)}
-            highlight={highlight === id}
-            removable
-          >
-            {name}
-          </Chip>
-        ))
-        .reverse()}
-    </S.Input>
-  )
-}
+}) => (
+  <S.Input>
+    <Input onChange={onChange} value={value} {...props} />
+    {tags
+      .map(({ id, name }) => (
+        <Chip
+          key={id}
+          onClick={() => onTagClick(id)}
+          highlight={highlight === id}
+          removable
+        >
+          {name}
+        </Chip>
+      ))
+      .reverse()}
+  </S.Input>
+)
+export default TagInput
 
 const S = {
   Input: styled.div`

@@ -13,6 +13,8 @@ if (process.env.NODE_ENV !== 'development')
     dsn: process.env.REACT_APP_SENTRY_DSN,
   })
 
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js')
+
 ReactDOM.render(
   <ApolloProvider client={client}>
     <App />

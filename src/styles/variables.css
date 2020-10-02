@@ -10,4 +10,6 @@
   --cl-secondary: #2c3976;
   --cl-error: #ff3d00;
   --border-radius: 0.57rem;
+  --cl-confirm: #43a047;
+  --cl-cancel: #e53935;
 }
