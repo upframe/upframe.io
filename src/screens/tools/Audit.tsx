@@ -162,8 +162,7 @@ export default function Audit() {
                 </>
               ) : eventType === 'remove_account' ? (
                 <>
-                  {formatUser(editor)} deleted {formatUser(user)}{' '}
-                  {possessive(userName)} account
+                  {formatUser(editor)} deleted {possessive(userName)} account
                 </>
               ) : eventType === 'add_tag' ? (
                 <>

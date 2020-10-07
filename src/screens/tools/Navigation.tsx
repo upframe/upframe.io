@@ -10,7 +10,7 @@ export default function Navigation({ active }: Props) {
   return (
     <S.Nav>
       <ul>
-        {['users', 'audit', 'redirects'].map(v => (
+        {['users', 'spaces', 'audit', 'redirects'].map(v => (
           <li key={`tools-nav-${v}`} data-active={v === active}>
             <Link to={v}>{v}</Link>
           </li>
