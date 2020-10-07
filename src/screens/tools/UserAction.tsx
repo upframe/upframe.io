@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Button, Title, Text, Spinner, Tagselect } from 'components'
+import { Modal, Button, Text, Spinner, Tagselect } from 'components'
 import { useQuery, queries, gql } from 'gql'
 import api from 'api'
 import type { AllLists, UserListNames, UserListNamesVariables } from 'gql/types'
@@ -94,47 +93,49 @@ export default function UserAction({ action, users, onDone, onCancel }: Props) {
   }
 
   return (
-    <S.Background onClick={onCancel}>
-      <S.Modal onClick={e => e.stopPropagation()}>
-        {loading ? (
-          <Spinner />
-        ) : (
-          <>
-            <Title size={3}>{action}</Title>
-            {listActions.includes(action as ListAction) && (
-              <ListAction
-                action={action as ListAction}
-                {...{ users, list, setList }}
-              />
-            )}
-            {tagActions.includes(action as TagAction) && (
-              <TagAction setTags={setTags} />
-            )}
-            <ul>
-              {userInfo.map(({ id, name }) => (
-                <li key={id}>{name}</li>
-              ))}
-            </ul>
-            <S.Actions>
-              <Button onClick={onCancel}>Cancel</Button>
-              <Button
-                accent
-                disabled={
-                  !(
-                    action === 'Delete Account' ||
-                    typeof list === 'number' ||
-                    tags.length
-                  )
-                }
-                onClick={onConfirm}
-              >
-                Confirm
-              </Button>
-            </S.Actions>
-          </>
-        )}
-      </S.Modal>
-    </S.Background>
+    <Modal
+      title={action}
+      actions={
+        <>
+          <Button onClick={onCancel}>Cancel</Button>
+          <Button
+            accent
+            disabled={
+              !(
+                action === 'Delete Account' ||
+                typeof list === 'number' ||
+                tags.length
+              )
+            }
+            onClick={onConfirm}
+          >
+            Confirm
+          </Button>
+        </>
+      }
+      onClose={onCancel}
+    >
+      {loading ? (
+        <Spinner />
+      ) : (
+        <>
+          {listActions.includes(action as ListAction) && (
+            <ListAction
+              action={action as ListAction}
+              {...{ users, list, setList }}
+            />
+          )}
+          {tagActions.includes(action as TagAction) && (
+            <TagAction setTags={setTags} />
+          )}
+          <ul>
+            {userInfo.map(({ id, name }) => (
+              <li key={id}>{name}</li>
+            ))}
+          </ul>
+        </>
+      )}
+    </Modal>
   )
 }
 
@@ -188,54 +189,4 @@ function TagAction({ setTags: setTagIds }: { setTags(tags: number[]): void }) {
       canAdd={false}
     />
   )
-}
-
-const S = {
-  Background: styled.div`
-    position: fixed;
-    display: block;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 3000;
-    background-color: #0008;
-
-    @supports (backdrop-filter: blur(12px)) {
-      background-color: #0002;
-      backdrop-filter: blur(5px);
-    }
-  `,
-
-  Modal: styled.div`
-    position: fixed;
-    left: 50vw;
-    top: 50vh;
-    transform: translate(-50%, -50%);
-    min-width: 20rem;
-    padding: 1rem 2rem;
-    display: block;
-    background-color: #fff;
-    border-radius: 0.25rem;
-
-    & > *:first-child {
-      margin-top: 0;
-    }
-
-    ul {
-      max-height: min(20rem, 40vh);
-      overflow-y: auto;
-    }
-  `,
-
-  Actions: styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    margin-top: 2rem;
-
-    button:last-of-type {
-      margin-right: 0;
-    }
-  `,
 }

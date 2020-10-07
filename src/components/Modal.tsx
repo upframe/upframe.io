@@ -1,18 +1,37 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 import { Shade, Title, Icon, Text } from '.'
 
-export default function Modal({
+interface Props {
+  title?: string
+  onClose?(): void
+  text?: string
+  actions?: ReactNode
+  cstSize?: boolean
+  onSubmit?(): void
+  cancellable?: boolean
+}
+
+const Modal: React.FC<Props> = ({
   title = 'modal',
   onClose = () => {},
   text,
   actions,
   children,
   cstSize,
-}) {
+  onSubmit,
+  cancellable = true,
+}) => {
   return (
-    <Shade>
-      <S.Modal data-size={cstSize ? 'custom' : 'default'}>
+    <Shade onClick={() => cancellable && onClose?.()}>
+      <S.Modal
+        data-size={cstSize ? 'custom' : 'default'}
+        onSubmit={e => {
+          e.preventDefault()
+          onSubmit?.()
+        }}
+        onClick={e => e.stopPropagation()}
+      >
         <S.TitleRow>
           <Title size={3}>{title}</Title>
           <Icon icon="close" onClick={onClose} />
@@ -26,7 +45,7 @@ export default function Modal({
 }
 
 const S = {
-  Modal: styled.div`
+  Modal: styled.form`
     position: fixed;
     left: 50%;
     top: 50%;
@@ -45,6 +64,11 @@ const S = {
       min-width: 30rem;
       max-width: 40rem;
       max-height: 95vh;
+    }
+
+    & > input,
+    & > textarea {
+      width: 100%;
     }
   `,
 
@@ -68,3 +92,5 @@ const S = {
     }
   `,
 }
+
+export default Object.assign(Modal, S)

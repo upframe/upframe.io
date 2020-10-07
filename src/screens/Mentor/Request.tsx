@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import styles from './request.module.scss'
 import { mutations, useMutation } from 'gql'
-import {
-  Shade,
-  Title,
-  Labeled,
-  Textbox,
-  Button,
-  Divider,
-  Icon,
-} from '../../components/'
+import { Modal, Labeled, Textbox, Button } from '../../components/'
 import { notify } from 'notification'
 import { useMe } from 'utils/hooks'
 
@@ -27,7 +18,7 @@ export default function Request({ mentor, onClose, slot }) {
   })
 
   useEffect(() => {
-    setValid(msg.length && me)
+    setValid(!!(msg.length && me))
   }, [msg, me])
 
   async function submit() {
@@ -35,25 +26,26 @@ export default function Request({ mentor, onClose, slot }) {
   }
 
   return (
-    <Shade onClick={onClose}>
-      <div className={styles.request} onClick={e => e.stopPropagation()}>
-        <Icon icon="close" onClick={onClose} />
-        <Title size={1}>Have a call with {mentor.displayName}</Title>
-        <Divider />
-        <Labeled
-          label="Message"
-          action={
-            <Textbox
-              placeholder="I have challenge x and was hoping you could help me with y."
-              values={msg}
-              onChange={setMsg}
-            />
-          }
-        />
+    <Modal
+      title={`Have a call with ${mentor.displayName}`}
+      actions={
         <Button disabled={!valid} filled onClick={submit}>
           Send
         </Button>
-      </div>
-    </Shade>
+      }
+      onClose={onClose}
+      cancellable={!msg.length}
+    >
+      <Labeled
+        label="Message"
+        action={
+          <Textbox
+            placeholder="I have challenge x and was hoping you could help me with y."
+            values={msg}
+            onChange={setMsg}
+          />
+        }
+      />
+    </Modal>
   )
 }
