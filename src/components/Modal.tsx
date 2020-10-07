@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Shade, Title, Icon, Text } from '.'
+import { useSpring, animated } from 'react-spring'
 
 interface Props {
   title?: string
@@ -22,6 +23,14 @@ const Modal: React.FC<Props> = ({
   onSubmit,
   cancellable = true,
 }) => {
+  const [show, set] = useState(false)
+  useEffect(() => set(true), [])
+
+  const props = useSpring({
+    opacity: show ? 1 : 0,
+    transform: `translateX(-50%) translateY(-50%) scale(${show ? 1 : 0.1})`,
+  })
+
   return (
     <Shade onClick={() => cancellable && onClose?.()}>
       <S.Modal
@@ -31,6 +40,7 @@ const Modal: React.FC<Props> = ({
           onSubmit?.()
         }}
         onClick={e => e.stopPropagation()}
+        style={props}
       >
         <S.TitleRow>
           <Title size={3}>{title}</Title>
@@ -45,11 +55,11 @@ const Modal: React.FC<Props> = ({
 }
 
 const S = {
-  Modal: styled.form`
+  Modal: styled(animated.form)`
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    transform-origin: center;
     overflow-y: auto;
     display: block;
     box-sizing: border-box;
