@@ -7,6 +7,7 @@ import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
 import { path } from 'utils/url'
 import { parseSize } from 'utils/css'
 import Navigation from './Navigation'
+import Mentors from './Mentors'
 
 const SPACE_QUERY = gql`
   query SpacePage($handle: String!) {
@@ -31,12 +32,10 @@ export default function Space({ match }) {
   if (loading) return <Spinner />
   if (!data?.space) return <Redirect to="/404" />
 
-  const { name, handle, description } = data.space
+  const { id, name, handle, description } = data.space
 
   if (match.params.handle !== handle)
     requestAnimationFrame(() => history.replace(`${path(1)}/${handle}`))
-
-  console.log(path(2))
 
   return (
     <S.Space>
@@ -61,7 +60,7 @@ export default function Space({ match }) {
             <Route
               exact
               path={path(2)}
-              component={() => <div>mentors</div>}
+              component={() => <Mentors spaceId={id} />}
             ></Route>
             <Route
               exact
@@ -114,7 +113,6 @@ const S = {
 
   Sidebar: styled.div`
     height: 100vh;
-    border-left: 1px dashed red;
     flex: 0 0 ${sidebarWidth}px;
   `,
 
