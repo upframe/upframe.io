@@ -60,22 +60,22 @@ export default function Space({ match }) {
             <Route
               exact
               path={path(2)}
-              component={() => <Mentors spaceId={id} />}
+              render={() => <Mentors spaceId={id} />}
             ></Route>
             <Route
               exact
               path={path(2) + '/people'}
-              component={() => <div>people</div>}
+              render={() => <div>people</div>}
             ></Route>
             <Route
               exact
               path={path(2) + '/settings'}
-              component={() => <div>settings</div>}
+              render={() => <div>settings</div>}
             ></Route>
             <Route
               exact
               path={path(2) + '/activity'}
-              component={() => <div>activity</div>}
+              render={() => <div>activity</div>}
             ></Route>
             <Redirect to={path(2)} />
           </Switch>
