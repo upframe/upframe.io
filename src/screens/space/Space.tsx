@@ -11,6 +11,7 @@ import Navigation from './Navigation'
 import Mentors from './Mentors'
 import Sidebar, { sidebarWidth } from './Sidebar'
 import Settings from './Settings'
+import People from './People'
 
 const SPACE_QUERY = gql`
   query SpacePage($handle: String!) {
@@ -87,7 +88,7 @@ export default function Space({ match }) {
             <Route
               exact
               path={path(2) + '/people'}
-              render={() => <div>people</div>}
+              render={() => <People spaceId={id} />}
             ></Route>
             <Route
               exact
