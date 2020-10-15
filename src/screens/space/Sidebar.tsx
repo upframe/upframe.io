@@ -88,9 +88,11 @@ const Widget = styled.div`
 const S = {
   Sidebar: styled.div`
     height: 100vh;
-    flex: 0 0 ${sidebarWidth}px;
+    flex: 0 0;
     display: flex;
     flex-direction: column;
+    width: ${sidebarWidth}px;
+    box-sizing: border-box;
   `,
 
   Avatars: styled(Widget)`
@@ -107,10 +109,11 @@ const S = {
   `,
 
   Group: styled.div`
-    width: 100%;
     display: grid;
     grid-template-columns: repeat(${avatarsPerRow}, 1fr);
     grid-gap: ${avatarGap};
+    overflow-x: hidden;
+    width: 100%;
   `,
 
   Avatar: styled.div`

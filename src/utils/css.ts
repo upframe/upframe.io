@@ -13,7 +13,7 @@ export const classes = (...classes: string[]): string =>
 
 export function parseSize(size: string): number {
   if (typeof size === 'number') return size
-  const value = parseInt(size)
+  const value = parseFloat(size)
   const unit = size.replace(/[0-9.]/g, '')
   switch (unit) {
     case 'px':

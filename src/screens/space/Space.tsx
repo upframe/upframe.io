@@ -103,9 +103,10 @@ export default function Space({ match }) {
   )
 }
 
-const sidePadding = parseSize('2rem')
+const columnGap = parseSize('2rem')
 const contentWidth = parseSize('55rem')
 const coverRatio = 1 / 4
+const sidePadding = 0.03
 
 const S = {
   Space: styled.div`
@@ -113,20 +114,19 @@ const S = {
     flex-direction: row;
     box-sizing: border-box;
     width: 100%;
-    overflow-x: hidden;
-    padding: 2rem ${sidePadding}px;
+
+    --side-padding: ${sidePadding * 100}vw;
+
+    padding: 2rem var(--side-padding);
   `,
 
   Main: styled.div`
     flex: 1 1;
-    overflow-x: hidden;
-    padding-right: 1rem;
+    margin-right: ${columnGap}px;
   `,
 
   MainWrap: styled.div`
-    --content-width: ${contentWidth}px;
-
-    max-width: calc(var(--content-width) + 1rem);
+    max-width: ${contentWidth}px;
     width: 100%;
     margin: auto;
   `,
@@ -138,16 +138,15 @@ const S = {
     border: 1px solid #0003;
     border-radius: 0.5rem;
     width: 100%;
-    height: calc(2 * ${coverRatio} * var(--content-width));
+    height: ${2 * coverRatio * contentWidth}px;
 
-    @media (max-width: ${contentWidth + sidebarWidth + sidePadding * 2}px) {
+    @media (max-width: ${(contentWidth + sidebarWidth + columnGap) /
+      (1 - sidePadding * 2)}px) {
       height: calc(
-        (100vw - ${sidebarWidth + sidePadding * 2}px) * ${coverRatio} * 2
+        ${`(${100 - sidePadding * 200}vw - ${
+          sidebarWidth + columnGap
+        }px) * ${coverRatio} * 2`}
       );
-    }
-
-    @media (max-width: 700px) {
-      background-color: red;
     }
 
     & > * {
