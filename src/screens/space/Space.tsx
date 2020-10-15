@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { gql, useQuery } from 'gql'
+import { gql, useQuery, fragments } from 'gql'
 import type { SpacePage, SpacePageVariables } from 'gql/types'
 import { Spinner, Title, Text } from 'components'
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { path } from 'utils/url'
 import { parseSize } from 'utils/css'
 import Navigation from './Navigation'
 import Mentors from './Mentors'
+import Sidebar, { sidebarWidth } from './Sidebar'
 
 const SPACE_QUERY = gql`
   query SpacePage($handle: String!) {
@@ -16,8 +17,24 @@ const SPACE_QUERY = gql`
       name
       handle
       description
+      mentors {
+        ...MentorDetails
+        sortScore
+      }
+      owners {
+        id
+        handle
+        ...ProfilePictures
+      }
+      members {
+        id
+        handle
+        ...ProfilePictures
+      }
     }
   }
+  ${fragments.person.mentorDetails}
+  ${fragments.person.profilePictures}
 `
 
 export default function Space({ match }) {
@@ -32,7 +49,7 @@ export default function Space({ match }) {
   if (loading) return <Spinner />
   if (!data?.space) return <Redirect to="/404" />
 
-  const { id, name, handle, description } = data.space
+  const { name, handle, description, mentors, owners, members } = data.space
 
   if (match.params.handle !== handle)
     requestAnimationFrame(() => history.replace(`${path(1)}/${handle}`))
@@ -60,7 +77,7 @@ export default function Space({ match }) {
             <Route
               exact
               path={path(2)}
-              render={() => <Mentors spaceId={id} />}
+              render={() => <Mentors mentors={mentors} />}
             ></Route>
             <Route
               exact
@@ -81,13 +98,12 @@ export default function Space({ match }) {
           </Switch>
         </S.MainWrap>
       </S.Main>
-      <S.Sidebar></S.Sidebar>
+      <Sidebar owners={owners} members={members} />
     </S.Space>
   )
 }
 
 const sidePadding = parseSize('2rem')
-const sidebarWidth = parseSize('18rem')
 const contentWidth = parseSize('55rem')
 const coverRatio = 1 / 4
 
@@ -113,12 +129,6 @@ const S = {
     max-width: calc(var(--content-width) + 1rem);
     width: 100%;
     margin: auto;
-  `,
-
-  Sidebar: styled.div`
-    height: 100vh;
-    flex: 0 0 ${sidebarWidth}px;
-    background: #ddd;
   `,
 
   Info: styled.div`
