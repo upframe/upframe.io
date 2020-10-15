@@ -88,7 +88,7 @@ export default function Space({ match }) {
 
 const sidePadding = parseSize('2rem')
 const sidebarWidth = parseSize('18rem')
-const coverWidth = parseSize('40rem')
+const contentWidth = parseSize('55rem')
 const coverRatio = 1 / 4
 
 const S = {
@@ -103,17 +103,22 @@ const S = {
 
   Main: styled.div`
     flex: 1 1;
+    overflow-x: hidden;
+    padding-right: 1rem;
   `,
 
   MainWrap: styled.div`
-    margin: auto;
-    max-width: 60rem;
+    --content-width: ${contentWidth}px;
+
+    max-width: calc(var(--content-width) + 1rem);
     width: 100%;
+    margin: auto;
   `,
 
   Sidebar: styled.div`
     height: 100vh;
     flex: 0 0 ${sidebarWidth}px;
+    background: #ddd;
   `,
 
   Info: styled.div`
@@ -122,14 +127,17 @@ const S = {
     overflow: hidden;
     border: 1px solid #0003;
     border-radius: 0.5rem;
+    width: 100%;
+    height: calc(2 * ${coverRatio} * var(--content-width));
 
-    --cover-width: ${coverWidth}px;
+    @media (max-width: ${contentWidth + sidebarWidth + sidePadding * 2}px) {
+      height: calc(
+        (100vw - ${sidebarWidth + sidePadding * 2}px) * ${coverRatio} * 2
+      );
+    }
 
-    width: min(var(--cover-width), 100%);
-    height: calc(2 * ${coverRatio} * var(--cover-width));
-
-    @media (max-width: ${coverWidth + sidebarWidth + sidePadding * 2}px) {
-      background: red;
+    @media (max-width: 700px) {
+      background-color: red;
     }
 
     & > * {

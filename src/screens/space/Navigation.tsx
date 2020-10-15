@@ -35,7 +35,7 @@ export default function Navigation() {
 const Slider = styled.div`
   width: 25%;
   height: 0.5rem;
-  background-color: #000;
+  background-color: #e9476a;
   position: absolute;
   bottom: 0;
   border-radius: 0.25rem;
@@ -46,6 +46,7 @@ const S = {
   Navigation: styled.nav`
     position: relative;
     height: 3rem;
+    margin: 2rem 0;
 
     ol {
       width: 100%;
@@ -103,7 +104,7 @@ const S = {
         }
 
         & > ol > li:nth-of-type(${i + 1}) > a {
-          color: #000;
+          color: #E9476A;
         }
       }
     `
