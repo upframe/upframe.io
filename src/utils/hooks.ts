@@ -340,3 +340,13 @@ export function useClickOutHide(
     return () => window.removeEventListener('mousedown', onClick)
   }, [containerClass, onHide, delay])
 }
+
+export function useReset(v: any, ...rest: any[]) {
+  useEffect(() => {
+    let init: any
+    for (const item of rest)
+      if (typeof item !== 'function') init = item
+      else item(init)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [v])
+}

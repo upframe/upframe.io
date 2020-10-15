@@ -4,11 +4,13 @@ import { gql, useQuery, fragments } from 'gql'
 import type { SpacePage, SpacePageVariables } from 'gql/types'
 import { Spinner, Title, Text } from 'components'
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 import { path } from 'utils/url'
 import { parseSize } from 'utils/css'
 import Navigation from './Navigation'
 import Mentors from './Mentors'
 import Sidebar, { sidebarWidth } from './Sidebar'
+import Settings from './Settings'
 
 const SPACE_QUERY = gql`
   query SpacePage($handle: String!) {
@@ -49,13 +51,16 @@ export default function Space({ match }) {
   if (loading) return <Spinner />
   if (!data?.space) return <Redirect to="/404" />
 
-  const { name, handle, description, mentors, owners, members } = data.space
+  const { id, name, handle, description, mentors, owners, members } = data.space
 
   if (match.params.handle !== handle)
     requestAnimationFrame(() => history.replace(`${path(1)}/${handle}`))
 
   return (
     <S.Space>
+      <Helmet>
+        <title>{name} | Upframe</title>
+      </Helmet>
       <S.Main>
         <S.MainWrap>
           <S.Info>
@@ -87,7 +92,7 @@ export default function Space({ match }) {
             <Route
               exact
               path={path(2) + '/settings'}
-              render={() => <div>settings</div>}
+              render={() => <Settings spaceId={id} />}
             ></Route>
             <Route
               exact
