@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { gql, useQuery, fragments } from 'gql'
-import { Title, Text, Spinner, ProfilePicture } from 'components'
+import { Title, Text, Spinner, ProfilePicture, Button } from 'components'
 import type { SpaceMembers, SpaceMembersVariables } from 'gql/types'
 
 const MEMBER_QUERY = gql`
@@ -65,24 +65,55 @@ interface GroupProps {
 }
 
 function Group({ title, description, users }: GroupProps) {
+  const [batches, setBatches] = useState(1)
+  const batchSize = 4
+
+  const showMore = users.length > batches * batchSize
+  const showCollapse = !showMore && users.length > batchSize
+
   return (
-    <S.Group>
+    <S.Group
+      fade={
+        users.length > batches * batchSize ? batches * batchSize : undefined
+      }
+    >
       <Title size={3}>
         {title}
         <span>{users.length}</span>
       </Title>
       <Text>{description}</Text>
       <ol>
-        {users.slice(0, 4).map(({ id, name, headline, profilePictures }) => (
-          <S.User key={id}>
-            <ProfilePicture size={avatarSize} imgs={profilePictures} />
-            <div>
-              <Title size={4}>{name}</Title>
-              <Text>{headline}</Text>
-            </div>
-          </S.User>
-        ))}
+        {users
+          .slice(0, batches * batchSize)
+          .map(({ id, name, headline, profilePictures }) => (
+            <S.User key={id}>
+              <ProfilePicture size={avatarSize} imgs={profilePictures} />
+              <div>
+                <Title size={4}>{name}</Title>
+                <Text>{headline}</Text>
+              </div>
+            </S.User>
+          ))}
       </ol>
+      {(showMore || showCollapse) && (
+        <S.LoadMore>
+          {showMore && (
+            <>
+              <Button text onClick={() => setBatches(batches + 1)}>
+                load more
+              </Button>
+              <Button text onClick={() => setBatches(Infinity)}>
+                show all
+              </Button>
+            </>
+          )}
+          {showCollapse && (
+            <Button text onClick={() => setBatches(1)}>
+              collapse
+            </Button>
+          )}
+        </S.LoadMore>
+      )}
     </S.Group>
   )
 }
@@ -92,7 +123,7 @@ const avatarSize = '2.8rem'
 const S = {
   People: styled.div``,
 
-  Group: styled.div`
+  Group: styled.div<{ fade?: number }>`
     &:not(:first-of-type) {
       margin-top: 1.5rem;
     }
@@ -122,6 +153,14 @@ const S = {
       margin-top: 0;
       font-size: 0.94rem;
     }
+
+    /* stylelint-disable-next-line */
+    ${({ fade }) =>
+      !fade
+        ? ''
+        : `ol > li:nth-child(${fade}) {
+      opacity: 0.5;
+    }`}
   `,
 
   User: styled.li`
@@ -150,9 +189,11 @@ const S = {
         font-size: 0.9rem;
       }
     }
+  `,
 
-    &:nth-child(4n) {
-      opacity: 0.5;
-    }
+  LoadMore: styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: center;
   `,
 }
