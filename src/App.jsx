@@ -18,7 +18,8 @@ import {
 } from './components'
 
 export default function App() {
-  useMessaging()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  if (!process.env.REACT_APP_DISABLE_MESSAGING) useMessaging()
   const { visible } = useNavbar()
   const keyboardOpen = useVirtualKeyboard()
   const [updateAvailable, setUpdateAvailable] = useState(false)

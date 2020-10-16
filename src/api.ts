@@ -32,25 +32,28 @@ const httpLink = ApolloLink.from([
   }),
 ])
 
-const wsLink = new WebSocketLink({
-  uri: process.env.REACT_APP_WS_HOST as string,
-  options: {
-    reconnect: true,
-  },
-})
+const wsLink = ((!process.env.REACT_APP_DISABLE_MESSAGING &&
+  new WebSocketLink({
+    uri: process.env.REACT_APP_WS_HOST as string,
+    options: {
+      reconnect: true,
+    },
+  })) as unknown) as WebSocketLink
 
 const api = new ApolloClient({
-  link: split(
-    ({ query }) => {
-      const definition = getMainDefinition(query)
-      return (
-        definition.kind === 'OperationDefinition' &&
-        definition.operation === 'subscription'
-      )
-    },
-    wsLink,
-    httpLink
-  ) as any,
+  link: process.env.REACT_APP_DISABLE_MESSAGING
+    ? httpLink
+    : (split(
+        ({ query }) => {
+          const definition = getMainDefinition(query)
+          return (
+            definition.kind === 'OperationDefinition' &&
+            definition.operation === 'subscription'
+          )
+        },
+        wsLink,
+        httpLink
+      ) as any),
   cache: new InMemoryCache({
     fragmentMatcher: new IntrospectionFragmentMatcher({
       introspectionQueryResultData,
