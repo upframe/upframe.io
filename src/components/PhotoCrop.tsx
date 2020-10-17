@@ -1,13 +1,20 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, MutableRefObject } from 'react'
 import styled from 'styled-components'
 import { Title, Button, Modal, Spinner } from '.'
 
 const MAX_IMG_SIZE = 5e6
 
-export default function PhotoCrop({ photo, name, onCancel, onSave }) {
-  const selectRef = useRef()
-  const previewRef = useRef()
-  const imgRef = useRef()
+interface Props {
+  photo: string
+  name: string
+  onCancel(): void
+  onSave(data: string): void
+}
+
+export default function PhotoCrop({ photo, name, onCancel, onSave }: Props) {
+  const selectRef = useRef() as MutableRefObject<HTMLDivElement>
+  const previewRef = useRef() as MutableRefObject<HTMLImageElement>
+  const imgRef = useRef() as MutableRefObject<HTMLImageElement>
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -35,10 +42,11 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
 
   function dragStart() {
     let dragPoint
-    selectRef.current.dataset.grabbed = true
+    selectRef.current.dataset.grabbed = 'true'
 
     const img = imgRef.current.getBoundingClientRect()
-    const container = imgRef.current.parentNode.getBoundingClientRect()
+    const container = (imgRef.current
+      .parentNode as HTMLElement).getBoundingClientRect()
     const boundary = {
       left: img.x - container.x,
       width: container.width - (img.x - container.x),
@@ -70,7 +78,7 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
       'mouseup',
       () => {
         window.removeEventListener('mousemove', onMove)
-        selectRef.current.dataset.grabbed = false
+        selectRef.current.dataset.grabbed = 'false'
       },
       { once: true }
     )
@@ -161,7 +169,7 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }) {
     const { naturalWidth, naturalHeight } = imgRef.current
     setLoading(true)
     const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
     const resize = (scale = 1) => {
       canvas.width = (selectRect.width / imgRect.width) * naturalWidth * scale

@@ -10,6 +10,7 @@ const SPACE_INFO = gql`
     name
     description
     handle
+    sidebar
   }
 `
 
@@ -35,13 +36,24 @@ export default function Settings({ spaceId }: { spaceId: string }) {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [handle, setHandle] = useState('')
+  const [sidebar, setSidebar] = useState('')
   const [diff, setDiff] = useState<{
     name?: string
     description?: string
     handle?: string
+    sidebar?: string
   }>({})
 
-  useReset(spaceId, '', setName, setDescription, setHandle, {}, setDiff)
+  useReset(
+    spaceId,
+    '',
+    setName,
+    setDescription,
+    setHandle,
+    setSidebar,
+    {},
+    setDiff
+  )
 
   const { data, loading } = useQuery(SETTINGS_QUERY, {
     variables: { spaceId },
@@ -50,6 +62,7 @@ export default function Settings({ spaceId }: { spaceId: string }) {
       setName(space.name)
       setDescription(space.description ?? '')
       setHandle(space.handle)
+      setSidebar(space.sidebar ?? '')
     },
   })
 
@@ -61,15 +74,18 @@ export default function Settings({ spaceId }: { spaceId: string }) {
     if (!data?.space) return
     setDiff(
       Object.fromEntries(
-        Object.entries({ name, description, handle }).flatMap(([k, v]) =>
-          v !== data.space[k] ? [[k, v]] : []
-        )
+        Object.entries({
+          name,
+          description,
+          handle,
+          sidebar,
+        }).flatMap(([k, v]) => (v !== (data.space[k] ?? '') ? [[k, v]] : []))
       )
     )
-  }, [name, description, handle, data])
+  }, [name, description, handle, sidebar, data])
 
   useEffect(() => {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+    // window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
   }, [])
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -91,7 +107,10 @@ export default function Settings({ spaceId }: { spaceId: string }) {
         label="Space URL"
         action={<Input value={handle} onChange={setHandle} />}
       />
-      <Labeled label="Overview" action={<Textbox />} />
+      <Labeled
+        label="Overview"
+        action={<Textbox value={sidebar} onChange={setSidebar} />}
+      />
       <Button
         accent
         type="submit"
