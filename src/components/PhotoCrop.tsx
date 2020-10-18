@@ -9,9 +9,23 @@ interface Props {
   name: string
   onCancel(): void
   onSave(data: string): void
+  ratio?: number
 }
 
-export default function PhotoCrop({ photo, name, onCancel, onSave }: Props) {
+enum Vt {
+  TOP_LEFT,
+  TOP_RIGHT,
+  BOTTOM_RIGHT,
+  BOTTOM_LEFT,
+}
+
+export default function PhotoCrop({
+  photo,
+  name,
+  onCancel,
+  onSave,
+  ratio = 1,
+}: Props) {
   const selectRef = useRef() as MutableRefObject<HTMLDivElement>
   const previewRef = useRef() as MutableRefObject<HTMLImageElement>
   const imgRef = useRef() as MutableRefObject<HTMLImageElement>
@@ -33,7 +47,10 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }: Props) {
     function init() {
       const img = imgRef.current.getBoundingClientRect()
       selectRef.current.style.width = `${Math.min(img.width, img.height)}px`
-      selectRef.current.style.height = `${Math.min(img.width, img.height)}px`
+      selectRef.current.style.height = `${Math.min(
+        img.width * ratio,
+        img.height * ratio
+      )}px`
       let select = selectRef.current.getBoundingClientRect()
       selectRef.current.style.left = `${
         img.left - select.left + (img.width - select.width) / 2
@@ -50,10 +67,10 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }: Props) {
         ((select.x - img.x) / img.width) * 100
       )}%) translateY(-${Math.round(((select.y - img.y) / img.height) * 100)}%)`
     }
-  }, [selectRef, previewRef, imgRef, loading])
+  }, [selectRef, previewRef, imgRef, loading, ratio])
 
   function dragStart() {
-    let dragPoint
+    let dragPoint: { x: number; y: number }
     selectRef.current.dataset.grabbed = 'true'
 
     const img = imgRef.current.getBoundingClientRect()
@@ -66,7 +83,7 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }: Props) {
       height: container.height - (img.y - container.y),
     }
 
-    function onMove(e) {
+    function onMove(e: MouseEvent) {
       const { x, y } = selectRef.current.getBoundingClientRect()
       if (!dragPoint) dragPoint = { x: e.x - x, y: e.y - y }
 
@@ -96,77 +113,62 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }: Props) {
     )
   }
 
-  function resize(e) {
+  function resize(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation()
-    const node = Array.from(e.target.parentNode.childNodes).indexOf(e.target)
+    const node: Vt = Array.from(
+      (e.target as any).parentNode.childNodes
+    ).indexOf(e.target)
     const img = imgRef.current.getBoundingClientRect()
 
-    function onMove(e) {
-      const select = selectRef.current.getBoundingClientRect()
+    function onMove(e: MouseEvent) {
+      const select = selectRef.current
+      const box = select.getBoundingClientRect()
 
-      let width =
-        select.width + e.movementX * (node === 1 || node === 2 ? 1 : -1)
-      let height =
-        select.height + e.movementY * (node === 2 || node === 3 ? 1 : -1)
+      const dir =
+        Math.abs(e.movementX) >= Math.abs(e.movementY) ? 'HOR' : 'VERT'
 
-      const size = Math.max(
-        Math.abs(e.movementX) > Math.abs(e.movementY) ? width : height,
-        50
-      )
+      let diff =
+        dir === 'HOR'
+          ? e.movementX *
+            (node === Vt.TOP_RIGHT || node === Vt.BOTTOM_RIGHT ? 1 : -1)
+          : e.movementY *
+            (node === Vt.BOTTOM_LEFT || node === Vt.BOTTOM_RIGHT ? 1 : -1)
 
-      if (node === 0) {
-        const bound = Math.min(
-          size,
-          img.width - (img.x + img.width - (select.x + select.width)),
-          img.height - (img.y + img.height - (select.y + select.height))
-        )
-        selectRef.current.style.left = `${
-          selectRef.current.offsetLeft - (bound - select.width)
-        }px`
-        selectRef.current.style.top = `${
-          selectRef.current.offsetTop - (bound - select.height)
-        }px`
-        selectRef.current.style.width = `${bound}px`
-        selectRef.current.style.height = `${bound}px`
-      } else if (node === 1) {
-        const bound = Math.min(
-          size,
-          img.width - (select.left - img.left),
-          img.height - (img.y + img.height - (select.y + select.height))
-        )
-        selectRef.current.style.top = `${
-          selectRef.current.offsetTop - (bound - select.height)
-        }px`
-        selectRef.current.style.width = `${bound}px`
-        selectRef.current.style.height = `${bound}px`
-      } else if (node === 2) {
-        const bound = Math.min(
-          size,
-          img.width - (select.left - img.left),
-          img.height - (select.top - img.top)
-        )
-        selectRef.current.style.width = `${bound}px`
-        selectRef.current.style.height = `${bound}px`
-      } else if (node === 3) {
-        const bound = Math.min(
-          size,
-          img.width - (img.x + img.width - (select.x + select.width)),
-          img.height - (select.top - img.top)
-        )
-        selectRef.current.style.left = `${
-          selectRef.current.offsetLeft - (bound - select.width)
-        }px`
-        selectRef.current.style.width = `${bound}px`
-        selectRef.current.style.height = `${bound}px`
+      const MIN_SIZE = 50
+      if (box.width + diff < MIN_SIZE) diff = MIN_SIZE - box.width
+      if (box.height + diff < MIN_SIZE) diff = MIN_SIZE - box.height
+
+      if (diff === 0) return
+
+      const is = {
+        left: [Vt.TOP_LEFT, Vt.BOTTOM_LEFT].includes(node),
+        right: [Vt.TOP_RIGHT, Vt.BOTTOM_RIGHT].includes(node),
+        top: [Vt.TOP_LEFT, Vt.TOP_RIGHT].includes(node),
+        bottom: [Vt.BOTTOM_LEFT, Vt.BOTTOM_RIGHT].includes(node),
       }
 
+      // bound check adjustment
+      if (is.right) diff -= Math.max(box.right + diff - img.right, 0)
+      else if (is.left) diff -= Math.max(img.left - (box.left - diff), 0)
+      if (is.bottom) diff -= Math.max(box.bottom + diff - img.bottom, 0)
+      else if (is.top) diff -= Math.max(img.top - (box.top - diff), 0)
+
+      // translate
+      if (is.left) select.style.left = `${select.offsetLeft - diff}px`
+      if (is.top) select.style.top = `${select.offsetTop - diff}px`
+
+      // scale
+      select.style.width = `${box.width + diff}px`
+      select.style.height = `${box.height + diff}px`
+
       previewRef.current.style.width = `${
-        (1 / (selectRef.current.offsetWidth / imgRef.current.offsetWidth)) * 100
+        (1 / (select.offsetWidth / imgRef.current.offsetWidth)) * 100
       }%`
       previewRef.current.style.transform = `translateX(-${
-        ((select.x - img.x) / img.width) * 100
-      }%) translateY(-${((select.y - img.y) / img.height) * 100}%)`
+        ((box.x - img.x) / img.width) * 100
+      }%) translateY(-${((box.y - img.y) / img.height) * 100}%)`
     }
+
     window.addEventListener('mousemove', onMove)
     window.addEventListener(
       'mouseup',
@@ -242,10 +244,10 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }: Props) {
       <S.Frame>
         <S.Img src={photo} draggable={false} alt="original" ref={imgRef} />
         <S.Selection ref={selectRef} onMouseDown={dragStart}>
-          <S.Corner onMouseDown={resize} />
-          <S.Corner onMouseDown={resize} />
-          <S.Corner onMouseDown={resize} />
-          <S.Corner onMouseDown={resize} />
+          <S.Vt onMouseDown={resize} />
+          <S.Vt onMouseDown={resize} />
+          <S.Vt onMouseDown={resize} />
+          <S.Vt onMouseDown={resize} />
         </S.Selection>
       </S.Frame>
       <Title size={4}>Preview</Title>
@@ -291,7 +293,7 @@ const S = {
     }
   `,
 
-  Corner: styled.div`
+  Vt: styled.div`
     position: absolute;
     display: block;
     width: 1.5rem;
