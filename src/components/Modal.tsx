@@ -29,6 +29,10 @@ const Modal: React.FC<Props> = ({
   const props = useSpring({
     opacity: show ? 1 : 0,
     transform: `translateX(-50%) translateY(-50%) scale(${show ? 1 : 0.1})`,
+    config: {
+      clamp: true,
+      duration: 200,
+    },
   })
 
   return (

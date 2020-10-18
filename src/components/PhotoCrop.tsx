@@ -20,24 +20,36 @@ export default function PhotoCrop({ photo, name, onCancel, onSave }: Props) {
   useEffect(() => {
     if (!selectRef.current || !previewRef.current || !imgRef.current || loading)
       return
-    const img = imgRef.current.getBoundingClientRect()
-    selectRef.current.style.width = `${Math.min(img.width, img.height)}px`
-    selectRef.current.style.height = `${Math.min(img.width, img.height)}px`
-    let select = selectRef.current.getBoundingClientRect()
-    selectRef.current.style.left = `${
-      img.left - select.left + (img.width - select.width) / 2
-    }px`
-    selectRef.current.style.top = `${
-      img.top - select.top + (img.height - select.height) / 2
-    }px`
 
-    select = selectRef.current.getBoundingClientRect()
-    previewRef.current.style.width = `${
-      (1 / (selectRef.current.offsetWidth / imgRef.current.offsetWidth)) * 100
-    }%`
-    previewRef.current.style.transform = `translateX(-${Math.round(
-      ((select.x - img.x) / img.width) * 100
-    )}%) translateY(-${Math.round(((select.y - img.y) / img.height) * 100)}%)`
+    const getScale = () =>
+      imgRef.current.getBoundingClientRect().width / imgRef.current.offsetWidth
+
+    const waitForZoom = () => {
+      if (getScale() < 1) return requestAnimationFrame(waitForZoom)
+      init()
+    }
+    waitForZoom()
+
+    function init() {
+      const img = imgRef.current.getBoundingClientRect()
+      selectRef.current.style.width = `${Math.min(img.width, img.height)}px`
+      selectRef.current.style.height = `${Math.min(img.width, img.height)}px`
+      let select = selectRef.current.getBoundingClientRect()
+      selectRef.current.style.left = `${
+        img.left - select.left + (img.width - select.width) / 2
+      }px`
+      selectRef.current.style.top = `${
+        img.top - select.top + (img.height - select.height) / 2
+      }px`
+
+      select = selectRef.current.getBoundingClientRect()
+      previewRef.current.style.width = `${
+        (1 / (selectRef.current.offsetWidth / imgRef.current.offsetWidth)) * 100
+      }%`
+      previewRef.current.style.transform = `translateX(-${Math.round(
+        ((select.x - img.x) / img.width) * 100
+      )}%) translateY(-${Math.round(((select.y - img.y) / img.height) * 100)}%)`
+    }
   }, [selectRef, previewRef, imgRef, loading])
 
   function dragStart() {
