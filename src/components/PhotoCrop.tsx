@@ -160,6 +160,10 @@ export default function PhotoCrop({
       // scale
       select.style.width = `${box.width + diff}px`
       select.style.height = `${box.height + diff}px`
+      ;(select.firstChild as HTMLElement).setAttribute(
+        'viewBox',
+        `0 0 ${box.width + diff} ${box.height + diff}`
+      )
 
       previewRef.current.style.width = `${
         (1 / (select.offsetWidth / imgRef.current.offsetWidth)) * 100
@@ -244,6 +248,10 @@ export default function PhotoCrop({
       <S.Frame>
         <S.Img src={photo} draggable={false} alt="original" ref={imgRef} />
         <S.Selection ref={selectRef} onMouseDown={dragStart}>
+          <svg viewBox="0 0 400 400">
+            <rect width="100%" height="100%" />
+            <rect width="100%" height="100%" />
+          </svg>
           <S.Vt onMouseDown={resize} />
           <S.Vt onMouseDown={resize} />
           <S.Vt onMouseDown={resize} />
@@ -285,8 +293,51 @@ const S = {
     position: absolute;
     display: block;
     box-sizing: border-box;
-    border: 2px dashed #fff;
     cursor: pointer;
+
+    svg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+
+      --dash-size: 5px;
+
+      rect {
+        fill: none;
+        stroke: #fff;
+        stroke-width: 2px;
+        stroke-dasharray: var(--dash-size);
+        animation: revolve-border 10s linear infinite;
+      }
+
+      rect:first-of-type {
+        animation-name: revolve-border1;
+
+        @keyframes revolve-border1 {
+          to {
+            stroke-dashoffset: calc(var(--dash-size) * 20);
+          }
+        }
+      }
+
+      rect:last-of-type {
+        stroke: #0008;
+        stroke-dashoffset: var(--dash-size);
+        animation-name: revolve-border2;
+
+        @keyframes revolve-border2 {
+          from {
+            stroke-dashoffset: var(--dash-size);
+          }
+
+          to {
+            stroke-dashoffset: calc(var(--dash-size) * 21);
+          }
+        }
+      }
+    }
 
     &[data-grabbed='true'] {
       cursor: move;
@@ -304,11 +355,16 @@ const S = {
       content: '';
       position: absolute;
       display: block;
-      width: 0.5rem;
-      height: 0.5rem;
-      background: #fff;
-      left: 0.5rem;
-      top: 0.5rem;
+
+      --size: 0.6rem;
+
+      width: var(--size);
+      height: var(--size);
+      left: calc((100% - var(--size)) / 2);
+      top: calc((100% - var(--size)) / 2);
+      background: var(--cl-secondary);
+      border: 1px solid #fff;
+      border-radius: 50%;
     }
 
     &:nth-child(1) {
