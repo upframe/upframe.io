@@ -317,18 +317,19 @@ export function useStateEffect<T>(
 }
 
 export function useClickOutHide(
-  containerClass: string,
+  containerClass: any,
   onHide: () => void,
   delay = false
 ) {
+  const container: string = containerClass?.styledComponentId ?? containerClass
+
   useEffect(() => {
-    if (!containerClass || !onHide) return
+    if (!container || !onHide) return
 
     const onClick = ({ target }: MouseEvent) => {
       const isContext = (node: any = target) => {
         if (!node) return false
-        if (Array.from(node.classList ?? []).includes(containerClass))
-          return true
+        if (Array.from(node.classList ?? []).includes(container)) return true
         return isContext(node.parentElement)
       }
 
@@ -338,7 +339,7 @@ export function useClickOutHide(
     }
     window.addEventListener('mousedown', onClick)
     return () => window.removeEventListener('mousedown', onClick)
-  }, [containerClass, onHide, delay])
+  }, [container, onHide, delay])
 }
 
 export function useReset(v: any, ...rest: any[]) {

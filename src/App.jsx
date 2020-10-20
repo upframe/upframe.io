@@ -9,7 +9,7 @@ import layout from 'styles/layout'
 import { useMe, useVirtualKeyboard } from 'utils/hooks'
 import { useNavbar } from 'utils/navigation'
 import {
-  Navbar,
+  Mainnav,
   Spinner,
   NotificationStack,
   ScrollToTop,
@@ -64,7 +64,7 @@ export default function App() {
       </Helmet>
       <Router>
         <S.App mobileNav={visible} keyboard={keyboardOpen}>
-          <Navbar />
+          <Mainnav />
           <Suspense fallback={<Spinner centered />}>
             <ScrollToTop />
             <Routes />

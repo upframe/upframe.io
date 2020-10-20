@@ -1,12 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useClickOutHide } from 'utils/hooks'
 
 interface Props {
   onClick?(k: string): void
+  onClose(): void
 }
 
-const Dropdown: React.FC<Props> = ({ children, onClick }) => {
+const Dropdown: React.FC<Props> = ({ children, onClick, onClose }) => {
   if (!Array.isArray(children)) children = [children]
+  useClickOutHide(S.Dropdown, onClose)
 
   return (
     <S.Dropdown>

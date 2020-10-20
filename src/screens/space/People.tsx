@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { gql, useQuery, fragments } from 'gql'
 import { Title, Text, Spinner, ProfilePicture, Button } from 'components'
 import type { SpaceMembers, SpaceMembersVariables } from 'gql/types'
+import roles from './roles'
 
 const MEMBER_QUERY = gql`
   query SpaceMembers($spaceId: ID!) {
@@ -41,17 +42,17 @@ export default function People({ spaceId }: { spaceId: string }) {
     <S.People>
       <Group
         title="Owners"
-        description="Owners can manage this space and invite new members."
+        description={roles.Owners}
         users={data.space.owners ?? []}
       />
       <Group
         title="Mentors"
-        description="Mentors can see content in this space and add slots to their profile."
+        description={roles.Mentors}
         users={data.space.mentors ?? []}
       />
       <Group
         title="Founders"
-        description="Founders can see content in this space and book calls with mentors."
+        description={roles.Founders}
         users={data.space.members ?? []}
       />
     </S.People>

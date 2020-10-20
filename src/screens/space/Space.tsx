@@ -12,6 +12,8 @@ import Mentors from './Mentors'
 import Sidebar, { sidebarWidth } from './Sidebar'
 import Settings from './Settings'
 import People from './People'
+import { InviteButton, InviteMenu } from './Invite'
+import type { Role } from './roles'
 
 const SPACE_QUERY = gql`
   query SpacePage($handle: String!) {
@@ -43,6 +45,7 @@ const SPACE_QUERY = gql`
 
 export default function Space({ match }) {
   const history = useHistory()
+  const [invite, setInvite] = useState<Role | undefined>('Mentors')
   const { data, loading } = useQuery<SpacePage, SpacePageVariables>(
     SPACE_QUERY,
     {
@@ -59,50 +62,72 @@ export default function Space({ match }) {
     requestAnimationFrame(() => history.replace(`${path(1)}/${handle}`))
 
   return (
-    <S.Space>
+    <>
       <Helmet>
         <title>{name} | Upframe</title>
       </Helmet>
-      <S.Main>
-        <S.MainWrap>
-          <S.Info
-            data-mode={path().split('/').pop() === 'settings' ? 'edit' : 'view'}
-          >
-            <Image edit={path().split('/').pop() === 'settings'} ratio={0.25} />
-            <div>
-              <Image edit={path().split('/').pop() === 'settings'} ratio={1} />
-              <Title size={2}>{name}</Title>
-              <Text>{description}</Text>
-            </div>
-          </S.Info>
-          <Navigation />
-          <Switch>
-            <Route
-              exact
-              path={path(2)}
-              render={() => <Mentors mentors={mentors} />}
-            ></Route>
-            <Route
-              exact
-              path={path(2) + '/people'}
-              render={() => <People spaceId={id} />}
-            ></Route>
-            <Route
-              exact
-              path={path(2) + '/settings'}
-              render={() => <Settings spaceId={id} />}
-            ></Route>
-            <Route
-              exact
-              path={path(2) + '/activity'}
-              render={() => <div>activity</div>}
-            ></Route>
-            <Redirect to={path(2)} />
-          </Switch>
-        </S.MainWrap>
-      </S.Main>
-      <Sidebar {...data.space} />
-    </S.Space>
+      <S.Space>
+        <S.Main>
+          <S.MainWrap>
+            <S.Info
+              data-mode={
+                path().split('/').pop() === 'settings' ? 'edit' : 'view'
+              }
+            >
+              <Image
+                edit={path().split('/').pop() === 'settings'}
+                ratio={0.25}
+              />
+              <div>
+                <Image
+                  edit={path().split('/').pop() === 'settings'}
+                  ratio={1}
+                />
+                <S.InfoContent>
+                  <Title size={2}>{name}</Title>
+                  <Text>{description}</Text>
+                </S.InfoContent>
+                <S.InfoActions>
+                  <InviteButton onSelect={setInvite} />
+                </S.InfoActions>
+              </div>
+            </S.Info>
+            <Navigation />
+            <Switch>
+              <Route
+                exact
+                path={path(2)}
+                render={() => <Mentors mentors={mentors} />}
+              ></Route>
+              <Route
+                exact
+                path={path(2) + '/people'}
+                render={() => <People spaceId={id} />}
+              ></Route>
+              <Route
+                exact
+                path={path(2) + '/settings'}
+                render={() => <Settings spaceId={id} />}
+              ></Route>
+              <Route
+                exact
+                path={path(2) + '/activity'}
+                render={() => <div>activity</div>}
+              ></Route>
+              <Redirect to={path(2)} />
+            </Switch>
+          </S.MainWrap>
+        </S.Main>
+        <Sidebar {...data.space} />
+      </S.Space>
+      {invite && (
+        <InviteMenu
+          name={name}
+          onClose={() => setInvite(undefined)}
+          role={invite}
+        />
+      )}
+    </>
   )
 }
 
@@ -194,6 +219,17 @@ const S = {
     --side-padding: ${sidePadding * 100}vw;
 
     padding: 2rem var(--side-padding);
+
+    /* standardize the f*cking buttons! arrrgh!! */
+    button[data-mode~='accent'] {
+      font-size: 0.8rem;
+      color: #f01c5c;
+      font-weight: 600;
+      background-color: #feeef2;
+      height: 2.2rem;
+      border-radius: 1.1rem;
+      padding: 0 2rem;
+    }
   `,
 
   Main: styled.div`
@@ -210,7 +246,6 @@ const S = {
   Info: styled.div`
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     border: 1px solid #0003;
     border-radius: 0.5rem;
     width: 100%;
@@ -241,11 +276,11 @@ const S = {
     & > div {
       position: relative;
       box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 2rem;
 
       --img-size: 7rem;
-
-      padding: 0 3rem;
-      padding-top: calc(var(--img-size) * 0.25);
 
       & > ${ImgWrap} {
         position: absolute;
@@ -254,8 +289,33 @@ const S = {
         border: 0.4rem solid #fff;
         border-radius: 0.5rem;
         background-color: #aaa;
-        transform: translateY(calc(var(--img-size) * -1));
+        transform: translateY(calc(var(--img-size) * -0.75));
+        box-shadow: 0 0 6px #0004;
       }
+    }
+  `,
+
+  InfoContent: styled.div`
+    padding-top: calc(var(--img-size) * 0.25);
+
+    h2 {
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin-top: 0;
+    }
+  `,
+
+  InfoActions: styled.div`
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    height: 100%;
+
+    & > * {
+      margin: 0;
     }
   `,
 

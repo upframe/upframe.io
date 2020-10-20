@@ -21,15 +21,11 @@ export default function Request({ mentor, onClose, slot }) {
     setValid(!!(msg.length && me))
   }, [msg, me])
 
-  async function submit() {
-    requestSlot()
-  }
-
   return (
     <Modal
       title={`Have a call with ${mentor.displayName}`}
       actions={
-        <Button disabled={!valid} filled onClick={submit}>
+        <Button disabled={!valid} filled onClick={() => requestSlot()}>
           Send
         </Button>
       }
@@ -41,7 +37,7 @@ export default function Request({ mentor, onClose, slot }) {
         action={
           <Textbox
             placeholder="I have challenge x and was hoping you could help me with y."
-            values={msg}
+            value={msg}
             onChange={setMsg}
           />
         }
