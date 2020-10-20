@@ -1,5 +1,5 @@
 export { default as ProfilePicture } from './ProfilePicture'
-export { default as Navbar } from './Navbar/Navbar'
+export { default as Mainnav } from './Mainnav/Navbar'
 export { default as MobileNav } from './MobileNav'
 export { default as Breadcrumbs } from './Breadcrumbs/Breadcrumbs'
 export { default as Button } from './Button'
@@ -42,5 +42,6 @@ export { default as ListCard } from './ListCard'
 export { default as UpdatePrompt } from './UpdatePrompt'
 export { default as Table } from './Table'
 export { default as Dropdown } from './Dropdown'
+export { default as Navbar } from './Navbar'
 
 export { Link } from 'react-router-dom'
