@@ -57,7 +57,7 @@ const S = {
     }
 
     &[data-validity~='error'] {
-      border-color: var(--cl-error);
+      border: 1px solid var(--cl-error);
     }
   `,
 }
