@@ -3,19 +3,30 @@ import styled from 'styled-components'
 import { parseSize } from 'utils/css'
 import { path } from 'utils/url'
 import type { SpacePage } from 'gql/types'
-import { Title, ProfilePicture, Link } from 'components'
+import { Title, ProfilePicture, Link, Markdown } from 'components'
 import { useHistory } from 'react-router-dom'
 
 interface Props {
   owners: Exclude<SpacePage['space'], null>['owners']
   members: Exclude<SpacePage['space'], null>['members']
+  sidebar?: string
 }
 
 export default function Sidebar(props: Props) {
   return (
     <S.Sidebar>
+      {props.sidebar && <Overview>{props.sidebar}</Overview>}
       <Avatars {...props} />
     </S.Sidebar>
+  )
+}
+
+function Overview({ children }) {
+  return (
+    <S.Overview>
+      <Title size={3}>Overview</Title>
+      <Markdown text={children} />
+    </S.Overview>
   )
 }
 
@@ -83,6 +94,21 @@ const Widget = styled.div`
   box-sizing: border-box;
   border-radius: 0.5rem;
   background-color: #f1f3f4;
+
+  &:not(:last-of-type) {
+    margin-bottom: 2rem;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #000;
+    margin-bottom: 0.5rem;
+
+    &:not(:first-of-type) {
+      margin-top: 1rem;
+    }
+  }
 `
 
 const S = {
@@ -95,18 +121,7 @@ const S = {
     box-sizing: border-box;
   `,
 
-  Avatars: styled(Widget)`
-    h3 {
-      margin: 0;
-      font-size: 1.25rem;
-      color: #000;
-      margin-bottom: 0.5rem;
-
-      &:not(:first-of-type) {
-        margin-top: 1rem;
-      }
-    }
-  `,
+  Avatars: styled(Widget)``,
 
   Group: styled.div`
     display: grid;
@@ -132,4 +147,6 @@ const S = {
       color: var(--cl-text-medium);
     }
   `,
+
+  Overview: styled(Widget)``,
 }

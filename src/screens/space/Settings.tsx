@@ -84,10 +84,6 @@ export default function Settings({ spaceId }: { spaceId: string }) {
     )
   }, [name, description, handle, sidebar, data])
 
-  useEffect(() => {
-    // window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
-  }, [])
-
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     update()

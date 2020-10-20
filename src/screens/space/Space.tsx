@@ -20,6 +20,7 @@ const SPACE_QUERY = gql`
       name
       handle
       description
+      sidebar
       mentors {
         ...MentorDetails
         sortScore
@@ -52,7 +53,7 @@ export default function Space({ match }) {
   if (loading) return <Spinner />
   if (!data?.space) return <Redirect to="/404" />
 
-  const { id, name, handle, description, mentors, owners, members } = data.space
+  const { id, name, handle, description, mentors } = data.space
 
   if (match.params.handle !== handle)
     requestAnimationFrame(() => history.replace(`${path(1)}/${handle}`))
@@ -100,7 +101,7 @@ export default function Space({ match }) {
           </Switch>
         </S.MainWrap>
       </S.Main>
-      <Sidebar owners={owners} members={members} />
+      <Sidebar {...data.space} />
     </S.Space>
   )
 }
@@ -114,18 +115,14 @@ interface ImgProps {
 function Image({
   src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
   edit = false,
-  ratio,
+  ratio = 1,
 }: ImgProps) {
-  const [showSelect, setShowSelect] = useState(false)
   const [photo, setPhoto] = useState<string>()
 
   useEffect(() => {
     if (!edit) return
-    setShowSelect(false)
     setPhoto(undefined)
   }, [edit])
-
-  console.log(photo)
 
   return (
     <>
@@ -162,6 +159,7 @@ function Image({
             name="foo"
             onCancel={() => setPhoto(undefined)}
             onSave={console.log}
+            ratio={ratio}
           />
         </S.EditWrap>
       )}
