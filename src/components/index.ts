@@ -41,5 +41,6 @@ export { default as MsgIcon } from './MsgIcon'
 export { default as ListCard } from './ListCard'
 export { default as UpdatePrompt } from './UpdatePrompt'
 export { default as Table } from './Table'
+export { default as Dropdown } from './Dropdown'
 
 export { Link } from 'react-router-dom'
