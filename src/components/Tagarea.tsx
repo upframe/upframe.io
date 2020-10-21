@@ -2,26 +2,35 @@ import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Chip } from '.'
 
+interface Props {
+  input: string
+  onChange(v: string): void
+  tags: string[]
+  onTagClick?(v: string): void
+}
+
 function Tagarea({
   tags = [],
   input = '',
-  onChange = () => {},
+  onChange,
   onTagClick = () => {},
   ...props
-}) {
-  const ref = useRef()
+}: Props) {
+  const ref = useRef() as React.MutableRefObject<HTMLDivElement>
   const [indent, setIndent] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     if (!ref.current || !('MutationObserver' in window)) return
     const observer = new MutationObserver(mutations => {
-      const node = Array.from(mutations[0].target.childNodes).slice(-1)[0]
+      const node = Array.from(mutations[0].target.childNodes).slice(
+        -1
+      )[0] as HTMLElement
       if (!node) return setIndent({ x: 0, y: 0 })
 
       const nodeBox = node.getBoundingClientRect()
-      const parentBox = node.parentNode.getBoundingClientRect()
+      const parentBox = (node.parentNode as HTMLElement).getBoundingClientRect()
       const { paddingTop, paddingLeft, paddingRight } = getComputedStyle(
-        node.parentNode
+        node.parentNode as HTMLElement
       )
 
       let x = nodeBox.right - parentBox.x
@@ -81,7 +90,7 @@ const S = {
     }
   `,
 
-  Textarea: styled.textarea`
+  Textarea: styled.textarea<{ indent: { x: number; y: number } }>`
     padding: 0.7rem 1rem;
     border-radius: var(--border-radius);
     color: var(--cl-text-medium);

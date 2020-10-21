@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import roles, { Role } from './roles'
+import { isEmail } from 'utils/validate'
 import {
   Button,
   Modal,
@@ -19,8 +20,56 @@ interface Props {
 
 const tabs = ['Invite via Email', 'Invite via Link']
 
+const formatter =
+  'ListFormat' in Intl
+    ? new (Intl as any).ListFormat('en', {
+        style: 'long',
+        type: 'conjunction',
+      })
+    : undefined
+
+const formatInvalid = (items: string[]) => {
+  items = items.map(v => `"${v}"`)
+  const list = formatter?.format(items) ?? items.join(', ')
+  const multi = items.length > 1
+  return `${list} ${multi ? 'are' : 'is'} not ${
+    multi ? '' : 'a '
+  } valid email address${multi ? 'es' : ''}`
+}
+
 export function InviteMenu({ onClose, role, name }: Props) {
   const [tab, setTab] = useState(tabs[0])
+  const [emailInput, setEmailInput] = useState('')
+  const [emails, setEmails] = useState<string[]>([])
+  const [invalid, setInvalid] = useState<string[]>([])
+
+  function handleEmailInput(v: string) {
+    if (/[\s,;]/.test(v)) {
+      setEmailInput('')
+      const newEmails = v
+        .split(/[\s,;]/)
+        .map(v => v.trim())
+        .filter(Boolean)
+      setEmails(Array.from(new Set([...emails, ...newEmails])))
+      setInvalid([...invalid, ...newEmails.filter(v => !isEmail(v))])
+    } else setEmailInput(v)
+  }
+
+  function removeEmail(email: string) {
+    setEmails(emails.filter(v => v !== email))
+    setInvalid(invalid.filter(v => v !== email))
+  }
+
+  function inputValid() {
+    if (emails.length === 0 && !emailInput) return false
+    if (invalid.length > 0) return false
+    if (emailInput.length && !isEmail(emailInput)) return false
+    return true
+  }
+
+  function sendEmailInvites() {
+    console.log('invite', emails)
+  }
 
   return (
     <Modal onClose={onClose} title={`Invite ${role} to ${name}`}>
@@ -32,8 +81,16 @@ export function InviteMenu({ onClose, role, name }: Props) {
               You can also paste multiple emails at once if they are seperated
               by a space, comma, semicolon or newline.
             </Text>
-            <Tagarea />
-            <Button accent>Send invites</Button>
+            <Tagarea
+              input={emailInput}
+              onChange={handleEmailInput}
+              tags={emails}
+              onTagClick={removeEmail}
+            />
+            {invalid.length > 0 && <S.Error>{formatInvalid(invalid)}</S.Error>}
+            <Button accent onClick={sendEmailInvites} disabled={!inputValid()}>
+              Send invites
+            </Button>
           </div>
         )}
       </S.Invite>
@@ -96,7 +153,7 @@ const S = {
       margin-top: 0;
     }
 
-    div {
+    & > div {
       display: flex;
       flex-direction: column;
 
@@ -105,5 +162,9 @@ const S = {
         align-self: flex-end;
       }
     }
+  `,
+
+  Error: styled.span`
+    color: var(--cl-error);
   `,
 }
