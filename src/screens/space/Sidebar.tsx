@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom'
 interface Props {
   owners: Exclude<SpacePage['space'], null>['owners']
   members: Exclude<SpacePage['space'], null>['members']
-  sidebar?: string
+  sidebar?: string | null
 }
 
 export default function Sidebar(props: Props) {

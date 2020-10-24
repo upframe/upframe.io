@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import roles, { Role } from './roles'
 import { isEmail } from 'utils/validate'
+import { gql, useQuery, useMutation } from 'gql'
+import type { CreateSpaceInvite, CreateSpaceInviteVariables } from 'gql/types'
 import {
   Button,
   Modal,
@@ -10,12 +12,34 @@ import {
   Dropdown,
   Navbar,
   Tagarea,
+  Labeled,
+  Checkbox,
 } from 'components'
+
+const INVITE_LINKS = gql`
+  query SpaceInviteLinks($space: ID!) {
+    space(id: $space) {
+      id
+      inviteLinks {
+        founder
+        mentor
+        owner
+      }
+    }
+  }
+`
+
+const CREATE_INVITE = gql`
+  mutation CreateSpaceInvite($role: SpaceInviteRole!, $space: ID!) {
+    createSpaceInvite(role: $role, space: $space)
+  }
+`
 
 interface Props {
   onClose(): void
   name: string
   role: Role
+  space: string
 }
 
 const tabs = ['Invite via Email', 'Invite via Link']
@@ -37,11 +61,16 @@ const formatInvalid = (items: string[]) => {
   } valid email address${multi ? 'es' : ''}`
 }
 
-export function InviteMenu({ onClose, role, name }: Props) {
-  const [tab, setTab] = useState(tabs[0])
+export function InviteMenu({ onClose, role, name, space }: Props) {
+  const [tab, setTab] = useState(tabs[1])
   const [emailInput, setEmailInput] = useState('')
   const [emails, setEmails] = useState<string[]>([])
   const [invalid, setInvalid] = useState<string[]>([])
+  const [linkActive, setLinkActive] = useState(false)
+
+  const { data } = useQuery(INVITE_LINKS, { variables: { space } })
+  const links = data?.space?.inviteLinks
+  console.log(links)
 
   function handleEmailInput(v: string) {
     if (/[\s,;]/.test(v)) {
@@ -67,8 +96,34 @@ export function InviteMenu({ onClose, role, name }: Props) {
     return true
   }
 
+  const [createLink, { loading }] = useMutation<
+    CreateSpaceInvite,
+    CreateSpaceInviteVariables
+  >(CREATE_INVITE, {
+    variables: {
+      space,
+      role: role
+        .slice(0, -1)
+        .toUpperCase() as CreateSpaceInviteVariables['role'],
+    },
+    update(cache, res) {
+      if (!res.data) return
+      data.space.inviteLinks[role.slice(0, -1).toLowerCase()] =
+        res.data.createSpaceInvite
+      cache.writeQuery({
+        query: INVITE_LINKS,
+        variables: { space },
+        data,
+      })
+    },
+  })
+
   function sendEmailInvites() {
     console.log('invite', emails)
+  }
+
+  function toggleLink() {
+    if (!linkActive) createLink()
   }
 
   return (
@@ -91,6 +146,21 @@ export function InviteMenu({ onClose, role, name }: Props) {
             <Button accent onClick={sendEmailInvites} disabled={!inputValid()}>
               Send invites
             </Button>
+          </div>
+        )}
+        {tab === tabs[1] && (
+          <div>
+            <Labeled
+              label="Enable Invite Link"
+              action={
+                <Checkbox
+                  checked={linkActive}
+                  onChange={toggleLink}
+                  loading={loading}
+                />
+              }
+              wrap={S.CheckWrap}
+            />
           </div>
         )}
       </S.Invite>
@@ -166,5 +236,16 @@ const S = {
 
   Error: styled.span`
     color: var(--cl-error);
+  `,
+
+  CheckWrap: styled.div`
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    align-items: center;
+
+    label {
+      margin-left: 1rem;
+    }
   `,
 }
