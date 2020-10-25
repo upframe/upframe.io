@@ -14,6 +14,7 @@ import {
   Tagarea,
   Labeled,
   Checkbox,
+  Spinner,
 } from 'components'
 
 const INVITE_LINKS = gql`
@@ -32,6 +33,12 @@ const INVITE_LINKS = gql`
 const CREATE_INVITE = gql`
   mutation CreateSpaceInvite($role: SpaceInviteRole!, $space: ID!) {
     createSpaceInvite(role: $role, space: $space)
+  }
+`
+
+const REVOKE_INVITE = gql`
+  mutation RevokeSpacInvite($role: SpaceInviteRole!, $space: ID!) {
+    revokeSpaceInvite(role: $role, space: $space)
   }
 `
 
@@ -66,10 +73,13 @@ export function InviteMenu({ onClose, role, name, space }: Props) {
   const [emailInput, setEmailInput] = useState('')
   const [emails, setEmails] = useState<string[]>([])
   const [invalid, setInvalid] = useState<string[]>([])
-  const [linkActive, setLinkActive] = useState(false)
 
-  const { data } = useQuery(INVITE_LINKS, { variables: { space } })
-  const links = data?.space?.inviteLinks
+  const { data, loading: linksLoading } = useQuery(INVITE_LINKS, {
+    variables: { space },
+  })
+  const links = data?.space?.inviteLinks ?? {}
+  const hasLink = links[role.slice(0, -1).toLowerCase()]
+
   console.log(links)
 
   function handleEmailInput(v: string) {
@@ -96,7 +106,7 @@ export function InviteMenu({ onClose, role, name, space }: Props) {
     return true
   }
 
-  const [createLink, { loading }] = useMutation<
+  const [createLink, { loading: createLoading }] = useMutation<
     CreateSpaceInvite,
     CreateSpaceInviteVariables
   >(CREATE_INVITE, {
@@ -118,12 +128,30 @@ export function InviteMenu({ onClose, role, name, space }: Props) {
     },
   })
 
+  const [revokeLink, { loading: revokeLoading }] = useMutation(REVOKE_INVITE, {
+    variables: {
+      space,
+      role: role
+        .slice(0, -1)
+        .toUpperCase() as CreateSpaceInviteVariables['role'],
+    },
+    update(cache) {
+      data.space.inviteLinks[role.slice(0, -1).toLowerCase()] = null
+      cache.writeQuery({
+        query: INVITE_LINKS,
+        variables: { space },
+        data,
+      })
+    },
+  })
+
   function sendEmailInvites() {
     console.log('invite', emails)
   }
 
   function toggleLink() {
-    if (!linkActive) createLink()
+    if (!hasLink) createLink()
+    else revokeLink()
   }
 
   return (
@@ -148,21 +176,24 @@ export function InviteMenu({ onClose, role, name, space }: Props) {
             </Button>
           </div>
         )}
-        {tab === tabs[1] && (
-          <div>
-            <Labeled
-              label="Enable Invite Link"
-              action={
-                <Checkbox
-                  checked={linkActive}
-                  onChange={toggleLink}
-                  loading={loading}
-                />
-              }
-              wrap={S.CheckWrap}
-            />
-          </div>
-        )}
+        {tab === tabs[1] &&
+          (linksLoading ? (
+            <Spinner />
+          ) : (
+            <div>
+              <Labeled
+                label="Enable Invite Link"
+                action={
+                  <Checkbox
+                    checked={hasLink}
+                    onChange={toggleLink}
+                    loading={createLoading || revokeLoading}
+                  />
+                }
+                wrap={S.CheckWrap}
+              />
+            </div>
+          ))}
       </S.Invite>
     </Modal>
   )
