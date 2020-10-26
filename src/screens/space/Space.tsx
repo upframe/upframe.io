@@ -123,6 +123,7 @@ export default function Space({ match }) {
                     render={() => (
                       <People
                         spaceId={id}
+                        spaceName={name}
                         onInvite={setInvite}
                         isOwner={isOwner ?? false}
                       />

@@ -1,9 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { gql, useQuery, fragments } from 'gql'
-import { Title, Text, Spinner, ProfilePicture, Button, Icon } from 'components'
 import type { SpaceMembers, SpaceMembersVariables } from 'gql/types'
 import roles, { Role } from './roles'
+import Fuse from 'fuse.js'
+import {
+  Title,
+  Text,
+  Spinner,
+  ProfilePicture,
+  Button,
+  Icon,
+  SearchInput,
+} from 'components'
 
 const MEMBER_QUERY = gql`
   query SpaceMembers($spaceId: ID!) {
@@ -34,39 +43,100 @@ const MEMBER_QUERY = gql`
 
 interface Props {
   spaceId: string
+  spaceName: string
   onInvite(v: Role): void
   isOwner: boolean
 }
 
-export default function People({ spaceId, onInvite, isOwner }: Props) {
+type User = Exclude<
+  Exclude<SpaceMembers['space'], null>['members'],
+  null
+>[number] & { group: 'founder' | 'mentor' | 'owner' }
+
+export default function People({
+  spaceId,
+  spaceName,
+  onInvite,
+  isOwner,
+}: Props) {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [users, setUsers] = useState<User[]>([])
+  const [founders, setFounders] = useState<User[]>([])
+  const [mentors, setMentors] = useState<User[]>([])
+  const [owners, setOwners] = useState<User[]>([])
+  const [fuse, setFuse] = useState<Fuse<User, Fuse.IFuseOptions<User>>>()
+
   const { data } = useQuery<SpaceMembers, SpaceMembersVariables>(MEMBER_QUERY, {
     variables: { spaceId },
+    onCompleted({ space }) {
+      if (!space) return
+      setUsers([
+        ...(space.members?.map(v => ({ ...v, group: 'founder' })) ?? []),
+        ...(space.mentors?.map(v => ({ ...v, group: 'mentor' })) ?? []),
+        ...(space.owners?.map(v => ({ ...v, group: 'owner' })) ?? []),
+      ] as User[])
+    },
   })
+
+  useEffect(() => {
+    setFuse(
+      new Fuse(users, {
+        keys: [
+          { name: 'name', weight: 0.9 },
+          { name: 'headline', weight: 0.1 },
+        ],
+        threshold: 0.4,
+      })
+    )
+  }, [users])
+
+  useEffect(() => {
+    if (!fuse) return
+
+    const sorted = !searchQuery
+      ? users
+      : fuse.search(searchQuery).map(({ item }) => item)
+
+    setFounders(sorted.filter(({ group }) => group === 'founder'))
+    setMentors(sorted.filter(({ group }) => group === 'mentor'))
+    setOwners(sorted.filter(({ group }) => group === 'owner'))
+  }, [users, fuse, searchQuery])
 
   if (!data?.space) return <Spinner />
   return (
     <S.People>
-      <Group
-        title="Owners"
-        description={roles.Owners}
-        users={data.space.owners ?? []}
-        onInvite={() => onInvite('Owners')}
-        isOwner={isOwner}
+      <SearchInput
+        value={searchQuery}
+        onChange={setSearchQuery}
+        placeholder={`Seach for people within ${spaceName}`}
       />
-      <Group
-        title="Mentors"
-        description={roles.Mentors}
-        users={data.space.mentors ?? []}
-        onInvite={() => onInvite('Mentors')}
-        isOwner={isOwner}
-      />
-      <Group
-        title="Founders"
-        description={roles.Founders}
-        users={data.space.members ?? []}
-        onInvite={() => onInvite('Founders')}
-        isOwner={isOwner}
-      />
+      {owners.length > 0 && (
+        <Group
+          title="Owners"
+          description={roles.Owners}
+          users={owners}
+          onInvite={() => onInvite('Owners')}
+          isOwner={isOwner}
+        />
+      )}
+      {mentors.length > 0 && (
+        <Group
+          title="Mentors"
+          description={roles.Mentors}
+          users={mentors}
+          onInvite={() => onInvite('Mentors')}
+          isOwner={isOwner}
+        />
+      )}
+      {founders.length > 0 && (
+        <Group
+          title="Founders"
+          description={roles.Founders}
+          users={founders}
+          onInvite={() => onInvite('Founders')}
+          isOwner={isOwner}
+        />
+      )}
     </S.People>
   )
 }
