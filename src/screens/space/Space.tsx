@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { gql, useQuery, fragments } from 'gql'
 import type { SpacePage, SpacePageVariables } from 'gql/types'
-import { Spinner, Title, Text, Icon, PhotoCrop } from 'components'
+import { Spinner, Title, Text } from 'components'
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
+import Image from './Image'
 import { Helmet } from 'react-helmet'
 import { path } from 'utils/url'
 import { parseSize } from 'utils/css'
@@ -21,6 +22,8 @@ const SPACE_QUERY = gql`
   query SpacePage($handle: String!) {
     space(handle: $handle) {
       id
+      isMember
+      isOwner
       name
       handle
       description
@@ -59,18 +62,27 @@ export default function Space({ match }) {
   if (loading) return <Spinner />
   if (!data?.space) return <Redirect to="/404" />
 
-  const { id, name, handle, description, mentors } = data.space
+  const {
+    id,
+    isMember,
+    isOwner,
+    name,
+    handle,
+    description,
+    mentors,
+  } = data.space
 
   if (match.params.handle !== handle)
     requestAnimationFrame(() => history.replace(`${path(1)}/${handle}`))
 
   const sidebar = <Sidebar {...data.space} />
+
   return (
     <>
       <Helmet>
         <title>{name} | Upframe</title>
       </Helmet>
-      <S.Space>
+      <S.Space data-view={isMember ? 'member' : 'external'}>
         <S.Main>
           <S.MainWrap>
             <S.Info
@@ -92,34 +104,42 @@ export default function Space({ match }) {
                   <Text>{description}</Text>
                 </S.InfoContent>
                 <S.InfoActions>
-                  <InviteButton onSelect={setInvite} />
+                  {isOwner && <InviteButton onSelect={setInvite} />}
                 </S.InfoActions>
               </div>
             </S.Info>
             <Navigation />
             <Switch>
-              <Route
-                exact
-                path={path(2)}
-                render={() => <Mentors mentors={mentors} />}
-              ></Route>
-              <Route
-                exact
-                path={path(2) + '/people'}
-                render={() => <People spaceId={id} onInvite={setInvite} />}
-              ></Route>
-              <Route
-                exact
-                path={path(2) + '/settings'}
-                render={() => <Settings spaceId={id} />}
-              ></Route>
-              <Route
-                exact
-                path={path(2) + '/activity'}
-                render={() => <div>activity</div>}
-              ></Route>
-              {isMobile && (
-                <Route exact path={path(2) + '/info'} render={() => sidebar} />
+              {isMember && (
+                <>
+                  <Route
+                    exact
+                    path={path(2)}
+                    render={() => <Mentors mentors={mentors} />}
+                  ></Route>
+                  <Route
+                    exact
+                    path={path(2) + '/people'}
+                    render={() => <People spaceId={id} onInvite={setInvite} />}
+                  ></Route>
+                  <Route
+                    exact
+                    path={path(2) + '/settings'}
+                    render={() => <Settings spaceId={id} />}
+                  ></Route>
+                  <Route
+                    exact
+                    path={path(2) + '/activity'}
+                    render={() => <div>activity</div>}
+                  ></Route>
+                  {isMobile && (
+                    <Route
+                      exact
+                      path={path(2) + '/info'}
+                      render={() => sidebar}
+                    />
+                  )}
+                </>
               )}
               <Redirect to={path(2)} />
             </Switch>
@@ -140,83 +160,10 @@ export default function Space({ match }) {
   )
 }
 
-interface ImgProps {
-  src?: string
-  edit?: boolean
-  ratio: number
-}
-
-function Image({
-  src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
-  edit = false,
-  ratio = 1,
-}: ImgProps) {
-  const [photo, setPhoto] = useState<string>()
-
-  useEffect(() => {
-    if (!edit) return
-    setPhoto(undefined)
-  }, [edit])
-
-  return (
-    <>
-      <S.ImgWrap>
-        <img src={src} alt="" />
-        <S.ImgEdit
-          {...(edit && {
-            onClick({ currentTarget }) {
-              currentTarget.parentElement?.querySelector('input')?.click()
-            },
-          })}
-        >
-          <Icon icon="add_photo" />
-        </S.ImgEdit>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={({ target }) => {
-            const reader = new FileReader()
-            reader.onload = e => {
-              const data = e.target?.result
-              if (!data) return setPhoto(undefined)
-              setPhoto(typeof data === 'string' ? data : data.toString())
-            }
-            reader.readAsDataURL((target as any).files[0])
-          }}
-          hidden
-        />
-      </S.ImgWrap>
-      {photo && (
-        <S.EditWrap>
-          <PhotoCrop
-            photo={photo}
-            name="foo"
-            onCancel={() => setPhoto(undefined)}
-            onSave={console.log}
-            ratio={ratio}
-          />
-        </S.EditWrap>
-      )}
-    </>
-  )
-}
-
 const columnGap = parseSize('2rem')
 const contentWidth = parseSize('55rem')
 const coverRatio = 1 / 4
 const sidePadding = 0.03
-
-const ImgWrap = styled.div`
-  position: relative;
-
-  & > * {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-`
 
 const S = {
   Space: styled.div`
@@ -247,6 +194,10 @@ const S = {
         display: none;
       }
     }
+
+    &[data-view='external'] > *:last-child {
+      display: none;
+    }
   `,
 
   Main: styled.div`
@@ -261,6 +212,10 @@ const S = {
     max-width: ${contentWidth}px;
     width: 100%;
     margin: auto;
+
+    *[data-view='external'] & > *:not(:first-child) {
+      display: none;
+    }
   `,
 
   Info: styled.div`
@@ -290,7 +245,7 @@ const S = {
       height: 50%;
     }
 
-    & > ${ImgWrap} {
+    & > ${Image.ImgWrap} {
       background-color: #dfdbe5;
       background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
       border: none;
@@ -306,7 +261,7 @@ const S = {
 
       --img-size: 7rem;
 
-      & > ${ImgWrap} {
+      & > ${Image.ImgWrap} {
         position: absolute;
         width: 7rem;
         height: 7rem;
@@ -341,43 +296,5 @@ const S = {
     & > * {
       margin: 0;
     }
-  `,
-
-  ImgWrap,
-
-  ImgEdit: styled.div`
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0002;
-    backdrop-filter: blur(1px);
-    opacity: 0;
-    transition: opacity 0.2s ease;
-
-    *[data-mode='edit'] & {
-      opacity: 1;
-      cursor: pointer;
-    }
-
-    & > * {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translateX(-50%) translateY(-50%);
-      width: 2.5rem;
-      height: 2.5rem;
-      fill: #fff;
-    }
-  `,
-
-  EditWrap: styled.div`
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1000;
   `,
 }
