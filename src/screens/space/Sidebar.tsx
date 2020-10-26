@@ -5,6 +5,7 @@ import { path } from 'utils/url'
 import type { SpacePage } from 'gql/types'
 import { Title, ProfilePicture, Link, Markdown } from 'components'
 import { useHistory } from 'react-router-dom'
+import layout from 'styles/layout'
 
 interface Props {
   owners: Exclude<SpacePage['space'], null>['owners']
@@ -113,6 +114,9 @@ const Widget = styled.div`
 
 const S = {
   Sidebar: styled.div`
+    position: fixed;
+    right: var(--side-padding);
+    top: calc(${layout.desktop.navbarHeight} + 3rem);
     height: 100vh;
     flex: 0 0;
     display: flex;

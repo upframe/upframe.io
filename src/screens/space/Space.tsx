@@ -216,7 +216,7 @@ const S = {
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
-    width: 100%;
+    width: calc(100% - ${sidebarWidth}px);
 
     --side-padding: ${sidePadding * 100}vw;
 
