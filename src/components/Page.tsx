@@ -2,36 +2,46 @@ import React from 'react'
 import styled from 'styled-components'
 import { Helmet } from 'react-helmet'
 
-function Page({
+interface Props {
+  title?: string
+  form?: boolean
+  style?(): JSX.Element
+  onSubmit?(): void
+  defaultStyle?: boolean
+  className?: string
+  wrap?: boolean
+}
+
+const Page: React.FC<Props> = ({
   form = false,
+  wrap = form,
   title,
   style,
   children,
   onSubmit,
   defaultStyle = false,
   ...props
-}) {
-  const Wrap = form ? S.Form : style ? S.Page : React.Fragment
+}) => {
+  const Wrap: any = form || wrap ? S.Form : style ? S.Page : React.Fragment
+  const wrapProps: any = {
+    'data-style':
+      !defaultStyle && (style || props.className) ? 'cst' : 'default',
+    ...(style && { as: style }),
+    ...(form && {
+      onSubmit(e) {
+        e.preventDefault()
+        onSubmit?.()
+      },
+    }),
+    ...(wrap && !form && { as: 'div' }),
+  }
+
   return (
     <>
       <Helmet>
         <title>{!title ? 'Upframe' : `${title} | Upframe`}</title>
       </Helmet>
-      <Wrap
-        {...(style && { as: style })}
-        data-style={
-          !defaultStyle && (style || props.className) ? 'cst' : 'default'
-        }
-        {...{
-          onSubmit: e => {
-            e.preventDefault()
-            if (onSubmit) onSubmit(e)
-          },
-          ...props,
-        }}
-      >
-        {children}
-      </Wrap>
+      <Wrap {...(Wrap !== React.Fragment && wrapProps)}>{children}</Wrap>
     </>
   )
 }

@@ -199,7 +199,7 @@ export function InviteMenu({ onClose, role, name, spaceId, spaceName }: Props) {
                     {role.toLowerCase()} to {spaceName}.
                   </Text>
                   <CopyField
-                    value={`${window.location.origin}/signup/${
+                    value={`${window.location.origin}/join/${
                       links[role.slice(0, -1).toLowerCase()]
                     }`}
                   />

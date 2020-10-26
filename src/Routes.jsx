@@ -11,6 +11,7 @@ const MeetupCancel = React.lazy(() => import('./screens/Meetup/Cancel'))
 const ErrorPage = React.lazy(() => import('./screens/404'))
 const List = React.lazy(() => import('./screens/List'))
 const Space = React.lazy(() => import('./screens/space/Space'))
+const JoinSpace = React.lazy(() => import('./screens/space/Join'))
 const Search = React.lazy(() => import('./screens/Search'))
 const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
 const ResetEmail = React.lazy(() => import('./screens/ResetEmail'))
@@ -25,6 +26,7 @@ export default function Routes() {
       <Route exact path="/" component={Main} />
       <Route exact path="/(list|tag)/:list" component={List} />
       <Route exact path="/(space|s)/:handle/:tab?" component={Space} />
+      <Route exact path="/join/:token" component={JoinSpace} />
       <Route exact path="/search" component={Search} />
       <Route exact path="/privacy" component={Privacy} />
       <Route exact path="/login" component={Login} />
