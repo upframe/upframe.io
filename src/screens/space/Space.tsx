@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { gql, useQuery, fragments } from 'gql'
 import type { SpacePage, SpacePageVariables } from 'gql/types'
-import { Spinner, Title, Text } from 'components'
-import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
+import { Spinner, Title, Text, Switch } from 'components'
+import { Route, Redirect, useHistory } from 'react-router-dom'
 import Image from './Image'
 import { Helmet } from 'react-helmet'
 import { path } from 'utils/url'
@@ -108,7 +108,7 @@ export default function Space({ match }) {
                 </S.InfoActions>
               </div>
             </S.Info>
-            <Navigation />
+            <Navigation isOwner={isOwner ?? false} />
             <Switch>
               {isMember && (
                 <>
@@ -116,12 +116,22 @@ export default function Space({ match }) {
                     exact
                     path={path(2)}
                     render={() => <Mentors mentors={mentors} />}
-                  ></Route>
+                  />
                   <Route
                     exact
                     path={path(2) + '/people'}
-                    render={() => <People spaceId={id} onInvite={setInvite} />}
-                  ></Route>
+                    render={() => (
+                      <People
+                        spaceId={id}
+                        onInvite={setInvite}
+                        isOwner={isOwner ?? false}
+                      />
+                    )}
+                  />
+                </>
+              )}
+              {isOwner && (
+                <>
                   <Route
                     exact
                     path={path(2) + '/settings'}
@@ -132,14 +142,10 @@ export default function Space({ match }) {
                     path={path(2) + '/activity'}
                     render={() => <div>activity</div>}
                   ></Route>
-                  {isMobile && (
-                    <Route
-                      exact
-                      path={path(2) + '/info'}
-                      render={() => sidebar}
-                    />
-                  )}
                 </>
+              )}
+              {isMobile && (
+                <Route path={path(2) + '/info'} render={() => sidebar} />
               )}
               <Redirect to={path(2)} />
             </Switch>

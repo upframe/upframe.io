@@ -35,9 +35,10 @@ const MEMBER_QUERY = gql`
 interface Props {
   spaceId: string
   onInvite(v: Role): void
+  isOwner: boolean
 }
 
-export default function People({ spaceId, onInvite }: Props) {
+export default function People({ spaceId, onInvite, isOwner }: Props) {
   const { data } = useQuery<SpaceMembers, SpaceMembersVariables>(MEMBER_QUERY, {
     variables: { spaceId },
   })
@@ -50,18 +51,21 @@ export default function People({ spaceId, onInvite }: Props) {
         description={roles.Owners}
         users={data.space.owners ?? []}
         onInvite={() => onInvite('Owners')}
+        isOwner={isOwner}
       />
       <Group
         title="Mentors"
         description={roles.Mentors}
         users={data.space.mentors ?? []}
         onInvite={() => onInvite('Mentors')}
+        isOwner={isOwner}
       />
       <Group
         title="Founders"
         description={roles.Founders}
         users={data.space.members ?? []}
         onInvite={() => onInvite('Founders')}
+        isOwner={isOwner}
       />
     </S.People>
   )
@@ -72,9 +76,10 @@ interface GroupProps {
   description: string
   users: Exclude<Exclude<SpaceMembers['space'], null>['owners'], null>
   onInvite(): void
+  isOwner: boolean
 }
 
-function Group({ title, description, users, onInvite }: GroupProps) {
+function Group({ title, description, users, onInvite, isOwner }: GroupProps) {
   const [batches, setBatches] = useState(1)
   const batchSize = 4
 
@@ -95,9 +100,11 @@ function Group({ title, description, users, onInvite }: GroupProps) {
           </Title>
           <Text>{description}</Text>
         </div>
-        <Button accent filled onClick={onInvite}>
-          Invite
-        </Button>
+        {isOwner && (
+          <Button accent filled onClick={onInvite}>
+            Invite
+          </Button>
+        )}
       </S.GroupHead>
       <ol>
         {users

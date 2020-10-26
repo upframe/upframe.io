@@ -9,17 +9,20 @@ const routes = {
   Mentors: '',
   People: '/people',
   Settings: '/settings',
-  'Activity  Log': '/activity',
+  'Activity Log': '/activity',
   Info: '/info',
 }
 
-export default function Navigation() {
+export default function Navigation({ isOwner }: { isOwner: boolean }) {
   useHistory()
   const isMobile = useMatchMedia(mobile)
 
   const tabs = Object.fromEntries(
     Object.entries(routes)
       .slice(0, isMobile ? Infinity : -1)
+      .filter(
+        isOwner ? Boolean : ([k]) => !['Settings', 'Activity Log'].includes(k)
+      )
       .map(([k, v]) => [k, path(2) + v])
   )
 
