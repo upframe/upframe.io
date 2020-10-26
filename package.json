@@ -55,6 +55,8 @@
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "@graphql-codegen/cli": "^1.12.2",
     "@graphql-codegen/fragment-matcher": "^1.12.2",
     "@graphql-codegen/introspection": "^1.15.4",

@@ -15,7 +15,6 @@ const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
 const ResetEmail = React.lazy(() => import('./screens/ResetEmail'))
 const Privacy = React.lazy(() => import('./screens/Privacy'))
 const Conversations = React.lazy(() => import('./screens/Conversations'))
-const Redirects = React.lazy(() => import('./screens/Redirects'))
 const Scroller = React.lazy(() => import('./screens/playground/Scroller'))
 const Tools = React.lazy(() => import('./screens/tools/Tools'))
 
@@ -38,7 +37,6 @@ export default function Routes() {
       <Route exact path="/tools/:page?" component={Tools} />
       <Route exact path="/meetup/confirm/:meetupid" component={MeetupConfirm} />
       <Route exact path="/meetup/cancel/:meetupid" component={MeetupCancel} />
-      <Route exact path="/redirects" component={Redirects} />
       <Route exact path="/playground/scroll" component={Scroller} />
       <Route exact path="/404" component={ErrorPage} />
       <Route exact path="/:handle" component={Profile} />

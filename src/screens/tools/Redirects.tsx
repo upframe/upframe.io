@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import { useMe } from 'utils/hooks'
 import { Text, Title, Button, Icon } from 'components'
 import { gql, useQuery, useMutation } from 'gql'
+import type { ShortenerRedirects } from 'gql/types'
 
 const REDIRECTS = gql`
-  query Redirects {
+  query ShortenerRedirects {
     redirects {
       from
       to
@@ -28,15 +29,21 @@ const DELETE_REDIRECT = gql`
 
 const fields = ['from', 'to', 'expires']
 
+type Redirect = GqlType<ShortenerRedirects['redirects'][number]> & {
+  key: string
+}
+
+type Diff = { __added?: string[]; __removed?: string[] }
+
 export default function Redirects() {
   const { me } = useMe()
-  const [org, setOrg] = useState([])
-  const [redirects, setRedirects] = useState([])
-  const [diff, setDiff] = useState({})
+  const [org, setOrg] = useState<Redirect[]>([])
+  const [redirects, setRedirects] = useState<Redirect[]>([])
+  const [diff, setDiff] = useState<Diff>({})
   const [addRedirect] = useMutation(ADD_REDIRECT)
   const [deleteRedirect] = useMutation(DELETE_REDIRECT)
 
-  useQuery(REDIRECTS, {
+  useQuery<ShortenerRedirects>(REDIRECTS, {
     onCompleted(data) {
       const reds = data.redirects.map(v => ({
         ...v,
@@ -47,13 +54,13 @@ export default function Redirects() {
     },
   })
 
-  function handleChange(key, field, target) {
+  function handleChange(key: string, field: 'from' | 'to' | 'expires', target) {
     if (!target.checkValidity()) return
     const value = field === 'expires' ? parseInt(target.value) : target.value
     const newDiff = { ...diff }
     const redOrg = org.find(v => v.key === key)
-    const redNew = {
-      ...redirects.find(v => v.key === key),
+    const redNew: Redirect = {
+      ...(redirects.find(v => v.key === key) as Redirect),
       [field]: value,
     }
     if (redOrg) {
@@ -90,17 +97,17 @@ export default function Redirects() {
     setDiff({
       ...Object.fromEntries(Object.entries(diff).filter(([k]) => k !== key)),
       ...((diff.__added ?? []).includes(key)
-        ? { __added: diff.__added.filter(k => k !== key) }
+        ? { __added: diff.__added?.filter(k => k !== key) }
         : { __removed: [...(diff.__removed ?? []), key] }),
     })
   }
 
   function add() {
-    const key = Date.now()
+    const key = Date.now().toString()
 
     setRedirects([
       ...redirects,
-      { key, from: 'NEW_REDIRECT', to: 'NEW_TARGET' },
+      { key, from: 'NEW_REDIRECT', to: 'NEW_TARGET' } as Redirect,
     ])
     setDiff({ ...diff, __added: [...(diff.__added ?? []), key] })
   }
@@ -124,7 +131,7 @@ export default function Redirects() {
     delete diff.__removed
 
     const changedPaths = Object.entries(diff)
-      .filter(([, v]) => 'from' in v)
+      .filter(([, v]) => 'from' in (v as any))
       .map(([k]) => k)
 
     const modified = Object.entries(diff).map(([k, v]) => ({
@@ -188,7 +195,9 @@ export default function Redirects() {
             <input
               key={key + fields[i]}
               value={v || ''}
-              onChange={({ target }) => handleChange(key, fields[i], target)}
+              onChange={({ target }) =>
+                handleChange(key, fields[i] as any, target)
+              }
               {...(fields[i] === 'expires'
                 ? { type: 'number' }
                 : { pattern: '[^\\s]+' })}
@@ -206,18 +215,20 @@ export default function Redirects() {
         {Object.entries(diff).map(([k, v]) =>
           k.startsWith('__') ? (
             <pre key={k}>{`${k.slice(2)}: ${(k !== '__added'
-              ? v.map(k => k.split('_').slice(0, -1).join('_'))
-              : v.map(k => redirects.find(({ key }) => key === k).from)
+              ? (v as string[]).map(k => k.split('_').slice(0, -1).join('_'))
+              : (v as string[]).map(
+                  k => redirects.find(({ key }) => key === k)?.from
+                )
             ).join(', ')}`}</pre>
           ) : (
             <pre key={k}>
               <b>{k.split('_').slice(0, -1).join('_')}</b>
               {'   '}
-              {Object.entries(v)
+              {Object.entries(v as string[])
                 .map(
                   ([field, v]) =>
                     `${field.toUpperCase()}: ${
-                      org.find(({ key }) => key === k)[field]
+                      org.find(({ key }) => key === k)?.[field]
                     } -> ${v}`
                 )
                 .join('; ')}

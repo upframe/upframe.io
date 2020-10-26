@@ -7,6 +7,7 @@ import { useMe } from 'utils/hooks'
 import Navigation from './Navigation'
 import Users from './Users'
 import Audit from './Audit'
+import Redirects from './Redirects'
 
 export default function Tools({ match }) {
   const { me, loading } = useMe()
@@ -23,6 +24,7 @@ export default function Tools({ match }) {
         <Switch>
           <Route path="/tools/users" component={Users} />
           <Route path="/tools/audit" component={Audit} />
+          <Route path="/tools/redirects" component={Redirects} />
           <Redirect exact from="/tools" to="/tools/users" />
         </Switch>
       </S.Page>
