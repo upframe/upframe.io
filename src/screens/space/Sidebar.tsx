@@ -6,6 +6,7 @@ import type { SpacePage } from 'gql/types'
 import { Title, ProfilePicture, Link, Markdown } from 'components'
 import { useHistory } from 'react-router-dom'
 import layout from 'styles/layout'
+import { mobile } from 'styles/responsive'
 
 interface Props {
   owners: Exclude<SpacePage['space'], null>['owners']
@@ -123,6 +124,11 @@ const S = {
     flex-direction: column;
     width: ${sidebarWidth}px;
     box-sizing: border-box;
+
+    @media ${mobile} {
+      position: initial;
+      width: 100%;
+    }
   `,
 
   Avatars: styled(Widget)``,
@@ -133,6 +139,10 @@ const S = {
     grid-gap: ${avatarGap};
     overflow-x: hidden;
     width: 100%;
+
+    @media ${mobile} {
+      grid-template-columns: repeat(auto-fill, ${avatarSize}px);
+    }
   `,
 
   Avatar: styled.div`

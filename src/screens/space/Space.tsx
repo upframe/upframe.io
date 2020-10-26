@@ -14,6 +14,8 @@ import Settings from './Settings'
 import People from './People'
 import { InviteButton, InviteMenu } from './Invite'
 import type { Role } from './roles'
+import { mobile, desktop } from 'styles/responsive'
+import { useMatchMedia } from 'utils/hooks'
 
 const SPACE_QUERY = gql`
   query SpacePage($handle: String!) {
@@ -52,6 +54,7 @@ export default function Space({ match }) {
       variables: { handle: match.params.handle.toLowerCase() },
     }
   )
+  const isMobile = useMatchMedia(mobile)
 
   if (loading) return <Spinner />
   if (!data?.space) return <Redirect to="/404" />
@@ -61,6 +64,7 @@ export default function Space({ match }) {
   if (match.params.handle !== handle)
     requestAnimationFrame(() => history.replace(`${path(1)}/${handle}`))
 
+  const sidebar = <Sidebar {...data.space} />
   return (
     <>
       <Helmet>
@@ -114,11 +118,14 @@ export default function Space({ match }) {
                 path={path(2) + '/activity'}
                 render={() => <div>activity</div>}
               ></Route>
+              {isMobile && (
+                <Route exact path={path(2) + '/info'} render={() => sidebar} />
+              )}
               <Redirect to={path(2)} />
             </Switch>
           </S.MainWrap>
         </S.Main>
-        <Sidebar {...data.space} />
+        {sidebar}
       </S.Space>
       {invite && (
         <InviteMenu
@@ -232,11 +239,22 @@ const S = {
       border-radius: 1.1rem;
       padding: 0 2rem;
     }
+
+    @media ${mobile} {
+      width: 100%;
+
+      & > *:last-child {
+        display: none;
+      }
+    }
   `,
 
   Main: styled.div`
     flex: 1 1;
-    margin-right: ${columnGap}px;
+
+    @media ${desktop} {
+      margin-right: ${columnGap}px;
+    }
   `,
 
   MainWrap: styled.div`
@@ -260,6 +278,10 @@ const S = {
           sidebarWidth + columnGap
         }px) * ${coverRatio} * 2`}
       );
+    }
+
+    @media ${mobile} {
+      height: calc((100vw - var(--side-padding) * 2) * ${coverRatio} * 2);
     }
 
     & > * {
