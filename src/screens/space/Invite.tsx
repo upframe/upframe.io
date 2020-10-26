@@ -15,6 +15,7 @@ import {
   Labeled,
   Checkbox,
   Spinner,
+  CopyField,
 } from 'components'
 
 const INVITE_LINKS = gql`
@@ -46,7 +47,8 @@ interface Props {
   onClose(): void
   name: string
   role: Role
-  space: string
+  spaceId: string
+  spaceName: string
 }
 
 const tabs = ['Invite via Email', 'Invite via Link']
@@ -68,19 +70,17 @@ const formatInvalid = (items: string[]) => {
   } valid email address${multi ? 'es' : ''}`
 }
 
-export function InviteMenu({ onClose, role, name, space }: Props) {
+export function InviteMenu({ onClose, role, name, spaceId, spaceName }: Props) {
   const [tab, setTab] = useState(tabs[1])
   const [emailInput, setEmailInput] = useState('')
   const [emails, setEmails] = useState<string[]>([])
   const [invalid, setInvalid] = useState<string[]>([])
 
   const { data, loading: linksLoading } = useQuery(INVITE_LINKS, {
-    variables: { space },
+    variables: { space: spaceId },
   })
   const links = data?.space?.inviteLinks ?? {}
   const hasLink = links[role.slice(0, -1).toLowerCase()]
-
-  console.log(links)
 
   function handleEmailInput(v: string) {
     if (/[\s,;]/.test(v)) {
@@ -111,7 +111,7 @@ export function InviteMenu({ onClose, role, name, space }: Props) {
     CreateSpaceInviteVariables
   >(CREATE_INVITE, {
     variables: {
-      space,
+      space: spaceId,
       role: role
         .slice(0, -1)
         .toUpperCase() as CreateSpaceInviteVariables['role'],
@@ -122,7 +122,7 @@ export function InviteMenu({ onClose, role, name, space }: Props) {
         res.data.createSpaceInvite
       cache.writeQuery({
         query: INVITE_LINKS,
-        variables: { space },
+        variables: { space: spaceId },
         data,
       })
     },
@@ -130,7 +130,7 @@ export function InviteMenu({ onClose, role, name, space }: Props) {
 
   const [revokeLink, { loading: revokeLoading }] = useMutation(REVOKE_INVITE, {
     variables: {
-      space,
+      space: spaceId,
       role: role
         .slice(0, -1)
         .toUpperCase() as CreateSpaceInviteVariables['role'],
@@ -139,7 +139,7 @@ export function InviteMenu({ onClose, role, name, space }: Props) {
       data.space.inviteLinks[role.slice(0, -1).toLowerCase()] = null
       cache.writeQuery({
         query: INVITE_LINKS,
-        variables: { space },
+        variables: { space: spaceId },
         data,
       })
     },
@@ -192,6 +192,17 @@ export function InviteMenu({ onClose, role, name, space }: Props) {
                 }
                 wrap={S.CheckWrap}
               />
+              <Text>
+                Share this link with others to invite them as{' '}
+                {role.toLowerCase()} to {spaceName}.
+              </Text>
+              {hasLink && (
+                <CopyField
+                  value={`${window.location.origin}/signup/${
+                    links[role.slice(0, -1).toLowerCase()]
+                  }`}
+                />
+              )}
             </div>
           ))}
       </S.Invite>
@@ -258,7 +269,7 @@ const S = {
       display: flex;
       flex-direction: column;
 
-      button {
+      & > button {
         margin-top: 1.5rem;
         align-self: flex-end;
       }

@@ -125,7 +125,8 @@ export default function Space({ match }) {
           name={name}
           onClose={() => setInvite(undefined)}
           role={invite}
-          space={id}
+          spaceId={id}
+          spaceName={name}
         />
       )}
     </>

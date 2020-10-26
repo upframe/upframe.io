@@ -1,3 +1,5 @@
+export { Link } from 'react-router-dom'
+
 export { default as ProfilePicture } from './ProfilePicture'
 export { default as Mainnav } from './Mainnav/Navbar'
 export { default as MobileNav } from './MobileNav'
@@ -43,5 +45,4 @@ export { default as UpdatePrompt } from './UpdatePrompt'
 export { default as Table } from './Table'
 export { default as Dropdown } from './Dropdown'
 export { default as Navbar } from './Navbar'
-
-export { Link } from 'react-router-dom'
+export { default as CopyField } from './CopyField'
