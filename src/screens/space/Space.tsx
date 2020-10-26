@@ -45,7 +45,7 @@ const SPACE_QUERY = gql`
 
 export default function Space({ match }) {
   const history = useHistory()
-  const [invite, setInvite] = useState<Role | undefined>('Mentors')
+  const [invite, setInvite] = useState<Role>()
   const { data, loading } = useQuery<SpacePage, SpacePageVariables>(
     SPACE_QUERY,
     {
@@ -102,7 +102,7 @@ export default function Space({ match }) {
               <Route
                 exact
                 path={path(2) + '/people'}
-                render={() => <People spaceId={id} />}
+                render={() => <People spaceId={id} onInvite={setInvite} />}
               ></Route>
               <Route
                 exact

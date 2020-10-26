@@ -71,7 +71,7 @@ const formatInvalid = (items: string[]) => {
 }
 
 export function InviteMenu({ onClose, role, name, spaceId, spaceName }: Props) {
-  const [tab, setTab] = useState(tabs[1])
+  const [tab, setTab] = useState(tabs[0])
   const [emailInput, setEmailInput] = useState('')
   const [emails, setEmails] = useState<string[]>([])
   const [invalid, setInvalid] = useState<string[]>([])
@@ -192,16 +192,18 @@ export function InviteMenu({ onClose, role, name, spaceId, spaceName }: Props) {
                 }
                 wrap={S.CheckWrap}
               />
-              <Text>
-                Share this link with others to invite them as{' '}
-                {role.toLowerCase()} to {spaceName}.
-              </Text>
               {hasLink && (
-                <CopyField
-                  value={`${window.location.origin}/signup/${
-                    links[role.slice(0, -1).toLowerCase()]
-                  }`}
-                />
+                <>
+                  <Text>
+                    Share this link with others to invite them as{' '}
+                    {role.toLowerCase()} to {spaceName}.
+                  </Text>
+                  <CopyField
+                    value={`${window.location.origin}/signup/${
+                      links[role.slice(0, -1).toLowerCase()]
+                    }`}
+                  />
+                </>
               )}
             </div>
           ))}
