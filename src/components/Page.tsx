@@ -6,7 +6,7 @@ interface Props {
   title?: string
   form?: boolean
   style?(): JSX.Element
-  onSubmit?(): void
+  onSubmit?(e?: React.FormEvent<HTMLFormElement>): void
   defaultStyle?: boolean
   className?: string
   wrap?: boolean
@@ -28,9 +28,9 @@ const Page: React.FC<Props> = ({
       !defaultStyle && (style || props.className) ? 'cst' : 'default',
     ...(style && { as: style }),
     ...(form && {
-      onSubmit(e) {
+      onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        onSubmit?.()
+        onSubmit?.(e)
       },
     }),
     ...(wrap && !form && { as: 'div' }),
