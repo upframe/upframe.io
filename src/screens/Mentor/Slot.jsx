@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function Slot({ start, onClick = () => {}, linkTo, selected }) {
+export default function Slot({ start, onClick = () => {}, selected }) {
   const date = new Date(start)
   const time = date.toLocaleString('en-US', {
     hour12: true,
@@ -10,15 +10,7 @@ export default function Slot({ start, onClick = () => {}, linkTo, selected }) {
   })
 
   return (
-    <TagContainer
-      selected={selected}
-      onClick={() => onClick(start)}
-      {...(linkTo && {
-        target: '_blank',
-        rel: 'noopener noreferrer',
-        href: linkTo,
-      })}
-    >
+    <TagContainer selected={selected} onClick={() => onClick(start)}>
       <div>
         <span>{time}</span>
       </div>
@@ -30,10 +22,10 @@ const TagContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   color: black;
-  background-color; white;
+  background-color: white;
   cursor: pointer;
   margin-right: 1rem;
   margin-bottom: 1rem;
@@ -41,11 +33,11 @@ const TagContainer = styled.div`
   height: 4rem;
   width: 11rem;
   transition: border-color 0.25s ease;
-  
+
   &:hover {
     border-color: var(--cl-accent);
   }
-  
+
   @media (max-width: 599px), (orientation: portrait) {
     width: 100%;
     margin-right: 0;
@@ -56,5 +48,4 @@ const TagContainer = styled.div`
     `
       color: var(--cl-accent);
     `}
-
 `

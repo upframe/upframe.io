@@ -129,6 +129,7 @@ const Styles = {
     & > :last-child {
       margin-top: 30px;
     }
+
     & > :first-child {
       margin-bottom: 30px;
     }
