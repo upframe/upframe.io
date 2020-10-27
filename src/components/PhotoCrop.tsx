@@ -115,9 +115,15 @@ export default function PhotoCrop({
 
   function resize(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.stopPropagation()
-    const node: Vt = Array.from(
+
+    const siblings: HTMLElement[] = Array.from(
       (e.target as any).parentNode.childNodes
-    ).indexOf(e.target)
+    )
+    const vts = siblings.filter(node =>
+      node.classList.contains(S.Vt.styledComponentId)
+    )
+
+    const node: Vt = vts.indexOf(e.target as HTMLElement)
     const img = imgRef.current.getBoundingClientRect()
 
     function onMove(e: MouseEvent) {
@@ -248,7 +254,7 @@ export default function PhotoCrop({
       <S.Frame>
         <S.Img src={photo} draggable={false} alt="original" ref={imgRef} />
         <S.Selection ref={selectRef} onMouseDown={dragStart}>
-          <svg viewBox="0 0 400 400">
+          <svg viewBox={`0 0 400 ${ratio * 400}`}>
             <rect width="100%" height="100%" />
             <rect width="100%" height="100%" />
           </svg>
@@ -367,22 +373,22 @@ const S = {
       border-radius: 50%;
     }
 
-    &:nth-child(1) {
+    &:nth-of-type(1) {
       cursor: nwse-resize;
     }
 
-    &:nth-child(2) {
+    &:nth-of-type(2) {
       left: 100%;
       cursor: nesw-resize;
     }
 
-    &:nth-child(3) {
+    &:nth-of-type(3) {
       left: 100%;
       top: 100%;
       cursor: nwse-resize;
     }
 
-    &:nth-child(4) {
+    &:nth-of-type(4) {
       top: 100%;
       cursor: nesw-resize;
     }
