@@ -179,9 +179,13 @@ function Group({ title, description, users, onInvite, isOwner }: GroupProps) {
       <ol>
         {users
           .slice(0, batches * batchSize)
-          .map(({ id, name, headline, profilePictures }) => (
+          .map(({ id, name, handle, headline, profilePictures }) => (
             <S.User key={id}>
-              <ProfilePicture size={avatarSize} imgs={profilePictures} />
+              <ProfilePicture
+                size={avatarSize}
+                imgs={profilePictures}
+                linkTo={`/${handle}`}
+              />
               <div>
                 <Title size={4}>{name}</Title>
                 <Text>{headline}</Text>

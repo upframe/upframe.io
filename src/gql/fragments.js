@@ -164,6 +164,11 @@ export const person = {
         ...Timezone
         inferTz
         msgToken
+        spaces {
+          id
+          name
+          handle
+        }
       }
       ${person.base}
       ${person.timezone}
