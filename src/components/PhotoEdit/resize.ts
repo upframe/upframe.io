@@ -1,8 +1,7 @@
-const MAX_IMG_SIZE = 5e6
-
 export default async function (
   select: DOMRect,
-  img: HTMLImageElement
+  img: HTMLImageElement,
+  maxBytes = 5e6
 ): Promise<string> {
   const imgRect = img.getBoundingClientRect()
   const { naturalWidth, naturalHeight } = img
@@ -36,8 +35,8 @@ export default async function (
         let data = canvas.toDataURL()
         const size = new Blob([data]).size
 
-        if (size > MAX_IMG_SIZE) {
-          step(scale * (1 / Math.sqrt(size / MAX_IMG_SIZE)) * 0.99)
+        if (size > maxBytes) {
+          step(scale * (1 / Math.sqrt(size / maxBytes)) * 0.99)
         } else resolve(data)
       }
       tmpImg.src = img.src

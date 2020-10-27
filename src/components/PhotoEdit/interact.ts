@@ -6,37 +6,29 @@ export function drag(
   img: HTMLImageElement,
   updatePreview?: (x: number, y: number) => void
 ) {
-  let dragPoint: { x: number; y: number }
   select.dataset.grabbed = 'true'
 
-  const imgBox = img.getBoundingClientRect()
+  const iBox = img.getBoundingClientRect()
   const container = (img.parentNode as HTMLElement).getBoundingClientRect()
-  const boundary = {
-    left: imgBox.x - container.x,
-    width: container.width - (imgBox.x - container.x),
-    top: imgBox.y - container.y,
-    height: container.height - (imgBox.y - container.y),
-  }
+
+  let { x, y, width, height } = select.getBoundingClientRect()
 
   function onMove(e: MouseEvent) {
-    const { x, y } = select.getBoundingClientRect()
-    if (!dragPoint) dragPoint = { x: e.x - x, y: e.y - y }
+    let newX = x
+    let newY = y
 
-    if (e.movementX > 0 ? e.x >= x + dragPoint.x : e.x <= x + dragPoint.x)
-      select.style.left = `${Math.min(
-        Math.max(select.offsetLeft + e.movementX, boundary.left),
-        boundary.width - select.offsetWidth
-      )}px`
-    if (e.movementY > 0 ? e.y >= y + dragPoint.y : e.y <= y + dragPoint.y)
-      select.style.top = `${Math.min(
-        Math.max(select.offsetTop + e.movementY, boundary.top),
-        boundary.height - select.offsetHeight
-      )}px`
+    if (e.x >= iBox.left && e.x <= iBox.right)
+      newX = Math.min(Math.max(x + e.movementX, iBox.x), iBox.right - width)
+    if (e.y >= iBox.top && e.y <= iBox.bottom)
+      newY = Math.min(Math.max(y + e.movementY, iBox.y), iBox.bottom - height)
+    select.style.transform = `translate3d(${Math.round(
+      newX - iBox.x + (iBox.x - container.x)
+    )}px, ${Math.round(newY - iBox.y)}px, 0)`
 
-    updatePreview?.(
-      (x - imgBox.x) / imgBox.width,
-      (y - imgBox.y) / imgBox.height
-    )
+    x = newX
+    y = newY
+
+    updatePreview?.((x - iBox.x) / iBox.width, (y - iBox.y) / iBox.height)
   }
   window.addEventListener('mousemove', onMove)
   window.addEventListener(
@@ -73,6 +65,7 @@ export function resize(
 
   const node: Vt = vts.indexOf(e.target as HTMLElement)
   const imgBox = img.getBoundingClientRect()
+  const container = (img.parentElement as HTMLElement).getBoundingClientRect()
 
   function onMove(e: MouseEvent) {
     const box = select.getBoundingClientRect()
@@ -105,8 +98,13 @@ export function resize(
     else if (is.top) diff -= Math.max(imgBox.top - (box.top - diff), 0)
 
     // translate
-    if (is.left) select.style.left = `${select.offsetLeft - diff}px`
-    if (is.top) select.style.top = `${select.offsetTop - diff}px`
+    let x = box.x - imgBox.x + (imgBox.x - container.x)
+    let y = box.y - imgBox.y + (imgBox.y - container.y)
+
+    if (is.left) x -= diff
+    if (is.top) y -= diff
+
+    select.style.transform = `translate3d(${x}px, ${y}px, 0)`
 
     // scale
     select.style.width = `${box.width + diff}px`

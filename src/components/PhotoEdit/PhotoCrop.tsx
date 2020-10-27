@@ -95,12 +95,9 @@ function useInitSelection({
       img.height * ratio
     )}px`
     let select = selectRef.current.getBoundingClientRect()
-    selectRef.current.style.left = `${
-      img.left - select.left + (img.width - select.width) / 2
-    }px`
-    selectRef.current.style.top = `${
-      img.top - select.top + (img.height - select.height) / 2
-    }px`
+    const x = img.left - select.left + (img.width - select.width) / 2
+    const y = img.top - select.top + (img.height - select.height) / 2
+    selectRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`
 
     select = selectRef.current.getBoundingClientRect()
 

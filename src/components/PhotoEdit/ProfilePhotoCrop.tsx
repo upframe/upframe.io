@@ -44,7 +44,7 @@ export default function ProfilePhotoCrop({
     )
   return (
     <Modal
-      title="Crop you photo"
+      title="Crop your photo"
       actions={[
         <Button onClick={onCancel} key="cancel">
           Cancel
