@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Icon, PhotoCrop } from 'components'
+import { Icon, ProfilePhotoCrop } from 'components'
 
 interface ImgProps {
   src?: string
@@ -50,7 +50,7 @@ function Image({
       </S.ImgWrap>
       {photo && (
         <S.EditWrap>
-          <PhotoCrop
+          <ProfilePhotoCrop
             photo={photo}
             name="foo"
             onCancel={() => setPhoto(undefined)}

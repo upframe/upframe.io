@@ -8,7 +8,7 @@ import {
   Text,
   ProfilePicture,
   Title,
-  PhotoCrop,
+  ProfilePhotoCrop,
   Tagselect,
 } from '../../components'
 
@@ -251,7 +251,7 @@ export default function Step2({
         </Button>
       </S.SubmitWrap>
       {rawPhoto && (
-        <PhotoCrop
+        <ProfilePhotoCrop
           photo={rawPhoto}
           name={name}
           onSave={file => {
