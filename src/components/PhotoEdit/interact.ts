@@ -21,9 +21,10 @@ export function drag(
       newX = Math.min(Math.max(x + e.movementX, iBox.x), iBox.right - width)
     if (e.y >= iBox.top && e.y <= iBox.bottom)
       newY = Math.min(Math.max(y + e.movementY, iBox.y), iBox.bottom - height)
+
     select.style.transform = `translate3d(${Math.round(
       newX - iBox.x + (iBox.x - container.x)
-    )}px, ${Math.round(newY - iBox.y)}px, 0)`
+    )}px, ${Math.round(newY - iBox.y + (iBox.y - container.y))}px, 0)`
 
     x = newX
     y = newY

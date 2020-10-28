@@ -1,24 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { Icon, ProfilePhotoCrop } from 'components'
+import { Icon } from 'components'
 
 interface ImgProps {
   src?: string
   edit?: boolean
-  ratio: number
+  setEditSrc?(v?: File): void
 }
 
 function Image({
   src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
   edit = false,
-  ratio = 1,
+  setEditSrc,
 }: ImgProps) {
-  const [photo, setPhoto] = useState<string>()
-
   useEffect(() => {
     if (!edit) return
-    setPhoto(undefined)
-  }, [edit])
+    setEditSrc?.(undefined)
+  }, [edit, setEditSrc])
 
   return (
     <>
@@ -37,28 +35,13 @@ function Image({
           type="file"
           accept="image/*"
           onChange={({ target }) => {
-            const reader = new FileReader()
-            reader.onload = e => {
-              const data = e.target?.result
-              if (!data) return setPhoto(undefined)
-              setPhoto(typeof data === 'string' ? data : data.toString())
-            }
-            reader.readAsDataURL((target as any).files[0])
+            const file = target.files?.[0]
+            if (!file) return
+            setEditSrc?.(file)
           }}
           hidden
         />
       </S.ImgWrap>
-      {photo && (
-        <S.EditWrap>
-          <ProfilePhotoCrop
-            photo={photo}
-            name="foo"
-            onCancel={() => setPhoto(undefined)}
-            onSave={console.log}
-            ratio={ratio}
-          />
-        </S.EditWrap>
-      )}
     </>
   )
 }

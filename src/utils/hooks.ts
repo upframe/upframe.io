@@ -351,3 +351,14 @@ export function useReset(v: any, ...rest: any[]) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [v])
 }
+
+export function useComputed<T, K>(v: T, compute: (v: T) => K): K {
+  const [computed, setComputed] = useState<K>(compute(v))
+
+  useEffect(() => {
+    setComputed(compute(v))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [v])
+
+  return computed
+}

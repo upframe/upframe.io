@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { gql, useQuery, fragments } from 'gql'
 import type { SpacePage, SpacePageVariables } from 'gql/types'
 import { Spinner, Title, Text, Switch } from 'components'
+import PhotoCrop from './Crop'
 import { Route, Redirect, useHistory } from 'react-router-dom'
 import Image from './Image'
 import { Helmet } from 'react-helmet'
@@ -51,6 +52,8 @@ const SPACE_QUERY = gql`
 export default function Space({ match }) {
   const history = useHistory()
   const [invite, setInvite] = useState<Role>()
+  const [coverEdit, setCoverEdit] = useState<File>()
+  const [photoEdit, setPhotoEdit] = useState<File>()
   const { data, loading } = useQuery<SpacePage, SpacePageVariables>(
     SPACE_QUERY,
     {
@@ -92,12 +95,12 @@ export default function Space({ match }) {
             >
               <Image
                 edit={path().split('/').pop() === 'settings'}
-                ratio={0.25}
+                setEditSrc={setCoverEdit}
               />
               <div>
                 <Image
                   edit={path().split('/').pop() === 'settings'}
-                  ratio={1}
+                  setEditSrc={setPhotoEdit}
                 />
                 <S.InfoContent>
                   <Title size={2}>{name}</Title>
@@ -161,6 +164,18 @@ export default function Space({ match }) {
           role={invite}
           spaceId={id}
           spaceName={name}
+        />
+      )}
+      {(coverEdit || photoEdit) && (
+        <PhotoCrop
+          photo={coverEdit ?? photoEdit}
+          ratio={coverEdit ? coverRatio : 1}
+          cover={!!coverEdit}
+          spaceId={id}
+          onClose={() => {
+            setCoverEdit(undefined)
+            setPhotoEdit(undefined)
+          }}
         />
       )}
     </>
