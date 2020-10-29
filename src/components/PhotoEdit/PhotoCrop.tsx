@@ -27,7 +27,7 @@ export default function PhotoCrop({ photo, ratio = 1, previewRef }: Props) {
 
   function resize(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (!selectRef.current || !imgRef.current) return
-    interact.resize(e, selectRef.current, imgRef.current, update)
+    interact.resize(e, selectRef.current, imgRef.current, ratio, update)
   }
 
   return (

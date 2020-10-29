@@ -53,6 +53,7 @@ export function resize(
   e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   select: HTMLDivElement,
   img: HTMLImageElement,
+  ratio: number,
   updatePreview?: (x: number, y: number, w: number, h: number) => void
 ) {
   e.stopPropagation()
@@ -79,7 +80,7 @@ export function resize(
         : e.movementY *
           (node === Vt.BOTTOM_LEFT || node === Vt.BOTTOM_RIGHT ? 1 : -1)
 
-    const MIN_SIZE = 50
+    const MIN_SIZE = 40
     if (box.width + diff < MIN_SIZE) diff = MIN_SIZE - box.width
     if (box.height + diff < MIN_SIZE) diff = MIN_SIZE - box.height
 
@@ -103,13 +104,13 @@ export function resize(
     let y = box.y - imgBox.y + (imgBox.y - container.y)
 
     if (is.left) x -= diff
-    if (is.top) y -= diff
+    if (is.top) y -= diff * ratio
 
     select.style.transform = `translate3d(${x}px, ${y}px, 0)`
 
     // scale
     select.style.width = `${box.width + diff}px`
-    select.style.height = `${box.height + diff}px`
+    select.style.height = `${box.height + diff * ratio}px`
     ;(select.firstChild as HTMLElement).setAttribute(
       'viewBox',
       `0 0 ${box.width + diff} ${box.height + diff}`
