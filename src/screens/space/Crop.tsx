@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Modal, PhotoCrop, Button, Spinner } from 'components'
-import { useComputed } from 'utils/hooks'
 import { gql } from 'gql'
 import type * as T from 'gql/types'
 import api from 'api'
 import { notify } from 'notification'
+import { Frame } from 'components/PhotoEdit/styles'
 
 const UPLOAD_URL = gql`
   query RequestSpaceImgUpload(
@@ -76,28 +76,45 @@ export default function Crop({ photo, onClose, ratio, cover, spaceId }: Props) {
   }
 
   return (
-    <Modal
-      onClose={onClose}
-      title={`Select ${cover ? 'cover' : 'space'} image`}
-    >
-      {!src || loading ? (
-        <Spinner />
-      ) : (
-        <>
-          <PhotoCrop photo={src} ratio={ratio} />
-          <S.Actions>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button accent onClick={submit}>
-              Upload
-            </Button>
-          </S.Actions>
-        </>
-      )}
-    </Modal>
+    <S.Wrap>
+      <Modal
+        cancellable={false}
+        onClose={onClose}
+        title={`Select ${cover ? 'cover' : 'space'} image`}
+        cstSize
+      >
+        {!src || loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <PhotoCrop photo={src} ratio={ratio} />
+            <S.Actions>
+              <Button onClick={onClose}>Cancel</Button>
+              <Button accent onClick={submit}>
+                Upload
+              </Button>
+            </S.Actions>
+          </>
+        )}
+      </Modal>
+    </S.Wrap>
   )
 }
 
 const S = {
+  Wrap: styled.div`
+    display: contents;
+
+    ${Modal.Modal} {
+      width: 50rem;
+      max-width: 100vw;
+    }
+
+    ${Frame} {
+      width: initial;
+    }
+  `,
+
   Actions: styled.div`
     display: flex;
     justify-content: flex-end;

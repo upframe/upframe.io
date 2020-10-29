@@ -175,3 +175,15 @@ export const person = {
     `
   },
 }
+
+export const Img = gql`
+  fragment Img on Image {
+    base
+    versions {
+      key
+      width
+      height
+      type
+    }
+  }
+`

@@ -19,6 +19,7 @@ const Privacy = React.lazy(() => import('./screens/Privacy'))
 const Conversations = React.lazy(() => import('./screens/Conversations'))
 const Scroller = React.lazy(() => import('./screens/playground/Scroller'))
 const Tools = React.lazy(() => import('./screens/tools/Tools'))
+const Playground = React.lazy(() => import('./screens/Playground'))
 
 export default function Routes() {
   return (
@@ -41,6 +42,7 @@ export default function Routes() {
       <Route exact path="/tools/:page?" component={Tools} />
       <Route exact path="/meetup/confirm/:meetupid" component={MeetupConfirm} />
       <Route exact path="/meetup/cancel/:meetupid" component={MeetupCancel} />
+      <Route exact path="/playground" component={Playground} />
       <Route exact path="/playground/scroll" component={Scroller} />
       <Route exact path="/404" component={ErrorPage} />
       <Route exact path="/:handle" component={Profile} />

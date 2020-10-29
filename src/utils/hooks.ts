@@ -352,13 +352,18 @@ export function useReset(v: any, ...rest: any[]) {
   }, [v])
 }
 
-export function useComputed<T, K>(v: T, compute: (v: T) => K): K {
+export function useComputed<T, K>(
+  v: T,
+  compute: (v: T) => K,
+  strategy: 'shallow' | 'json' = 'shallow'
+): K {
   const [computed, setComputed] = useState<K>(compute(v))
+  const comp = strategy === 'shallow' ? v : JSON.stringify(v)
 
   useEffect(() => {
     setComputed(compute(v))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [v])
+  }, [comp])
 
   return computed
 }

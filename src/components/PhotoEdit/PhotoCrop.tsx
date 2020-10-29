@@ -59,8 +59,9 @@ function useWaitForZoom(imgRef: MutableRefObject<HTMLImageElement>) {
     let frameId: number
 
     const waitForZoom = () => {
-      if (getScale() < 1) return (frameId = requestAnimationFrame(waitForZoom))
-      setDone(true)
+      if (getScale() < 0.99)
+        return (frameId = requestAnimationFrame(waitForZoom))
+      requestAnimationFrame(() => setDone(true))
     }
     waitForZoom()
 

@@ -43,10 +43,17 @@ const SPACE_QUERY = gql`
         handle
         ...ProfilePictures
       }
+      photo {
+        ...Img
+      }
+      cover {
+        ...Img
+      }
     }
   }
   ${fragments.person.mentorDetails}
   ${fragments.person.profilePictures}
+  ${fragments.Img}
 `
 
 export default function Space({ match }) {
