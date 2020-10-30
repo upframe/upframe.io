@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import { gql, useQuery, fragments } from 'gql'
 import type { SpacePage, SpacePageVariables } from 'gql/types'
@@ -59,8 +59,12 @@ const SPACE_QUERY = gql`
 export default function Space({ match }) {
   const history = useHistory()
   const [invite, setInvite] = useState<Role>()
-  const [coverEdit, setCoverEdit] = useState<File>()
-  const [photoEdit, setPhotoEdit] = useState<File>()
+  const [coverEditFile, setCoverEditFile] = useState<File>()
+  const [photoEditFile, setPhotoEditFile] = useState<File>()
+  const [coverEditSrc, setCoverEditSrc] = useState<string>()
+  const [photoEditSrc, setPhotoEditSrc] = useState<string>()
+  const photoRef = useRef() as React.MutableRefObject<HTMLImageElement>
+  const coverRef = useRef() as React.MutableRefObject<HTMLImageElement>
   const { data, loading } = useQuery<SpacePage, SpacePageVariables>(
     SPACE_QUERY,
     {
@@ -104,14 +108,18 @@ export default function Space({ match }) {
             >
               <Image
                 edit={path().split('/').pop() === 'settings'}
-                setEditSrc={setCoverEdit}
+                setEditFile={setCoverEditFile}
                 img={cover}
+                editSrc={coverEditSrc}
+                ref={coverRef}
               />
               <div>
                 <Image
                   edit={path().split('/').pop() === 'settings'}
-                  setEditSrc={setPhotoEdit}
+                  setEditFile={setPhotoEditFile}
                   img={photo}
+                  editSrc={photoEditSrc}
+                  ref={photoRef}
                 />
                 <S.InfoContent>
                   <Title size={2}>{name}</Title>
@@ -177,15 +185,20 @@ export default function Space({ match }) {
           spaceName={name}
         />
       )}
-      {(coverEdit || photoEdit) && (
+      {(coverEditFile || photoEditFile) && (
         <PhotoCrop
-          photo={coverEdit ?? photoEdit}
-          ratio={coverEdit ? coverRatio : 1}
-          cover={!!coverEdit}
+          photo={coverEditFile ?? photoEditFile}
+          ratio={coverEditFile ? coverRatio : 1}
+          cover={!!coverEditFile}
+          src={coverEditFile ? coverEditSrc : photoEditSrc}
+          preview={coverEditFile ? coverRef : photoRef}
+          setSrc={coverEditFile ? setCoverEditSrc : setPhotoEditSrc}
           spaceId={id}
-          onClose={() => {
-            setCoverEdit(undefined)
-            setPhotoEdit(undefined)
+          onClose={keep => {
+            setCoverEditFile(undefined)
+            setPhotoEditFile(undefined)
+            if (!coverEditFile || !keep) setCoverEditSrc(undefined)
+            if (!photoEditFile || !keep) setPhotoEditSrc(undefined)
           }}
         />
       )}

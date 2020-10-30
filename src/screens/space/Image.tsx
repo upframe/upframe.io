@@ -5,20 +5,25 @@ import type * as T from 'gql/types'
 
 interface ImgProps {
   edit?: boolean
-  setEditSrc?(v?: File): void
+  editSrc?: string
+  setEditFile?(v?: File): void
   img: T.Img | null
 }
 
-function Image({ edit = false, setEditSrc, img }: ImgProps) {
+function Image(
+  { edit = false, setEditFile, img, editSrc }: ImgProps,
+  ref: React.Ref<HTMLImageElement>
+) {
   useEffect(() => {
     if (!edit) return
-    setEditSrc?.(undefined)
-  }, [edit, setEditSrc])
+    setEditFile?.(undefined)
+  }, [edit, setEditFile])
 
   return (
     <>
       <S.ImgWrap>
         {img && <ResImg base={img.base ?? ''} imgs={img.versions as Img[]} />}
+        {editSrc && <S.Preview src={editSrc} alt="" ref={ref} />}
         <S.ImgEdit
           {...(edit && {
             onClick({ currentTarget }) {
@@ -34,7 +39,7 @@ function Image({ edit = false, setEditSrc, img }: ImgProps) {
           onChange={({ target }) => {
             const file = target.files?.[0]
             if (!file) return
-            setEditSrc?.(file)
+            setEditFile?.(file)
           }}
           hidden
         />
@@ -46,6 +51,7 @@ function Image({ edit = false, setEditSrc, img }: ImgProps) {
 const S = {
   ImgWrap: styled.div`
     position: relative;
+    overflow: hidden;
 
     & > * {
       position: absolute;
@@ -91,6 +97,13 @@ const S = {
     height: 100vh;
     z-index: 1000;
   `,
+
+  Preview: styled.img`
+    object-fit: cover;
+  `,
 }
 
-export default Object.assign(Image, S)
+export default Object.assign(
+  React.forwardRef<HTMLImageElement, ImgProps>(Image),
+  S
+)

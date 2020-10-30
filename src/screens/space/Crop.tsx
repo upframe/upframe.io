@@ -25,14 +25,25 @@ const PROCESS_IMG = gql`
 
 interface Props {
   photo?: File
-  onClose(): void
+  onClose(keep?: boolean): void
   ratio: number
   cover: boolean
   spaceId: string
+  src?: string
+  setSrc(v?: string): void
+  preview?: React.MutableRefObject<HTMLImageElement>
 }
 
-export default function Crop({ photo, onClose, ratio, cover, spaceId }: Props) {
-  const [src, setSrc] = useState<string>()
+export default function Crop({
+  photo,
+  onClose,
+  ratio,
+  cover,
+  spaceId,
+  src,
+  setSrc,
+  preview,
+}: Props) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -44,7 +55,7 @@ export default function Crop({ photo, onClose, ratio, cover, spaceId }: Props) {
       setSrc(typeof data === 'string' ? data : data.toString())
     }
     reader.readAsDataURL(photo)
-  }, [photo])
+  }, [photo, setSrc])
 
   async function upload(signedUrl: string) {
     if (!src) return
@@ -71,7 +82,7 @@ export default function Crop({ photo, onClose, ratio, cover, spaceId }: Props) {
       throw e
     }
     setLoading(false)
-    onClose()
+    onClose(true)
   }
 
   function submit() {
@@ -108,9 +119,9 @@ export default function Crop({ photo, onClose, ratio, cover, spaceId }: Props) {
         title={`Select ${cover ? 'cover' : 'space'} image`}
         cstSize
       >
-        {src && <PhotoCrop photo={src} ratio={ratio} />}
+        {src && <PhotoCrop photo={src} ratio={ratio} previewRef={preview} />}
         <S.Actions>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={() => onClose()}>Cancel</Button>
           <Button accent onClick={submit}>
             Upload
           </Button>
