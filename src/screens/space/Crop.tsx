@@ -17,6 +17,12 @@ const UPLOAD_URL = gql`
   }
 `
 
+const PROCESS_IMG = gql`
+  mutation ProcessSpaceImg($signedUrl: String!, $crop: CropInput!) {
+    processSpaceImage(signedUrl: $signedUrl, crop: $crop)
+  }
+`
+
 interface Props {
   photo?: File
   onClose(): void
@@ -42,9 +48,23 @@ export default function Crop({ photo, onClose, ratio, cover, spaceId }: Props) {
 
   async function upload(signedUrl: string) {
     if (!src) return
+    const frame = document.querySelector(`.${Frame.styledComponentId}`)
+    const img = frame?.querySelector('img')?.getBoundingClientRect()
+    const select = frame?.querySelector('div')?.getBoundingClientRect()
+    if (!frame || !img || !select) throw Error("couldn't select frame")
+
+    const left = (select.left - img.left) / img.width
+    const top = (select.top - img.top) / img.height
+    const width = select.width / img.width
+
     try {
       const res = await fetch(signedUrl, { method: 'PUT', body: photo })
       if (!res.ok) throw await res.text()
+
+      await api.mutate<T.ProcessSpaceImg, T.ProcessSpaceImgVariables>({
+        mutation: PROCESS_IMG,
+        variables: { signedUrl, crop: { left, top, width, ratio } },
+      })
     } catch (e) {
       notify('failed to upload image')
       onClose()
@@ -71,7 +91,12 @@ export default function Crop({ photo, onClose, ratio, cover, spaceId }: Props) {
           notify("couldn't request upload link")
           return onClose
         }
-        upload(data.spaceImgUploadLink)
+        try {
+          upload(data.spaceImgUploadLink)
+        } catch (e) {
+          notify("couldn't upload image")
+          throw e
+        }
       })
   }
 
@@ -83,18 +108,17 @@ export default function Crop({ photo, onClose, ratio, cover, spaceId }: Props) {
         title={`Select ${cover ? 'cover' : 'space'} image`}
         cstSize
       >
-        {!src || loading ? (
-          <Spinner />
-        ) : (
-          <>
-            <PhotoCrop photo={src} ratio={ratio} />
-            <S.Actions>
-              <Button onClick={onClose}>Cancel</Button>
-              <Button accent onClick={submit}>
-                Upload
-              </Button>
-            </S.Actions>
-          </>
+        {src && <PhotoCrop photo={src} ratio={ratio} />}
+        <S.Actions>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button accent onClick={submit}>
+            Upload
+          </Button>
+        </S.Actions>
+        {(!src || loading) && (
+          <S.Loading>
+            <Spinner />
+          </S.Loading>
         )}
       </Modal>
     </S.Wrap>
@@ -122,6 +146,22 @@ const S = {
 
     button:last-child {
       margin-left: 1rem;
+    }
+  `,
+
+  Loading: styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+
+    svg {
+      position: absolute;
+      left: calc(50% - 2.5rem);
+      top: calc(50% - 2.5rem);
     }
   `,
 }

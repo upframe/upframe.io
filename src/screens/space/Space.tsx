@@ -80,6 +80,8 @@ export default function Space({ match }) {
     handle,
     description,
     mentors,
+    cover,
+    photo,
   } = data.space
 
   if (match.params.handle !== handle)
@@ -103,11 +105,13 @@ export default function Space({ match }) {
               <Image
                 edit={path().split('/').pop() === 'settings'}
                 setEditSrc={setCoverEdit}
+                img={cover}
               />
               <div>
                 <Image
                   edit={path().split('/').pop() === 'settings'}
                   setEditSrc={setPhotoEdit}
+                  img={photo}
                 />
                 <S.InfoContent>
                   <Title size={2}>{name}</Title>
@@ -281,7 +285,7 @@ const S = {
       display: block;
     }
 
-    & > div {
+    & > div:last-child {
       position: relative;
       box-sizing: border-box;
       display: flex;

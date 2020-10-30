@@ -1,18 +1,15 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { Icon } from 'components'
+import { Icon, Image as ResImg, Img } from 'components'
+import type * as T from 'gql/types'
 
 interface ImgProps {
-  src?: string
   edit?: boolean
   setEditSrc?(v?: File): void
+  img: T.Img | null
 }
 
-function Image({
-  src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==',
-  edit = false,
-  setEditSrc,
-}: ImgProps) {
+function Image({ edit = false, setEditSrc, img }: ImgProps) {
   useEffect(() => {
     if (!edit) return
     setEditSrc?.(undefined)
@@ -21,7 +18,7 @@ function Image({
   return (
     <>
       <S.ImgWrap>
-        <img src={src} alt="" />
+        {img && <ResImg base={img.base ?? ''} imgs={img.versions as Img[]} />}
         <S.ImgEdit
           {...(edit && {
             onClick({ currentTarget }) {
