@@ -49,6 +49,7 @@ const S = {
     position: relative;
     height: 3rem;
     margin: 2rem 0;
+    user-select: none;
 
     li,
     ${Slider} {

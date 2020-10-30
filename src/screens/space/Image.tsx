@@ -8,10 +8,11 @@ interface ImgProps {
   editSrc?: string
   setEditFile?(v?: File): void
   img: T.Img | null
+  isCover?: boolean
 }
 
 function Image(
-  { edit = false, setEditFile, img, editSrc }: ImgProps,
+  { edit = false, setEditFile, img, editSrc, isCover }: ImgProps,
   ref: React.Ref<HTMLImageElement>
 ) {
   useEffect(() => {
@@ -22,7 +23,17 @@ function Image(
   return (
     <>
       <S.ImgWrap>
-        {img && <ResImg base={img.base ?? ''} imgs={img.versions as Img[]} />}
+        {img && (
+          <ResImg
+            base={img.base ?? ''}
+            imgs={img.versions as Img[]}
+            width={
+              !isCover
+                ? '7rem'
+                : '(orientation: portrait) 100vw, (max-width: 1276px) 69vw, 55rem'
+            }
+          />
+        )}
         {editSrc && <S.Preview src={editSrc} alt="" ref={ref} />}
         <S.ImgEdit
           {...(edit && {
