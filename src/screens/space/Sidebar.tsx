@@ -42,15 +42,17 @@ function Avatars({ owners, members }: Props) {
         <>
           <Title size={3}>Owners</Title>
           <S.Group>
-            {owners.map(({ id, profilePictures, handle }) => (
-              <S.Avatar key={`owner-${id}`}>
-                <ProfilePicture
-                  imgs={profilePictures}
-                  size={avatarSize}
-                  linkTo={`/${handle}`}
-                />
-              </S.Avatar>
-            ))}
+            {owners
+              .slice(0, 2 * avatarsPerRow)
+              .map(({ id, profilePictures, handle }) => (
+                <S.Avatar key={`owner-${id}`}>
+                  <ProfilePicture
+                    imgs={profilePictures}
+                    size={avatarSize}
+                    linkTo={`/${handle}`}
+                  />
+                </S.Avatar>
+              ))}
           </S.Group>
         </>
       )}

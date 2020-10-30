@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { gql, useQuery, fragments } from 'gql'
+import { useQuery } from 'gql'
 import type { SpaceMembers, SpaceMembersVariables } from 'gql/types'
 import roles, { Role } from './roles'
 import Fuse from 'fuse.js'
 import Context from './MemberContext'
+import { MEMBER_QUERY } from './gql'
 import {
   Title,
   Text,
@@ -14,33 +15,6 @@ import {
   Icon,
   SearchInput,
 } from 'components'
-
-const MEMBER_QUERY = gql`
-  query SpaceMembers($spaceId: ID!) {
-    space(id: $spaceId) {
-      id
-      owners {
-        ...SpaceMember
-      }
-      mentors(includeOwners: false) {
-        ...SpaceMember
-      }
-      members {
-        ...SpaceMember
-      }
-    }
-  }
-
-  fragment SpaceMember on Person {
-    id
-    name
-    handle
-    headline
-    ...ProfilePictures
-  }
-
-  ${fragments.person.profilePictures}
-`
 
 interface Props {
   spaceId: string
@@ -69,15 +43,16 @@ export default function People({
 
   const { data } = useQuery<SpaceMembers, SpaceMembersVariables>(MEMBER_QUERY, {
     variables: { spaceId },
-    onCompleted({ space }) {
-      if (!space) return
-      setUsers([
-        ...(space.members?.map(v => ({ ...v, group: 'founder' })) ?? []),
-        ...(space.mentors?.map(v => ({ ...v, group: 'mentor' })) ?? []),
-        ...(space.owners?.map(v => ({ ...v, group: 'owner' })) ?? []),
-      ] as User[])
-    },
   })
+
+  useEffect(() => {
+    if (!data?.space) return
+    setUsers([
+      ...(data.space.members?.map(v => ({ ...v, group: 'founder' })) ?? []),
+      ...(data.space.mentors?.map(v => ({ ...v, group: 'mentor' })) ?? []),
+      ...(data.space.owners?.map(v => ({ ...v, group: 'owner' })) ?? []),
+    ] as User[])
+  }, [data])
 
   useEffect(() => {
     setFuse(
@@ -204,7 +179,7 @@ function Group({
               </div>
               <S.UserActions>
                 <Icon icon="mail" linkTo={`/conversations/new?parts=${id}`} />
-                <Context userId={id} spaceId={spaceId} />
+                {isOwner && <Context userId={id} spaceId={spaceId} />}
               </S.UserActions>
             </S.User>
           ))}
