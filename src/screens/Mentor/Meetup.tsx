@@ -50,8 +50,8 @@ const getDaysArray = (slots, minDays) => {
   let slotsByDates
   if (!slots.length) {
     const curDate = new Date()
-    slotsByDates = [...Array(minDays).keys()].reduce((acc, curVal) => {
-      curDate.setDate(curDate.getDate() + curVal)
+    slotsByDates = [...Array(minDays).keys()].reduce((acc, _, curInd) => {
+      curDate.setDate(curDate.getDate() + (curInd === 0 ? 0 : 1))
       acc.set(`${curDate}`, [])
       return acc
     }, new Map())
@@ -142,13 +142,15 @@ export default function Meetup({ mentor }) {
     }
   }, [slotDays])
 
-  useEffect(() => {
+  const update = () => {
     if (scrollRef.current) {
       const numberOfEle = scrollRef.current.offsetWidth / 87
       const roundedNumberOfEle = Math.floor(numberOfEle)
       if (numberOfEle % 1 !== 0) {
         const missingMargin = ((numberOfEle % 1) * 87) / 2
-        setScrollMargin(missingMargin)
+        console.log(numberOfEle)
+        console.log(Math.round(missingMargin))
+        setScrollMargin(Math.round(missingMargin))
       }
       setMaxItems(roundedNumberOfEle)
       const sbd = getDaysArray(mentor.slots || [], roundedNumberOfEle)
@@ -165,12 +167,21 @@ export default function Meetup({ mentor }) {
       setCurMonth(
         getHighestMonth(
           sbd,
-          scrollRef.current.offsetWidth / 87,
+          scrollRef.current.scrollLeft / 87,
           roundedNumberOfEle
         ) || newAllMonths[0]
       )
     }
-  }, [mentor.slots, mentor.slots, scrollRef])
+  }
+
+  useEffect(() => {
+    update()
+  }, [mentor.slots, scrollRef.current])
+
+  useEffect(() => {
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  })
 
   if (!me || me.id === mentor.id) return null
 
@@ -229,7 +240,7 @@ export default function Meetup({ mentor }) {
           })}
         </Style.ScrollView>
         <Icon
-          color={maxItems !== slotDays.length ? '#8B8B8B' : '#B4B4B4'}
+          color={'#8B8B8B'}
           onClick={() => scrollToDay('right')}
           icon="angle_right"
         />
@@ -267,8 +278,8 @@ const Style = {
     align-items: center;
     overflow: auto;
     width: 100%;
-    margin-left: ${({ margin }) => `${margin}px`};
-    margin-right: ${({ margin }) => `${margin}px`};
+    padding-left: ${({ margin }) => `${margin}px`};
+    padding-right: ${({ margin }) => `${margin}px`};
 
     & > div:not(:last-child) {
       margin-right: 13px;

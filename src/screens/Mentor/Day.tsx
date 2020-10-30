@@ -35,20 +35,21 @@ const DayContainer = styled.div<{ selected: boolean; disabled: boolean }>`
   background-color: #feeef2;
   color: var(--cl-accent);
   scroll-snap-align: start;
+  cursor: pointer;
 
   ${({ selected }) =>
     selected &&
     `
   background-color: var(--cl-accent);
   color: white;
+  cursor: pointer;
 `}
+
   ${({ disabled }) =>
     disabled &&
     `
   background-color: white;
   color: grey;
+  cursor: unset;
 `}
-&:hover {
-    cursor: pointer;
-  }
 `
