@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { Icon, Dropdown } from 'components'
 import { useQuery, useMutation } from 'gql'
 import type * as T from 'gql/types'
-import { MEMBER_QUERY, MEMBER_INFO, REMOVE_MEMBER } from './gql'
+import { MEMBER_QUERY, MEMBER_INFO, REMOVE_MEMBER, CHANGE_ROLE } from './gql'
+import api from 'api'
 
 interface Props {
   spaceId: string
@@ -20,6 +21,8 @@ export default function MemberContext({ spaceId, userId }: Props) {
       skip: !open,
     }
   )
+
+  const { isMentor, isOwner } = data?.space ?? {}
 
   const [remove] = useMutation(REMOVE_MEMBER, {
     variables: { spaceId, userId },
@@ -45,20 +48,75 @@ export default function MemberContext({ spaceId, userId }: Props) {
     },
   })
 
+  const changeRole = (
+    args: Omit<T.ChangeMemberRoleVariables, 'space' | 'user'>
+  ) =>
+    api
+      .mutate<T.ChangeMemberRole, T.ChangeMemberRoleVariables>({
+        mutation: CHANGE_ROLE,
+        variables: { space: spaceId, user: userId, ...args },
+      })
+      .then(() => {
+        const data = api.cache.readQuery<T.SpaceMembers>({
+          query: MEMBER_QUERY,
+          variables: { spaceId },
+        })
+        const { space } = data ?? {}
+        if (!space) return
+        const users = ['members', 'mentors', 'owners'].flatMap(
+          group => space?.[group] ?? []
+        )
+        const user = users.find(({ id }) => id === userId)
+        ;['members', 'mentors', 'owners'].forEach(group => {
+          if (!space?.[group]) return
+          space[group] = space[group]?.filter(v => v !== user)
+        })
+        if (args.owner) space.owners = [...(space.owners ?? []), user]
+        else if (args.mentor || isMentor)
+          space.mentors = [...(space.mentors ?? []), user]
+        else space.members = [...(space.members ?? []), user]
+        ;['members', 'mentors', 'owners'].forEach(group => {
+          space[group].sort((a, b) => a.name.localeCompare(b.name))
+        })
+        api.cache.writeQuery({
+          query: MEMBER_QUERY,
+          variables: { spaceId },
+          data,
+        })
+
+        const info = api.cache.readQuery<T.MemberInfo>({
+          query: MEMBER_INFO,
+          variables: { spaceId, userId },
+        })
+        if (!info?.space) return
+
+        if ('owner' in args) info.space.isOwner = args.owner as boolean
+        if ('mentor' in args) info.space.isMentor = args.mentor as boolean
+
+        api.cache.writeQuery({
+          query: MEMBER_INFO,
+          variables: { spaceId, userId },
+          data: info,
+        })
+      })
+
   return (
     <S.Wrap>
       <Icon icon="more" onClick={() => setOpen(!open)} />
       {open && !loading && data?.space && (
         <Dropdown
           onClose={() => setTimeout(() => setOpen(false), 100)}
-          onClick={key => ({ remove }[key]?.())}
+          onClick={key => {
+            if (!data.space) return
+            if (key === 'remove') return remove()
+            if (key === 'mentor') return changeRole({ mentor: !isMentor })
+            if (key === 'owner') return changeRole({ owner: !isOwner })
+          }}
         >
           <span key="mentor">
-            {data.space.isMentor ? 'Remove from' : 'Add to'} mentor list
+            {isMentor ? 'Remove from' : 'Add to'} mentor list
           </span>
-          <span key="owner">
-            {data.space.isOwner ? 'Revoke' : 'Grant'} owner access
-          </span>
+          <span key="owner">{isOwner ? 'Revoke' : 'Grant'} owner access</span>
           <span key="remove">Remove from space</span>
         </Dropdown>
       )}

@@ -10,7 +10,7 @@ export const MEMBER_QUERY = gql`
       mentors(includeOwners: false) {
         ...SpaceMember
       }
-      members {
+      members(includeOwners: false) {
         ...SpaceMember
       }
     }
@@ -40,5 +40,16 @@ export const MEMBER_INFO = gql`
 export const REMOVE_MEMBER = gql`
   mutation RemoveMember($spaceId: ID!, $userId: ID!) {
     removeFromSpace(space: $spaceId, user: $userId)
+  }
+`
+
+export const CHANGE_ROLE = gql`
+  mutation ChangeMemberRole(
+    $space: ID!
+    $user: ID!
+    $mentor: Boolean
+    $owner: Boolean
+  ) {
+    changeMemberRole(space: $space, user: $user, mentor: $mentor, owner: $owner)
   }
 `
