@@ -4,6 +4,7 @@ import { gql, useQuery, fragments } from 'gql'
 import type { SpaceMembers, SpaceMembersVariables } from 'gql/types'
 import roles, { Role } from './roles'
 import Fuse from 'fuse.js'
+import Context from './MemberContext'
 import {
   Title,
   Text,
@@ -117,6 +118,7 @@ export default function People({
           users={owners}
           onInvite={() => onInvite('Owners')}
           isOwner={isOwner}
+          spaceId={spaceId}
         />
       )}
       {mentors.length > 0 && (
@@ -126,6 +128,7 @@ export default function People({
           users={mentors}
           onInvite={() => onInvite('Mentors')}
           isOwner={isOwner}
+          spaceId={spaceId}
         />
       )}
       {founders.length > 0 && (
@@ -135,6 +138,7 @@ export default function People({
           users={founders}
           onInvite={() => onInvite('Founders')}
           isOwner={isOwner}
+          spaceId={spaceId}
         />
       )}
     </S.People>
@@ -147,9 +151,17 @@ interface GroupProps {
   users: Exclude<Exclude<SpaceMembers['space'], null>['owners'], null>
   onInvite(): void
   isOwner: boolean
+  spaceId: string
 }
 
-function Group({ title, description, users, onInvite, isOwner }: GroupProps) {
+function Group({
+  title,
+  description,
+  users,
+  onInvite,
+  isOwner,
+  spaceId,
+}: GroupProps) {
   const [batches, setBatches] = useState(1)
   const batchSize = 4
 
@@ -192,6 +204,7 @@ function Group({ title, description, users, onInvite, isOwner }: GroupProps) {
               </div>
               <S.UserActions>
                 <Icon icon="mail" linkTo={`/conversations/new?parts=${id}`} />
+                <Context userId={id} spaceId={spaceId} />
               </S.UserActions>
             </S.User>
           ))}
@@ -311,8 +324,9 @@ const S = {
   UserActions: styled.div`
     margin-left: auto;
     padding-right: 1rem;
+    display: flex;
 
-    svg {
+    & > * {
       width: 1.4rem;
       height: 1.4rem;
       fill: var(--cl-text-medium);
