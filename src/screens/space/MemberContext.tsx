@@ -57,7 +57,7 @@ export default function MemberContext({ spaceId, userId }: Props) {
             {data.space.isMentor ? 'Remove from' : 'Add to'} mentor list
           </span>
           <span key="owner">
-            {data.space.isOwner ? 'Revoke ' : 'Add '} owner permissions
+            {data.space.isOwner ? 'Revoke' : 'Grant'} owner access
           </span>
           <span key="remove">Remove from space</span>
         </Dropdown>

@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
-import { gql, useQuery, fragments } from 'gql'
+import { gql, useQuery, fragments, useMutation } from 'gql'
 import type { SpacePage, SpacePageVariables } from 'gql/types'
-import { Spinner, Title, Text, Switch } from 'components'
+import { Spinner, Title, Text, Switch, Icon, Dropdown } from 'components'
 import PhotoCrop from './Crop'
 import { Route, Redirect, useHistory } from 'react-router-dom'
 import Image from './Image'
@@ -17,7 +17,8 @@ import People from './People'
 import { InviteButton, InviteMenu } from './Invite'
 import type { Role } from './roles'
 import { mobile, desktop } from 'styles/responsive'
-import { useMatchMedia } from 'utils/hooks'
+import { useMatchMedia, useMe } from 'utils/hooks'
+import { REMOVE_MEMBER } from './gql'
 
 const SPACE_QUERY = gql`
   query SpacePage($handle: String!) {
@@ -59,6 +60,8 @@ const SPACE_QUERY = gql`
 export default function Space({ match }) {
   const history = useHistory()
   const [invite, setInvite] = useState<Role>()
+  const [showContext, setShowContext] = useState(false)
+  const [key, setKey] = useState(0)
   const [coverEditFile, setCoverEditFile] = useState<File>()
   const [photoEditFile, setPhotoEditFile] = useState<File>()
   const [coverEditSrc, setCoverEditSrc] = useState<string>()
@@ -72,6 +75,15 @@ export default function Space({ match }) {
     }
   )
   const isMobile = useMatchMedia(mobile)
+  const { me } = useMe()
+
+  const [leave] = useMutation(REMOVE_MEMBER, {
+    variables: { spaceId: data?.space?.id, userId: me?.id },
+    update(cache) {
+      ;(cache as any).data.delete(`Space|${data?.space?.id}`)
+      setKey(key + 1)
+    },
+  })
 
   if (loading) return <Spinner />
   if (!data?.space) return <Redirect to="/404" />
@@ -98,7 +110,7 @@ export default function Space({ match }) {
       <Helmet>
         <title>{name} | Upframe</title>
       </Helmet>
-      <S.Space data-view={isMember ? 'member' : 'external'}>
+      <S.Space data-view={isMember ? 'member' : 'external'} key={key}>
         <S.Main>
           <S.MainWrap>
             <S.Info
@@ -128,6 +140,25 @@ export default function Space({ match }) {
                 </S.InfoContent>
                 <S.InfoActions>
                   {isOwner && <InviteButton onSelect={setInvite} />}
+                  {isMember && (
+                    <S.Context>
+                      <Icon
+                        icon="more"
+                        onClick={() => setShowContext(!showContext)}
+                      />
+                      {showContext && (
+                        <Dropdown
+                          onClose={() => setShowContext(false)}
+                          onClick={item => {
+                            if (item !== 'leave') return
+                            leave()
+                          }}
+                        >
+                          <span key="leave">Leave {name}</span>
+                        </Dropdown>
+                      )}
+                    </S.Context>
+                  )}
                 </S.InfoActions>
               </div>
             </S.Info>
@@ -344,6 +375,16 @@ const S = {
 
     & > * {
       margin: 0;
+    }
+  `,
+
+  Context: styled.div`
+    position: relative;
+    height: 1.5rem;
+
+    ol {
+      left: unset;
+      right: 0;
     }
   `,
 }
