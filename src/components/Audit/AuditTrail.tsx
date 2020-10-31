@@ -12,9 +12,6 @@ const QUERY_TRAIL = gql`
       id
       date
       payload
-      editor {
-        ...AuditUser
-      }
       objects {
         ...AuditUser
         ...AuditSpace
