@@ -51,6 +51,8 @@ const S = {
     user-select: none;
     overflow-x: auto;
     box-sizing: content-box;
+    background-color: #fff;
+    z-index: 500;
 
     --min-tab-width: 12ch;
 
@@ -71,6 +73,7 @@ const S = {
       padding: 0;
       list-style: none;
       height: 100%;
+      position: relative;
 
       li {
         box-sizing: border-box;

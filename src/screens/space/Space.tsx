@@ -257,6 +257,7 @@ const S = {
     --side-padding: ${sidePadding * 100}vw;
 
     padding: 2rem var(--side-padding);
+    margin-top: -1rem;
 
     /* standardize the f*cking buttons! arrrgh!! */
     button[data-mode~='accent'] {
@@ -271,6 +272,7 @@ const S = {
 
     @media ${mobile} {
       width: 100%;
+      padding-top: 0;
 
       & > *:last-child {
         display: none;
@@ -305,10 +307,12 @@ const S = {
 
     @media ${mobile} {
       nav {
-        margin: 0 calc(var(--side-padding) * -1);
+        margin: 2rem calc(var(--side-padding) * -1);
         width: 100vw;
         box-sizing: border-box;
         padding: 0 var(--side-padding);
+        position: sticky;
+        top: 0;
 
         ol::after {
           content: '';
@@ -329,6 +333,7 @@ const S = {
     border-radius: 0.5rem;
     width: 100%;
     height: ${2 * coverRatio * contentWidth}px;
+    overflow-x: hidden;
 
     @media (max-width: ${(contentWidth + sidebarWidth + columnGap) /
       (1 - sidePadding * 2)}px) {
@@ -340,8 +345,11 @@ const S = {
     }
 
     @media ${mobile} {
-      height: calc((100vw - var(--side-padding) * 2) * ${coverRatio} * 2);
       height: auto;
+      border-radius: unset;
+      border: none;
+      margin-left: calc(var(--side-padding) * -1);
+      width: calc(100% + var(--side-padding) * 2);
 
       & > *:first-child {
         height: calc((100vw - var(--side-padding) * 2) * ${coverRatio});
@@ -371,6 +379,7 @@ const S = {
       padding: 0 2rem;
 
       --img-size: 7rem;
+      --photo-translate: -0.75;
 
       & > ${Image.ImgWrap} {
         position: absolute;
@@ -379,14 +388,23 @@ const S = {
         border: 0.4rem solid #fff;
         border-radius: 0.5rem;
         background-color: #aaa;
-        transform: translateY(calc(var(--img-size) * -0.75));
+        transform: translateY(calc(var(--img-size) * var(--photo-translate)));
         box-shadow: 0 0 6px #0004;
+      }
+
+      @media ${mobile} {
+        --photo-translate: -0.5;
+
+        button,
+        svg {
+          display: none;
+        }
       }
     }
   `,
 
   InfoContent: styled.div`
-    padding-top: calc(var(--img-size) * 0.25);
+    padding-top: calc(var(--img-size) * (var(--photo-translate) + 1));
 
     h2 {
       margin-top: 2rem;
@@ -395,6 +413,16 @@ const S = {
 
     p {
       margin-top: 0;
+    }
+
+    @media ${mobile} {
+      h2 {
+        margin-top: 1rem;
+      }
+
+      p {
+        margin-bottom: 0;
+      }
     }
   `,
 
