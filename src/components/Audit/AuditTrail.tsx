@@ -42,6 +42,7 @@ export default function Trail({ trailId }: Props) {
     {
       variables: { trailId },
       errorPolicy: 'none',
+      fetchPolicy: 'network-only',
     }
   )
 
