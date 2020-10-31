@@ -15,6 +15,8 @@ const QUERY_TRAIL = gql`
       objects {
         ...AuditUser
         ...AuditSpace
+        ...AuditList
+        ...AuditTag
       }
     }
   }
@@ -29,6 +31,16 @@ const QUERY_TRAIL = gql`
     id
     name
     handle
+  }
+
+  fragment AuditList on List {
+    numId: id
+    name
+  }
+
+  fragment AuditTag on Tag {
+    numId: id
+    name
   }
 `
 

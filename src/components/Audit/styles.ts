@@ -19,8 +19,14 @@ export const Message = styled.p`
     text-decoration: underline;
   }
 
-  a[data-type='space'] {
+  a[data-type='Space'],
+  a[data-type='List'],
+  a[data-type='Tag'] {
     color: var(--cl-secondary);
+  }
+
+  a[data-type='Tag'] {
+    text-decoration: none;
   }
 `
 

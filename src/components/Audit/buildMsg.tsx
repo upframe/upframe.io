@@ -9,10 +9,28 @@ export default (ctx: QueryAuditTrail_audit['objects']) => {
     let nodes: (JSX.Element | string)[] = []
     let slice = 0
     for (let i = 0; i < strs.length; i++) {
-      nodes.push(strs[i].slice(slice))
+      const lastNode: any = nodes[nodes.length - 1]
+      // add possessive apostrophe to previous node
+      if (
+        /^"?'s/.test(strs[i]) &&
+        typeof lastNode === 'object' &&
+        typeof lastNode.props?.children === 'string'
+      ) {
+        nodes[nodes.length - 1] = React.cloneElement(
+          lastNode,
+          lastNode.props,
+          `${lastNode.props.children}'s`.replace(/s's/, "s'")
+        )
+        slice += 2
+      }
+      nodes.push(strs[i].slice(slice).replace(/<\w+>$/, ''))
       slice = 0
       if (i >= exprs.length) continue
-      if (isUUID(exprs[i])) nodes.push(formatEntity(exprs[i]))
+      if (
+        isUUID(exprs[i]) ||
+        (typeof exprs[i] === 'number' && /<(list|tag)>$/.test(strs[i]))
+      )
+        nodes.push(formatEntity(exprs[i]))
       else if (strs[i].endsWith('"') && strs[i + 1]?.startsWith('"')) {
         nodes[nodes.length - 1] = (nodes[nodes.length - 1] as string).slice(
           0,
@@ -26,12 +44,21 @@ export default (ctx: QueryAuditTrail_audit['objects']) => {
   }
 
   function formatEntity(id: string | undefined): JSX.Element | string {
-    const entity = ctx?.find(o => o.id === id)
+    const entity = ctx?.find(
+      o => (o as any).id === id || (o as any).numId === id
+    )
     if (!entity) return id ?? ''
-    const type = entity.__typename === 'Space' ? 'space' : 'user'
+    const type = entity.__typename
+    const { handle, name } = entity as any
     return (
       <Link
-        to={`/${type === 'space' ? 'space/' : ''}${entity.handle}`}
+        to={
+          ['Space', 'List'].includes(type)
+            ? `/${type.toLowerCase()}/${handle ?? name}`
+            : type === 'Tag'
+            ? `/search?t=${name}`
+            : `/${handle}`
+        }
         data-type={type}
         key={id}
       >

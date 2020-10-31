@@ -4,7 +4,7 @@ import buildMsg from './buildMsg'
 import { Message } from './styles'
 
 export default function (raw: QueryAuditTrail_audit) {
-  const { editor, user, space, eventType, ...log }: AuditEvent = {
+  let { editor, user, space, eventType, ...log }: AuditEvent = {
     ...JSON.parse(raw.payload),
     ...raw,
   }
@@ -34,6 +34,13 @@ export default function (raw: QueryAuditTrail_audit) {
     
     // admin actions
     ['edit_user_info',              () => msg`    ${editor} changed ${user}'s ${log.field} from "${log.old}" to "${log.new}"    `],
+    ['remove_account',              () => msg`    ${editor} delted "${log.userName}"'s account                                  `],
+    ['add_tag',                     () => msg`    ${editor} added <tag>${log.tag} tag to ${user}                                `],
+    ['remove_tag',                  () => msg`    ${editor} removed <tag>${log.tag} tag from ${user}                            `],
+
+    // list actions
+    ['add_to_list',                 () => msg`    ${editor} added ${user} to <list>${log.list} list                             `],
+    ['remove_from_list',            () => msg`    ${editor} removed ${user} from <list>${log.list} list                         `],
     
   /******************************************************************************************************************************/
 

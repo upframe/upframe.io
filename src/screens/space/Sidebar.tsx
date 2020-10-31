@@ -122,7 +122,7 @@ const S = {
     right: var(--side-padding);
     top: calc(${layout.desktop.navbarHeight});
     height: calc(100vh - ${layout.desktop.navbarHeight});
-    padding: 3rem 0;
+    padding: 2rem 0;
     flex: 0 0;
     display: flex;
     flex-direction: column;
