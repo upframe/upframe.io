@@ -2,27 +2,10 @@ import React from 'react'
 import { Page, Spinner, Title, Link, Button } from 'components'
 import { Redirect, useHistory } from 'react-router-dom'
 import { notify } from 'notification'
-import { gql, useQuery, useMutation } from 'gql'
+import { useQuery, useMutation } from 'gql'
 import type { SpaceInviteInfo, AcceptSpaceInvite } from 'gql/types'
 import { useLoggedIn } from 'utils/hooks'
-
-const INVITE_QUERY = gql`
-  query SpaceInviteInfo($token: ID!) {
-    spaceInvite(token: $token) {
-      name
-      handle
-      isMember
-    }
-  }
-`
-
-const JOIN_SPACE = gql`
-  mutation AcceptSpaceInvite($token: ID!) {
-    joinSpace(token: $token) {
-      handle
-    }
-  }
-`
+import { INVITE_QUERY, JOIN_SPACE } from './gql'
 
 export default function Join({ match }) {
   useLoggedIn({ redirect: true })

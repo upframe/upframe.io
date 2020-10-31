@@ -1,10 +1,10 @@
 import React from 'react'
-import styled from 'styled-components'
 import { gql, useQuery } from 'gql'
 import { hasError } from 'api'
 import { Text, Spinner } from '..'
-import type * as T from 'gql/types'
 import Log from './Log'
+import type * as T from 'gql/types'
+import * as S from './styles'
 
 const QUERY_TRAIL = gql`
   query QueryAuditTrail($trailId: ID!) {
@@ -61,13 +61,4 @@ export default function Trail({ trailId }: Props) {
       </S.List>
     </S.Trail>
   )
-}
-
-const S = {
-  Trail: styled.div``,
-
-  List: styled.ol`
-    padding: 0;
-    list-style: none;
-  `,
 }

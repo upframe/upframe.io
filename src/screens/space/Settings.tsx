@@ -1,36 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Labeled, Input, Textbox, Button } from 'components'
-import { gql, useQuery, useMutation } from 'gql'
+import { useQuery, useMutation } from 'gql'
 import { useReset } from 'utils/hooks'
-
-const SPACE_INFO = gql`
-  fragment SpaceInfo on Space {
-    id
-    name
-    description
-    handle
-    sidebar
-  }
-`
-
-const SETTINGS_QUERY = gql`
-  query SpaceSettings($spaceId: ID!) {
-    space(id: $spaceId) {
-      ...SpaceInfo
-    }
-  }
-  ${SPACE_INFO}
-`
-
-const CHANGE_INFO = gql`
-  mutation ChangeSpaceInfo($input: SpaceInfoInput!) {
-    changeSpaceInfo(input: $input) {
-      ...SpaceInfo
-    }
-  }
-  ${SPACE_INFO}
-`
+import { SETTINGS_QUERY, CHANGE_INFO } from './gql'
 
 export default function Settings({ spaceId }: { spaceId: string }) {
   const [name, setName] = useState('')

@@ -1,8 +1,9 @@
 import React from 'react'
-import styled from 'styled-components'
 import type { QueryAuditTrail_audit } from 'gql/types'
 import { useComputed } from 'utils/hooks'
 import { Link } from 'react-router-dom'
+import { isUUID } from 'utils/validate'
+import * as S from './styles'
 
 const formatDate = (date: Date) =>
   `${new Date().toLocaleDateString('en-US', {
@@ -41,144 +42,85 @@ type AuditEvent = QueryAuditTrail_audit & {
 function buildMessage(raw: QueryAuditTrail_audit) {
   const log: AuditEvent = { ...JSON.parse(raw.payload), ...raw }
 
-  const format = (id: string | undefined, type: 'user' | 'space' = 'user') => {
-    const user = log.objects?.find(o => o.id === id)
-    if (!user) return id
+  const formatEntity = (id: string | undefined): JSX.Element | string => {
+    const entity = log.objects?.find(o => o.id === id)
+    if (!entity) return id ?? ''
+    const type = entity.__typename === 'Space' ? 'space' : 'user'
     return (
       <Link
-        to={`/${type === 'space' ? 'space/' : ''}${user.handle}`}
+        to={`/${type === 'space' ? 'space/' : ''}${entity.handle}`}
         data-type={type}
+        key={id}
       >
-        {user.name}
+        {entity.name}
       </Link>
     )
   }
 
-  const Msg = S.Message
-  const editor = format(log.editor)
-  const space = format(log.space, 'space')
-  const user = format(log.user)
   const spaceRole = log.owner ? 'owner' : log.mentor ? 'mentor' : 'founder'
+
+  const msg = (strs: TemplateStringsArray, ...exprs: string[]) => {
+    let nodes: (JSX.Element | string)[] = []
+    let slice = 0
+    for (let i = 0; i < strs.length; i++) {
+      nodes.push(strs[i].slice(slice))
+      slice = 0
+      if (i >= exprs.length) continue
+      if (isUUID(exprs[i])) nodes.push(formatEntity(exprs[i]))
+      else if (strs[i].endsWith('"') && strs[i + 1]?.startsWith('"')) {
+        nodes[nodes.length - 1] = (nodes[nodes.length - 1] as string).slice(
+          0,
+          -1
+        )
+        slice = 1
+        nodes.push(<Abbr key={i}>{exprs[i]}</Abbr>)
+      } else nodes.push(exprs[i])
+    }
+    return <S.Message>{nodes}</S.Message>
+  }
 
   switch (log.eventType) {
     case 'create_space':
-      return (
-        <Msg>
-          {editor} created {space}
-        </Msg>
-      )
+      return msg`${log.editor} created ${log.space}`
     case 'add_user':
-      return (
-        <Msg>
-          {editor} added {user} to {space}
-        </Msg>
-      )
+      return msg`${log.editor} added ${log.user} to ${log.space}`
     case 'change_member_role': {
-      const added = log.mentor || log.owner
-      return (
-        <Msg>
-          {editor} {added ? 'added' : 'removed'} {space} {added ? 'to' : 'from'}{' '}
-          {'mentor' in log ? 'mentors' : 'owners'}
-        </Msg>
-      )
+      const [verb, prep] = (log.mentor || log.owner
+        ? 'added to'
+        : 'removed from'
+      ).split(' ')
+      const group = 'mentor' in log ? 'mentors' : 'owners'
+      return msg`${log.editor} ${verb} ${log.user} ${prep} ${group}`
     }
     case 'upload_cover_photo':
     case 'upload_space_photo':
-      return (
-        <Msg>
-          {editor} uploaded a new {log.eventType.split('_')[1]} image
-        </Msg>
-      )
+      return msg`${log.editor} uploaded a new ${
+        log.eventType.split('_')[1]
+      } image`
     case 'remove_member':
-      return log.editor === log.user ? (
-        <Msg>
-          {editor} left {space}
-        </Msg>
-      ) : (
-        <Msg>
-          {editor} removed {user} from {space}
-        </Msg>
-      )
+      return log.editor === log.user
+        ? msg`${log.editor} left ${log.space}`
+        : msg`${log.editor} removed ${log.user} from ${log.space}`
     case 'join_space':
-      return (
-        <Msg>
-          {editor} joined {space} as a {spaceRole}
-        </Msg>
-      )
+      return msg`${log.editor} joined ${log.space} as a ${spaceRole}`
     case 'create_invite_link':
-      return (
-        <Msg>
-          {editor} created an invite link for {spaceRole}s
-        </Msg>
-      )
+      return msg`${log.editor} created an invite link for ${spaceRole}s`
     case 'revoke_invite_link':
-      return (
-        <Msg>
-          {editor} revoked a {spaceRole} invite link
-        </Msg>
-      )
+      return msg`${log.editor} revoked a ${spaceRole} invite link`
     case 'change_space_info':
-      return (
-        <Msg>
-          {editor} changed {space}'s {log.field} from <Abbr>{log.old}</Abbr> to{' '}
-          <Abbr>{log.new}</Abbr>
-        </Msg>
-      )
+      return msg`${log.editor} changed ${log.space}'s ${log.field} from "${log.old}" to "${log.new}"`
+    case 'edit_user_info':
+      return msg`${log.editor} changed ${log.user}'s ${log.field} from "${log.old}" to "${log.new}"`
     default:
       return (
-        <Msg as="pre">
+        <S.Message as="pre">
           {JSON.stringify(raw.payload)
             .slice(2, -2)
             .replace(/(?<=:\s*)\\"|\\"(?=,|$)/g, '"')
             .replace(/\\"/g, '')
             .replace(/,/g, '\n')
             .replace(/:\s*/g, ': ')}
-        </Msg>
+        </S.Message>
       )
   }
-}
-
-const S = {
-  Log: styled.li`
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem 0;
-
-    &:not(:last-child) {
-      border-bottom: 1px dashed #0003;
-    }
-  `,
-
-  Message: styled.p`
-    font-size: 1rem;
-    margin: 0;
-
-    a {
-      color: var(--cl-accent);
-      text-decoration: underline;
-    }
-
-    a[data-type='space'] {
-      color: var(--cl-secondary);
-    }
-  `,
-
-  Time: styled.span`
-    font-size: 0.9rem;
-    margin-top: 1rem;
-    white-space: pre;
-  `,
-
-  Abbr: styled.abbr`
-    font-style: italic;
-    opacity: 0.7;
-    text-decoration: underline dashed;
-    text-underline-position: below;
-    text-decoration-color: #0005;
-    transition: text-decoration-color 0.1s ease;
-
-    &:hover {
-      text-decoration-color: var(--cl-primary);
-    }
-  `,
 }

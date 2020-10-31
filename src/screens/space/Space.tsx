@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
-import { gql, useQuery, fragments, useMutation } from 'gql'
+import { useQuery, useMutation } from 'gql'
 import type { SpacePage, SpacePageVariables } from 'gql/types'
 import * as C from 'components'
 import PhotoCrop from './Crop'
@@ -18,44 +18,7 @@ import { InviteButton, InviteMenu } from './Invite'
 import type { Role } from './roles'
 import { mobile, desktop } from 'styles/responsive'
 import { useMatchMedia, useMe } from 'utils/hooks'
-import { REMOVE_MEMBER } from './gql'
-
-const SPACE_QUERY = gql`
-  query SpacePage($handle: String!) {
-    space(handle: $handle) {
-      id
-      isMember
-      isOwner
-      name
-      handle
-      description
-      sidebar
-      mentors {
-        ...MentorDetails
-        sortScore
-      }
-      owners {
-        id
-        handle
-        ...ProfilePictures
-      }
-      members(includeOwners: false) {
-        id
-        handle
-        ...ProfilePictures
-      }
-      photo {
-        ...Img
-      }
-      cover {
-        ...Img
-      }
-    }
-  }
-  ${fragments.person.mentorDetails}
-  ${fragments.person.profilePictures}
-  ${fragments.Img}
-`
+import { SPACE_QUERY, REMOVE_MEMBER } from './gql'
 
 export default function Space({ match }) {
   const history = useHistory()
