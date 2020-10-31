@@ -36,9 +36,10 @@ function Avatars({ owners, members }: Props) {
   useHistory()
   const isPeoplePage = /people$/.test(window.location.href)
 
+  if (!members?.length && !owners?.length) return null
   return (
     <S.Avatars>
-      {owners && (
+      {owners && owners.length > 0 && (
         <>
           <Title size={3}>Owners</Title>
           <S.Group>
@@ -56,7 +57,7 @@ function Avatars({ owners, members }: Props) {
           </S.Group>
         </>
       )}
-      {members && (
+      {members && members.length > 0 && (
         <>
           <Title size={3}>Founders</Title>
           <S.Group>
@@ -119,17 +120,21 @@ const S = {
   Sidebar: styled.div`
     position: fixed;
     right: var(--side-padding);
-    top: calc(${layout.desktop.navbarHeight} + 3rem);
-    height: 100vh;
+    top: calc(${layout.desktop.navbarHeight});
+    height: calc(100vh - ${layout.desktop.navbarHeight});
+    padding: 3rem 0;
     flex: 0 0;
     display: flex;
     flex-direction: column;
     width: ${sidebarWidth}px;
     box-sizing: border-box;
+    overflow-y: auto;
 
     @media ${mobile} {
       position: initial;
       width: 100%;
+      height: initial;
+      padding: unset;
     }
   `,
 

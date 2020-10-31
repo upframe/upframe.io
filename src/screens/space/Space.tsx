@@ -39,7 +39,7 @@ const SPACE_QUERY = gql`
         handle
         ...ProfilePictures
       }
-      members {
+      members(includeOwners: false) {
         id
         handle
         ...ProfilePictures
