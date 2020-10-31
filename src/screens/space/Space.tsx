@@ -296,7 +296,6 @@ const S = {
     border-radius: 0.5rem;
     width: 100%;
     height: ${2 * coverRatio * contentWidth}px;
-    overflow-x: hidden;
 
     @media (max-width: ${(contentWidth + sidebarWidth + columnGap) /
       (1 - sidePadding * 2)}px) {

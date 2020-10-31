@@ -32,7 +32,7 @@ const Dropdown: React.FC<Props> = ({ children, onClick, onClose }) => {
 const S = {
   Dropdown: styled.ol`
     position: absolute;
-    z-index: 100;
+    z-index: 600;
     left: 0;
     top: 100%;
     background-color: #fff;
