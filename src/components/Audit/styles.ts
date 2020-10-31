@@ -30,19 +30,6 @@ export const Time = styled.span`
   white-space: pre;
 `
 
-export const Abbr = styled.abbr`
-  font-style: italic;
-  opacity: 0.7;
-  text-decoration: underline dashed;
-  text-underline-position: below;
-  text-decoration-color: #0005;
-  transition: text-decoration-color 0.1s ease;
-
-  &:hover {
-    text-decoration-color: var(--cl-primary);
-  }
-`
-
 export const Trail = styled.div``
 
 export const List = styled.ol`
