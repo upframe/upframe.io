@@ -34,6 +34,11 @@ export default function Dropdown({ onBlur }) {
       <Link to={`/settings/public`}>Settings</Link>
       <p onClick={() => signOut()}>Sign out</p>
       {me?.role === 'ADMIN' && <S.Admin to="/tools">Admin tools</S.Admin>}
+      {me?.spaces?.map(({ id, name, handle }) => (
+        <Link key={id} to={`/space/${handle}`}>
+          {name}
+        </Link>
+      ))}
     </S.Dropdown>
   )
 }

@@ -1,18 +1,51 @@
-import React from 'react'
+import React, { ReactNode, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Shade, Title, Icon, Text } from '.'
+import { useSpring, animated } from 'react-spring'
 
-export default function Modal({
+interface Props {
+  title?: string
+  onClose?(): void
+  text?: string
+  actions?: ReactNode
+  cstSize?: boolean
+  onSubmit?(): void
+  cancellable?: boolean
+}
+
+const Modal: React.FC<Props> = ({
   title = 'modal',
   onClose = () => {},
   text,
   actions,
   children,
   cstSize,
-}) {
+  onSubmit,
+  cancellable = true,
+}) => {
+  const [show, set] = useState(false)
+  useEffect(() => set(true), [])
+
+  const props = useSpring({
+    opacity: show ? 1 : 0,
+    transform: `translateX(-50%) translateY(-50%) scale(${show ? 1 : 0.1})`,
+    config: {
+      clamp: true,
+      duration: 200,
+    },
+  })
+
   return (
-    <Shade>
-      <S.Modal data-size={cstSize ? 'custom' : 'default'}>
+    <Shade onClick={() => cancellable && onClose?.()}>
+      <S.Modal
+        data-size={cstSize ? 'custom' : 'default'}
+        onSubmit={e => {
+          e.preventDefault()
+          onSubmit?.()
+        }}
+        onClick={e => e.stopPropagation()}
+        style={props}
+      >
         <S.TitleRow>
           <Title size={3}>{title}</Title>
           <Icon icon="close" onClick={onClose} />
@@ -26,11 +59,11 @@ export default function Modal({
 }
 
 const S = {
-  Modal: styled.div`
+  Modal: styled(animated.form)`
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    transform-origin: center;
     overflow-y: auto;
     display: block;
     box-sizing: border-box;
@@ -45,6 +78,11 @@ const S = {
       min-width: 30rem;
       max-width: 40rem;
       max-height: 95vh;
+    }
+
+    & > input,
+    & > textarea {
+      width: 100%;
     }
   `,
 
@@ -68,3 +106,5 @@ const S = {
     }
   `,
 }
+
+export default Object.assign(Modal, S)

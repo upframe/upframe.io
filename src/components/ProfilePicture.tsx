@@ -5,7 +5,7 @@ import Link from './Link'
 
 type Props = {
   imgs: Img[] | undefined | null
-  size?: string
+  size?: string | number
   linkTo?: string
 }
 
@@ -20,12 +20,14 @@ export default function ProfilePicture({
   size = '13rem',
   linkTo,
 }: Props) {
-  const [pxSize, setPxSize] = useState(parseSize(size))
+  const [pxSize, setPxSize] = useState(
+    typeof size === 'number' ? size : parseSize(size)
+  )
   const [pics, setPics] = useState<Img[]>([])
   const [fallback, setFallback] = useState<string>('')
 
   useEffect(() => {
-    setPxSize(parseSize(size))
+    setPxSize(typeof size === 'number' ? size : parseSize(size))
   }, [size])
 
   useEffect(() => {
@@ -58,12 +60,7 @@ export default function ProfilePicture({
         {pics.map(({ type, url }) => (
           <source srcSet={url} type={`image/${type}`} key={url} />
         ))}
-        <img
-          src={fallback}
-          alt="profile"
-          width={parseSize(size)}
-          height={parseSize(size)}
-        />
+        <img src={fallback} alt="profile" width={pxSize} height={pxSize} />
       </S.Picture>
     </Link>
   )

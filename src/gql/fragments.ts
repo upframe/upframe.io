@@ -164,9 +164,26 @@ export const person = {
         ...Timezone
         inferTz
         msgToken
+        spaces {
+          id
+          name
+          handle
+        }
       }
       ${person.base}
       ${person.timezone}
     `
   },
 }
+
+export const Img = gql`
+  fragment Img on Image {
+    base
+    versions {
+      key
+      width
+      height
+      type
+    }
+  }
+`

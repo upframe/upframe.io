@@ -19,7 +19,7 @@ interface Props {
   hidden?: boolean
 }
 
-const Button: React.FC<Props> = ({
+const Button: React.FC<React.HTMLProps<HTMLButtonElement> & Props> = ({
   children,
   onClick,
   accent = false,
