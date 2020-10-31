@@ -13,11 +13,25 @@ const QUERY_TRAIL = gql`
       date
       payload
       editor {
-        id
-        name
-        handle
+        ...AuditUser
+      }
+      objects {
+        ...AuditUser
+        ...AuditSpace
       }
     }
+  }
+
+  fragment AuditUser on Person {
+    id
+    name
+    handle
+  }
+
+  fragment AuditSpace on Space {
+    id
+    name
+    handle
   }
 `
 
