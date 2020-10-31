@@ -1,4 +1,4 @@
-import { ApolloClient } from '@apollo/client'
+import { ApolloClient, ApolloError } from '@apollo/client'
 import { HttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
 import { RetryLink } from 'apollo-link-retry'
@@ -79,7 +79,10 @@ const api = new ApolloClient({
 })
 export default api as ApolloClient<any>
 
-export function hasError(error, code) {
+export function hasError(
+  error: ApolloError | undefined,
+  code: string
+): boolean {
   if (!error || !code) return false
-  return error.graphQLErrors.find(({ extensions }) => extensions.code === code)
+  return error.graphQLErrors.some(({ extensions }) => extensions?.code === code)
 }

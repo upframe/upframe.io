@@ -15,8 +15,8 @@ import type {
 } from 'gql/types'
 
 const AUDIT_TRAIL = gql`
-  query AuditTrail($trails: [ID!]!) {
-    audit(trails: $trails) {
+  query AuditTrail($trail: ID!) {
+    audit(trail: $trail) {
       id
       trailId
       date
@@ -55,7 +55,7 @@ export default function Audit() {
   )
 
   const { loading } = useQuery<AuditTrail, AuditTrailVariables>(AUDIT_TRAIL, {
-    variables: { trails: ['admin_edits'] },
+    variables: { trail: 'admin_edits' },
     fetchPolicy: 'network-only',
     onCompleted({ audit }) {
       const newEvents: Event[] = []

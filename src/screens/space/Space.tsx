@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import { gql, useQuery, fragments, useMutation } from 'gql'
 import type { SpacePage, SpacePageVariables } from 'gql/types'
-import { Spinner, Title, Text, Switch, Icon, Dropdown } from 'components'
+import * as C from 'components'
 import PhotoCrop from './Crop'
 import { Route, Redirect, useHistory } from 'react-router-dom'
 import Image from './Image'
@@ -85,9 +85,13 @@ export default function Space({ match }) {
     },
   })
 
-  if (loading) return <Spinner />
+  if (loading) return <C.Spinner />
   if (!data?.space) return <Redirect to="/404" />
 
+  if (me?.role === 'ADMIN') {
+    data.space.isMember = true
+    data.space.isOwner = true
+  }
   const {
     id,
     isMember,
@@ -135,19 +139,19 @@ export default function Space({ match }) {
                   ref={photoRef}
                 />
                 <S.InfoContent>
-                  <Title size={2}>{name}</Title>
-                  <Text>{description}</Text>
+                  <C.Title size={2}>{name}</C.Title>
+                  <C.Text>{description}</C.Text>
                 </S.InfoContent>
                 <S.InfoActions>
                   {isOwner && <InviteButton onSelect={setInvite} />}
                   {isMember && (
                     <S.Context>
-                      <Icon
+                      <C.Icon
                         icon="more"
                         onClick={() => setShowContext(!showContext)}
                       />
                       {showContext && (
-                        <Dropdown
+                        <C.Dropdown
                           onClose={() => setShowContext(false)}
                           onClick={item => {
                             if (item !== 'leave') return
@@ -155,7 +159,7 @@ export default function Space({ match }) {
                           }}
                         >
                           <span key="leave">Leave {name}</span>
-                        </Dropdown>
+                        </C.Dropdown>
                       )}
                     </S.Context>
                   )}
@@ -163,7 +167,7 @@ export default function Space({ match }) {
               </div>
             </S.Info>
             <Navigation isOwner={isOwner ?? false} />
-            <Switch>
+            <C.Switch>
               {isMember && (
                 <>
                   <Route
@@ -195,7 +199,7 @@ export default function Space({ match }) {
                   <Route
                     exact
                     path={path(2) + '/activity'}
-                    render={() => <div>activity</div>}
+                    render={() => <C.AuditTrail trailId={`SPACE|${id}`} />}
                   ></Route>
                 </>
               )}
@@ -203,7 +207,7 @@ export default function Space({ match }) {
                 <Route path={path(2) + '/info'} render={() => sidebar} />
               )}
               <Redirect to={path(2)} />
-            </Switch>
+            </C.Switch>
           </S.MainWrap>
         </S.Main>
         {sidebar}
