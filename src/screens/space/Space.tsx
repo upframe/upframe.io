@@ -288,6 +288,10 @@ const S = {
     @media ${desktop} {
       margin-right: ${columnGap}px;
     }
+
+    @media ${mobile} {
+      width: 100%;
+    }
   `,
 
   MainWrap: styled.div`
@@ -297,6 +301,24 @@ const S = {
 
     *[data-view='external'] & > *:not(:first-child) {
       display: none;
+    }
+
+    @media ${mobile} {
+      nav {
+        margin: 0 calc(var(--side-padding) * -1);
+        width: 100vw;
+        box-sizing: border-box;
+        padding: 0 var(--side-padding);
+
+        ol::after {
+          content: '';
+          display: block;
+          position: absolute;
+          left: 100%;
+          width: var(--side-padding);
+          height: 100%;
+        }
+      }
     }
   `,
 
@@ -319,6 +341,11 @@ const S = {
 
     @media ${mobile} {
       height: calc((100vw - var(--side-padding) * 2) * ${coverRatio} * 2);
+      height: auto;
+
+      & > *:first-child {
+        height: calc((100vw - var(--side-padding) * 2) * ${coverRatio});
+      }
     }
 
     & > * {

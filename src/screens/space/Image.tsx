@@ -30,7 +30,7 @@ function Image(
             width={
               !isCover
                 ? '7rem'
-                : '(orientation: portrait) 100vw, (max-width: 1276px) 69vw, 55rem'
+                : '(orientation: portrait) 100vw, (max-width: 599px) 100vw, (max-width: 1276px) 69vw, 55rem'
             }
           />
         )}

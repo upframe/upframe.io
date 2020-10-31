@@ -34,6 +34,7 @@ export const sizesToQueries = (sizes: string) =>
     ${sizes
       .split(',')
       .slice(0, -1)
+      .reverse()
       .map(v => {
         const [q, w] = v.split(/\s+(?=(\w+)$)/)
         return `@media ${q} {

@@ -35,7 +35,6 @@ export default function Navbar({ tabs, active, onNavigate }: Props) {
 }
 
 const Slider = styled.div`
-  width: 25%;
   height: 0.5rem;
   background-color: #e9476a;
   position: absolute;
@@ -50,14 +49,24 @@ const S = {
     height: 3rem;
     margin: 2rem 0;
     user-select: none;
+    overflow-x: auto;
+    box-sizing: content-box;
+
+    --min-tab-width: 12ch;
 
     li,
     ${Slider} {
       width: ${({ tabs }) => 100 / tabs}%;
     }
 
+    ${Slider} {
+      min-width: var(--min-tab-width);
+    }
+
     ol {
+      margin: 0;
       width: 100%;
+      min-width: calc(${({ tabs }) => tabs} * var(--min-tab-width));
       display: flex;
       padding: 0;
       list-style: none;
@@ -69,6 +78,7 @@ const S = {
         border-bottom: 1px solid var(--cl-text-medium);
         position: relative;
         cursor: pointer;
+        white-space: nowrap;
       }
 
       a,

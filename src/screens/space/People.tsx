@@ -6,6 +6,7 @@ import roles, { Role } from './roles'
 import Fuse from 'fuse.js'
 import Context from './MemberContext'
 import { MEMBER_QUERY } from './gql'
+import { mobile } from 'styles/responsive'
 import {
   Title,
   Text,
@@ -234,16 +235,17 @@ const S = {
             content: '  ';
           }
         }
-
-        button {
-          position: absolute;
-          right: 0;
-        }
       }
 
       p {
         margin-top: 0;
         font-size: 0.94rem;
+      }
+    }
+
+    @media ${mobile} {
+      button {
+        display: none;
       }
     }
   `,
