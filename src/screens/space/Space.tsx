@@ -31,6 +31,8 @@ export default function Space({ match }) {
   const [photoEditSrc, setPhotoEditSrc] = useState<string>()
   const photoRef = useRef() as React.MutableRefObject<HTMLImageElement>
   const coverRef = useRef() as React.MutableRefObject<HTMLImageElement>
+  const [tmpPhoto, setTmpPhoto] = useState(false)
+  const [tmpCover, setTmpCover] = useState(false)
   const { data, loading } = useQuery<SpacePage, SpacePageVariables>(
     SPACE_QUERY,
     {
@@ -196,8 +198,9 @@ export default function Space({ match }) {
           onClose={keep => {
             setCoverEditFile(undefined)
             setPhotoEditFile(undefined)
-            if (!coverEditFile || !keep) setCoverEditSrc(undefined)
-            if (!photoEditFile || !keep) setPhotoEditSrc(undefined)
+            if (keep) return (coverEditFile ? setTmpCover : setTmpPhoto)(true)
+            if (!tmpCover) setCoverEditSrc(undefined)
+            if (!tmpPhoto) setPhotoEditSrc(undefined)
           }}
         />
       )}
