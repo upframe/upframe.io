@@ -146,8 +146,9 @@ async function getStatic() {
   const html = await fetch('/index.html').then(res => res.text())
 
   try {
-    const head = html.match(/(?<=<head(\s+[^>]*)?>).*(?=<\/head>)/is)?.[0] ?? ''
-    const links = head.match(/(?<=href=").+?(?=")/gis) ?? []
+    const head = html.match(/<head>(.*)(?=<\/head>)/s)?.[1]
+    const links =
+      head?.match(/href="([^"]+)/gs)?.map(v => v.replace(/^href="/, '')) ?? []
     staticFiles.push(...links)
   } catch (e) {
     console.warn(e)

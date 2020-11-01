@@ -42,4 +42,4 @@ export const sizesToQueries = (sizes: string) =>
         }`
       })
       .join('\n')}
-`.replace(/(?<=\n|^)\s+/g, '')
+`.replace(/(?:\n|^)\s+/g, '\n')

@@ -59,7 +59,8 @@ export default function (raw: QueryAuditTrail_audit) {
     <Message as="pre">
       {JSON.stringify(raw.payload)
         .slice(2, -2)
-        .replace(/(?<=:\s*)\\"|\\"(?=,|$)/g, '"')
+        .replace(/:\s*\\"/g, ': "')
+        .replace(/\\"(?=,|$)/g, '"')
         .replace(/\\"/g, '')
         .replace(/,/g, '\n')
         .replace(/:\s*/g, ': ')}
