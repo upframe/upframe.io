@@ -15,34 +15,39 @@ export default function (raw: QueryAuditTrail_audit) {
   const msgs: [string | RegExp, () => JSX.Element][] = [
 
 
-  /******************************************* THE MESSAGES SHOWN IN THE AUDIT TRAIL ********************************************/
+  /******************************************** THE MESSAGES SHOWN IN THE AUDIT TRAIL ***********************************************/
   
     // space actions
-    ['create_space',                () => msg`    ${editor} created ${space}                                                    `],
-    ['create_invite_link',          () => msg`    ${editor} created an invite link for ${role}s                                 `],
-    ['revoke_invite_link',          () => msg`    ${editor} revoked a ${role} invite link                                       `],
-    ['change_space_info',           () => msg`    ${editor} changed ${space}'s ${log.field} from "${log.old}" to "${log.new}"   `],
-    [/upload_(cover|space)_photo/,  () => msg`    ${editor} uploaded a new ${eventType.split('_')[1]} image                     `],
+    ['create_space',                    () => msg`    ${editor} created ${space}                                                    `],
+    ['create_invite_link',              () => msg`    ${editor} created an invite link for ${role}s                                 `],
+    ['revoke_invite_link',              () => msg`    ${editor} revoked a ${role} invite link                                       `],
+    [/upload_(cover|space)_photo/,      () => msg`    ${editor} uploaded a new ${eventType.split('_')[1]} image                     `],
+    ['change_space_info', () => !log.old    ? msg`    ${editor} set ${space}'s ${log.field} to "${log.new}"                         `
+                              : !log.new    ? msg`    ${editor} removed ${space}'s ${log.field}                                     `
+                                            : msg`    ${editor} changed ${space}'s ${log.field} from "${log.old}" to "${log.new}"   `],
     
     // space member actions
-    ['join_space',                  () => msg`    ${editor} joined ${space} as a ${role}                                        `],
-    ['add_user',                    () => msg`    ${editor} added ${user} to ${space}                                           `],
-    ['change_member_role',          () => msg`    ${editor} ${cmr().verb} ${user} ${cmr().prep} ${cmr().group}                  `],
-    ['remove_member',    () => editor === user 
-                                        ? msg`    ${editor} left ${space}                                                       ` 
-                                        : msg`    ${editor} removed ${user} from ${space}                                       `],
+    ['join_space',                      () => msg`    ${editor} joined ${space} as a ${role}                                        `],
+    ['add_user',                        () => msg`    ${editor} added ${user} to ${space} as a ${role}                              `],
+    ['change_member_role',              () => msg`    ${editor} ${cmr().verb} ${user} ${cmr().prep} ${cmr().group}                  `],
+    ['remove_member', () => editor === user ? msg`    ${editor} left ${space}                                                       ` 
+                                            : msg`    ${editor} removed ${user} from ${space}                                       `],
     
     // admin actions
-    ['edit_user_info',              () => msg`    ${editor} changed ${user}'s ${log.field} from "${log.old}" to "${log.new}"    `],
-    ['remove_account',              () => msg`    ${editor} delted "${log.userName}"'s account                                  `],
-    ['add_tag',                     () => msg`    ${editor} added <tag>${log.tag} tag to ${user}                                `],
-    ['remove_tag',                  () => msg`    ${editor} removed <tag>${log.tag} tag from ${user}                            `],
-
-    // list actions
-    ['add_to_list',                 () => msg`    ${editor} added ${user} to <list>${log.list} list                             `],
-    ['remove_from_list',            () => msg`    ${editor} removed ${user} from <list>${log.list} list                         `],
+    ['remove_account',                  () => msg`    ${editor} delted "${log.userName}"'s account                                  `],
+    ['add_tag',                         () => msg`    ${editor} added <tag>${log.tag} tag to ${user}                                `],
+    ['remove_tag',                      () => msg`    ${editor} removed <tag>${log.tag} tag from ${user}                            `],
+    ['edit_user_info',                  () => msg`    ${editor} changed ${user}'s ${log.field} from "${log.old}" to "${log.new}"    `],
+    ['set_role',                        () => msg`    ${editor} changed ${user}'s role from ${log.old} to ${log.new}                `],
+    ['edit_user_info', () => !log.old       ? msg`    ${editor} set ${user}'s ${log.field} to "${log.new}"                          `
+                           : !log.new       ? msg`    ${editor} removed ${user}'s ${log.field}                                      `
+                                            : msg`    ${editor} changed ${user}'s ${log.field} from "${log.old}" to "${log.new}"    `],
     
-  /******************************************************************************************************************************/
+    // list actions
+    ['add_to_list',                     () => msg`    ${editor} added ${user} to <list>${log.list} list                             `],
+    ['remove_from_list',                () => msg`    ${editor} removed ${user} from <list>${log.list} list                         `],
+    
+  /**********************************************************************************************************************************/
 
 
   ]
