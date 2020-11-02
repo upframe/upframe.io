@@ -4,7 +4,7 @@ import { parseSize } from 'utils/css'
 import Link from './Link'
 
 type Props = {
-  imgs: Img[] | undefined | null
+  imgs?: Img[] | undefined | null
   size?: string | number
   linkTo?: string
 }
@@ -15,8 +15,17 @@ type Img = {
   type?: 'webp' | 'jpeg' | string | null
 }
 
+const defaultImgs = [
+  {
+    url: `${process.env.REACT_APP_PHOTO_BUCKET?.replace(
+      /\/res-v2\/?$/,
+      ''
+    )}/default.png`,
+  },
+]
+
 export default function ProfilePicture({
-  imgs,
+  imgs = defaultImgs,
   size = '13rem',
   linkTo,
 }: Props) {

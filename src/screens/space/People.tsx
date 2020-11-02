@@ -95,6 +95,7 @@ export default function People({
           onInvite={() => onInvite('Owners')}
           isOwner={isOwner}
           spaceId={spaceId}
+          invited={data.space.invited?.filter(({ role }) => role === 'OWNER')}
         />
       )}
       {mentors.length > 0 && (
@@ -105,6 +106,7 @@ export default function People({
           onInvite={() => onInvite('Mentors')}
           isOwner={isOwner}
           spaceId={spaceId}
+          invited={data.space.invited?.filter(({ role }) => role === 'MENTOR')}
         />
       )}
       {founders.length > 0 && (
@@ -115,6 +117,7 @@ export default function People({
           onInvite={() => onInvite('Founders')}
           isOwner={isOwner}
           spaceId={spaceId}
+          invited={data.space.invited?.filter(({ role }) => role === 'FOUNDER')}
         />
       )}
     </S.People>
@@ -125,6 +128,7 @@ interface GroupProps {
   title: string
   description: string
   users: Exclude<Exclude<SpaceMembers['space'], null>['owners'], null>
+  invited?: Exclude<SpaceMembers['space'], null>['invited']
   onInvite(): void
   isOwner: boolean
   spaceId: string
@@ -137,6 +141,7 @@ function Group({
   onInvite,
   isOwner,
   spaceId,
+  invited,
 }: GroupProps) {
   const [batches, setBatches] = useState(1)
   const batchSize = 4
@@ -145,11 +150,7 @@ function Group({
   const showCollapse = !showMore && users.length > batchSize
 
   return (
-    <S.Group
-      fade={
-        users.length > batches * batchSize ? batches * batchSize : undefined
-      }
-    >
+    <S.Group>
       <S.GroupHead>
         <div>
           <Title size={3}>
@@ -184,6 +185,26 @@ function Group({
               </S.UserActions>
             </S.User>
           ))}
+        {invited?.map(({ email, issued }) => (
+          <S.User key={email} data-status="invited">
+            <ProfilePicture size={avatarSize} />
+            <div>
+              <Title size={4}>{email}</Title>
+              <Text>
+                Invite Sent{' '}
+                {issued && (
+                  <S.Issued>
+                    {new Date(issued).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </S.Issued>
+                )}
+              </Text>
+            </div>
+          </S.User>
+        ))}
       </ol>
       {(showMore || showCollapse) && (
         <S.LoadMore>
@@ -250,7 +271,7 @@ const S = {
     }
   `,
 
-  Group: styled.div<{ fade?: number }>`
+  Group: styled.div`
     &:not(:first-of-type) {
       margin-top: 1.5rem;
     }
@@ -259,14 +280,6 @@ const S = {
       list-style: none;
       padding: 0;
     }
-
-    /* stylelint-disable-next-line */
-    ${({ fade }) =>
-      !fade
-        ? ''
-        : `ol > li:nth-child(${fade}) {
-      opacity: 0.5;
-    }`}
   `,
 
   User: styled.li`
@@ -296,6 +309,10 @@ const S = {
         font-size: 0.9rem;
       }
     }
+
+    &[data-status='invited'] {
+      opacity: 0.5;
+    }
   `,
 
   UserActions: styled.div`
@@ -314,5 +331,14 @@ const S = {
     display: flex;
     width: 100%;
     justify-content: center;
+  `,
+
+  Issued: styled.span`
+    opacity: 0.5;
+    white-space: pre;
+
+    &::before {
+      content: '  ';
+    }
   `,
 }

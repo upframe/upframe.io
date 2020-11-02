@@ -2,46 +2,11 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import roles, { Role } from './roles'
 import { isEmail } from 'utils/validate'
-import { gql, useQuery, useMutation } from 'gql'
-import type { CreateSpaceInvite, CreateSpaceInviteVariables } from 'gql/types'
-import {
-  Button,
-  Modal,
-  Title,
-  Text,
-  Dropdown,
-  Navbar,
-  Tagarea,
-  Labeled,
-  Checkbox,
-  Spinner,
-  CopyField,
-} from 'components'
-
-const INVITE_LINKS = gql`
-  query SpaceInviteLinks($space: ID!) {
-    space(id: $space) {
-      id
-      inviteLinks {
-        founder
-        mentor
-        owner
-      }
-    }
-  }
-`
-
-const CREATE_INVITE = gql`
-  mutation CreateSpaceInvite($role: SpaceInviteRole!, $space: ID!) {
-    createSpaceInvite(role: $role, space: $space)
-  }
-`
-
-const REVOKE_INVITE = gql`
-  mutation RevokeSpacInvite($role: SpaceInviteRole!, $space: ID!) {
-    revokeSpaceInvite(role: $role, space: $space)
-  }
-`
+import { useQuery, useMutation } from 'gql'
+import type * as T from 'gql/types'
+import * as C from 'components'
+import * as gql from './gql'
+import api from 'api'
 
 interface Props {
   onClose(): void
@@ -76,7 +41,7 @@ export function InviteMenu({ onClose, role, name, spaceId, spaceName }: Props) {
   const [emails, setEmails] = useState<string[]>([])
   const [invalid, setInvalid] = useState<string[]>([])
 
-  const { data, loading: linksLoading } = useQuery(INVITE_LINKS, {
+  const { data, loading: linksLoading } = useQuery(gql.INVITE_LINKS, {
     variables: { space: spaceId },
   })
   const links = data?.space?.inviteLinks ?? {}
@@ -107,84 +72,130 @@ export function InviteMenu({ onClose, role, name, spaceId, spaceName }: Props) {
   }
 
   const [createLink, { loading: createLoading }] = useMutation<
-    CreateSpaceInvite,
-    CreateSpaceInviteVariables
-  >(CREATE_INVITE, {
+    T.CreateSpaceInvite,
+    T.CreateSpaceInviteVariables
+  >(gql.CREATE_INVITE, {
     variables: {
       space: spaceId,
       role: role
         .slice(0, -1)
-        .toUpperCase() as CreateSpaceInviteVariables['role'],
+        .toUpperCase() as T.CreateSpaceInviteVariables['role'],
     },
     update(cache, res) {
       if (!res.data) return
       data.space.inviteLinks[role.slice(0, -1).toLowerCase()] =
         res.data.createSpaceInvite
       cache.writeQuery({
-        query: INVITE_LINKS,
+        query: gql.INVITE_LINKS,
         variables: { space: spaceId },
         data,
       })
     },
   })
 
-  const [revokeLink, { loading: revokeLoading }] = useMutation(REVOKE_INVITE, {
-    variables: {
-      space: spaceId,
-      role: role
-        .slice(0, -1)
-        .toUpperCase() as CreateSpaceInviteVariables['role'],
-    },
-    update(cache) {
-      data.space.inviteLinks[role.slice(0, -1).toLowerCase()] = null
-      cache.writeQuery({
-        query: INVITE_LINKS,
-        variables: { space: spaceId },
-        data,
-      })
-    },
-  })
+  const [revokeLink, { loading: revokeLoading }] = useMutation(
+    gql.REVOKE_INVITE,
+    {
+      variables: {
+        space: spaceId,
+        role: role
+          .slice(0, -1)
+          .toUpperCase() as T.CreateSpaceInviteVariables['role'],
+      },
+      update(cache) {
+        data.space.inviteLinks[role.slice(0, -1).toLowerCase()] = null
+        cache.writeQuery({
+          query: gql.INVITE_LINKS,
+          variables: { space: spaceId },
+          data,
+        })
+      },
+    }
+  )
 
-  function sendEmailInvites() {
-    console.log('invite', emails)
-  }
+  const [inviteEmails, { loading: inviteLoading }] = useMutation<
+    T.InivteToSpace,
+    T.InivteToSpaceVariables
+  >(gql.INVITE_EMAILS)
 
   function toggleLink() {
     if (!hasLink) createLink()
     else revokeLink()
   }
 
+  async function invite() {
+    const invite = [...emails, emailInput].filter(Boolean)
+    const inviteRole = role.slice(0, -1).toUpperCase() as any
+
+    await inviteEmails({
+      variables: {
+        emails: invite,
+        space: spaceId,
+        role: inviteRole,
+      },
+    })
+
+    const query = {
+      query: gql.MEMBER_QUERY,
+      variables: { spaceId },
+    }
+    try {
+      const data = api.cache.readQuery<T.SpaceMembers>(query)
+      if (data?.space) {
+        data.space.invited = [
+          ...(data?.space.invited ?? []),
+          ...invite.map(email => ({
+            email,
+            issued: new Date().toISOString(),
+            role: inviteRole,
+            __typename: 'Invited' as any,
+          })),
+        ]
+        api.cache.writeQuery({ ...query, data })
+      }
+    } catch (e) {
+      window.location.reload()
+    }
+
+    onClose()
+  }
+
   return (
-    <Modal onClose={onClose} title={`Invite ${role} to ${name}`}>
+    <C.Modal onClose={onClose} title={`Invite ${role} to ${name}`}>
       <S.Invite>
-        <Navbar tabs={tabs} active={tab} onNavigate={setTab} />
+        <C.Navbar tabs={tabs} active={tab} onNavigate={setTab} />
         {tab === tabs[0] && (
           <div>
-            <Text>
+            <C.Text>
               You can also paste multiple emails at once if they are seperated
               by a space, comma, semicolon or newline.
-            </Text>
-            <Tagarea
+            </C.Text>
+            <C.Tagarea
               input={emailInput}
               onChange={handleEmailInput}
               tags={emails}
               onTagClick={removeEmail}
             />
             {invalid.length > 0 && <S.Error>{formatInvalid(invalid)}</S.Error>}
-            <Button accent onClick={sendEmailInvites} disabled={!inputValid()}>
+            <C.Button
+              accent
+              onClick={invite}
+              disabled={!inputValid()}
+              loading={inviteLoading}
+            >
               Send invites
-            </Button>
+            </C.Button>
           </div>
         )}
         {tab === tabs[1] &&
           (linksLoading ? (
-            <Spinner />
+            <C.Spinner />
           ) : (
             <div>
-              <Labeled
+              <C.Labeled
                 label="Enable Invite Link"
                 action={
-                  <Checkbox
+                  <C.Checkbox
                     checked={hasLink}
                     onChange={toggleLink}
                     loading={createLoading || revokeLoading}
@@ -194,11 +205,11 @@ export function InviteMenu({ onClose, role, name, spaceId, spaceName }: Props) {
               />
               {hasLink && (
                 <>
-                  <Text>
+                  <C.Text>
                     Share this link with others to invite them as{' '}
                     {role.toLowerCase()} to {spaceName}.
-                  </Text>
-                  <CopyField
+                  </C.Text>
+                  <C.CopyField
                     value={`${window.location.origin}/join/${
                       links[role.slice(0, -1).toLowerCase()]
                     }`}
@@ -208,7 +219,7 @@ export function InviteMenu({ onClose, role, name, spaceId, spaceName }: Props) {
             </div>
           ))}
       </S.Invite>
-    </Modal>
+    </C.Modal>
   )
 }
 
@@ -217,16 +228,16 @@ export function InviteButton({ onSelect }: { onSelect: (v?: Role) => void }) {
 
   return (
     <S.BtWrap>
-      <Button
+      <C.Button
         accent
         filled
         onClick={() => setShowDropdown(true)}
         disabled={showDropdown}
       >
         Invite
-      </Button>
+      </C.Button>
       {showDropdown && (
-        <Dropdown
+        <C.Dropdown
           onClick={(v: Role) => {
             setShowDropdown(false)
             onSelect(v)
@@ -235,11 +246,11 @@ export function InviteButton({ onSelect }: { onSelect: (v?: Role) => void }) {
         >
           {Object.entries(roles).map(([k, v]) => (
             <S.Role key={k}>
-              <Title size={4}>{k}</Title>
-              <Text>{v}</Text>
+              <C.Title size={4}>{k}</C.Title>
+              <C.Text>{v}</C.Text>
             </S.Role>
           ))}
-        </Dropdown>
+        </C.Dropdown>
       )}
     </S.BtWrap>
   )

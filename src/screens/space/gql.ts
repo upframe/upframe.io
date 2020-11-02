@@ -50,6 +50,11 @@ export const MEMBER_QUERY = gql`
       members(includeOwners: false) {
         ...SpaceMember
       }
+      invited {
+        email
+        issued
+        role
+      }
     }
   }
 
@@ -135,4 +140,39 @@ export const CHANGE_INFO = gql`
     }
   }
   ${SPACE_INFO}
+`
+
+export const INVITE_LINKS = gql`
+  query SpaceInviteLinks($space: ID!) {
+    space(id: $space) {
+      id
+      inviteLinks {
+        founder
+        mentor
+        owner
+      }
+    }
+  }
+`
+
+export const CREATE_INVITE = gql`
+  mutation CreateSpaceInvite($role: SpaceInviteRole!, $space: ID!) {
+    createSpaceInvite(role: $role, space: $space)
+  }
+`
+
+export const REVOKE_INVITE = gql`
+  mutation RevokeSpacInvite($role: SpaceInviteRole!, $space: ID!) {
+    revokeSpaceInvite(role: $role, space: $space)
+  }
+`
+
+export const INVITE_EMAILS = gql`
+  mutation InivteToSpace(
+    $space: ID!
+    $emails: [String!]!
+    $role: SpaceInviteRole!
+  ) {
+    inviteToSpace(emails: $emails, role: $role, space: $space)
+  }
 `

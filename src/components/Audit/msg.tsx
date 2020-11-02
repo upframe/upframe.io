@@ -32,6 +32,7 @@ export default function (raw: QueryAuditTrail_audit) {
     ['change_member_role',              () => msg`    ${editor} ${cmr().verb} ${user} ${cmr().prep} ${cmr().group}                  `],
     ['remove_member', () => editor === user ? msg`    ${editor} left ${space}                                                       ` 
                                             : msg`    ${editor} removed ${user} from ${space}                                       `],
+    ['invite_to_space',                 () => msg`    ${editor} invited "${log.email}" to join ${space} as a ${role}                `],
     
     // admin actions
     ['remove_account',                  () => msg`    ${editor} delted "${log.userName}"'s account                                  `],
