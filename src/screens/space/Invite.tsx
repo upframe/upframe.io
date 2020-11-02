@@ -114,8 +114,8 @@ export function InviteMenu({ onClose, role, name, spaceId, spaceName }: Props) {
   )
 
   const [inviteEmails, { loading: inviteLoading }] = useMutation<
-    T.InivteToSpace,
-    T.InivteToSpaceVariables
+    T.InviteToSpace,
+    T.InviteToSpaceVariables
   >(gql.INVITE_EMAILS)
 
   function toggleLink() {
