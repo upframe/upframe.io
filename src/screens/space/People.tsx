@@ -95,7 +95,11 @@ export default function People({
           onInvite={() => onInvite('Owners')}
           isOwner={isOwner}
           spaceId={spaceId}
-          invited={data.space.invited?.filter(({ role }) => role === 'OWNER')}
+          invited={
+            searchQuery
+              ? undefined
+              : data.space.invited?.filter(({ role }) => role === 'OWNER')
+          }
         />
       )}
       {mentors.length > 0 && (
@@ -106,7 +110,11 @@ export default function People({
           onInvite={() => onInvite('Mentors')}
           isOwner={isOwner}
           spaceId={spaceId}
-          invited={data.space.invited?.filter(({ role }) => role === 'MENTOR')}
+          invited={
+            searchQuery
+              ? undefined
+              : data.space.invited?.filter(({ role }) => role === 'MENTOR')
+          }
         />
       )}
       {founders.length > 0 && (
@@ -117,7 +125,11 @@ export default function People({
           onInvite={() => onInvite('Founders')}
           isOwner={isOwner}
           spaceId={spaceId}
-          invited={data.space.invited?.filter(({ role }) => role === 'FOUNDER')}
+          invited={
+            searchQuery
+              ? undefined
+              : data.space.invited?.filter(({ role }) => role === 'FOUNDER')
+          }
         />
       )}
     </S.People>
@@ -146,8 +158,9 @@ function Group({
   const [batches, setBatches] = useState(1)
   const batchSize = 4
 
-  const showMore = users.length > batches * batchSize
-  const showCollapse = !showMore && users.length > batchSize
+  const showMore = users.length + (invited?.length ?? 0) > batches * batchSize
+  const showCollapse =
+    !showMore && users.length + (invited?.length ?? 0) > batchSize
 
   return (
     <S.Group>
@@ -185,26 +198,28 @@ function Group({
               </S.UserActions>
             </S.User>
           ))}
-        {invited?.map(({ email, issued }) => (
-          <S.User key={email} data-status="invited">
-            <ProfilePicture size={avatarSize} />
-            <div>
-              <Title size={4}>{email}</Title>
-              <Text>
-                Invite Sent{' '}
-                {issued && (
-                  <S.Issued>
-                    {new Date(issued).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                    })}
-                  </S.Issued>
-                )}
-              </Text>
-            </div>
-          </S.User>
-        ))}
+        {invited
+          ?.slice(0, batches * batchSize - users.length)
+          ?.map(({ email, issued }) => (
+            <S.User key={email} data-status="invited">
+              <ProfilePicture size={avatarSize} />
+              <div>
+                <Title size={4}>{email}</Title>
+                <Text>
+                  Invite Sent{' '}
+                  {issued && (
+                    <S.Issued>
+                      {new Date(issued).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </S.Issued>
+                  )}
+                </Text>
+              </div>
+            </S.User>
+          ))}
       </ol>
       {(showMore || showCollapse) && (
         <S.LoadMore>
