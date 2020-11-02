@@ -48,7 +48,7 @@ const SIGNUP_GOOGLE = gql`
 `
 
 export default function Step1({ info, token }) {
-  const [email, setEmail] = useState(info.email)
+  const [email, setEmail] = useState(info.email ?? '')
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState({ email: true, password: false })
 
@@ -74,7 +74,13 @@ export default function Step1({ info, token }) {
   if (error && hasError(error, 'INVALID_GRANT'))
     return <Redirect to={window.location.pathname} />
   return (
-    <Page title="Signup" style={S.Step1} defaultStyle onSubmit={signupPassword}>
+    <Page
+      title="Signup"
+      style={S.Step1}
+      defaultStyle
+      form
+      onSubmit={signupPassword}
+    >
       <GoogleSignin
         verb="Sign up"
         type="button"
@@ -117,6 +123,9 @@ export default function Step1({ info, token }) {
       />
       <Button accent type="submit" disabled={!valid.email || !valid.password}>
         next
+      </Button>
+      <Button text linkTo="/login">
+        Already have an account? Sign in instead.
       </Button>
     </Page>
   )

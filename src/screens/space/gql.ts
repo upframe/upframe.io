@@ -168,7 +168,7 @@ export const REVOKE_INVITE = gql`
 `
 
 export const INVITE_EMAILS = gql`
-  mutation InivteToSpace(
+  mutation InviteToSpace(
     $space: ID!
     $emails: [String!]!
     $role: SpaceInviteRole!

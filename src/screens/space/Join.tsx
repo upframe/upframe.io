@@ -8,7 +8,7 @@ import { useLoggedIn } from 'utils/hooks'
 import { INVITE_QUERY, JOIN_SPACE } from './gql'
 
 export default function Join({ match }) {
-  useLoggedIn({ redirect: true })
+  const loggedIn = useLoggedIn()
   const history = useHistory()
 
   const { data: { spaceInvite: space } = {}, loading } = useQuery<
@@ -27,6 +27,7 @@ export default function Join({ match }) {
     },
   })
 
+  if (!loggedIn) return <Redirect to={`/signup/${match.params.token}`} />
   if (loading) return <Spinner centered />
   if (!space) return <Redirect to="/" />
   if (space.isMember) return <Redirect to={`/s/${space.handle}`} />

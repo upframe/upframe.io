@@ -152,6 +152,10 @@ const S = {
         margin-left: -2rem;
       }
 
+      &[data-mode~='accent']:hover > svg > * {
+        stroke: #fff;
+      }
+
       &[data-mode~='hideText'] > svg {
         margin: 0;
       }
