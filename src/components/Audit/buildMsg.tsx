@@ -3,6 +3,7 @@ import { isUUID } from 'utils/validate'
 import { Link, Abbr } from '..'
 import { Message } from './styles'
 import type { QueryAuditTrail_audit } from 'gql/types'
+import { possessive } from 'utils/grammar'
 
 export default (ctx: QueryAuditTrail_audit['objects']) => {
   function msg(strs: TemplateStringsArray, ...exprs: string[]) {
@@ -19,7 +20,7 @@ export default (ctx: QueryAuditTrail_audit['objects']) => {
         nodes[nodes.length - 1] = React.cloneElement(
           lastNode,
           lastNode.props,
-          `${lastNode.props.children}'s`.replace(/s's/, "s'")
+          possessive(lastNode.props.children)
         )
         slice += 2
       }

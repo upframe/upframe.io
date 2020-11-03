@@ -226,4 +226,12 @@ const svg = {
       </g>
     ),
   },
+  bang: {
+    markup: (
+      <g>
+        <path d="M10 3h4v12h-4z" />
+        <rect x="10" y="17" width="4" height="4" />
+      </g>
+    ),
+  },
 }
