@@ -249,6 +249,16 @@ export default class Channel {
     this.eventHandlers.message.forEach(handler => handler(msg))
   }
 
+  public async notifyAll(currentUser?: string) {
+    const msgs = await this.messages({ first: 10 })
+    msgs
+      .filter(({ author }) => !currentUser || author !== currentUser)
+      .forEach(msg => {
+        this.postMessage(msg)
+        this.setReadStatus({ id: msg.id, read: false })
+      })
+  }
+
   public on<T extends ChannelEvent>(event: T, handler: ChannelEventHandler<T>) {
     // @ts-ignore
     this.eventHandlers[event].push(handler)

@@ -71,7 +71,7 @@ export default class Conversation {
 
   public addChannel(channel: Channel): Channel {
     if (this.channels.includes(channel)) return channel
-    this._channels.push(channel)
+    this._channels.unshift(channel)
     channel.on('message', msg => {
       this.lastUpdate = new Date()
       this.eventHandlers.message.forEach(handler => handler(msg))
