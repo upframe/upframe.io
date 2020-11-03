@@ -43,6 +43,10 @@ export default class Channel {
       ? Channel.instances[id]
       : (Channel.instances[id] = new Channel(id))
 
+  public get slotConnected() {
+    return this.id.endsWith('_s')
+  }
+
   public async messages(query: MsgQuery): Promise<Message[]> {
     const dir: 'forward' | 'backward' =
       !('first' in query) && !('after' in query) ? 'backward' : 'forward'

@@ -12,7 +12,7 @@ interface Props {
 }
 
 function ThreadCard({ channelId, onLoaded }: Props) {
-  const { messages, sendMessage } = useChannel(
+  const { messages, sendMessage, channel } = useChannel(
     channelId,
     {
       last: 31,
