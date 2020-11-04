@@ -85,7 +85,6 @@ export default function Step2({
     },
     onCompleted({ completeSignup: user }) {
       signIn(user)
-      console.log(user)
       history.push(
         user.spaces?.length ? `/s/${user.spaces[0].handle}` : '/settings/public'
       )

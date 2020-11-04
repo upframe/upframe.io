@@ -6,6 +6,7 @@ import { ordNum } from 'utils/date'
 import { Button, Icon } from 'components'
 import { useMe } from 'utils/hooks'
 import { possessive } from 'utils/grammar'
+import { mobile } from 'styles/responsive'
 
 const SLOT_QUERY = gql`
   query ChannelMeetup($channelId: ID!) {
@@ -96,13 +97,6 @@ export default function Slot({ channelId }: { channelId: string }) {
           <Button accent filled linkTo={slot.location}>
             Join with Whereby
           </Button>
-          <S.Link
-            href={slot.location}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            upframe.whereby.com
-          </S.Link>
         </S.LinkSection>
       </S.Main>
       <S.Status data-status={status} hidden={status === 'EXPIRED'}>
@@ -165,6 +159,18 @@ const S = {
     flex-direction: row;
     justify-content: space-between;
 
+    @media ${mobile} {
+      flex-direction: column;
+
+      h3 {
+        font-size: 1.1rem;
+      }
+
+      button {
+        margin: 1rem 0;
+      }
+    }
+
     & > div {
       display: flex;
       flex-direction: column;
@@ -203,16 +209,6 @@ const S = {
   LinkSection: styled.div`
     button {
       margin-right: 0;
-    }
-  `,
-
-  Link: styled.a`
-    color: #636567;
-    text-decoration: none;
-    font-size: 0.9rem;
-
-    &:visited {
-      color: unset;
     }
   `,
 
