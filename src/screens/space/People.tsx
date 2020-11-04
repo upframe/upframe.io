@@ -22,6 +22,7 @@ interface Props {
   spaceName: string
   onInvite(v: Role): void
   isOwner: boolean
+  onUpdate(): void
 }
 
 type User = Exclude<
@@ -34,6 +35,7 @@ export default function People({
   spaceName,
   onInvite,
   isOwner,
+  onUpdate,
 }: Props) {
   const [searchQuery, setSearchQuery] = useState('')
   const [users, setUsers] = useState<User[]>([])
@@ -95,6 +97,7 @@ export default function People({
           onInvite={() => onInvite('Owners')}
           isOwner={isOwner}
           spaceId={spaceId}
+          onUpdate={onUpdate}
           invited={
             searchQuery
               ? undefined
@@ -110,6 +113,7 @@ export default function People({
           onInvite={() => onInvite('Mentors')}
           isOwner={isOwner}
           spaceId={spaceId}
+          onUpdate={onUpdate}
           invited={
             searchQuery
               ? undefined
@@ -125,6 +129,7 @@ export default function People({
           onInvite={() => onInvite('Founders')}
           isOwner={isOwner}
           spaceId={spaceId}
+          onUpdate={onUpdate}
           invited={
             searchQuery
               ? undefined
@@ -144,6 +149,7 @@ interface GroupProps {
   onInvite(): void
   isOwner: boolean
   spaceId: string
+  onUpdate(): void
 }
 
 function Group({
@@ -154,6 +160,7 @@ function Group({
   isOwner,
   spaceId,
   invited,
+  onUpdate,
 }: GroupProps) {
   const [batches, setBatches] = useState(1)
   const batchSize = 4
@@ -194,7 +201,9 @@ function Group({
               </div>
               <S.UserActions>
                 <Icon icon="mail" linkTo={`/conversations/new?parts=${id}`} />
-                {isOwner && <Context userId={id} spaceId={spaceId} />}
+                {isOwner && (
+                  <Context userId={id} spaceId={spaceId} onUpdate={onUpdate} />
+                )}
               </S.UserActions>
             </S.User>
           ))}

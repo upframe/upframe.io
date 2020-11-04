@@ -9,9 +9,10 @@ import api from 'api'
 interface Props {
   spaceId: string
   userId: string
+  onUpdate(): void
 }
 
-export default function MemberContext({ spaceId, userId }: Props) {
+export default function MemberContext({ spaceId, userId, onUpdate }: Props) {
   const [open, setOpen] = useState(false)
 
   const { data, loading } = useQuery<T.MemberInfo, T.MemberInfoVariables>(
@@ -72,8 +73,7 @@ export default function MemberContext({ spaceId, userId }: Props) {
           space[group] = space[group]?.filter(v => v !== user)
         })
         if (args.owner) space.owners = [...(space.owners ?? []), user]
-        else if (args.mentor || isMentor)
-          space.mentors = [...(space.mentors ?? []), user]
+        else if (args.mentor) space.mentors = [...(space.mentors ?? []), user]
         else space.members = [...(space.members ?? []), user]
         ;['members', 'mentors', 'owners'].forEach(group => {
           space[group].sort((a, b) => a.name.localeCompare(b.name))
@@ -83,6 +83,8 @@ export default function MemberContext({ spaceId, userId }: Props) {
           variables: { spaceId },
           data,
         })
+
+        onUpdate()
 
         const info = api.cache.readQuery<T.MemberInfo>({
           query: MEMBER_INFO,

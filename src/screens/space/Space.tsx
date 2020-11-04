@@ -33,7 +33,7 @@ export default function Space({ match }) {
   const coverRef = useRef() as React.MutableRefObject<HTMLImageElement>
   const [tmpPhoto, setTmpPhoto] = useState(false)
   const [tmpCover, setTmpCover] = useState(false)
-  const { data, loading } = useQuery<SpacePage, SpacePageVariables>(
+  const { data, loading, refetch } = useQuery<SpacePage, SpacePageVariables>(
     SPACE_QUERY,
     {
       variables: { handle: match.params.handle.toLowerCase() },
@@ -149,6 +149,7 @@ export default function Space({ match }) {
                         spaceName={name}
                         onInvite={setInvite}
                         isOwner={isOwner ?? false}
+                        onUpdate={refetch}
                       />
                     )}
                   />
