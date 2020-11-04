@@ -23,7 +23,9 @@ const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpack
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter')
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
 
-const gitRevisionPlugin = new GitRevisionPlugin()
+const gitRevisionPlugin = new GitRevisionPlugin({
+  commithashCommand: 'rev-parse --short HEAD',
+})
 
 const postcssNormalize = require('postcss-normalize')
 
@@ -622,7 +624,9 @@ const shared = (cst, { emitManifest = true } = {}) => webpackEnv => {
       new webpack.DefinePlugin({
         'process.env': {
           COMMIT: JSON.stringify(gitRevisionPlugin.commithash()),
-          BRANCH: JSON.stringify(gitRevisionPlugin.branch()),
+          BRANCH: JSON.stringify(
+            process.env.BRANCH || gitRevisionPlugin.branch()
+          ),
         },
       }),
     ].filter(Boolean),

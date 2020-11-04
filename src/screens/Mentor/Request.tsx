@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react'
 import { mutations, useMutation } from 'gql'
 import { Modal, Labeled, Textbox, Button } from '../../components/'
 import { notify } from 'notification'
-import { useMe } from 'utils/hooks'
+import { useMe, useHistory } from 'utils/hooks'
 
 export default function Request({ mentor, onClose, slot }) {
   const [msg, setMsg] = useState('')
   const [valid, setValid] = useState(true)
   const { me } = useMe()
+  const history = useHistory()
 
   const [requestSlot] = useMutation(mutations.REQUEST_MEETUP, {
     variables: { msg, slotId: slot },
-    onCompleted() {
+    onCompleted({ requestSlot: path }) {
       notify('Meetup was requested. Now wait for the mentor to confirm.')
       onClose()
+      if (!path) return
+      history.push(`/conversations/${path}`)
     },
   })
 

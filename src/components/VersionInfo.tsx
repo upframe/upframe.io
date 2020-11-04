@@ -34,13 +34,13 @@ export default function VersionInfo() {
 
   return (
     <S.Info>
-      {process.env.COMMIT}
-      <br />
       {time}
       <br />
       {window.location.host}
       <br />
       {process.env.BRANCH}
+      <br />
+      {process.env.COMMIT}
     </S.Info>
   )
 }

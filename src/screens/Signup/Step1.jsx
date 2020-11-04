@@ -105,7 +105,7 @@ export default function Step1({ info, token }) {
         }
       />
       <Labeled
-        label="Password"
+        label="New Password"
         action={
           <Input
             type="password"
