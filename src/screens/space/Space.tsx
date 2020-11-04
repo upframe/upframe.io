@@ -252,6 +252,7 @@ const S = {
 
   Main: styled.div`
     flex: 1 1;
+    min-width: 0;
 
     @media ${desktop} {
       margin-right: ${columnGap}px;
