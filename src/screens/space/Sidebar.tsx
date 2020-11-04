@@ -169,5 +169,7 @@ const S = {
     }
   `,
 
-  Overview: styled(Widget)``,
+  Overview: styled(Widget)`
+    overflow-wrap: break-word;
+  `,
 }

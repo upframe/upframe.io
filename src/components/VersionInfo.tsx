@@ -50,7 +50,7 @@ const S = {
     position: fixed;
     right: 0;
     top: 0;
-    padding: 5px 10px;
+    padding: 5px 7px;
     z-index: 11000;
     margin: 0;
     pointer-events: none;

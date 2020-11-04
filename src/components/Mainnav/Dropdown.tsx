@@ -48,12 +48,14 @@ const S = {
     position: absolute;
     top: 4.8rem;
     right: calc(15vw + 1.3125rem - 5.35rem);
-    width: 10.7rem;
+    min-width: 10.7rem;
+    max-width: 14rem;
     padding: 1rem 0;
     box-sizing: border-box;
     background-color: var(--cl-background);
     filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.5));
     border-radius: var(--border-radius);
+    overflow: hidden;
 
     &::before {
       content: '';
@@ -79,7 +81,6 @@ const S = {
 
     & > * {
       display: block;
-      width: 100%;
       height: 2.5625rem;
       line-height: 2.5625rem;
       font-size: 1rem;
@@ -88,6 +89,9 @@ const S = {
       text-indent: 1rem;
       text-decoration: none;
       margin: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
 
       &:visited,
       &:hover {

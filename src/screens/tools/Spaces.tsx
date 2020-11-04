@@ -78,7 +78,7 @@ function CreateSpace() {
 
   useEffect(() => {
     if (manualHandle) return
-    setHandle(name)
+    setHandle(name.replace(/\s+\w/g, v => v.slice(-1).toUpperCase()).trim())
   }, [name, manualHandle])
 
   function create(e: React.FormEvent<HTMLFormElement>) {
