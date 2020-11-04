@@ -361,8 +361,9 @@ const S = {
       @media ${mobile} {
         --photo-translate: -0.5;
 
-        button,
-        svg {
+        /* stylelint-disable-next-line */
+        *:not(${Image.ImgWrap}) > div > svg,
+        button {
           display: none;
         }
       }
