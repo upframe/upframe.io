@@ -15,6 +15,7 @@ import {
   ScrollToTop,
   MobileNav,
   UpdatePrompt,
+  VersionInfo,
 } from './components'
 
 export default function App() {
@@ -74,6 +75,7 @@ export default function App() {
           {updateAvailable && <UpdatePrompt />}
         </S.App>
       </Router>
+      <VersionInfo />
     </>
   )
 }
