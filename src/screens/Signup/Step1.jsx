@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import { gql, useMutation } from 'gql'
 import { hasError } from 'api'
 import { notify } from 'notification'
+import { useHistory } from 'utils/hooks'
 
 const SIGNUP_PASSWORD = gql`
   mutation SignupWithPassword(
@@ -51,15 +52,24 @@ export default function Step1({ info, token }) {
   const [email, setEmail] = useState(info.email ?? '')
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState({ email: true, password: false })
+  const history = useHistory()
 
   const [signupPassword] = useMutation(SIGNUP_PASSWORD, {
     variables: { token, email, password },
+    onCompleted({ signUpPassword }) {
+      if (!signUpPassword?.id) return
+      history.push(`/signup/${signUpPassword.id}`)
+    },
   })
 
   const [signUpGoogle, { error }] = useMutation(SIGNUP_GOOGLE, {
     onError(err) {
       if (!hasError(err, 'INVALID_GRANT')) return
       notify('Invalid grant. Try connecting Google again')
+    },
+    onCompleted({ signUpGoogle }) {
+      if (!signUpGoogle?.id) return
+      history.push(`/signup/${signUpGoogle.id}`)
     },
   })
 
