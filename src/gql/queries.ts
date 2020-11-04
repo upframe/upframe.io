@@ -20,6 +20,9 @@ export const LIST = gql`
       users {
         ...MentorDetails
       }
+      space {
+        handle
+      }
     }
   }
   ${person.mentorDetails}
