@@ -1,4 +1,4 @@
-import { ApolloClient } from '@apollo/client'
+import { ApolloClient, ApolloError } from '@apollo/client'
 import { HttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
 import { RetryLink } from 'apollo-link-retry'
@@ -32,25 +32,28 @@ const httpLink = ApolloLink.from([
   }),
 ])
 
-const wsLink = new WebSocketLink({
-  uri: process.env.REACT_APP_WS_HOST as string,
-  options: {
-    reconnect: true,
-  },
-})
+const wsLink = ((!process.env.REACT_APP_DISABLE_MESSAGING &&
+  new WebSocketLink({
+    uri: process.env.REACT_APP_WS_HOST as string,
+    options: {
+      reconnect: true,
+    },
+  })) as unknown) as WebSocketLink
 
 const api = new ApolloClient({
-  link: split(
-    ({ query }) => {
-      const definition = getMainDefinition(query)
-      return (
-        definition.kind === 'OperationDefinition' &&
-        definition.operation === 'subscription'
-      )
-    },
-    wsLink,
-    httpLink
-  ) as any,
+  link: process.env.REACT_APP_DISABLE_MESSAGING
+    ? httpLink
+    : (split(
+        ({ query }) => {
+          const definition = getMainDefinition(query)
+          return (
+            definition.kind === 'OperationDefinition' &&
+            definition.operation === 'subscription'
+          )
+        },
+        wsLink,
+        httpLink
+      ) as any),
   cache: new InMemoryCache({
     fragmentMatcher: new IntrospectionFragmentMatcher({
       introspectionQueryResultData,
@@ -76,7 +79,10 @@ const api = new ApolloClient({
 })
 export default api as ApolloClient<any>
 
-export function hasError(error, code) {
+export function hasError(
+  error: ApolloError | undefined,
+  code: string
+): boolean {
   if (!error || !code) return false
-  return error.graphQLErrors.find(({ extensions }) => extensions.code === code)
+  return error.graphQLErrors.some(({ extensions }) => extensions?.code === code)
 }

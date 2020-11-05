@@ -2,13 +2,13 @@ import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Item from '../Settings/Item'
 import { gql, queries, fragments, useQuery, useMutation } from 'gql'
-import { useDebouncedInputCall, useSignIn } from 'utils/hooks'
+import { useDebouncedInputCall, useHistory, useSignIn } from 'utils/hooks'
 import {
   Button,
   Text,
   ProfilePicture,
   Title,
-  PhotoCrop,
+  ProfilePhotoCrop,
   Tagselect,
 } from '../../components'
 
@@ -36,6 +36,10 @@ const COMPLETE_SIGNUP = gql`
       ...PersonBase
       ... on Mentor {
         calendarConnected
+        spaces {
+          id
+          handle
+        }
       }
     }
   }
@@ -63,8 +67,10 @@ export default function Step2({
     headline,
   })
   const [invalid, setInvalid] = useState({})
+  const [highlightInvalid, setHighlightInvalid] = useState(false)
   const fileInput = useRef(null)
   const signIn = useSignIn()
+  const history = useHistory()
 
   const [completeSignup] = useMutation(COMPLETE_SIGNUP, {
     variables: {
@@ -79,10 +85,13 @@ export default function Step2({
     },
     onCompleted({ completeSignup: user }) {
       signIn(user)
+      history.push(
+        user.spaces?.length ? `/s/${user.spaces[0].handle}` : '/settings/public'
+      )
     },
   })
 
-  useQuery(queries.CHECK_VALIDITY, {
+  const { loading } = useQuery(queries.CHECK_VALIDITY, {
     variables: checkData,
     onCompleted({ checkValidity }) {
       setInvalid(
@@ -160,7 +169,7 @@ export default function Step2({
         autoComplete="name"
         input={name}
         onChange={setName}
-        {...(name.length &&
+        {...((name.length || highlightInvalid) &&
           'name' in invalid && { hint: invalid.name, error: true })}
         required
       />
@@ -170,8 +179,11 @@ export default function Step2({
         input={handle}
         onChange={setHandle}
         {...(handle && { hint: `https://upframe.io/${handle}` })}
-        {...(handle.length &&
-          'handle' in invalid && { hint: invalid.handle, error: true })}
+        {...((handle.length || highlightInvalid) &&
+          'handle' in invalid && {
+            hint: invalid.handle,
+            error: highlightInvalid,
+          })}
         required
       />
       <Item
@@ -180,6 +192,11 @@ export default function Step2({
         input={location}
         onChange={setLocation}
         required
+        {...(highlightInvalid &&
+          'location' in invalid && {
+            hint: invalid.location,
+            error: highlightInvalid,
+          })}
       />
       <Item
         label="Headline"
@@ -187,6 +204,11 @@ export default function Step2({
         input={headline}
         onChange={setHeadline}
         required
+        {...(highlightInvalid &&
+          'headline' in invalid && {
+            hint: invalid.headline,
+            error: highlightInvalid,
+          })}
       />
       <Item
         label="Biography"
@@ -198,6 +220,16 @@ export default function Step2({
             ? "When you reach out to mentors, they will see your profile. Write something that describes who you are and what you're working on here."
             : 'Help people understand how you can help them by describing what you built or achieved.'
         }
+        {...(biography.length < 20 && {
+          hint: `minimum ${
+            biography.length ? `${biography.length}/` : ''
+          }20 characters`,
+        })}
+        {...(highlightInvalid &&
+          'biography' in invalid && {
+            hint: invalid.biography,
+            error: highlightInvalid,
+          })}
       />
       {role === 'MENTOR' && (
         <>
@@ -214,16 +246,20 @@ export default function Step2({
           />
         </>
       )}
-      <Button
-        accent
-        type="submit"
-        disabled={Object.keys(invalid).length > 0}
-        onClick={completeSignup}
-      >
-        Create Account
-      </Button>
+      <S.SubmitWrap onClick={() => setHighlightInvalid(true)}>
+        <Button
+          accent
+          type="submit"
+          disabled={Object.keys(invalid).length > 0 || loading}
+          onClick={completeSignup}
+          loading={loading}
+          loadingHideText
+        >
+          Create Account
+        </Button>
+      </S.SubmitWrap>
       {rawPhoto && (
-        <PhotoCrop
+        <ProfilePhotoCrop
           photo={rawPhoto}
           name={name}
           onSave={file => {
@@ -257,17 +293,11 @@ const S = {
       }
     }
 
-    & > button {
-      grid-column: 2;
-      margin: 0;
-      margin: 3rem 0;
-    }
-
     *[data-action='textbox'],
     *[data-label='location'],
     *[data-label='headline'],
     *[data-label='biography'],
-    & > div:last-of-type,
+    & > div:nth-last-child(2),
     & > p {
       grid-column: 1 / span 2;
     }
@@ -320,6 +350,19 @@ const S = {
       & > div {
         margin-top: 2rem;
       }
+    }
+  `,
+
+  SubmitWrap: styled.div`
+    grid-column: 2;
+    margin: 3rem 0;
+
+    button {
+      width: 100%;
+    }
+
+    button:disabled {
+      pointer-events: none;
     }
   `,
 }

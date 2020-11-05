@@ -10,6 +10,8 @@ const MeetupConfirm = React.lazy(() => import('./screens/Meetup/Confirm'))
 const MeetupCancel = React.lazy(() => import('./screens/Meetup/Cancel'))
 const ErrorPage = React.lazy(() => import('./screens/404'))
 const List = React.lazy(() => import('./screens/List'))
+const Space = React.lazy(() => import('./screens/space/Space'))
+const JoinSpace = React.lazy(() => import('./screens/space/Join'))
 const Search = React.lazy(() => import('./screens/Search'))
 const ResetPassword = React.lazy(() => import('./screens/ResetPassword'))
 const ResetEmail = React.lazy(() => import('./screens/ResetEmail'))
@@ -17,12 +19,15 @@ const Privacy = React.lazy(() => import('./screens/Privacy'))
 const Conversations = React.lazy(() => import('./screens/Conversations'))
 const Scroller = React.lazy(() => import('./screens/playground/Scroller'))
 const Tools = React.lazy(() => import('./screens/tools/Tools'))
+const Playground = React.lazy(() => import('./screens/Playground'))
 
 export default function Routes() {
   return (
     <Switch>
       <Route exact path="/" component={Main} />
       <Route exact path="/(list|tag)/:list" component={List} />
+      <Route exact path="/(space|s)/:handle/:tab?" component={Space} />
+      <Route exact path="/join/:token" component={JoinSpace} />
       <Route exact path="/search" component={Search} />
       <Route exact path="/privacy" component={Privacy} />
       <Route exact path="/login" component={Login} />
@@ -37,6 +42,7 @@ export default function Routes() {
       <Route exact path="/tools/:page?" component={Tools} />
       <Route exact path="/meetup/confirm/:meetupid" component={MeetupConfirm} />
       <Route exact path="/meetup/cancel/:meetupid" component={MeetupCancel} />
+      <Route exact path="/playground" component={Playground} />
       <Route exact path="/playground/scroll" component={Scroller} />
       <Route exact path="/404" component={ErrorPage} />
       <Route exact path="/:handle" component={Profile} />

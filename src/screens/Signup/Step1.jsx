@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import { gql, useMutation } from 'gql'
 import { hasError } from 'api'
 import { notify } from 'notification'
+import { useHistory } from 'utils/hooks'
 
 const SIGNUP_PASSWORD = gql`
   mutation SignupWithPassword(
@@ -48,18 +49,27 @@ const SIGNUP_GOOGLE = gql`
 `
 
 export default function Step1({ info, token }) {
-  const [email, setEmail] = useState(info.email)
+  const [email, setEmail] = useState(info.email ?? '')
   const [password, setPassword] = useState('')
   const [valid, setValid] = useState({ email: true, password: false })
+  const history = useHistory()
 
   const [signupPassword] = useMutation(SIGNUP_PASSWORD, {
     variables: { token, email, password },
+    onCompleted({ signUpPassword }) {
+      if (!signUpPassword?.id) return
+      history.push(`/signup/${signUpPassword.id}`)
+    },
   })
 
   const [signUpGoogle, { error }] = useMutation(SIGNUP_GOOGLE, {
     onError(err) {
       if (!hasError(err, 'INVALID_GRANT')) return
       notify('Invalid grant. Try connecting Google again')
+    },
+    onCompleted({ signUpGoogle }) {
+      if (!signUpGoogle?.id) return
+      history.push(`/signup/${signUpGoogle.id}`)
     },
   })
 
@@ -74,7 +84,13 @@ export default function Step1({ info, token }) {
   if (error && hasError(error, 'INVALID_GRANT'))
     return <Redirect to={window.location.pathname} />
   return (
-    <Page title="Signup" style={S.Step1} defaultStyle onSubmit={signupPassword}>
+    <Page
+      title="Signup"
+      style={S.Step1}
+      defaultStyle
+      form
+      onSubmit={signupPassword}
+    >
       <GoogleSignin
         verb="Sign up"
         type="button"
@@ -99,7 +115,7 @@ export default function Step1({ info, token }) {
         }
       />
       <Labeled
-        label="Password"
+        label="New Password"
         action={
           <Input
             type="password"
@@ -117,6 +133,9 @@ export default function Step1({ info, token }) {
       />
       <Button accent type="submit" disabled={!valid.email || !valid.password}>
         next
+      </Button>
+      <Button text linkTo="/login">
+        Already have an account? Sign in instead.
       </Button>
     </Page>
   )

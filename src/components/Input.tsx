@@ -5,31 +5,35 @@ interface Props {
   type?: string
   id?: string
   value?: string
-  onChange?(v?: any): any
+  onChange?(v: string): void
   changeTarget?: boolean
   placeholder?: string
   error?: boolean
 }
 
-const Input: React.FunctionComponent<Props> = ({
+const Input: React.FunctionComponent<
+  Omit<React.HTMLProps<HTMLInputElement>, keyof Props> & Props
+> = ({
   type = 'text',
   id,
   value = '',
   onChange = () => {},
-  changeTarget = false,
+  changeTarget,
   placeholder,
   error = false,
   ...props
-}: Props) => (
+}) => (
   <S.Input
     data-validity={error ? 'error' : undefined}
     id={id}
     value={value}
-    onChange={({ target }) => onChange(changeTarget ? target : target.value)}
+    onChange={({ target }) =>
+      onChange((changeTarget ? target : target.value) as any)
+    }
     placeholder={placeholder}
     type={type}
     {...(type === 'text' && { 'data-lpignore': true })}
-    {...props}
+    {...(props as any)}
   />
 )
 
@@ -57,7 +61,7 @@ const S = {
     }
 
     &[data-validity~='error'] {
-      border-color: var(--cl-error);
+      border: 1px solid var(--cl-error);
     }
   `,
 }

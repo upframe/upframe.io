@@ -96,13 +96,9 @@ export const CONVERSATIONS = gql`
     me {
       id
       conversations {
-        id
-        lastUpdate
+        ...ConversationBase
         participants {
           ...ChatParticipant
-        }
-        channels {
-          id
         }
       }
       unread {
@@ -111,6 +107,7 @@ export const CONVERSATIONS = gql`
       }
     }
   }
+  ${CONVERSATION}
   ${CHAT_PARTICIPANT}
 `
 

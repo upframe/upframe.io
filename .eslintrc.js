@@ -8,5 +8,6 @@ module.exports = {
     'no-useless-computed-key': 'off',
     'no-unused-vars': 'warn',
     'no-sequences': 'off',
+    'no-unreachable': 'warn',
   },
 }

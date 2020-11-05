@@ -9,6 +9,7 @@ import { useHeight } from 'utils/hooks'
 import Channel from 'conversations/channel'
 import { mobile } from 'styles/responsive'
 import { PARTICIPANT } from 'conversations/gql'
+import Slot from './Slot'
 
 const picSize = '3.2rem'
 
@@ -29,7 +30,6 @@ interface Props {
 
 function Message({
   id,
-  content,
   markup,
   author,
   date,
@@ -129,6 +129,7 @@ function Message({
           </S.Head>
         )}
         <Markdown markup={markup} />
+        {id.endsWith('_s') && <Slot channelId={channelId} />}
       </S.Main>
       {showContext && <Context id={id} onToggle={onLockFocus} i={i} />}
     </S.Wrap>

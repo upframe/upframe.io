@@ -11,7 +11,7 @@ import {
   Button,
   ProfilePicture,
   Tagselect,
-  PhotoCrop,
+  ProfilePhotoCrop,
   Modal,
 } from 'components'
 
@@ -299,7 +299,7 @@ export default function Profile() {
         View Profile
       </Button>
       {photo && (
-        <PhotoCrop
+        <ProfilePhotoCrop
           photo={photo}
           name={user.name}
           onSave={file => uploadPhoto({ variables: { file } })}

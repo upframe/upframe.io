@@ -14,11 +14,12 @@ interface Props {
   text?: boolean
   type?: 'button' | 'submit' | 'reset'
   loading?: boolean
+  loadingHideText?: boolean
   disabled?: boolean
   hidden?: boolean
 }
 
-const Button: React.FC<Props> = ({
+const Button: React.FC<React.HTMLProps<HTMLButtonElement> & Props> = ({
   children,
   onClick,
   accent = false,
@@ -29,6 +30,7 @@ const Button: React.FC<Props> = ({
   text = false,
   type,
   loading = false,
+  loadingHideText = false,
   disabled = loading,
   hidden = false,
 }) => {
@@ -38,6 +40,7 @@ const Button: React.FC<Props> = ({
     [filled, 'filled'],
     [text, 'text'],
     [loading, 'loading'],
+    [loadingHideText, 'hideText'],
   ])
 
   const Button = (
@@ -49,7 +52,7 @@ const Button: React.FC<Props> = ({
       hidden={hidden}
     >
       {loading && <Spinner />}
-      {children}
+      {(!loading || !loadingHideText) && children}
     </S.Button>
   )
   if (!linkTo) return Button
@@ -82,7 +85,7 @@ const S = {
     transition: background-color 0.2s ease;
 
     &:disabled {
-      cursor: default;
+      cursor: not-allowed;
       opacity: 0.5;
     }
 
@@ -147,7 +150,14 @@ const S = {
         height: 2.8rem;
         width: 2.8rem;
         margin-left: -2rem;
-        margin-right: 0.5rem;
+      }
+
+      &[data-mode~='accent']:hover > svg > * {
+        stroke: #fff;
+      }
+
+      &[data-mode~='hideText'] > svg {
+        margin: 0;
       }
     }
   `,
