@@ -317,18 +317,19 @@ export function useStateEffect<T>(
 }
 
 export function useClickOutHide(
-  containerClass: string,
+  containerClass: any,
   onHide: () => void,
   delay = false
 ) {
+  const container: string = containerClass?.styledComponentId ?? containerClass
+
   useEffect(() => {
-    if (!containerClass || !onHide) return
+    if (!container || !onHide) return
 
     const onClick = ({ target }: MouseEvent) => {
       const isContext = (node: any = target) => {
         if (!node) return false
-        if (Array.from(node.classList ?? []).includes(containerClass))
-          return true
+        if (Array.from(node.classList ?? []).includes(container)) return true
         return isContext(node.parentElement)
       }
 
@@ -338,5 +339,37 @@ export function useClickOutHide(
     }
     window.addEventListener('mousedown', onClick)
     return () => window.removeEventListener('mousedown', onClick)
-  }, [containerClass, onHide, delay])
+  }, [container, onHide, delay])
+}
+
+export function useReset(v: any, ...rest: any[]) {
+  useEffect(() => {
+    let init: any
+    for (const item of rest)
+      if (typeof item !== 'function') init = item
+      else item(init)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [v])
+}
+
+export function useComputed<T, K>(
+  v: T,
+  compute: (v: T) => K,
+  strategy: 'shallow' | 'json' = 'shallow'
+): K {
+  const [computed, setComputed] = useState<K>(() => compute(v))
+  const comp = strategy === 'shallow' ? v : JSON.stringify(v)
+  const [initialized, setInitialized] = useState(false)
+
+  useEffect(() => {
+    if (!initialized) return
+    setComputed(compute(v))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [comp])
+
+  useEffect(() => {
+    setInitialized(true)
+  }, [])
+
+  return computed
 }

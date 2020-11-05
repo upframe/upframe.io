@@ -5,6 +5,7 @@ import { Spinner } from '../components'
 import MentorList from './Main/MentorList'
 import Home from './Home'
 import ListInfo from './Main/ListInfo'
+import { notify } from 'notification'
 
 export default function List({ match }) {
   const [type, name] = match.url
@@ -21,6 +22,10 @@ export default function List({ match }) {
   if (type === 'list' && name.replace(/_/g) !== list.name.replace(/\s/g))
     return <Redirect replace to={list.name.replace(/\s/g, '_')} />
   if (!loading && !list) return <Redirect to="/404" />
+  if (list?.space?.handle) {
+    notify(`The "${list.name}" list has been migrated to this space`)
+    return <Redirect to={`/space/${list.space.handle}`} />
+  }
   return (
     <Home>
       {type === 'list' && (

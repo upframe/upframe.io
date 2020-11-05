@@ -2,13 +2,13 @@ import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Item from '../Settings/Item'
 import { gql, queries, fragments, useQuery, useMutation } from 'gql'
-import { useDebouncedInputCall, useSignIn } from 'utils/hooks'
+import { useDebouncedInputCall, useHistory, useSignIn } from 'utils/hooks'
 import {
   Button,
   Text,
   ProfilePicture,
   Title,
-  PhotoCrop,
+  ProfilePhotoCrop,
   Tagselect,
 } from '../../components'
 
@@ -36,6 +36,10 @@ const COMPLETE_SIGNUP = gql`
       ...PersonBase
       ... on Mentor {
         calendarConnected
+        spaces {
+          id
+          handle
+        }
       }
     }
   }
@@ -66,6 +70,7 @@ export default function Step2({
   const [highlightInvalid, setHighlightInvalid] = useState(false)
   const fileInput = useRef(null)
   const signIn = useSignIn()
+  const history = useHistory()
 
   const [completeSignup] = useMutation(COMPLETE_SIGNUP, {
     variables: {
@@ -80,6 +85,9 @@ export default function Step2({
     },
     onCompleted({ completeSignup: user }) {
       signIn(user)
+      history.push(
+        user.spaces?.length ? `/s/${user.spaces[0].handle}` : '/settings/public'
+      )
     },
   })
 
@@ -251,7 +259,7 @@ export default function Step2({
         </Button>
       </S.SubmitWrap>
       {rawPhoto && (
-        <PhotoCrop
+        <ProfilePhotoCrop
           photo={rawPhoto}
           name={name}
           onSave={file => {

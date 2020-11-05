@@ -42,7 +42,9 @@ export function useMessaging() {
       const channel = subscriptionData?.data?.channel
       if (!channel) return
       Conversation.get(channel.conversationId).then(con => {
-        con.addChannel(Channel.get(channel.id))
+        const ch = Channel.get(channel.id)
+        con.addChannel(ch)
+        ch.notifyAll(me?.id)
       })
     },
   })

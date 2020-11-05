@@ -43,6 +43,10 @@ export default class Channel {
       ? Channel.instances[id]
       : (Channel.instances[id] = new Channel(id))
 
+  public get slotConnected() {
+    return this.id.endsWith('_s')
+  }
+
   public async messages(query: MsgQuery): Promise<Message[]> {
     const dir: 'forward' | 'backward' =
       !('first' in query) && !('after' in query) ? 'backward' : 'forward'
@@ -247,6 +251,16 @@ export default class Channel {
   public postMessage(msg: Message) {
     this.addMsgs([msg])
     this.eventHandlers.message.forEach(handler => handler(msg))
+  }
+
+  public async notifyAll(currentUser?: string) {
+    const msgs = await this.messages({ first: 10 })
+    msgs
+      .filter(({ author }) => !currentUser || author !== currentUser)
+      .forEach(msg => {
+        this.postMessage(msg)
+        this.setReadStatus({ id: msg.id, read: false })
+      })
   }
 
   public on<T extends ChannelEvent>(event: T, handler: ChannelEventHandler<T>) {

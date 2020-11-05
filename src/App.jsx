@@ -9,16 +9,18 @@ import layout from 'styles/layout'
 import { useMe, useVirtualKeyboard } from 'utils/hooks'
 import { useNavbar } from 'utils/navigation'
 import {
-  Navbar,
+  Mainnav,
   Spinner,
   NotificationStack,
   ScrollToTop,
   MobileNav,
   UpdatePrompt,
+  VersionInfo,
 } from './components'
 
 export default function App() {
-  useMessaging()
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  if (!process.env.REACT_APP_DISABLE_MESSAGING) useMessaging()
   const { visible } = useNavbar()
   const keyboardOpen = useVirtualKeyboard()
   const [updateAvailable, setUpdateAvailable] = useState(false)
@@ -63,7 +65,7 @@ export default function App() {
       </Helmet>
       <Router>
         <S.App mobileNav={visible} keyboard={keyboardOpen}>
-          <Navbar />
+          <Mainnav />
           <Suspense fallback={<Spinner centered />}>
             <ScrollToTop />
             <Routes />
@@ -73,6 +75,7 @@ export default function App() {
           {updateAvailable && <UpdatePrompt />}
         </S.App>
       </Router>
+      <VersionInfo />
     </>
   )
 }

@@ -19,7 +19,7 @@ interface Props {
   hidden?: boolean
 }
 
-const Button: React.FC<Props> = ({
+const Button: React.FC<React.HTMLProps<HTMLButtonElement> & Props> = ({
   children,
   onClick,
   accent = false,
@@ -150,6 +150,10 @@ const S = {
         height: 2.8rem;
         width: 2.8rem;
         margin-left: -2rem;
+      }
+
+      &[data-mode~='accent']:hover > svg > * {
+        stroke: #fff;
       }
 
       &[data-mode~='hideText'] > svg {

@@ -9,6 +9,7 @@
   a {
     color: #000;
     text-decoration: none;
+    text-underline-position: below;
   }
 
   label {
@@ -30,4 +31,8 @@ body {
 img,
 button {
   user-select: none;
+}
+
+div {
+  box-sizing: border-box;
 }

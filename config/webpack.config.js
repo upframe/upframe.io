@@ -21,6 +21,11 @@ const getClientEnvironment = require('./env')
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin')
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin')
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter')
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
+
+const gitRevisionPlugin = new GitRevisionPlugin({
+  commithashCommand: 'rev-parse --short HEAD',
+})
 
 const postcssNormalize = require('postcss-normalize')
 
@@ -615,6 +620,15 @@ const shared = (cst, { emitManifest = true } = {}) => webpackEnv => {
           // The formatter is invoked directly in WebpackDevServerUtils during development
           formatter: isEnvProduction ? typescriptFormatter : undefined,
         }),
+
+      new webpack.DefinePlugin({
+        'process.env': {
+          COMMIT: JSON.stringify(gitRevisionPlugin.commithash()),
+          BRANCH: JSON.stringify(
+            process.env.BRANCH || gitRevisionPlugin.branch()
+          ),
+        },
+      }),
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.
     // Tell webpack to provide empty mocks for them so importing them works.

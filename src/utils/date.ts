@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export const ordNum = n => {
+export const ordNum = (n: number) => {
   if (n >= 10 && n < 20) return n + 'th'
   switch (n % 10) {
     case 1:
