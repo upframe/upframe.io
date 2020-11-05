@@ -41,7 +41,9 @@ const Page: React.FC<Props> = ({
       <Helmet>
         <title>{!title ? 'Upframe' : `${title} | Upframe`}</title>
       </Helmet>
-      <Wrap {...(Wrap !== React.Fragment && wrapProps)}>{children}</Wrap>
+      <Wrap {...props} {...(Wrap !== React.Fragment && wrapProps)}>
+        {children}
+      </Wrap>
     </>
   )
 }
