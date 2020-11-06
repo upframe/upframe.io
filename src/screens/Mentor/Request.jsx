@@ -44,7 +44,7 @@ const IconWithLabel = ({ icon, label, underline = false }) => (
   </Styles.IconLabel>
 )
 
-export default function Request({ slot }) {
+export default function Request({ slot, mentorName }) {
   const [msg, setMsg] = useState('')
   const [valid, setValid] = useState(true)
   const { me } = useMe()
@@ -74,8 +74,8 @@ export default function Request({ slot }) {
           onChange={setMsg}
         />
         <Styles.Hint>
-          We’ll send an invittion to Tocha. You’ll receive a confirmation for
-          your meeting in your inbox.
+          We’ll send an invitation to {mentorName}. You’ll receive a
+          confirmation for your meeting in your inbox.
         </Styles.Hint>
       </Styles.MessageBoxContainer>
       <Styles.MeetingTimeContainer>

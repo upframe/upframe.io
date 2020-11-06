@@ -262,7 +262,7 @@ export default function Meetup({ mentor }) {
       {selectedSlot && (
         <>
           <Divider />
-          <Request slot={selectedSlot} />
+          <Request slot={selectedSlot} mentorName={mentor.name} />
         </>
       )}
     </Card>
