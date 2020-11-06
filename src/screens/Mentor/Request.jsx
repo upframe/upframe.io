@@ -5,36 +5,15 @@ import { notify } from 'notification'
 import { useMe } from 'utils/hooks'
 import { ordNum } from '../../utils/date'
 import styled from 'styled-components'
-
-const WEEK_DAYS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-]
-
-const formatAMPM = date => {
-  let hours = date.getHours()
-  let minutes = date.getMinutes()
-  const ampm = hours >= 12 ? 'pm' : 'am'
-  hours = hours % 12
-  hours = hours ? hours : 12 // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0' + minutes : minutes
-  const strTime = hours + ':' + minutes + ampm
-  return strTime
-}
+import { MONTHS } from 'utils/date'
 
 const getTimeStringFromDatetimeString = date => {
   const d = new Date(date)
-  return `${WEEK_DAYS[d.getMonth()]} ${ordNum(d.getDate())} at ${formatAMPM(d)}`
+  const time = date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+  })
+  return `${MONTHS[d.getMonth()]} ${ordNum(d.getDate())} at ${time}`
 }
 
 const IconWithLabel = ({ icon, label, underline = false }) => (
