@@ -1,7 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function Slot({ start, onClick = () => {}, selected }) {
+interface SlotI {
+  start: string
+  selected: boolean
+  onClick(event: React.MouseEvent<HTMLElement>): void
+}
+
+export default function Slot({ start, onClick = () => {}, selected }: SlotI) {
   const date = new Date(start)
   const time = date.toLocaleString('en-US', {
     hour12: true,
@@ -18,7 +24,7 @@ export default function Slot({ start, onClick = () => {}, selected }) {
   )
 }
 
-const TagContainer = styled.div`
+const TagContainer = styled.div<{ selected: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;

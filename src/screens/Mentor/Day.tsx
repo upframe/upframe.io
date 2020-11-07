@@ -36,7 +36,6 @@ const DayContainer = styled.div<{ selected: boolean; disabled: boolean }>`
   color: var(--cl-accent);
   scroll-snap-align: start;
   cursor: pointer;
-
   ${({ selected }) =>
     selected &&
     `

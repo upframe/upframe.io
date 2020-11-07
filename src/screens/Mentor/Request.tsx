@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { mutations, useMutation } from 'gql'
-import { Title, Textbox, Button, Icon } from '../../components/'
+import { Title, Textbox, Button, Icon } from 'components/'
 import { notify } from 'notification'
 import { useMe } from 'utils/hooks'
-import { ordNum } from '../../utils/date'
+import { ordNum, MONTHS } from 'utils/date'
 import styled from 'styled-components'
-import { MONTHS } from 'utils/date'
 
-const getTimeStringFromDatetimeString = date => {
+interface RequestI {
+  slot: { start: Date }
+  mentorName: string
+}
+
+const getTimeStringFromDatetimeString = (date: Date) => {
   const d = new Date(date)
   const time = date.toLocaleTimeString('en-US', {
     hour: 'numeric',
@@ -23,7 +27,7 @@ const IconWithLabel = ({ icon, label, underline = false }) => (
   </Styles.IconLabel>
 )
 
-export default function Request({ slot, mentorName }) {
+export default function Request({ slot, mentorName }: RequestI) {
   const [msg, setMsg] = useState('')
   const [valid, setValid] = useState(true)
   const { me } = useMe()
@@ -36,7 +40,7 @@ export default function Request({ slot, mentorName }) {
   })
 
   useEffect(() => {
-    setValid(msg.length && me)
+    setValid(!!(msg.length && me))
   }, [msg, me])
 
   async function submit() {
@@ -49,7 +53,7 @@ export default function Request({ slot, mentorName }) {
         <Title size={4}>Message</Title>
         <Textbox
           placeholder="I have challenge x and was hoping you could help me with y."
-          values={msg}
+          value={msg}
           onChange={setMsg}
         />
         <Styles.Hint>
@@ -113,7 +117,7 @@ const Styles = {
       margin-bottom: 30px;
     }
   `,
-  IconLabel: styled.div`
+  IconLabel: styled.div<{ underline: boolean }>`
     display: flex;
     flex-direction: row;
     color: rgba(0, 0, 0, 0.6);

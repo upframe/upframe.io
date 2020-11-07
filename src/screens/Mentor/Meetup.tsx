@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, createRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from './profile.module.scss'
 import { Card, Title } from '../../components'
 import styled from 'styled-components'
@@ -104,7 +104,7 @@ export default function Meetup({ mentor }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const { me } = useMe()
 
-  const [selectedSlot, setSelectedSlot] = useState(null)
+  const [selectedSlot, setSelectedSlot] = useState<any | null>(null)
   const [selectedDay, setSelectedDay] = useState(-1)
   const [maxItems, setMaxItems] = useState(0)
   const [slotDays, setSlotDays] = useState(
@@ -148,8 +148,7 @@ export default function Meetup({ mentor }) {
       const roundedNumberOfEle = Math.floor(numberOfEle)
       if (numberOfEle % 1 !== 0) {
         const missingMargin = ((numberOfEle % 1) * 87) / 2
-        console.log(numberOfEle)
-        console.log(Math.round(missingMargin))
+
         setScrollMargin(Math.round(missingMargin))
       }
       setMaxItems(roundedNumberOfEle)
@@ -209,7 +208,7 @@ export default function Meetup({ mentor }) {
       />
       <Style.DayContainer>
         <Icon
-          color={'#8B8B8B'}
+          color="#8B8B8B"
           onClick={() => scrollToDay('left')}
           icon="angle_left"
         />
@@ -240,7 +239,7 @@ export default function Meetup({ mentor }) {
           })}
         </Style.ScrollView>
         <Icon
-          color={'#8B8B8B'}
+          color="#8B8B8B"
           onClick={() => scrollToDay('right')}
           icon="angle_right"
         />
