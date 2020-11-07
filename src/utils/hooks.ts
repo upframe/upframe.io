@@ -373,3 +373,17 @@ export function useComputed<T, K>(
 
   return computed
 }
+
+export function useQueryParam(name: string) {
+  useHistory()
+  const qString = window.location.search
+  const [v, setV] = useState<string | undefined>(
+    new URLSearchParams(qString).get(name) ?? undefined
+  )
+
+  useEffect(() => {
+    setV(new URLSearchParams(qString).get(name) ?? undefined)
+  }, [qString, name])
+
+  return v
+}

@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
 const Main = React.lazy(() => import('./screens/Main/Main'))
-const Login = React.lazy(() => import('./screens/Login'))
+const SignIn = React.lazy(() => import('./screens/Signin'))
 const Register = React.lazy(() => import('./screens/Signup/Signup'))
 const Settings = React.lazy(() => import('./screens/Settings/Settings'))
 const Profile = React.lazy(() => import('./screens/Mentor/Profile'))
@@ -30,7 +30,7 @@ export default function Routes() {
       <Route exact path="/join/:token" component={JoinSpace} />
       <Route exact path="/search" component={Search} />
       <Route exact path="/privacy" component={Privacy} />
-      <Route exact path="/login" component={Login} />
+      <Route exact path="/login" component={SignIn} />
       <Route exact path="/signup/:token?" component={Register} />
       <Route exact path="/settings" component={Settings} />
       <Route exact path="/settings/:page" component={Settings} />

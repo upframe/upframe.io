@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect, Link } from 'react-router-dom'
+import { useMe, useSignIn } from 'utils/hooks'
+import { gql, fragments, useMutation } from 'gql'
+import styled from 'styled-components'
+import { notify } from 'notification'
+import type * as T from 'gql/types'
 import {
   Labeled,
   Input,
@@ -7,16 +12,12 @@ import {
   Page,
   GoogleSignin,
   Divider,
+  Spinner,
 } from '../components'
-import { useHistory, useMe, useSignIn } from 'utils/hooks'
-import { gql, fragments, mutations, useMutation } from 'gql'
-import styled from 'styled-components'
-import { hasError } from 'api'
-import { notify } from 'notification'
 
-const SIGNIN_GOOGLE = gql`
-  mutation SigninWithGoogle($code: ID!, $redirect: String!) {
-    signInGoogle(code: $code, redirect: $redirect) {
+const SIGN_IN = gql`
+  mutation SignIn($password: PasswordLoginInput, $google: GoogleLoginInput) {
+    signIn(passwordInput: $password, googleInput: $google) {
       ...PersonBase
       ... on Mentor {
         calendarConnected
@@ -29,50 +30,43 @@ const SIGNIN_GOOGLE = gql`
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const history = useHistory()
   const { me } = useMe()
   const afterLogin = useSignIn()
+  const [authCode, setAuthCode] = useState<string>()
+  const redirect = window.location.origin + window.location.pathname
 
-  const [signInGoogle] = useMutation(SIGNIN_GOOGLE, {
-    onError(err) {
-      if (hasError(err, 'INVALID_GRANT'))
-        notify('Invalid grant. Try logging in again')
-      history.push(window.location.pathname)
-    },
-    onCompleted({ signInGoogle: user }) {
-      if (!user) return
-      afterLogin(user)
-    },
-  })
-
-  const [signIn] = useMutation(mutations.SIGN_IN, {
-    onCompleted: ({ signIn: user }) => {
-      if (!user) return
-      afterLogin(user)
-    },
-  })
-
-  const code = new URLSearchParams(window.location.search).get('code')
-
-  useEffect(() => {
-    if (!code || !signInGoogle) return
-    signInGoogle({
-      variables: {
-        code,
-        redirect: window.location.origin + window.location.pathname,
+  const [signIn, { loading, data }] = useMutation<T.SignIn, T.SignInVariables>(
+    SIGN_IN,
+    {
+      onError({ message }) {
+        notify(message)
       },
-    })
-  }, [code, signInGoogle])
+      onCompleted({ signIn: user }) {
+        if (!user) return
+        afterLogin(user)
+      },
+    }
+  )
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    signIn({ variables: { email, password } })
+  function handleSubmit() {
+    signIn({ variables: { password: { email, password } } })
   }
 
+  useEffect(() => {
+    if (!authCode || !signIn) return
+    signIn({ variables: { google: { code: authCode, redirect } } })
+  }, [authCode, redirect, signIn])
+
   if (me) return <Redirect to="/" />
+  if (loading) return <Spinner centered />
   return (
     <Page form title="Login" onSubmit={handleSubmit}>
-      <GoogleSignin type="button" />
+      <GoogleSignin
+        type="button"
+        onCode={setAuthCode}
+        redirect={redirect}
+        disabled={loading || !!data?.signIn}
+      />
       <Divider />
       <Labeled
         label="Email"
