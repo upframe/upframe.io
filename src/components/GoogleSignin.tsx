@@ -7,7 +7,7 @@ import { useQueryParam, useHistory } from 'utils/hooks'
 
 const SIGNIN_URL = gql`
   query GoogleSignInUrl($redirect: String!) {
-    googleSigninUrl(redirect: $redirect)
+    googleAuthUrl(redirect: $redirect)
   }
 `
 
@@ -46,7 +46,7 @@ export default function Google({
       <Button
         {...props}
         disabled={disabled || loading}
-        linkTo={data?.googleSigninUrl ?? ''}
+        linkTo={data?.googleAuthUrl ?? ''}
         newTab={false}
       >
         {loading ? <Spinner /> : <Icon icon="google" />}

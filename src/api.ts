@@ -11,13 +11,24 @@ import {
   IntrospectionFragmentMatcher,
 } from 'apollo-cache-inmemory'
 import { notify } from './notification'
+import history from 'utils/history'
+import { queries } from 'gql'
 
 const httpLink = ApolloLink.from([
   onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors)
       graphQLErrors.forEach(({ message, locations, path, extensions }) => {
-        if (['BAD_USER_INPUT', 'FORBIDDEN'].includes(extensions?.code))
+        if (
+          ['BAD_USER_INPUT', 'FORBIDDEN', 'GOOGLE_AUTH_ERROR'].includes(
+            extensions?.code
+          )
+        ) {
+          if (extensions?.code === 'GOOGLE_AUTH_ERROR') {
+            api.writeQuery({ query: queries.ME, data: { me: null } })
+            history.push('/login')
+          }
           return notify(message)
+        }
         console.log(
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
         )

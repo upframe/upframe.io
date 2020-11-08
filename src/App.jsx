@@ -1,6 +1,5 @@
 import React, { Suspense, useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
-import { BrowserRouter as Router } from 'react-router-dom'
 import Routes from './Routes'
 import { useMessaging } from './conversations'
 import styled from 'styled-components'
@@ -63,18 +62,17 @@ export default function App() {
         <meta property="og:site_name" content="Upframe"></meta>
         <meta name="twitter:card" content="summary_large_image"></meta>
       </Helmet>
-      <Router>
-        <S.App mobileNav={visible} keyboard={keyboardOpen}>
-          <Mainnav />
-          <Suspense fallback={<Spinner centered />}>
-            <ScrollToTop />
-            <Routes />
-          </Suspense>
-          <NotificationStack />
-          <MobileNav />
-          {updateAvailable && <UpdatePrompt />}
-        </S.App>
-      </Router>
+
+      <S.App mobileNav={visible} keyboard={keyboardOpen}>
+        <Mainnav />
+        <Suspense fallback={<Spinner centered />}>
+          <ScrollToTop />
+          <Routes />
+        </Suspense>
+        <NotificationStack />
+        <MobileNav />
+        {updateAvailable && <UpdatePrompt />}
+      </S.App>
       <VersionInfo />
     </>
   )
