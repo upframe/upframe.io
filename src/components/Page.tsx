@@ -1,15 +1,17 @@
 import React from 'react'
+import { Spinner } from 'components'
 import styled from 'styled-components'
 import { Helmet } from 'react-helmet'
 
 interface Props {
   title?: string
   form?: boolean
-  style?(): JSX.Element
+  style?(...args: any[]): JSX.Element
   onSubmit?(e?: React.FormEvent<HTMLFormElement>): void
   defaultStyle?: boolean
   className?: string
   wrap?: boolean
+  loading?: boolean
 }
 
 const Page: React.FC<Props> = ({
@@ -20,6 +22,7 @@ const Page: React.FC<Props> = ({
   children,
   onSubmit,
   defaultStyle = false,
+  loading,
   ...props
 }) => {
   const Wrap: any = form || wrap ? S.Form : style ? S.Page : React.Fragment
@@ -43,6 +46,11 @@ const Page: React.FC<Props> = ({
       </Helmet>
       <Wrap {...props} {...(Wrap !== React.Fragment && wrapProps)}>
         {children}
+        {loading && (
+          <S.Loading>
+            <Spinner centered />
+          </S.Loading>
+        )}
       </Wrap>
     </>
   )
@@ -93,6 +101,21 @@ const S = {
   `,
 
   Page: styled.div``,
+
+  Loading: styled.div`
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fffe;
+    backdrop-filter: blur(0.5rem);
+    border-radius: inherit;
+
+    @supports (backdrop-filter: blur(0.5rem)) {
+      background-color: #fff8;
+    }
+  `,
 }
 
 export default Object.assign(Page, S)

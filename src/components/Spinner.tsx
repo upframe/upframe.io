@@ -73,8 +73,8 @@ const S = {
 
     &[data-align='center'] {
       position: fixed;
-      left: calc(50vw - 2.5rem);
-      top: calc(50vh - 2.5rem);
+      left: calc(50% - 2.5rem);
+      top: calc(50% - 2.5rem);
     }
   `,
 }
