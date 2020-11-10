@@ -69,7 +69,13 @@ export default function ProfilePicture({
         {pics.map(({ type, url }) => (
           <source srcSet={url} type={`image/${type}`} key={url} />
         ))}
-        <img src={fallback} alt="profile" width={pxSize} height={pxSize} />
+        <img
+          src={fallback}
+          alt="profile"
+          width={pxSize}
+          height={pxSize}
+          referrerPolicy="no-referrer"
+        />
       </S.Picture>
     </Link>
   )

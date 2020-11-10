@@ -6,8 +6,12 @@ import type * as T from 'gql/types'
 import { useQueryParam, useHistory } from 'utils/hooks'
 
 const SIGNIN_URL = gql`
-  query GoogleSignInUrl($redirect: String!, $state: String) {
-    googleAuthUrl(redirect: $redirect, state: $state)
+  query GoogleSignInUrl(
+    $redirect: String!
+    $scope: GoogleAuthScope!
+    $state: String
+  ) {
+    googleAuthUrl(redirect: $redirect, scope: $scope, state: $state)
   }
 `
 
@@ -18,6 +22,7 @@ type Props = {
   disabled?: boolean
   onCode?(code: string): void
   state?: string
+  scope?: T.GoogleAuthScope
 } & Parameters<typeof Button>[0]
 
 export default function Google({
@@ -27,13 +32,14 @@ export default function Google({
   onCode,
   disabled = false,
   state,
+  scope = 'SIGN_IN',
   ...props
 }: Props) {
   const code = useQueryParam('code')
   const history = useHistory()
 
   const { data, loading } = useQuery<T.GoogleSignInUrl>(SIGNIN_URL, {
-    variables: { redirect, state },
+    variables: { redirect, state, scope },
     skip: !!(disabled || code),
   })
 

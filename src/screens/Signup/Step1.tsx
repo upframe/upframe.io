@@ -26,7 +26,7 @@ export default function Step1({ info, token }) {
     {
       onCompleted({ signUp }) {
         if (signUp.__typename !== 'SignUpInfo') return signIn(signUp)
-        history.push(`/signup/${(signUp as any).id}`)
+        history.push(`/signup/${(signUp as any).signUpId}`)
       },
     }
   )
@@ -57,6 +57,7 @@ export default function Step1({ info, token }) {
         redirect={redirect}
         state={token}
         onCode={setCode}
+        scope="SIGN_UP"
       />
       <Divider />
       <Labeled

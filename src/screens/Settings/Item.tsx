@@ -3,6 +3,20 @@ import { Input, Textbox, Text, Button } from 'components'
 import style from './item.module.scss'
 import { classes } from 'utils/css'
 
+type Props = {
+  label: string
+  input?: string
+  text?: string
+  button?: string
+  accent?: boolean
+  custom?: (...args: any[]) => JSX.Element
+  hint?: string
+  error?: boolean
+  className?: string
+  inputType?: string
+  linkTo?: string
+} & Optional<Parameters<typeof Input>[0]>
+
 export default function Item({
   label,
   input,
@@ -20,7 +34,7 @@ export default function Item({
   linkTo,
   action,
   ...props
-}) {
+}: Props) {
   const [value, setValue] = useState(input || text)
 
   useEffect(() => {
@@ -34,12 +48,12 @@ export default function Item({
 
   const actionTag =
     input !== undefined ? 'input' : text !== undefined ? 'textbox' : undefined
-  const Action = { input: Input, textbox: Textbox }[actionTag]
+  const Action = { input: Input, textbox: Textbox }[actionTag as string]
 
   const id = label.replace(/\s/g, '')
   return (
     <div
-      className={classes(style.item, className)}
+      className={classes(style.item, className as string)}
       data-type={error ? 'error' : undefined}
       data-action={action}
       data-label={label?.toLowerCase()}
@@ -63,6 +77,7 @@ export default function Item({
         <div className={style.btWrap}>
           <Text>{children}</Text>
           {button && (
+            // @ts-ignore
             <Button
               {...(linkTo ? { linkTo } : { onClick: onChange })}
               accent={accent}

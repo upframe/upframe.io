@@ -27,10 +27,6 @@ export default function Signup({ match }) {
   params.delete('state')
   const searchStr = `?${params.toString()}`.replace(/^\?$/, '')
 
-  console.log({ searchStr, state })
-
-  console.log({ signUpInfo })
-
   if (!match.params.token)
     return state ? (
       <Redirect to={`${match.url}/${state}${searchStr}`} />
@@ -38,6 +34,11 @@ export default function Signup({ match }) {
       <Redirect to="/" />
     )
   if (error) return <Redirect to="/" />
+  if (
+    signUpInfo?.signUpId &&
+    window.location.pathname.split('/').pop() !== signUpInfo.signUpId
+  )
+    return <Redirect to={`/signup/${signUpInfo.signUpId}`} />
   if (signUpInfo?.authComplete)
     return <Step2 token={match.params.token} info={signUpInfo} />
   return <Step1 info={signUpInfo} token={match.params.token} />

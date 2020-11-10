@@ -1,8 +1,11 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import Item from '../Settings/Item'
-import { gql, queries, fragments, useQuery, useMutation } from 'gql'
+import { queries, useQuery, useMutation } from 'gql'
 import { useDebouncedInputCall, useHistory, useSignIn } from 'utils/hooks'
+import * as gql from './gql'
+import type * as T from 'gql/types'
+import type { Tag } from 'components/TagInput'
 import {
   Button,
   Text,
@@ -12,53 +15,24 @@ import {
   Tagselect,
 } from '../../components'
 
-const COMPLETE_SIGNUP = gql`
-  mutation CompleteSignUp(
-    $token: ID!
-    $name: String!
-    $handle: String!
-    $biography: String!
-    $location: String
-    $headline: String
-    $photo: String
-    $tags: [String]
-  ) {
-    completeSignup(
-      token: $token
-      name: $name
-      handle: $handle
-      biography: $biography
-      location: $location
-      headline: $headline
-      photo: $photo
-      tags: $tags
-    ) {
-      ...PersonBase
-      ... on Mentor {
-        calendarConnected
-        spaces {
-          id
-          handle
-        }
-      }
-    }
-  }
-  ${fragments.person.base}
-`
+interface Props {
+  token: string
+  info: Exclude<T.SignUpTokenInfo['signUpInfo'], null>
+}
 
 export default function Step2({
   token,
-  info: { name: initialName, picture, defaultPicture, role },
-}) {
+  info: { signUpName: initialName, picture, defaultPicture, role },
+}: Props) {
   const [name, _setName] = useState(initialName || '')
   const [handle, _setHandle] = useState(handleFromName(name))
   const [location, setLocation] = useState('')
   const [headline, setHeadline] = useState('')
   const [biography, setBiography] = useState('')
   const [photo, setPhoto] = useState(picture?.url ?? defaultPicture?.url)
-  const [rawPhoto, setRawPhoto] = useState()
+  const [rawPhoto, setRawPhoto] = useState<string>()
   const [cstHandle, setCstHandle] = useState(false)
-  const [tags, setTags] = useState([])
+  const [tags, setTags] = useState<Tag[]>([])
   const checkData = useDebouncedInputCall({
     name,
     handle,
@@ -66,13 +40,22 @@ export default function Step2({
     location,
     headline,
   })
-  const [invalid, setInvalid] = useState({})
+  const [invalid, setInvalid] = useState<{
+    name?: string
+    handle?: string
+    location?: string
+    headline?: string
+    biography?: string
+  }>({})
   const [highlightInvalid, setHighlightInvalid] = useState(false)
-  const fileInput = useRef(null)
+  const fileInput = useRef() as React.MutableRefObject<HTMLInputElement>
   const signIn = useSignIn()
   const history = useHistory()
 
-  const [completeSignup] = useMutation(COMPLETE_SIGNUP, {
+  const [completeSignup] = useMutation<
+    T.CompleteSignUp,
+    T.CompleteSignUpVariables
+  >(gql.COMPLETE_SIGNUP, {
     variables: {
       name,
       handle,
@@ -85,9 +68,9 @@ export default function Step2({
     },
     onCompleted({ completeSignup: user }) {
       signIn(user)
-      history.push(
-        user.spaces?.length ? `/s/${user.spaces[0].handle}` : '/settings/public'
-      )
+      const spaces = (user as any).spaces
+      if (!spaces?.length) return history.push('/settings/public')
+      history.push(`/s/${spaces[0].handle}`)
     },
   })
 
@@ -127,14 +110,14 @@ export default function Step2({
 
   function editPhoto(e) {
     const reader = new FileReader()
-    reader.onload = e => setRawPhoto(e.target.result)
+    reader.onload = (e: any) => setRawPhoto(e.target.result)
     reader.readAsDataURL(e.target.files[0])
   }
 
   return (
     <S.Step2 onSubmit={e => e.preventDefault()}>
       <S.Head>
-        <ProfilePicture imgs={[{ url: photo }]} size="11.125rem" />
+        <ProfilePicture imgs={[{ url: photo as string }]} size="11.125rem" />
         <div>
           <Title size={2}>Profile Picture</Title>
           <Text>
@@ -146,11 +129,11 @@ export default function Step2({
             </span>
           </Text>
           <div>
-            <Button accent onClick={() => fileInput.current.click()}>
+            <Button accent onClick={() => fileInput.current?.click()}>
               Upload photo
             </Button>
             {photo !== defaultPicture?.url && (
-              <Button onClick={() => setPhoto(defaultPicture.url)}>
+              <Button onClick={() => setPhoto(defaultPicture?.url)}>
                 Remove
               </Button>
             )}
@@ -251,7 +234,7 @@ export default function Step2({
           accent
           type="submit"
           disabled={Object.keys(invalid).length > 0 || loading}
-          onClick={completeSignup}
+          onClick={() => completeSignup()}
           loading={loading}
           loadingHideText
         >
@@ -263,10 +246,10 @@ export default function Step2({
           photo={rawPhoto}
           name={name}
           onSave={file => {
-            setRawPhoto()
+            setRawPhoto(undefined)
             setPhoto(file)
           }}
-          onCancel={() => setRawPhoto()}
+          onCancel={() => setRawPhoto(undefined)}
         />
       )}
     </S.Step2>
