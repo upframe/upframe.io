@@ -143,7 +143,7 @@ const svg = {
         />
       </g>
     ),
-    size: 20,
+    size: 18,
   },
   twitter: {
     path:

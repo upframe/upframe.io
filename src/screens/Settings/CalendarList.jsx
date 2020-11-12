@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Title, Text, Checkbox } from 'components'
-import GoogleSync from './GoogleSync'
+import { Title, Text, Checkbox, GoogleSignin } from 'components'
 import { classes } from 'utils/css'
 import styles from './calendarList.module.scss'
 
@@ -67,7 +66,8 @@ export default function CalendarList({
             <Text strong small>
               Check your availability before adding free slots.
             </Text>
-            <GoogleSync loading={connecting} />
+            {/* <GoogleSync loading={connecting} /> */}
+            <GoogleSignin label="Add Google Calendar" />
           </>
         )}
       </div>

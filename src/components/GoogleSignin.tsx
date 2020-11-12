@@ -81,18 +81,18 @@ const S = {
       }
 
       svg {
-        width: 2rem;
-        height: 2rem;
-        margin-right: 0.75rem;
+        max-width: 1.9rem;
+        max-height: 1.9rem;
+        margin-right: 24px;
       }
 
       svg[data-icon='google'] {
-        height: 1.5rem;
-        width: 1.5rem;
+        height: unset;
+        width: unset;
       }
 
       span {
-        flex-grow: 1;
+        font-weight: 500;
       }
     }
   `,
