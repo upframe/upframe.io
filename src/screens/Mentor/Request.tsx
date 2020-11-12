@@ -7,13 +7,13 @@ import { ordNum, MONTHS } from 'utils/date'
 import styled from 'styled-components'
 
 interface RequestI {
-  slot: { start: Date }
+  slot: { start: string }
   mentorName: string
 }
 
-const getTimeStringFromDatetimeString = (date: Date) => {
+const getTimeStringFromDatetimeString = (date: string) => {
   const d = new Date(date)
-  const time = date.toLocaleTimeString('en-US', {
+  const time = d.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
   })

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 interface SlotI {
   start: string
   selected: boolean
-  onClick(event: React.MouseEvent<HTMLElement>): void
+  onClick(string): void
 }
 
 export default function Slot({ start, onClick = () => {}, selected }: SlotI) {

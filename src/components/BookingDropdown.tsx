@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { useDetectClickOutside } from '../utils/hooks'
+import { useDetectClickOutside } from 'utils/hooks'
 import Icon from './Icon'
 import styled from 'styled-components'
 
@@ -18,7 +18,7 @@ export default function Dropdown({ values, onSelect, selectedValue }: Props) {
     <Style.DropDownContainer ref={valuesRef}>
       <Style.DropDownHeader onClick={() => setValuesVisible(!valuesVisible)}>
         {selectedValue}
-        <Icon color={'rgba(0, 0, 0, 0.46)'} icon="drop_down_arrow" />
+        <Icon color="rgba(0, 0, 0, 0.46)" icon="drop_down_arrow" />
       </Style.DropDownHeader>
       {valuesVisible && (
         <Style.DropDownValuesContainer>
