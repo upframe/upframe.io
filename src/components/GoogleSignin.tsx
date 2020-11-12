@@ -69,6 +69,7 @@ const S = {
     display: contents;
 
     button {
+      flex-shrink: 0;
       font-family: 'Roboto', sans-serif;
       display: flex;
       align-items: center;
@@ -84,6 +85,7 @@ const S = {
         max-width: 1.9rem;
         max-height: 1.9rem;
         margin-right: 24px;
+        flex-shrink: 0;
       }
 
       svg[data-icon='google'] {
@@ -92,6 +94,7 @@ const S = {
       }
 
       span {
+        flex-grow: 1;
         font-weight: 500;
       }
     }

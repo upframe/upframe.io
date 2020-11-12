@@ -5,7 +5,7 @@ import { Title, Text } from 'components'
 import Item from './Item'
 import ChangeBanner from './ChangeBanner'
 import Calendar from './Calendar'
-import GoogleSync from './GoogleSync'
+import GcalConnect from './GcalConnect'
 import CalendarList from './CalendarList'
 import styles from './calendarTab.module.scss'
 import { queries, mutations, useQuery, useMutation } from 'gql'
@@ -116,10 +116,7 @@ export default function CalendarTab() {
         Spend less time here and focus on what really matters by syncing your
         calendar with Upframe.
       </Text>
-      <Item
-        label="Google Calendar"
-        custom={<GoogleSync loading={connecting} />}
-      >
+      <Item label="Google Calendar" custom={<GcalConnect loading={loading} />}>
         {user.calendarConnected ? (
           <Text>
             <Text underlined>{user.google?.email}</Text> is connected to your

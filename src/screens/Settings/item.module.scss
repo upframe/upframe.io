@@ -37,7 +37,7 @@
 .btWrap {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
 
   & > *:not(p):last-child {
     margin-left: 6vw;
@@ -45,6 +45,6 @@
   }
 
   button {
-    width: 10.5rem;
+    margin-left: 2rem;
   }
 }

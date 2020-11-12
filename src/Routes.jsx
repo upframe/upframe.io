@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 
 const Main = React.lazy(() => import('./screens/Main/Main'))
 const SignIn = React.lazy(() => import('./screens/Signin'))
@@ -31,6 +31,7 @@ export default function Routes() {
       <Route exact path="/search" component={Search} />
       <Route exact path="/privacy" component={Privacy} />
       <Route exact path="/login" component={SignIn} />
+      <Redirect from="/signin" to="login" />
       <Route exact path="/signup/:token?" component={Register} />
       <Route exact path="/settings" component={Settings} />
       <Route exact path="/settings/:page" component={Settings} />
