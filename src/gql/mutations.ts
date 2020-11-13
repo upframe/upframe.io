@@ -156,33 +156,6 @@ export const CANCEL_MEETING = gql`
   }
 `
 
-export const CONNECT_CALENDAR = gql`
-  mutation ConnectCalendar($code: ID!, $redirect: String!) {
-    connectCalendar(code: $code, redirect: $redirect) {
-      id
-      ... on Mentor {
-        calendarConnected
-        calendars {
-          id
-          name
-          color
-        }
-      }
-    }
-  }
-`
-
-export const DISCONNECT_CALENDAR = gql`
-  mutation DisconnectCalendar {
-    disconnectCalendar {
-      id
-      ... on Mentor {
-        calendarConnected
-      }
-    }
-  }
-`
-
 export const CHANGE_PASSWORD = gql`
   mutation ChangePassword($password: String!, $token: String) {
     changePassword(password: $password, token: $token) {

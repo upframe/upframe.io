@@ -43,3 +43,8 @@ export const sizesToQueries = (sizes: string) =>
       })
       .join('\n')}
 `.replace(/(?:\n|^)\s+/g, '\n')
+
+export const nthOfClass = (el: HTMLElement) =>
+  Array.from(
+    document.querySelectorAll(el.className.replace(/(^|\s)(?=\w)/g, '.'))
+  ).indexOf(el)

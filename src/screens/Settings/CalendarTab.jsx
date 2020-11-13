@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useSignOut, useCalendars, useHistory, useMe } from 'utils/hooks'
+import { useSignOut, useCalendars, useMe } from 'utils/hooks'
 import { haveSameContent } from 'utils/array'
 import { Title, Text } from 'components'
 import Item from './Item'
@@ -19,7 +19,6 @@ export default function CalendarTab() {
   const [showCalendars, setShowCalendars] = useState([])
   const [calendars, loading] = useCalendars(showCalendars)
   const [extEvents, setExtEvents] = useState([])
-  const history = useHistory()
   const signOut = useSignOut()
 
   const { data: { user = {} } = {} } = useQuery(queries.SETTINGS_CALENDAR, {
@@ -31,22 +30,6 @@ export default function CalendarTab() {
       }
     },
   })
-
-  const [connect, { loading: connecting }] = useMutation(
-    mutations.CONNECT_CALENDAR
-  )
-
-  const code = new URLSearchParams(window.location.search).get('code')
-  useEffect(() => {
-    if (!code || !history || !connect) return
-    connect({
-      variables: {
-        code,
-        redirect: window.location.origin + window.location.pathname,
-      },
-    })
-    history.replace(window.location.pathname)
-  }, [code, history, connect])
 
   useEffect(() => {
     if (!Array.isArray(user.slots)) return
@@ -97,12 +80,7 @@ export default function CalendarTab() {
 
   return (
     <div className={styles.calendarTab}>
-      <CalendarList
-        user={user}
-        onChange={setShowCalendars}
-        loading={loading}
-        connecting={connecting}
-      />
+      <CalendarList user={user} onChange={setShowCalendars} loading={loading} />
       <Calendar
         slots={slots}
         onAddSlot={slot => setSlots([...slots, slot])}
