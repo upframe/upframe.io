@@ -8,9 +8,13 @@ import {
   Title,
   Text,
   Chip,
+  Button,
 } from '../../components'
+import { useMe } from 'utils/hooks'
 
-export default function Showcase({ user }) {
+export default function Showcase({ user, conId }) {
+  const { me } = useMe()
+
   return (
     <Card className={styles.showcase}>
       <div className={styles.leftColumn}>
@@ -32,6 +36,20 @@ export default function Showcase({ user }) {
             />
           ))}
         </div>
+        {me && (
+          <Button
+            filled
+            linkTo={
+              conId
+                ? `/conversations/${conId}`
+                : user.id !== me.id
+                ? `/conversations/new?parts=${user.id}`
+                : '/conversations'
+            }
+          >
+            Message
+          </Button>
+        )}
       </div>
       <div className={styles.rightColumn}>
         <Title size={3}>About me</Title>

@@ -18,6 +18,8 @@ const httpLink = ApolloLink.from([
       graphQLErrors.forEach(({ message, locations, path, extensions }) => {
         if (['BAD_USER_INPUT', 'FORBIDDEN'].includes(extensions?.code))
           return notify(message)
+        if (window.location.hostname === 'upframe.io') return
+        // eslint-disable-next-line no-console
         console.log(
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
         )

@@ -1,5 +1,30 @@
 import { useState, useEffect } from 'react'
 
+export const WEEK_DAYS = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+]
+
+export const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+]
+
 export const ordNum = (n: number) => {
   if (n >= 10 && n < 20) return n + 'th'
   switch (n % 10) {

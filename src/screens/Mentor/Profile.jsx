@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Breadcrumbs, RecommendationCard, Spinner } from '../../components'
 import styles from './profile.module.scss'
 import Showcase from './Showcase'
 import Meetup from './Meetup'
-import Request from './Request'
 import { useQuery, queries, hasError } from 'gql'
 import { Helmet } from 'react-helmet'
+import Conversation from 'conversations/conversation'
 
 const recommend = {
   malik: ['pf', 'hugo.franca'],
@@ -18,7 +18,7 @@ const recommend = {
 const slotsAfter = new Date().toISOString()
 
 export default function Profile({ match }) {
-  const [showRequest, toggleRequest] = useState(false)
+  const [conId, setConId] = useState()
 
   const { data: { user = {} } = {}, loading, error } = useQuery(
     queries.PROFILE,
@@ -29,6 +29,13 @@ export default function Profile({ match }) {
       },
     }
   )
+
+  useEffect(() => {
+    setConId(Conversation.getByUsers([user.id])?.id)
+    Conversation.onStatic('added', () =>
+      setConId(Conversation.getByUsers([user.id])?.id)
+    )
+  }, [user.id])
 
   if (hasError(error, 'KEYCODE_ERROR')) return <Redirect to="/404" />
   if (loading) return <Spinner centered />
@@ -62,17 +69,10 @@ export default function Profile({ match }) {
         <meta name="twitter:card" content="summary_large_image"></meta>
       </Helmet>
       <Breadcrumbs name={user.name} />
-      <Showcase user={user} />
+      <Showcase user={user} conId={conId} />
       {user.role !== 'USER' && (
         <>
-          <Meetup mentor={user} onSlot={toggleRequest} />
-          {showRequest && (
-            <Request
-              mentor={user}
-              {...(typeof showRequest === 'string' && { slot: showRequest })}
-              onClose={() => toggleRequest(false)}
-            />
-          )}
+          <Meetup mentor={user} />
           {user.handle in recommend && (
             <RecommendationCard recommendations={recommend[user.handle]} />
           )}
