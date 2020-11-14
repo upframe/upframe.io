@@ -40,7 +40,11 @@ export default function VersionInfo() {
       <br />
       {process.env.BRANCH}
       <br />
-      {process.env.COMMIT}
+      <a
+        href={`https://github.com/upframe/upframe.io/commit/${process.env.COMMIT}`}
+      >
+        {process.env.COMMIT}
+      </a>
     </S.Info>
   )
 }
@@ -59,5 +63,10 @@ const S = {
     text-shadow: 0 0 2px #fff;
     font-weight: 700;
     text-align: right;
+
+    a {
+      pointer-events: all;
+      color: inherit;
+    }
   `,
 }

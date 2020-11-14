@@ -6,8 +6,8 @@ import {
   Icon,
   SocialIcon,
   Title,
-  Text,
   Chip,
+  Markdown,
 } from '../../components'
 
 export default function Showcase({ user }) {
@@ -38,7 +38,7 @@ export default function Showcase({ user }) {
         {user.biography &&
           user.biography
             .split('\n')
-            .map((v, i) => <Text key={`biography${i}`}>{v}</Text>)}
+            .map((v, i) => <Markdown key={`biography${i}`} text={v} />)}
         {user.role !== 'USER' && Array.isArray(user.tags) && (
           <>
             <Title size={3}>I can advise you on</Title>

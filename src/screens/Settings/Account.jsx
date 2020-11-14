@@ -168,7 +168,7 @@ export default function Account() {
           </Button>
         </div>
       ) : (
-        <GoogleSignin text="Connect to Google" />
+        <GoogleSignin text="Connect to Google" scope="SIGN_UP" />
       )}
 
       <Title size={2} className={styles.span2}>

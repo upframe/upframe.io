@@ -4,7 +4,7 @@ import styled from 'styled-components'
 interface Props {
   options: { label: string; id?: string; color?: string | null }[]
   selected?: string
-  onSelect(v?: string): void
+  onSelect(v: string): void
 }
 
 export default function Radio({ options, selected, onSelect }: Props) {
@@ -42,6 +42,7 @@ const S = {
 
   RadioButton: styled.input<{ color: string }>`
     position: relative;
+    margin: 0;
     margin-right: 1rem;
     appearance: none;
     width: 1rem;

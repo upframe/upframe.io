@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Title, Text, Checkbox } from 'components'
+import { Title, Text, Checkbox, Button } from 'components'
 import GcalConnect from './GcalConnect'
+import GcalSelect from './GcalSelect'
 import layout from 'styles/layout'
 import type { SettingsCalendar_user_Mentor } from 'gql/types'
 
@@ -14,6 +15,7 @@ interface Props {
 
 export default function CalendarList({ onChange, user, loading = [] }: Props) {
   const [selection, setSelection] = useState<string[]>([])
+  const [selectGcal, setSelectGcal] = useState(false)
 
   useEffect(() => {
     const saved: string[] = JSON.parse(
@@ -36,13 +38,40 @@ export default function CalendarList({ onChange, user, loading = [] }: Props) {
   return (
     <S.Wrap>
       <S.Container
-        data-status={user.calendarConnected ? 'connected' : 'disconnected'}
+        data-status={user.google?.gcalGranted ? 'connected' : 'disconnected'}
       >
-        {user.calendarConnected && (
+        {!user.google?.gcalGranted || !user.google?.gcalConnected ? (
+          <>
+            <Title size={3}>Connect your Google&nbsp;Calendar</Title>
+            {!user.google?.gcalGranted ? (
+              <>
+                <Text strong small mark>
+                  Scheduled events are added instantly to your calendar.
+                </Text>
+                <Text strong small>
+                  Check your availability before adding free slots.
+                </Text>
+                <GcalConnect />
+              </>
+            ) : (
+              <>
+                <Text strong small mark>
+                  Select a Google Calendar to finish the setup.
+                </Text>
+                <Text strong small>
+                  We will add your Upframe slots to the calendar you select.
+                </Text>
+                <Button accent onClick={() => setSelectGcal(true)}>
+                  Select Calendar
+                </Button>
+              </>
+            )}
+          </>
+        ) : (
           <>
             <Title size={3}>Calendars</Title>
             <S.List>
-              {(user.calendars || []).map(({ id, name, color }) => {
+              {(user.google.calendars ?? []).map(({ id, name, color }) => {
                 return (
                   <S.Toggle key={id}>
                     <Checkbox
@@ -60,19 +89,10 @@ export default function CalendarList({ onChange, user, loading = [] }: Props) {
             </S.List>
           </>
         )}
-        {!user.calendarConnected && (
-          <>
-            <Title size={3}>Connect your Google&nbsp;Calendar</Title>
-            <Text strong small mark>
-              Scheduled events are added instantly to your calendar.
-            </Text>
-            <Text strong small>
-              Check your availability before adding free slots.
-            </Text>
-            <GcalConnect />
-          </>
-        )}
       </S.Container>
+      {selectGcal && (
+        <GcalSelect onClose={() => setSelectGcal(false)} user={user} />
+      )}
     </S.Wrap>
   )
 }
@@ -100,6 +120,7 @@ const S = {
     position: sticky;
     top: 50vh;
     padding: 1.5rem 1rem;
+    padding-bottom: 0;
     background-color: var(--cl-background);
     z-index: 1000;
 
@@ -122,7 +143,6 @@ const S = {
     &[data-status='connected'] {
       border: none;
       overflow-x: hidden;
-      padding-bottom: 0;
 
       & > * {
         text-align: left;

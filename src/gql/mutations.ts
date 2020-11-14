@@ -160,9 +160,9 @@ export const CHANGE_PASSWORD = gql`
   mutation ChangePassword($password: String!, $token: String) {
     changePassword(password: $password, token: $token) {
       ...PersonBase
-      ... on Mentor {
-        calendarConnected
-      }
+      # ... on Mentor {
+      #   calendarConnected
+      # }
       google {
         connected
         email
@@ -177,9 +177,9 @@ export const CHANGE_EMAIL = gql`
   mutation ChangeEmail($token: String!) {
     changeEmail(token: $token) {
       ...PersonBase
-      ... on Mentor {
-        calendarConnected
-      }
+      # ... on Mentor {
+      #   calendarConnected
+      # }
     }
   }
   ${person.base}

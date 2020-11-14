@@ -39,9 +39,6 @@ export const SIGNUP = gql`
       ... on Person {
         ...PersonBase
       }
-      ... on Mentor {
-        calendarConnected
-      }
       ... on SignUpInfo {
         ...SignUpInformation
       }
@@ -74,7 +71,6 @@ export const COMPLETE_SIGNUP = gql`
     ) {
       ...PersonBase
       ... on Mentor {
-        calendarConnected
         spaces {
           id
           handle

@@ -19,9 +19,6 @@ const SIGN_IN = gql`
   mutation SignIn($password: PasswordLoginInput, $google: GoogleLoginInput) {
     signIn(passwordInput: $password, googleInput: $google) {
       ...PersonBase
-      ... on Mentor {
-        calendarConnected
-      }
     }
   }
   ${fragments.person.base}

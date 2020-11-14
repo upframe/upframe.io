@@ -9,7 +9,7 @@ type Props = {
   text?: string
   button?: string
   accent?: boolean
-  custom?: (...args: any[]) => JSX.Element
+  custom?: JSX.Element
   hint?: string
   error?: boolean
   className?: string

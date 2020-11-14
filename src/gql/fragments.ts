@@ -158,7 +158,6 @@ export const person = {
         email
         searchable
         ... on Mentor {
-          calendarConnected
           visibility
         }
         ...Timezone
@@ -172,6 +171,36 @@ export const person = {
       }
       ${person.base}
       ${person.timezone}
+    `
+  },
+
+  get settingsCalendar() {
+    return gql`
+      fragment CalendarSettings on Person {
+        ...PersonBase
+        email
+        ... on Mentor {
+          slots(includeBooked: true) {
+            id
+            start
+            end
+          }
+          google {
+            connected
+            email
+            canDisconnect
+            gcalGranted
+            gcalConnected
+            calendars {
+              id
+              name
+              color
+              access
+            }
+          }
+        }
+      }
+      ${person.base}
     `
   },
 }
