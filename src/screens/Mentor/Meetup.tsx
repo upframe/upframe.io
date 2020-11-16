@@ -182,12 +182,12 @@ export default function Meetup({ mentor }) {
     return () => window.removeEventListener('resize', update)
   })
 
-  if (!me || me.id === mentor.id) return null
+  if (me && me.id === mentor.id) return null
 
   return (
     //@ts-ignore
     <Card className={styles.meetup}>
-      <Title size={3}>Send me a message or schedule a meetup</Title>
+      <Title size={3}>Schedule a video call</Title>
       <Dropdown
         values={months}
         selectedValue={curMonth}
