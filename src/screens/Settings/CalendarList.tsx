@@ -71,21 +71,23 @@ export default function CalendarList({ onChange, user, loading = [] }: Props) {
           <>
             <Title size={3}>Calendars</Title>
             <S.List>
-              {(user.google.calendars ?? []).map(({ id, name, color }) => {
-                return (
-                  <S.Toggle key={id}>
-                    <Checkbox
-                      onChange={v => toggleCalendar(id, v)}
-                      checked={selection.includes(id)}
-                      color={color ?? undefined}
-                      loading={loading.includes(id)}
-                    />
-                    <Text small strong>
-                      {name}
-                    </Text>
-                  </S.Toggle>
-                )
-              })}
+              {(user.google.calendars ?? [])
+                .filter(v => v.id !== user.google?.gcalConnected)
+                .map(({ id, name, color }) => {
+                  return (
+                    <S.Toggle key={id}>
+                      <Checkbox
+                        onChange={v => toggleCalendar(id, v)}
+                        checked={selection.includes(id)}
+                        color={color ?? undefined}
+                        loading={loading.includes(id)}
+                      />
+                      <Text small strong>
+                        {name}
+                      </Text>
+                    </S.Toggle>
+                  )
+                })}
             </S.List>
           </>
         )}
@@ -174,18 +176,14 @@ const S = {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      margin-left: 1rem;
     }
 
     input,
     svg {
       margin: 0;
-      margin-right: 1rem;
       cursor: pointer;
       flex-shrink: 0;
-    }
-
-    svg {
-      margin-right: calc(var(--off) + 1rem);
     }
   `,
 }

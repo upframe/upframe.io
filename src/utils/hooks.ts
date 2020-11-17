@@ -4,9 +4,9 @@ import { useHistory } from 'react-router-dom'
 import { queries, mutations, useQuery, useMutation } from 'gql'
 import isEqual from 'lodash/isEqual'
 import api from 'api'
-import type { Me, Mentors } from 'gql/types'
 import type { DocumentNode } from 'graphql'
 import subscription from './subscription'
+import type * as T from 'gql/types'
 
 export { useHistory }
 
@@ -52,12 +52,19 @@ export function useCalendars(requested: string[]) {
   const [calendars, setCalendars] = useState<any[]>([])
   const { me } = useMe()
 
-  const {
-    data: { user: { calendars: gcals = [] } = {} } = {},
-    loading,
-  } = useQuery(queries.GCAL_EVENTS, {
-    variables: { calendarIds: calNotFetched, id: me?.id, skip: !me },
+  const { data, loading } = useQuery<
+    T.GoogleCalendarEvents,
+    T.GoogleCalendarEventsVariables
+  >(queries.GCAL_EVENTS, {
+    variables: {
+      calendarIds: calNotFetched,
+      id: me?.id,
+    },
+    skip: !me || !requested?.length,
   })
+
+  const gcals = (data?.user as T.GoogleCalendarEvents_user_Mentor)?.google
+    ?.calendars
 
   // add to fetch list
   useEffect(() => {
@@ -72,7 +79,7 @@ export function useCalendars(requested: string[]) {
       )
   }, [requested, calendars, calNotFetched, loading])
 
-  // add fetched to calendars
+  // // add fetched to calendars
   useEffect(() => {
     if (loading) return
     const newlyFetched = (gcals || []).filter(
@@ -93,7 +100,7 @@ export function useCalendars(requested: string[]) {
 export function useMe() {
   const [setTz, { loading: tzChanging }] = useMutation(mutations.SET_TIMEZONE)
 
-  const { data, loading } = useQuery<Me>(queries.ME, {
+  const { data, loading } = useQuery<T.Me>(queries.ME, {
     onCompleted({ me }) {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
       if (tzChanging || !tz || !me?.inferTz || me.timezone?.iana === tz) return
@@ -263,9 +270,9 @@ export function useLoggedIn({
   return loggedIn
 }
 
-const mentorSub = subscription<Mentors['mentors']>(set => {
+const mentorSub = subscription<T.Mentors['mentors']>(set => {
   api
-    .query<Mentors>({ query: queries.MENTORS })
+    .query<T.Mentors>({ query: queries.MENTORS })
     .then(({ data }) => {
       if (!set) return
       set(data?.mentors ?? [])
@@ -273,11 +280,11 @@ const mentorSub = subscription<Mentors['mentors']>(set => {
 })
 
 export function useMentors() {
-  const [mentors, setMentors] = useState<Mentors['mentors']>(
+  const [mentors, setMentors] = useState<T.Mentors['mentors']>(
     mentorSub.state ?? []
   )
 
-  function set(users: Mentors['mentors'] = mentors) {
+  function set(users: T.Mentors['mentors'] = mentors) {
     mentorSub._call(
       users
         .map(v => ({

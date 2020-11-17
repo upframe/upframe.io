@@ -114,7 +114,6 @@ export default function CalendarTab() {
         calendar with Upframe.
       </Text>
       <Title size={3}>Google Calendar</Title>
-      {/* {user?.calendarConnected ? ( */}
       {user?.google?.gcalGranted ? (
         <Text>
           <Text underlined>{user.google?.email}</Text> is connected to your

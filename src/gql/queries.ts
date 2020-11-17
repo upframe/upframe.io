@@ -129,27 +129,27 @@ export const SLOTS = gql`
   }
 `
 
-// export const GCAL_EVENTS = gql`
-//   query GoogleCalendarEvents($calendarIds: [ID!]!, $id: ID) {
-//     user(id: $id) {
-//       id
-//       ... on Mentor {
-//         google {
-//           calendars(ids: $calendarIds) {
-//             id
-//             name
-//             events(max: 100) {
-//               id
-//               name
-//               start
-//               end
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `
+export const GCAL_EVENTS = gql`
+  query GoogleCalendarEvents($calendarIds: [ID!]!, $id: ID) {
+    user(id: $id) {
+      id
+      ... on Mentor {
+        google {
+          calendars(ids: $calendarIds) {
+            id
+            name
+            events(max: 100) {
+              id
+              name
+              start
+              end
+            }
+          }
+        }
+      }
+    }
+  }
+`
 
 export const VERIFY_TOKEN = gql`
   query VerifyToken($token: String!) {
