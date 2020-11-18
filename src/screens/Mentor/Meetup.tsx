@@ -224,10 +224,10 @@ export default function Meetup({ mentor }) {
                 key={index}
                 day={new Date(slotsByDay[0]).getDay()}
                 date={new Date(slotsByDay[0]).getDate()}
-                onClick={async () => {
+                onClick={() => {
                   setSelectedDay(index)
                   setSelectedSlot(null)
-                  await setTimeout(() => {
+                  setTimeout(() => {
                     const node = document.getElementById('first-divider')
                     if (node) node.scrollIntoView({ behavior: 'smooth' })
                   }, 200)
