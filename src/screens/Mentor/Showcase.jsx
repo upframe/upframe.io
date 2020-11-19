@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import styles from './profile.module.scss'
 import {
   Card,
@@ -37,18 +38,20 @@ export default function Showcase({ user, conId }) {
           ))}
         </div>
         {me && (
-          <Button
-            filled
-            linkTo={
-              conId
-                ? `/conversations/${conId}`
-                : user.id !== me.id
-                ? `/conversations/new?parts=${user.id}`
-                : '/conversations'
-            }
-          >
-            Message
-          </Button>
+          <ButtonContainer>
+            <Button
+              filled
+              linkTo={
+                conId
+                  ? `/conversations/${conId}`
+                  : user.id !== me.id
+                  ? `/conversations/new?parts=${user.id}`
+                  : '/conversations'
+              }
+            >
+              Message
+            </Button>
+          </ButtonContainer>
         )}
       </div>
       <div className={styles.rightColumn}>
@@ -73,3 +76,7 @@ export default function Showcase({ user, conId }) {
     </Card>
   )
 }
+
+const ButtonContainer = styled.span`
+  margin-top: 1rem;
+`

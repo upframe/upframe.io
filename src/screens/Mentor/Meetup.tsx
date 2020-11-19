@@ -10,8 +10,8 @@ import { ordNum, WEEK_DAYS, MONTHS } from '../../utils/date'
 import Slots from './Slots'
 import { useMe } from 'utils/hooks'
 
-const Divider = () => (
-  <Style.Divider>
+const Divider = ({ id }: { id?: string }) => (
+  <Style.Divider id={id}>
     <Style.Line />
     <Style.Triangle />
     <Style.Line />
@@ -36,6 +36,7 @@ const getHighestMonth = (slotDays, firstIndex, maxItems) => {
   ) as Array<[string, number]>).sort(
     (a: [string, number], b: [string, number]) => b[1] - a[1]
   )
+  if (!monthCounter.length) return ''
   return MONTHS[monthCounter[0][0]]
 }
 
@@ -101,8 +102,9 @@ const getDaysArray = (slots, minDays) => {
 }
 
 export default function Meetup({ mentor }) {
-  const scrollRef = useRef<HTMLDivElement>(null)
   const { me } = useMe()
+
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const [selectedSlot, setSelectedSlot] = useState<any | null>(null)
   const [selectedDay, setSelectedDay] = useState(-1)
@@ -154,21 +156,24 @@ export default function Meetup({ mentor }) {
       setMaxItems(roundedNumberOfEle)
       const sbd = getDaysArray(mentor.slots || [], roundedNumberOfEle)
       setSlotDays(sbd)
-      const newAllMonths = sbd
-        .reduce((acc, curVal) => {
-          const tempDate = new Date(curVal)
-          const month = tempDate.getMonth()
-          if (month && acc.findIndex(el => el === month) === -1) acc.push(month)
-          return acc
-        }, [])
-        .map(el => MONTHS[el])
-      setMonths(newAllMonths)
+      if (sbd.length) {
+        const newAllMonths = sbd
+          .reduce((acc, curVal) => {
+            const tempDate = new Date(curVal)
+            const month = tempDate.getMonth()
+            if (month && acc.findIndex(el => el === month) === -1)
+              acc.push(month)
+            return acc
+          }, [])
+          .map(el => MONTHS[el])
+        setMonths(newAllMonths)
+      }
       setCurMonth(
         getHighestMonth(
           sbd,
           scrollRef.current.scrollLeft / 87,
           roundedNumberOfEle
-        ) || newAllMonths[0]
+        ) || ''
       )
     }
   }
@@ -182,12 +187,12 @@ export default function Meetup({ mentor }) {
     return () => window.removeEventListener('resize', update)
   })
 
-  if (!me || me.id === mentor.id) return null
+  if (me && me.id === mentor.id) return null
 
   return (
     //@ts-ignore
     <Card className={styles.meetup}>
-      <Title size={3}>Send me a message or schedule a meetup</Title>
+      <Title size={3}>Schedule a video call</Title>
       <Dropdown
         values={months}
         selectedValue={curMonth}
@@ -219,18 +224,13 @@ export default function Meetup({ mentor }) {
                 key={index}
                 day={new Date(slotsByDay[0]).getDay()}
                 date={new Date(slotsByDay[0]).getDate()}
-                onClick={async () => {
+                onClick={() => {
                   setSelectedDay(index)
                   setSelectedSlot(null)
-                  await setTimeout(
-                    () =>
-                      window.scrollTo({
-                        left: 0,
-                        top: document.body.scrollHeight,
-                        behavior: 'smooth',
-                      }),
-                    200
-                  )
+                  setTimeout(() => {
+                    const node = document.getElementById('first-divider')
+                    if (node) node.scrollIntoView({ behavior: 'smooth' })
+                  }, 200)
                 }}
                 disabled={!slotsByDay[1].length}
                 selected={index === selectedDay}
@@ -246,7 +246,7 @@ export default function Meetup({ mentor }) {
       </Style.DayContainer>
       {selectedDay >= 0 && (
         <>
-          <Divider />
+          <Divider id="first-divider" />
           <Style.Time>{`${getSlotDayDate(
             slotDays[selectedDay][0]
           )}`}</Style.Time>
@@ -260,7 +260,7 @@ export default function Meetup({ mentor }) {
       )}
       {selectedSlot && (
         <>
-          <Divider />
+          <Divider id="second-divider" />
           <Request slot={selectedSlot} mentorName={mentor.name} />
         </>
       )}

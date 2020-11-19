@@ -27,17 +27,12 @@ export default function Slots({
               selected={selectedSlot && slot.start === selectedSlot.start}
               key={slot.start}
               start={slot.start}
-              onClick={async () => {
+              onClick={() => {
                 setSelectedSlot(slot)
-                await setTimeout(
-                  () =>
-                    window.scrollTo({
-                      left: 0,
-                      top: document.body.scrollHeight,
-                      behavior: 'smooth',
-                    }),
-                  200
-                )
+                setTimeout(() => {
+                  const node = document.getElementById('second-divider')
+                  if (node) node.scrollIntoView({ behavior: 'smooth' })
+                }, 200)
               }}
             />
           ))}

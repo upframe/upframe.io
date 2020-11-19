@@ -1,5 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useMe } from 'utils/hooks'
+
+const productHuntUrl = 'https://www.producthunt.com/upcoming/upframe'
 
 interface SlotI {
   start: string
@@ -8,6 +11,8 @@ interface SlotI {
 }
 
 export default function Slot({ start, onClick = () => {}, selected }: SlotI) {
+  const { me } = useMe()
+
   const date = new Date(start)
   const time = date.toLocaleString('en-US', {
     hour12: true,
@@ -15,12 +20,22 @@ export default function Slot({ start, onClick = () => {}, selected }: SlotI) {
     minute: 'numeric',
   })
 
+  const Tag = !me ? 'a' : 'span'
+
   return (
-    <TagContainer selected={selected} onClick={() => onClick(start)}>
-      <div>
-        <span>{time}</span>
-      </div>
-    </TagContainer>
+    <Tag
+      {...(!me && {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        href: productHuntUrl,
+      })}
+    >
+      <TagContainer selected={selected} onClick={() => me && onClick(start)}>
+        <div>
+          <span>{time}</span>
+        </div>
+      </TagContainer>
+    </Tag>
   )
 }
 
