@@ -7,7 +7,7 @@ import { ordNum, MONTHS } from 'utils/date'
 import styled from 'styled-components'
 
 interface RequestI {
-  slot: { start: string }
+  slot: { start: string; id: string }
   mentorName: string
 }
 
@@ -33,7 +33,7 @@ export default function Request({ slot, mentorName }: RequestI) {
   const { me } = useMe()
 
   const [requestSlot] = useMutation(mutations.REQUEST_MEETUP, {
-    variables: { msg, slotId: slot },
+    variables: { msg, slotId: slot.id },
     onCompleted() {
       notify('Meetup was requested. Now wait for the mentor to confirm.')
     },
