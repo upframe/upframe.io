@@ -8,7 +8,6 @@ import Request from './Request'
 import Day from './Day'
 import { ordNum, WEEK_DAYS, MONTHS } from '../../utils/date'
 import Slots from './Slots'
-import { useMe } from 'utils/hooks'
 
 const Divider = ({ id }: { id?: string }) => (
   <Style.Divider id={id}>
@@ -102,8 +101,6 @@ const getDaysArray = (slots, minDays) => {
 }
 
 export default function Meetup({ mentor }) {
-  const { me } = useMe()
-
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const [selectedSlot, setSelectedSlot] = useState<any | null>(null)
@@ -186,8 +183,6 @@ export default function Meetup({ mentor }) {
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   })
-
-  if (me && me.id === mentor.id) return null
 
   return (
     //@ts-ignore

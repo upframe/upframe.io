@@ -53,7 +53,6 @@ const S = {
     top: 100%;
     box-shadow: 0 0 2px 1px #0005;
     background-color: #fff;
-    z-index: 10;
     min-width: 15rem;
     cursor: default;
     z-index: 1001;
