@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import styles from './profile.module.scss'
 import {
   Card,
@@ -8,9 +9,13 @@ import {
   Title,
   Text,
   Chip,
+  Button,
 } from '../../components'
+import { useMe } from 'utils/hooks'
 
-export default function Showcase({ user }) {
+export default function Showcase({ user, conId }) {
+  const { me } = useMe()
+
   return (
     <Card className={styles.showcase}>
       <div className={styles.leftColumn}>
@@ -32,6 +37,22 @@ export default function Showcase({ user }) {
             />
           ))}
         </div>
+        {me && (
+          <ButtonContainer>
+            <Button
+              filled
+              linkTo={
+                conId
+                  ? `/conversations/${conId}`
+                  : user.id !== me.id
+                  ? `/conversations/new?parts=${user.id}`
+                  : '/conversations'
+              }
+            >
+              Message
+            </Button>
+          </ButtonContainer>
+        )}
       </div>
       <div className={styles.rightColumn}>
         <Title size={3}>About me</Title>
@@ -55,3 +76,7 @@ export default function Showcase({ user }) {
     </Card>
   )
 }
+
+const ButtonContainer = styled.span`
+  margin-top: 1rem;
+`

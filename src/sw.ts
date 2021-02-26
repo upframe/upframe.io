@@ -151,7 +151,7 @@ async function getStatic() {
       head?.match(/href="([^"]+)/gs)?.map(v => v.replace(/^href="/, '')) ?? []
     staticFiles.push(...links)
   } catch (e) {
-    console.warn(e)
+    //
   }
 
   return Array.from(new Set(staticFiles))
