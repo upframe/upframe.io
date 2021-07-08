@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 
 export const WEEK_DAYS = [
+  'Sunday',
   'Monday',
   'Tuesday',
   'Wednesday',
   'Thursday',
   'Friday',
   'Saturday',
-  'Sunday',
 ]
 
 export const MONTHS = [
